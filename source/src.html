@@ -1635,12 +1635,14 @@ function calEvents(onlyFuture){const ev=[];const today=new Date();today.setHours
   const info=(INFO[w+'-'+d]||[]).join('\n');
   ev.push({uid:`cf-${PROGS[PROG].pre||'intro'}-w${w+1}d${d+1}@candito-forever`,date:d0,sum:`${rest?'💤':test?'🏆':'🏋️'} ${pre} · ${PROGS[PROG].short} W${w+1} ${DAYS[d].tag} · ${day.f}`,desc:`${PROGS[PROG].name} · Woche ${w+1}: ${WEEKS[w]||''}\n\n${ex}${info?'\n\nHinweise:\n'+info:''}`,rest})}
  return ev}
-function exportCalendar(){const ev=calEvents(true);if(!ev.length){toast('Keine kommenden Trainingstage im aktuellen Programm');return}
+function icsBody(){const ev=calEvents(true);if(!ev.length)return null;
  const p2=n=>String(n).padStart(2,'0');const ds=x=>x.getFullYear()+p2(x.getMonth()+1)+p2(x.getDate());const now=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Candito Forever//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Candito Forever'];
  ev.forEach(e=>{const n=new Date(e.date);n.setDate(n.getDate()+1);L.push('BEGIN:VEVENT','UID:'+e.uid,'DTSTAMP:'+now,'DTSTART;VALUE=DATE:'+ds(e.date),'DTEND;VALUE=DATE:'+ds(n),icsFold('SUMMARY:'+icsEsc(e.sum)),icsFold('DESCRIPTION:'+icsEsc(e.desc)),'TRANSP:TRANSPARENT');
   if(!e.rest)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(e.sum),'TRIGGER:PT8H','END:VALARM');L.push('END:VEVENT')});
- L.push('END:VCALENDAR');const body=L.join('\r\n')+'\r\n';
+ L.push('END:VCALENDAR');return {body:L.join('\r\n')+'\r\n',n:ev.length}}
+function calOpen(){const x=icsBody();if(!x){toast('Keine kommenden Trainingstage im aktuellen Programm');return}location.href='data:text/calendar;charset=utf-8,'+encodeURIComponent(x.body)}
+function exportCalendar(){const x=icsBody();if(!x){toast('Keine kommenden Trainingstage im aktuellen Programm');return}const body=x.body,ev={length:x.n};
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Export hier nicht verfügbar');return}await dl.save({filename:`candito-${(PROGS[PROG].pre||'intro')}-trainingstage.ics`,data:body,mimeType:'text/calendar'});toast(ev.length+' Trainingstage exportiert')}catch(e){toast('Export abgebrochen')}})()}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Download hier nicht verfügbar');return}const d=new Date().toISOString().slice(0,10);await dl.save({filename:`intro-zyklus-sicherung-${d}.json`,data:body});toast('Sicherung gespeichert')}catch(e){toast('Download abgebrochen')}})()}
@@ -3135,8 +3137,8 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
   <p class="note2">Tag 1 Samstag · Tag 2 Sonntag · Tag 3 Dienstag · Tag 4 Donnerstag. Die Daten der Einheiten werden daraus berechnet.</p></section>
  <section class="card"><div class="ct"><h2 class="h2">Kalender</h2><span class="chip plain">${esc(PROGS[PROG].short)}</span></div>
   <p class="note2" style="margin-top:0">Überträgt alle kommenden Trainingstage des aktuellen Programms (${esc(PROGS[PROG].name)}) in deinen iPhone-Kalender – ganztägig, mit Fokus, allen Übungen und Vorgaben, Testtage (🏆) und Deloads markiert, Erinnerung um 8 Uhr. Verschiebst du Phasen oder wechselst das Programm, einfach neu exportieren.</p>
-  <div class="aktionen" style="margin-top:10px"><button type="button" class="btn primary" data-act="calx">In Kalender übernehmen</button></div>
-  <p class="note2">${typeof PWA!=='undefined'&&PWA?'Im Teilen-Menü „Kalender“ wählen – oder „In Dateien sichern“ und die Datei in der Dateien-App antippen → „Alle hinzufügen“.':'Die .ics-Datei lässt sich in jeder Kalender-App öffnen.'}</p></section>
+  <div class="aktionen" style="margin-top:10px">${typeof PWA!=='undefined'&&PWA?'<button type="button" class="btn primary" data-act="calopen">Direkt im Kalender öffnen</button><button type="button" class="btn" data-act="calx">Als Datei teilen</button>':'<button type="button" class="btn primary" data-act="calx">In Kalender übernehmen</button>'}</div>
+  <p class="note2">${typeof PWA!=='undefined'&&PWA?'„Direkt im Kalender öffnen“ zeigt die Termine an → „Alle hinzufügen“. Klappt das nicht: „Als Datei teilen“ → Mail an dich selbst → in der Mail auf den Anhang tippen → „Alle hinzufügen“.':'Die .ics-Datei lässt sich in jeder Kalender-App öffnen.'}</p></section>
  ${shiftHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Pausen-Timer</h2></div>
   <div class="fgrid"><label class="fld">Grundübungen<span class="in"><input id="set-rm" inputmode="numeric" data-meta="restMain" value="${m.restMain}"><i>Sek.</i></span></label>
@@ -3221,7 +3223,7 @@ $('#view').addEventListener('click',e=>{const t=e.target.closest('button');if(!t
  if(a==='sstart'){startSession(w,d);render();return}
  if(a==='reset'){if(!S.ui.confirmReset){S.ui.confirmReset=true;render();setTimeout(()=>{S.ui.confirmReset=false;if(S.ui.tab==='train')render()},4000);return}
   S.ui.confirmReset=false;const k=key(w,d);S.logs[k]={b:P[w][d].b.map(bl=>Array.from({length:bl.s},()=>({}))),note:'',u:0,resetAt:Date.now()+1};saveLog(k);toast('Einheit zurückgesetzt');render()}
- if(a==='csv')exportCsv();if(a==='calx')exportCalendar();
+ if(a==='csv')exportCsv();if(a==='calx')exportCalendar();if(a==='calopen')calOpen();
  if(a==='gsout'){gsExport();return}
  if(a==='gsin'){gsImport();return}
  if(a==='ana')runAnalysis(S.ui.aw??S.ui.w);if(a==='anacopy')copyText(anaShareText(S.ui.aw??S.ui.w));if(a==='anasave'){const ta=document.getElementById('anaPaste');const tx=(ta&&ta.value||'').trim();if(!tx){toast('Bitte zuerst Claudes Antwort einfügen');}else{const w=S.ui.aw??S.ui.w;const doc={text:tx,at:new Date().toISOString(),woche:w+1,quelle:'aus dem Claude-Chat'};S.ana[AK(w)]=doc;if(db)db.doc('analysis/'+AK(w)).set(doc).catch(()=>{});toast('Analyse gespeichert');render()}}
