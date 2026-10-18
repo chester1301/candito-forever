@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.18-1549-0580cdf";
+<script>window.CF_VERSION="2026.10.18-1606-741cb19";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1269,6 +1269,8 @@ html.boot #view.enter>*{animation:none!important}
 .gp-go{margin-top:8px;background:none;border:1px solid var(--line,#333);color:var(--ink);border-radius:10px;padding:7px 11px;font-weight:700;font-size:12.5px}
 .gp-here{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
 .gp-close{width:100%;margin-top:6px;height:48px;border-radius:14px;border:0;background:var(--gold);color:#111;font-weight:800;font-size:15px}
+.fx .sumbk{display:block;width:100%;margin-top:14px;background:#e8be5a;color:#111;border:0;font-weight:800}
+.wuemp{font-style:normal;display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#f0a066;border:1px solid rgba(240,160,102,.45);background:rgba(240,160,102,.1);vertical-align:2px}
 .vtag{display:inline-flex;align-self:flex-start;justify-self:start;width:max-content;margin:2px 0 4px;padding:3px 8px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);background:rgba(67,192,138,.12);border:1px solid rgba(67,192,138,.4)}
 .empf{position:relative;z-index:2;display:grid;grid-template-columns:1fr;row-gap:1px;margin:4px 0 6px;padding:8px 12px;border-radius:14px;border:1.5px dashed #7fa8ff;background:rgba(18,24,44,.92);color:#b9ceff;width:min(210px,100%)}
 .empf .et{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#7fa8ff}
@@ -2739,9 +2741,26 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.18-1549-0580cdf</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.18-1606-741cb19</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
+function icsEsc(t){return String(t==null?'':t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n')}
+function icsFold(l){const o=[];while(l.length>72){o.push(l.slice(0,72));l=' '+l.slice(72)}o.push(l);return o.join('\r\n')}
+function calEvents(onlyFuture){const ev=[];const today=new Date();today.setHours(0,0,0,0);
+ for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const day=P[w][d];const dt=dayDate(w,d);if(!dt)continue;const d0=new Date(dt);d0.setHours(0,0,0,0);if(onlyFuture&&d0<today)continue;
+  const test=w===TW()||day.b.some(bl=>bl.test1)||/test|max/i.test(WEEKS[w]||'');const del=/deload/i.test(WEEKS[w]||'');const rest=!day.b.length;
+  const pre=rest?'Ruhetag':test?'TEST':del?'Deload':'Training';
+  const ex=day.b.map((bl,b)=>`${b+1}. ${EX[bl.e].n}${bl.opt?' (optional)':''}: ${bl.x}`).join('\n');
+  const info=(INFO[w+'-'+d]||[]).join('\n');
+  ev.push({uid:`cf-${PROGS[PROG].pre||'intro'}-w${w+1}d${d+1}@candito-forever`,date:d0,sum:`${rest?'💤':test?'🏆':'🏋️'} ${pre} · ${PROGS[PROG].short} W${w+1} ${DAYS[d].tag} · ${day.f}`,desc:`${PROGS[PROG].name} · Woche ${w+1}: ${WEEKS[w]||''}\n\n${ex}${info?'\n\nHinweise:\n'+info:''}`,rest})}
+ return ev}
+function exportCalendar(){const ev=calEvents(true);if(!ev.length){toast('Keine kommenden Trainingstage im aktuellen Programm');return}
+ const p2=n=>String(n).padStart(2,'0');const ds=x=>x.getFullYear()+p2(x.getMonth()+1)+p2(x.getDate());const now=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+ const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Candito Forever//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Candito Forever'];
+ ev.forEach(e=>{const n=new Date(e.date);n.setDate(n.getDate()+1);L.push('BEGIN:VEVENT','UID:'+e.uid,'DTSTAMP:'+now,'DTSTART;VALUE=DATE:'+ds(e.date),'DTEND;VALUE=DATE:'+ds(n),icsFold('SUMMARY:'+icsEsc(e.sum)),icsFold('DESCRIPTION:'+icsEsc(e.desc)),'TRANSP:TRANSPARENT');
+  if(!e.rest)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(e.sum),'TRIGGER:PT8H','END:VALARM');L.push('END:VEVENT')});
+ L.push('END:VCALENDAR');const body=L.join('\r\n')+'\r\n';
+ (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Export hier nicht verfügbar');return}await dl.save({filename:`candito-${(PROGS[PROG].pre||'intro')}-trainingstage.ics`,data:body,mimeType:'text/calendar'});toast(ev.length+' Trainingstage exportiert')}catch(e){toast('Export abgebrochen')}})()}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Download hier nicht verfügbar');return}const d=new Date().toISOString().slice(0,10);await dl.save({filename:`intro-zyklus-sicherung-${d}.json`,data:body});toast('Sicherung gespeichert')}catch(e){toast('Download abgebrochen')}})()}
 document.addEventListener('change',e=>{const t=e.target;if(t.id!=='bkfile'||!t.files||!t.files[0])return;const f=t.files[0];t.value='';
@@ -2893,8 +2912,9 @@ let rfT;function refreshAuto(){clearTimeout(rfT);rfT=setTimeout(()=>{SG.clear();
 
 /* ===================== Aufwärmen ===================== */
 const WU=['psq','csq','pdl','cdl','platz','pb3','pbb','hbs','sgdl','ecc','fub','rdle','rdlt','mach','cgb'];
-function warmups(w,d,b,Wo){const bl=P[w][d].b[b];if(!WU.includes(bl.e))return null;const g=EX[bl.e].g;
- for(let B=0;B<b;B++){const x=P[w][d].b[B];if(WU.includes(x.e)&&EX[x.e].g===g)return null}
+const isWU=e=>WU.includes(e)||!!(EX[e]&&EX[e].m&&EX[e].eq==='bb'&&['sq','bp','dl'].includes(EX[e].g));
+function warmups(w,d,b,Wo){const bl=P[w][d].b[b];if(!isWU(bl.e))return null;const g=EX[bl.e].g;
+ for(let B=0;B<b;B++){const x=P[w][d].b[B];if(isWU(x.e)&&EX[x.e].g===g)return null}
  const L=log(w,d);const W=Wo??pnum(L&&L.b[b][0].kg)??sugg(w,d,b,0).kg;if(!W)return [];
  const bar=S.meta.bar||20,R=/^\d+$/.test(bl.r)?+bl.r:5;
  const st=g==='dl'?[[.4,5],[.55,3],[.7,2]]:[[0,10],[.4,5],[.55,3],[.7,2]];
@@ -2904,7 +2924,7 @@ function warmups(w,d,b,Wo){const bl=P[w][d].b[b];if(!WU.includes(bl.e))return nu
 function wuHTML(w,d,b){const list=warmups(w,d,b);if(list===null)return '';const L=log(w,d);const done=(L&&L.wu&&L.wu[b])||[];
  if(!list.length)return `<details class="wu"><summary>Aufwärmen</summary><p class="note2">Erscheint, sobald ein Zielgewicht feststeht.</p></details>`;
  const n=list.filter((_,j)=>done[j]).length;
- return `<details class="wu" ${n<list.length?'open':''}><summary>Aufwärmen · ${n}/${list.length} · bis ${nf(pnum(L&&L.b[b][0].kg)??sugg(w,d,b,0).kg,2)} kg</summary><div class="wul">${list.map((x,j)=>{const pl=plates(x.kg);
+ return `<details class="wu" ${n<list.length?'open':''}><summary>Aufwärmen <i class="wuemp">Empfehlung</i> · ${n}/${list.length} · bis ${nf(pnum(L&&L.b[b][0].kg)??sugg(w,d,b,0).kg,2)} kg</summary><div class="wul">${list.map((x,j)=>{const pl=plates(x.kg);
   return `<button type="button" class="wur ${done[j]?'ok':''}" data-wu="${b}:${j}" aria-pressed="${!!done[j]}"><span class="num">${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</span><small>${pl.length?pl.map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small>${CHECK}</button>`}).join('')}</div></details>`}
 function toggleWu(w,d,b,j){const L=log(w,d,true);if(!L.wu)L.wu={};if(!L.wu[b])L.wu[b]=[];L.wu[b][j]=!L.wu[b][j];saveLog(key(w,d))}
 
@@ -3054,21 +3074,47 @@ async function readShots(files){const {w,d}=S.ui,k=key(w,d);if(S.ui.wEdit!==k||!
   S.ui.wDraft=dr;if(n)S.ui.wSrc='screenshot';S.ui.wMsg=n?`${n} Werte erkannt – bitte prüfen und mit „Werte übernehmen“ speichern.`:'Auf dem Bild wurden keine WHOOP-Werte erkannt. Am besten die Übersicht mit Recovery, HRV und Schlaf als Screenshot nehmen.'}
  else{const c=err&&err.code;S.ui.wMsg=(ERRT[c]||'Das Bild konnte nicht gelesen werden.')+(c?` (Code: ${c})`:'')+' Du kannst die Werte unten auch selbst eintragen.'}
  S.ui.wBusy=false;render();setTimeout(()=>{const el=document.getElementById('whoop');if(el)scrollTo({top:el.getBoundingClientRect().top+scrollY-170,behavior:'smooth'})},60)}
-function whoopProgHTML(A){const ses=[];for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(L&&L.whoop)ses.push({w,d,v:L.whoop})}
- if(!ses.length)return `<section class="card"><div class="ct"><div><p class="eyebrow">WHOOP</p><h2 class="h2">Erholung & Leistung</h2></div></div><div class="leer">Sobald du WHOOP-Werte zu deinen Einheiten einträgst, siehst du hier Recovery, HRV und wie sich dein RPE an grünen, gelben und roten Tagen unterscheidet.</div></section>`;
- const avg=f=>{const x=ses.map(s=>s.v[f]).filter(v=>v!=null);return x.length?x.reduce((a,b)=>a+b,0)/x.length:null};
- const W=420,H=170,pl=34,pb=26,bw=(W-pl-8)/ses.length;let g='';
+function whoopSessions(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{let A=null,best=null;
+  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||!L.whoop||!P[w][d].b.length)continue;
+   if(!A){A=allSets();best={};A.forEach(x=>{if(EX[x.e]&&EX[x.e].m&&x.e1&&(best[x.e]==null||x.e1>best[x.e]))best[x.e]=x.e1})}
+   const ss=A.filter(x=>x.w===w&&x.d===d);if(!ss.some(x=>x.ok))continue;
+   const dv=ss.filter(x=>x.rpe!=null&&x.trpe!=null).map(x=>x.rpe-x.trpe);
+   const pf=ss.filter(x=>EX[x.e]&&EX[x.e].m&&x.e1&&best[x.e]).map(x=>x.e1/best[x.e]*100);
+   const ad=dayAdh(w,d);const dt=L.date?new Date(L.date):dayDate(w,d);
+   out.push({pid,w,d,v:L.whoop,dt,f:P[w][d].f,col:DAYCOL[d],dev:dv,devM:dv.length?dv.reduce((a,b)=>a+b,0)/dv.length:null,perf:pf.length?Math.max(...pf):null,adh:ad.ev?ad.hit/ad.ev*100:null,z:WZ(L.whoop.rec)})}}));
+ return out.sort((a,b)=>(a.dt||0)-(b.dt||0))}
+function whoopProgHTML(A){const ses=whoopSessions();
+ const head=`<div class="ct"><div><p class="eyebrow">WHOOP · alle Programme</p><h2 class="h2">Erholung & Leistung</h2></div>${ses.length?`<span class="chip plain">${ses.length} Einheiten</span>`:''}</div>`;
+ if(!ses.length)return `<section class="card">${head}<div class="leer">Sobald du WHOOP-Werte zu deinen Einheiten einträgst (Tagesform auf „Heute“), siehst du hier, wie Recovery, Schlaf und HRV mit deinem RPE, deiner Plan-Treue und deiner Leistung zusammenhängen.</div></section>`;
+ const mean=a=>{const x=a.filter(v=>v!=null);return x.length?x.reduce((p,q)=>p+q,0)/x.length:null};
+ const avg=f=>mean(ses.map(s=>s.v[f]));
+ const sg=v=>v==null?'–':(v>0?'+':'')+nf(v,2);
+ const last=ses.slice(-16);const W=420,H=170,pl=34,pb=26,bw=(W-pl-8)/last.length;let g='';
  [0,33,67,100].forEach(t=>{const y=10+(H-10-pb)*(1-t/100);g+=`<line x1="${pl}" x2="${W-8}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${pl-6}" y="${y+4}" text-anchor="end">${t}</text>`});
- ses.forEach((s,i)=>{const r=s.v.rec;const x=pl+bw*i+bw*.2,w2=bw*.6;if(r!=null){const y=10+(H-10-pb)*(1-r/100);g+=`<rect x="${x}" y="${y}" width="${w2}" height="${H-pb-y}" rx="3" fill="${WZC[WZ(r)]}"/>`}
-  if(ses.length<=10)g+=`<text x="${x+w2/2}" y="${H-8}" text-anchor="middle">W${s.w+1}T${s.d+1}</text>`});
- const dev={g:[],y:[],r:[]};ses.forEach(s=>{const z=WZ(s.v.rec);if(!z)return;A.filter(a=>a.w===s.w&&a.d===s.d&&a.rpe!=null&&a.trpe!=null).forEach(a=>dev[z].push(a.rpe-a.trpe))});
- const dv=z=>dev[z].length?(()=>{const m=dev[z].reduce((a,b)=>a+b,0)/dev[z].length;return (m>0?'+':'')+nf(m,2)})():'–';
- return `<section class="card"><div class="ct"><div><p class="eyebrow">WHOOP</p><h2 class="h2">Erholung & Leistung</h2></div><span class="chip plain">${ses.length} Einheiten</span></div>
+ last.forEach((s,i)=>{const r=s.v.rec;const x=pl+bw*i+bw*.2,w2=bw*.6;if(r!=null){const y=10+(H-10-pb)*(1-r/100);g+=`<rect x="${x}" y="${y}" width="${w2}" height="${H-pb-y}" rx="3" fill="${WZC[WZ(r)]}"/>`}
+  if(s.perf!=null){const y=10+(H-10-pb)*(1-Math.min(100,Math.max(0,(s.perf-70)/30*100))/100);g+=`<circle cx="${x+w2/2}" cy="${y}" r="4" fill="#fff" stroke="#000" stroke-width="1.5"/>`}
+  if(last.length<=10)g+=`<text x="${x+w2/2}" y="${H-8}" text-anchor="middle">${s.dt?fmtD(s.dt):''}</text>`});
+ const Z=['g','y','r'],zc={g:'var(--ok)',y:'var(--bp)',r:'var(--hi)'},zn={g:'Grün',y:'Gelb',r:'Rot'};
+ const by=z=>ses.filter(s=>s.z===z);
+ const zrow=(lbl,fn,fmt)=>`<tr><td>${lbl}</td>${Z.map(z=>{const v=fn(by(z));return `<td class="r">${v==null?'–':fmt(v)}</td>`}).join('')}</tr>`;
+ const slp=ses.filter(s=>s.v.sleepH!=null);const lo=slp.filter(s=>s.v.sleepH<6.5),hi=slp.filter(s=>s.v.sleepH>=7.5);
+ return `<section class="card">${head}
   <div class="kpis" style="margin-bottom:12px"><div><span>Ø Recovery</span><b class="zahl">${nf(avg('rec'),0)}<small>%</small></b></div><div><span>Ø HRV</span><b class="zahl">${nf(avg('hrv'),0)}<small>ms</small></b></div><div><span>Ø Ruhepuls</span><b class="zahl">${nf(avg('rhr'),0)}<small>bpm</small></b></div><div><span>Ø Schlaf</span><b class="zahl">${nf(avg('sleepH'),1)}<small>h</small></b></div></div>
-  <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Recovery pro Einheit">${g}</svg>
-  <p class="sec">RPE Ist − Soll nach Recovery-Zone</p>
-  <div class="kr"><div style="--c:var(--ok)"><p class="eyebrow">Grün</p><b class="zahl">${dv('g')}</b><p class="s">${dev.g.length} Sätze</p></div><div style="--c:var(--bp)"><p class="eyebrow">Gelb</p><b class="zahl">${dv('y')}</b><p class="s">${dev.y.length} Sätze</p></div><div style="--c:var(--hi)"><p class="eyebrow">Rot</p><b class="zahl">${dv('r')}</b><p class="s">${dev.r.length} Sätze</p></div></div>
-  <p class="note2">Positiv = Sätze fühlten sich schwerer an als geplant. So siehst du, wie stark deine Erholung die Tagesform beeinflusst.</p></section>`}
+  <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Recovery und Leistung pro Einheit">${g}</svg>
+  <p class="note2" style="margin-top:4px">Balken = Recovery (Farbe = WHOOP-Zone) · weißer Punkt = Leistung der Einheit (bestes e1RM eines Hauptlifts in % deines Bestwerts im jeweiligen Programm, Skala 70–100 %). Letzte ${last.length} Einheiten.</p>
+  <p class="sec">Nach Recovery-Zone</p>
+  <div class="tw"><table class="tab"><thead><tr><th></th>${Z.map(z=>`<th class="r" style="color:${zc[z]}">${zn[z]}</th>`).join('')}</tr></thead><tbody>
+   ${zrow('Einheiten',a=>a.length||null,v=>v)}
+   ${zrow('RPE Ist − Soll',a=>mean(a.flatMap(s=>s.dev)),sg)}
+   ${zrow('Plan-Treue',a=>mean(a.map(s=>s.adh)),v=>Math.round(v)+' %')}
+   ${zrow('Leistung',a=>mean(a.map(s=>s.perf)),v=>nf(v,1)+' %')}
+  </tbody></table></div>
+  ${lo.length&&hi.length?`<p class="sec">Nach Schlafdauer</p><div class="kr"><div style="--c:var(--hi)"><p class="eyebrow">unter 6,5 h</p><b class="zahl">${sg(mean(lo.flatMap(s=>s.dev)))}</b><p class="s">RPE Ist − Soll · ${lo.length} Einheiten</p></div><div style="--c:var(--ok)"><p class="eyebrow">ab 7,5 h</p><b class="zahl">${sg(mean(hi.flatMap(s=>s.dev)))}</b><p class="s">RPE Ist − Soll · ${hi.length} Einheiten</p></div></div>`:''}
+  <p class="sec">Einheiten mit WHOOP-Werten</p>
+  <div class="tw"><table class="tab"><thead><tr><th>Einheit</th><th class="r">Rec.</th><th class="r">Schlaf</th><th class="r">HRV</th><th class="r">RPE Δ</th><th class="r">Treue</th><th class="r">Leist.</th></tr></thead><tbody>
+   ${ses.slice().reverse().map(s=>`<tr><td><span class="dot" style="--c:${s.col}"></span>${s.dt?fmtD(s.dt):''} · ${esc(PROGS[s.pid].short)} W${s.w+1}T${s.d+1}</td><td class="r" style="color:${s.z?zc[s.z]:'inherit'}">${s.v.rec!=null?nf(s.v.rec,0)+' %':'–'}</td><td class="r">${s.v.sleepH!=null?nf(s.v.sleepH,1)+' h':'–'}</td><td class="r">${s.v.hrv!=null?nf(s.v.hrv,0):'–'}</td><td class="r">${sg(s.devM)}</td><td class="r">${s.adh!=null?Math.round(s.adh)+' %':'–'}</td><td class="r">${s.perf!=null?nf(s.perf,0)+' %':'–'}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p class="note2">Positives RPE Δ = Sätze fühlten sich schwerer an als geplant. Reine Auswertung zur Selbstbeobachtung – die App ändert dadurch keine Vorgaben oder Lasten.</p></section>`}
 
 /* ===================== 3D-Hantel (eigener WebGL-Renderer) ===================== */
 const BB={gl:null,ok:null,canvas:null,prog:null,meshes:[],kg:null,ang:-0.55,vel:0,drag:null,last:0,raf:0,built:0,slot:null,loc:{}};
@@ -3266,7 +3312,7 @@ function showPR(o){const f=$('#fx');f.className='fx pr';f.innerHTML=`<div class=
  <div class="prv"><b class="zahl">${nf(o.e1,0)}<small>kg e1RM</small></b><span class="chip ok">+${nf(o.e1-o.prev,1)} kg</span></div>
  <small>${nf(o.kg,2)} kg × ${o.r}${o.rpe!=null?' @ RPE '+nf(o.rpe):''} · bisher ${nf(o.prev,0)} kg</small><button type="button" class="btn primary">Weiter</button></div>`;
  f.hidden=false;sfx('pr');hap([20,60,20,60,40]);confetti();clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},6000)}
-$('#fx').addEventListener('click',()=>{$('#fx').hidden=true});
+$('#fx').addEventListener('click',e=>{if(e.target.closest('[data-sumbk]')){try{downloadBackup()}catch(err){}}$('#fx').hidden=true});
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=$('#confetti'),x=c.getContext('2d');const W=c.width=innerWidth*(devicePixelRatio||1),H=c.height=innerHeight*(devicePixelRatio||1);c.hidden=false;
  const cols=['#d3202a','#1d55d0','#f0b90f','#169448','#ececec','#ff5a5f'];const ps=Array.from({length:150},()=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.38,vx:(Math.random()-.5)*W*.018,vy:-Math.random()*H*.022-H*.006,s:(4+Math.random()*7)*(devicePixelRatio||1),r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.random()*cols.length|0]}));
  const t0=performance.now();(function fr(t){const k=(t-t0)/2600;x.clearRect(0,0,W,H);if(k>1){c.hidden=true;return}
@@ -3919,6 +3965,7 @@ const TCFG={
  setup:{keep:'',list:[
   {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>S.meta.bw?nf(S.meta.bw,1)+' kg':'–',sub:()=>S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln'},
   {k:'plan',m:/^Zeitplan/,t:'Zeitplan',ic:'cal',c:'#43c08a',val:()=>{const d=new Date(S.meta.start+'T12:00:00');return isNaN(d)?'–':d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})},sub:()=>'Startdaten aller Phasen'},
+  {k:'kal',m:/^Kalender/,t:'Kalender',ic:'cal',c:'#5ad1e6',val:()=>calEvents(true).filter(e=>!e.rest).length+'',sub:()=>'Trainingstage ins iPhone übernehmen'},
   {k:'shift',m:/^Phasen verschieben/,t:'Verschieben',ic:'shift',c:'#7fa8ff',val:()=>'± Wochen',sub:()=>'Urlaub, Krankheit, Stress'},
   {k:'timer',m:/^Pausen-Timer/,t:'Pausen-Timer',ic:'timer',c:'#5ad1e6',val:()=>mmss(S.meta.restMain||300),sub:()=>'Zubehör '+mmss(S.meta.restAcc||120)},
   {k:'hantel',m:/^Hantel/,t:'Hantel & Rundung',ic:'plate',c:'#e8484f',val:()=>nf(S.meta.bar||20,2)+' kg',sub:()=>'Rundung '+nf(S.meta.round||2.5,2)+' kg'},
@@ -4205,6 +4252,10 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
   <div class="fgrid"><label class="fld">Start von Woche 1 (Samstag = Tag 1)<span class="in"><input type="date" id="set-start" data-meta="start" value="${esc(m.start)}"></span></label>
   ${ORD().filter(id=>id!=='intro').map(id=>`<label class="fld">Start ${esc(PROGS[id].name)} (Samstag = Tag 1)<span class="in"><input type="date" id="set-${SKEY[id]}" data-meta="${SKEY[id]}" value="${esc(m[SKEY[id]]||withProg(id,progStart))}"></span></label>`).join('')}</div>
   <p class="note2">Tag 1 Samstag · Tag 2 Sonntag · Tag 3 Dienstag · Tag 4 Donnerstag. Die Daten der Einheiten werden daraus berechnet.</p></section>
+ <section class="card"><div class="ct"><h2 class="h2">Kalender</h2><span class="chip plain">${esc(PROGS[PROG].short)}</span></div>
+  <p class="note2" style="margin-top:0">Überträgt alle kommenden Trainingstage des aktuellen Programms (${esc(PROGS[PROG].name)}) in deinen iPhone-Kalender – ganztägig, mit Fokus, allen Übungen und Vorgaben, Testtage (🏆) und Deloads markiert, Erinnerung um 8 Uhr. Verschiebst du Phasen oder wechselst das Programm, einfach neu exportieren.</p>
+  <div class="aktionen" style="margin-top:10px"><button type="button" class="btn primary" data-act="calx">In Kalender übernehmen</button></div>
+  <p class="note2">${typeof PWA!=='undefined'&&PWA?'Im Teilen-Menü „Kalender“ wählen – oder „In Dateien sichern“ und die Datei in der Dateien-App antippen → „Alle hinzufügen“.':'Die .ics-Datei lässt sich in jeder Kalender-App öffnen.'}</p></section>
  ${shiftHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Pausen-Timer</h2></div>
   <div class="fgrid"><label class="fld">Grundübungen<span class="in"><input id="set-rm" inputmode="numeric" data-meta="restMain" value="${m.restMain}"><i>Sek.</i></span></label>
@@ -4289,7 +4340,7 @@ $('#view').addEventListener('click',e=>{const t=e.target.closest('button');if(!t
  if(a==='sstart'){startSession(w,d);render();return}
  if(a==='reset'){if(!S.ui.confirmReset){S.ui.confirmReset=true;render();setTimeout(()=>{S.ui.confirmReset=false;if(S.ui.tab==='train')render()},4000);return}
   S.ui.confirmReset=false;const k=key(w,d);S.logs[k]={b:P[w][d].b.map(bl=>Array.from({length:bl.s},()=>({}))),note:'',u:0,resetAt:Date.now()+1};saveLog(k);toast('Einheit zurückgesetzt');render()}
- if(a==='csv')exportCsv();
+ if(a==='csv')exportCsv();if(a==='calx')exportCalendar();
  if(a==='gsout'){gsExport();return}
  if(a==='gsin'){gsImport();return}
  if(a==='ana')runAnalysis(S.ui.aw??S.ui.w);if(a==='anacopy')copyText(anaShareText(S.ui.aw??S.ui.w));if(a==='anasave'){const ta=document.getElementById('anaPaste');const tx=(ta&&ta.value||'').trim();if(!tx){toast('Bitte zuerst Claudes Antwort einfügen');}else{const w=S.ui.aw??S.ui.w;const doc={text:tx,at:new Date().toISOString(),woche:w+1,quelle:'aus dem Claude-Chat'};S.ana[AK(w)]=doc;if(db)db.doc('analysis/'+AK(w)).set(doc).catch(()=>{});toast('Analyse gespeichert');render()}}
@@ -4468,7 +4519,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
    return `<li class="gp-s ${ty} ${z.ok?'ok':''}"><span class="gp-n">${i+1}</span><b>${soll}</b><span class="gp-r">× ${esc(sg.rdisp||bl.r)}</span>${ist}</li>`}).join('');
   const nd=(L.b[b]||[]).filter(z=>z&&z.ok).length;
   return `<article class="gp-ex ${b===G.b?'cur':''} ${nd>=bl.s?'fin':''}" style="--c:${GC[ex.g]||'var(--gold)'}"><header><span class="gp-i">${b+1}</span><div style="min-width:0"><h3>${esc(ex.n)}${bl.opt?' <small class="gp-opt">optional</small>':''}</h3><p>${esc(bl.x)}</p></div><span class="gp-c">${nd}/${bl.s}</span></header>
-   <ul class="gp-sets">${sets}</ul>${(()=>{let w0='';try{w0=(sugg(w,d,b,0)||{}).why||''}catch(err){}return w0?`<p class="gp-t gp-why">Berechnung: ${esc(w0)}</p>`:''})()}${bl.cap!=null?`<p class="gp-t">RPE-Cap ${nf(bl.cap)} – nicht darüber gehen.</p>`:''}${bl.h?`<p class="gp-t">${hypeB(bl.h)} ${HYPETXT[bl.h]}</p>`:''}${bl.n?`<p class="gp-t gp-note"><b>Coach-Hinweis:</b> ${esc(bl.n)}</p>`:''}
+   <ul class="gp-sets">${sets}</ul>${(()=>{let wl=null;try{wl=warmups(w,d,b)}catch(err){}if(!wl||!wl.length)return '';return `<p class="gp-t"><b style="color:#f0a066">Aufwärmen (Empfehlung):</b> ${wl.map(x=>(x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2))+'×'+x.r).join(' · ')}</p>`})()}${(()=>{let w0='';try{w0=(sugg(w,d,b,0)||{}).why||''}catch(err){}return w0?`<p class="gp-t gp-why">Berechnung: ${esc(w0)}</p>`:''})()}${bl.cap!=null?`<p class="gp-t">RPE-Cap ${nf(bl.cap)} – nicht darüber gehen.</p>`:''}${bl.h?`<p class="gp-t">${hypeB(bl.h)} ${HYPETXT[bl.h]}</p>`:''}${bl.n?`<p class="gp-t gp-note"><b>Coach-Hinweis:</b> ${esc(bl.n)}</p>`:''}
    ${b===G.b?'<span class="gp-here">aktuelle Übung</span>':`<button type="button" class="gp-go" data-gpgo="${b}">Zu dieser Übung →</button>`}</article>`}).join('');
  return `<div class="gplan" role="dialog" aria-modal="true" aria-label="Tagesplan"><div class="gp-in">
   <div class="gp-top"><div><p class="eyebrow">Tagesplan · Soll-Werte</p><h2>W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wdl}</h2><p class="gp-f">${esc(day.f||'')}${PROGS[PROG].WEEKS&&PROGS[PROG].WEEKS[w]?' · '+esc(PROGS[PROG].WEEKS[w]):''}</p></div><button type="button" class="iconbtn" data-gplan="0" aria-label="Tagesplan schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
@@ -4718,7 +4769,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   <div class="gtools">${G.i===0&&!L.b[G.b][0].ok?foldCue(cueHTML(bl.e),bl.e):''}
   ${foldWu((()=>{const list=warmups(w,d,G.b,kg);if(!list||G.i>0||L.b[G.b][0].ok)return '';if(!list.length)return `<div class="card wuc"><div class="gch"><span class="gci warm img"><img src="${WICO}" alt=""></span><span><b>Aufwärmen</b><small>Sätze werden automatisch berechnet</small></span></div>
      <div class="wue"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>Stell unten das <b>Arbeitsgewicht</b> ein – dann erscheinen deine Aufwärmsätze mit Scheiben pro Seite.</span></div></div>`;const dn=(L.wu&&L.wu[G.b])||[];
-   const nd=list.filter((_,j)=>dn[j]).length;return `<div class="card wuc"><div class="gch"><span class="gci warm img"><img src="${WICO}" alt=""></span><span><b>Aufwärmen</b><small>bis ${nf(kg,2)} kg Arbeitsgewicht</small></span><em class="wcnt">${nd}/${list.length}</em></div><div class="wbar"><i style="width:${list.length?nd/list.length*100:0}%"></i></div><div class="wul">${list.map((x,j)=>{const p2=plates(x.kg);return `<button type="button" class="wur ${dn[j]?'ok':''}" data-gwu="${j}" aria-pressed="${!!dn[j]}"><span class="num">${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</span><small>${p2.length?p2.map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small>${CHECK}</button>`}).join('')}</div></div>`})())}
+   const nd=list.filter((_,j)=>dn[j]).length;return `<div class="card wuc"><div class="gch"><span class="gci warm img"><img src="${WICO}" alt=""></span><span><b>Aufwärmen <i class="wuemp">Empfehlung</i></b><small>bis ${nf(kg,2)} kg Arbeitsgewicht · ${plates(kg).length?plates(kg).map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small></span><em class="wcnt">${nd}/${list.length}</em></div><div class="wbar"><i style="width:${list.length?nd/list.length*100:0}%"></i></div><div class="wul">${list.map((x,j)=>{const p2=plates(x.kg);return `<button type="button" class="wur ${dn[j]?'ok':''}" data-gwu="${j}" aria-pressed="${!!dn[j]}"><span class="num">${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</span><small>${p2.length?p2.map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small>${CHECK}</button>`}).join('')}</div></div>`})())}
   <button type="button" class="techbtn" data-ex="${bl.e}" style="--c:${GC[ex.g]}"><span class="tbi gimg"><img src="data:image/webp;base64,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" alt=""></span><span class="tbt"><b>Technik & Verlauf</b><small>Ausführung, Hinweise & deine bisherigen Sätze</small></span><svg class="tbc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button></div>
   ${!T.on?gymTimerHTML():''}
   <div class="gnav"><button type="button" class="btn" data-g="prev" ${G.b===0?'disabled':''}>← Vorherige</button>
@@ -4766,7 +4817,7 @@ function showSummary(w,d){const L=log(w,d);const sets=L.b.flat().filter(s=>s.ok)
  const f=$('#fx');f.className='fx pr sum';f.innerHTML=`<div class="fx-in"><p class="eyebrow">Training beendet · W${w+1} ${DAYS[d].tag}</p><b class="disp">${esc(P[w][d].f)}</b>
   <div class="prv"><b class="zahl" style="color:var(--ok)">${fmtHMS(L.dur)}</b></div>
   <div class="sumg"><span><small>Sätze</small><b>${sets.length}</b></span><span><small>Tonnage</small><b>${nf(ton/1000,2)} t</b></span><span><small>Pausen gesamt</small><b>${fmtHM(L.pauseMs||0)}</b></span>${(()=>{const a=dayAdh(w,d);return a.ev?`<span><small>Plan-Treue</small><b style="color:${a.hit/a.ev>=.8?'var(--ok)':'var(--warn)'}">${Math.round(a.hit/a.ev*100)} %</b></span>`:''})()}</div>
-  <button type="button" class="btn primary">Stark – weiter</button></div>`;f.hidden=false;sfx('pr');hap([20,60,30]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},9000)}
+  ${PWA?'<button type="button" class="btn sumbk" data-sumbk>☁︎ Jetzt in iCloud sichern</button><p class="note2" style="margin:6px 0 0;font-size:12px">Ein Tipp – dann verlierst du höchstens die nächste Einheit.</p>':''}<button type="button" class="btn primary">Stark – weiter</button></div>`;f.hidden=false;sfx('pr');hap([20,60,30]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},PWA?25000:9000)}
 function sessTick(){const r=runningSession();const chip=$('#sesschip');
  if(chip){if(!r)chip.hidden=true;else{chip.hidden=false;chip.querySelector('b').textContent=fmtHMS(sessEl(r.L));chip.classList.toggle('paused',!!r.L.pausedAt);chip.dataset.w=r.w;chip.dataset.d=r.d}}
  document.querySelectorAll('[data-sesst]').forEach(e=>{const [w,d]=e.dataset.sesst.split('-').map(Number);e.textContent=fmtHMS(sessEl(log(w,d)))});
