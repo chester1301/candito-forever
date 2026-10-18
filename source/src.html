@@ -1154,6 +1154,32 @@ html.boot #view.enter>*{animation:none!important}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ===== Vorgabe vs. Empfehlung ===== */
+.gnv2{display:inline-flex;align-items:center;gap:4px}
+.gnva{width:34px;height:34px;border-radius:11px;border:1px solid var(--line2);background:var(--raise);color:var(--ink);display:grid;place-items:center;padding:0}
+.gnva svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.gnva:disabled{opacity:.3}.gnva.fin{color:var(--ok);border-color:rgba(67,192,138,.4)}.gnva.fin.on{background:var(--ok);color:#08140e}
+.gdock .gdk-b{grid-template-columns:auto 1fr;align-items:stretch;column-gap:8px}.gdock .gdk-b .savest{grid-column:1/-1}
+.gtq{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:78px;border-radius:16px;border:1px solid rgba(67,192,138,.35);background:linear-gradient(180deg,rgba(67,192,138,.16),rgba(67,192,138,.05));color:#5fd6a0;padding:4px 0}
+.gtq.run{gap:3px;padding:6px 6px}.gtq.run b{font-size:19px}.gtq.run small{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em}.gtq.paused{color:#f0a066;border-color:rgba(240,160,102,.45)}.gtq.over{color:#ff8a93;border-color:rgba(232,72,79,.5);background:rgba(232,72,79,.12)}
+.gtqb{width:56px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}.gtqb i{display:block;height:100%;background:currentColor}
+.gtq svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.gtq b{font-family:var(--mono);font-size:16px;color:#e8fff3;line-height:1}.gtq small{font-size:10px;font-weight:700}
+/* kompaktes Gym-Layout: alles auf einer Seite */
+#gym .gmeta{flex-wrap:nowrap!important;gap:6px!important}
+#gym .gmeta .hype{padding:4px 8px 4px 5px!important;gap:6px!important;flex:none}
+#gym .gmeta .hype .htx small{display:none}#gym .gmeta .hype .htx b{font-size:13px}
+#gym .gmeta .hype .hic{width:26px!important;height:26px!important}
+#gym .gnv2 .chip{padding:5px 8px;font-size:12px;white-space:nowrap}
+#gym .gnva{width:30px;height:30px}
+#gym .gicons{gap:6px}#gym .gico{width:40px;height:40px}#gym .gico img{width:27px;height:27px}
+#gym .gex{gap:10px}#gym .gex h2{font-size:clamp(28px,8.5vw,40px)!important;margin-top:0;line-height:1.02}#gym .gex .rx{font-size:13.5px;line-height:1.3;margin:2px 0 0}
+#gym .gex .lico.lg{width:52px;height:52px}
+#gym .hytx{font-size:12px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#gym .ghero{padding:10px 14px!important}#gym .gz-top{margin-bottom:0;display:flex!important;flex-wrap:nowrap!important;align-items:center;gap:10px}#gym .gz-top .gdots{margin:0!important}#gym .gz-top .gdots button{width:30px;height:30px}#gym .gz-k>.mut{font-size:12px!important;line-height:1.3}
+#gym .gz-n .zahl{font-size:clamp(42px,12vw,56px)!important}#gym .gz-n .zahl.nokg{font-size:32px!important}#gym .ghero{grid-template-columns:minmax(0,1fr) 30%!important}#gym .ghero .bb3d.sm{height:118px!important}#gym .ghero .gz-r b{font-size:20px}
+#gym .empf{display:flex!important;flex-wrap:wrap;align-items:baseline;column-gap:8px;padding:4px 10px!important;margin:3px 0!important;width:auto!important;max-width:100%}
+#gym .empf b{font-size:17px!important}#gym .empf small{flex-basis:100%;font-size:10.5px!important;margin:0!important}#gym .empf .et{font-size:10px}
+#gym .gz-pl{margin:4px 0 0}#gym .vtag{margin:2px 0}
+#gym .bnote summary{font-size:12.5px}
 .gicons{margin-left:auto;display:flex;gap:8px;align-items:center}
 .gico{position:relative;width:44px;height:44px;border-radius:14px;border:1px solid var(--line2);background:var(--raise);display:grid;place-items:center;padding:0}
 .gico img{width:30px;height:30px;border-radius:9px}
@@ -3635,6 +3661,9 @@ function labHTML(A){let h=labHTMLBase(A);
  return h.replace(/class="lt"/g,'class="lt glowt"')}
 
 /* ---------- Gym: Timer klein bis zum Abhaken ---------- */
+function gymTimerQ(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const def=restFor(bl.e);
+ if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><span class="gtqb"><i data-tlin style="width:${over?100:(1-f)*100}%"></i></span></button>`}
+ return `<button type="button" class="gtq" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/></svg><b>${mmss(def)}</b><small>▶ Pause</small></button>`}
 function gymTimerMini(){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;
  return `<div class="gtmini ${over?'over':''} ${T.paused?'paused':''}"><div class="gtm-t" data-t="gmax" role="button" aria-label="Timer groß öffnen"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b></div>
  <div class="gtm-c"><button type="button" class="rbtn" data-t="add" data-v="-15">−15</button><button type="button" class="rbtn" data-t="pause">${T.paused?'Weiter':'Pause'}</button><button type="button" class="rbtn" data-t="add" data-v="15">+15</button><button type="button" class="rbtn go" data-t="skip">${over?'Los':'Ende'}</button></div>
@@ -3713,13 +3742,13 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
    <span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span>${!L.start&&!L.done?`<button type="button" class="sessbtn start" data-sstart aria-label="Training starten"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><b>Start</b></button>`:L.done?`<span class="sessbtn done"><b>${fmtHMS(sessEl(L))}</b></span>`:`<button type="button" class="sessbtn ${L.pausedAt?'paused':''}" data-sp aria-label="${L.pausedAt?'Trainings-Timer fortsetzen':'Trainings-Timer pausieren'}"><i></i><b data-sesst="${w}-${d}">${fmtHMS(sessEl(L))}</b><svg viewBox="0 0 24 24">${L.pausedAt?'<path d="M8 5v14l11-7z"/>':'<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>'}</svg></button>`}</div>
   <div class="strip">${strip}</div>
   <div class="gsw">
-  <div class="gmeta">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}<span class="chip plain">Übung ${G.b+1}/${day.b.length}${bl.opt?' · optional':''}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
+  <div class="gmeta">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}<span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
    return `<span class="gicons">${wl?`<button type="button" class="gico wu ${wl.length&&nd>=wl.length?'done':''}" data-gwuopen aria-label="Aufwärmsätze"><img src="${WICO}" alt="">${wl.length?`<em>${nd}/${wl.length}</em>`:''}</button>`:''}<button type="button" class="gico tv" data-ex="${bl.e}" aria-label="Technik & Verlauf"><img src="${TVICO}" alt=""></button></span>`})()}</div>
   <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h?`<p class="hytx ${bl.h}">${HYPETXT[bl.h]}</p>`:''}</div></div>
   <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''}" aria-label="Satz ${i+1}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
     ${(()=>{const em=sg.kg!=null&&sg.t!=='v';return `<div class="gz-n"><b class="zahl ${!em&&sg.kg!=null?'':'nokg'}">${!em&&sg.kg!=null?nf(sg.kg,2):(bl.rpe!=null?'RPE '+nf(bl.rpe):'frei')}${!em&&sg.kg!=null?'<small>kg</small>':''}</b><span class="gz-r"><b>× ${esc(sg.rdisp)}</b>${!em&&sg.kg!=null&&bl.rpe!=null?`<small>${bl.rpeEst?'≈ ':''}RPE ${nf(bl.rpe)}</small>`:em||sg.kg==null?'<small>Last frei</small>':''}</span></div>
     ${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}
-    ${em?`<div class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b><small>nur Orientierung – der Plan gibt hier keine Last vor</small></div>`:''}
+    ${em?`<div class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b><small>${typeof PWA!=='undefined'?'nur Orientierung – Plan gibt keine Last vor':'nur Orientierung – der Plan gibt hier keine Last vor'}</small></div>`:''}
     <span class="mut" style="font-size:12.5px">${em?'Berechnung: ':''}${esc(sg.why)}</span>`})()}${lt?`<span class="mut" style="font-size:12.5px">Zuletzt W${lt.W+1} ${DAYS[lt.D].tag}: ${nf(lt.kg,2)} kg × ${nf(lt.r)}${lt.rpe!=null?' @'+nf(lt.rpe):''}</span>`:''}</div>
    ${eqType(bl.e)==='bb'?`<div class="bb3d sm" data-kg="${kg||0}" role="img" aria-label="Langhantel mit Wettkampfscheiben"></div>
    ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join('')}</p>`:''}`:eqType(bl.e)==='db'?`<div class="bb3d sm db" data-kg="${kg||0}" role="img" aria-label="Kurzhanteln"><span class="dbkg">${kg?nf(kg,2):'–'} kg <small>je Hand</small></span></div>`:`<div class="geq" role="img" aria-label="${EQN[eqType(bl.e)]}">${eqSVG(eqType(bl.e),kg)}<span class="geqn">${EQN[eqType(bl.e)]}</span></div>`}</div>
@@ -3728,10 +3757,8 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   ${calibHint(ex.g,bl.rpe!=null&&!bl.rpeEst?bl.rpe:null)}
   ${s.ok?adhLine(setAdh(w,d,G.b,G.i)):''}
 
-  <div class="gnav"><button type="button" class="btn" data-g="prev" ${G.b===0?'disabled':''}>← Vorherige</button>
-   ${G.b<day.b.length-1?`<button type="button" class="btn" data-g="next">Nächste →</button>`:`<button type="button" class="btn ${allDone?'primary':''}" data-g="finish">Einheit abschließen</button>`}</div>
   </div>
-  <div class="gdock"><div class="gdock-in">${T.on?gymTimerMini():gymTimerHTML()}
+  <div class="gdock"><div class="gdock-in">
   <div class="stp2"><div class="card stp"><button type="button" data-step="kg" data-v="-${S.meta.round||2.5}" aria-label="Gewicht verringern">−</button>
     <div class="mid"><small ${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'class="emp"':''}>${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'Empfehlung':'kg'}</small><input id="g-kg" data-gf="kg" inputmode="decimal" value="${kg!=null?nf(kg,2):''}" placeholder="–" aria-label="Gewicht"></div>
     <button type="button" data-step="kg" data-v="${S.meta.round||2.5}" aria-label="Gewicht erhöhen">+</button></div>
@@ -3740,7 +3767,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
     <button type="button" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></div>
   <div class="grpe"><div class="grpe-h"><small class="eyebrow">RPE${bl.rpe!=null?' · Soll '+(bl.rpeEst?'≈ ':'')+nf(bl.rpe):''}</small><span class="rpedesc">${rpe!=null?`<b>RPE ${nf(rpe)}</b> · ${RPED[rpe]||''}`:bl.rpe!=null?`${RPED[bl.rpe]||''}`:'Wie schwer war der Satz?'}</span></div>
     <div class="rpechips rpe1">${RPES.map(v=>`<button type="button" data-rpe="${v}" class="${bl.rpe===v?'soll':''}" aria-pressed="${rpe===v}">${nf(v)}</button>`).join('')}</div></div>
-  <div class="gdk-b">${(()=>{const show=!s.ok&&kg!=null&&r!=null;const noR=show&&rpe==null&&bl.rpe!=null;return `<button type="button" class="bigbtn ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log">${s.ok?'Erledigt ✓ · weiter':show?`<span>Satz abhaken</span><small>${nf(kg,2)} kg × ${nf(r)}${rpe!=null?' @ RPE '+nf(rpe):bl.rpe!=null?' · RPE oben antippen':''}</small>`:'Satz abhaken'}</button>`})()}${saveHTML(key(w,d))}</div>
+  <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const noR=show&&rpe==null&&bl.rpe!=null;return `<button type="button" class="bigbtn ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log">${s.ok?'Erledigt ✓ · weiter':show?`<span>Satz abhaken</span><small>${nf(kg,2)} kg × ${nf(r)}${rpe!=null?' @ RPE '+nf(rpe):bl.rpe!=null?' · RPE oben antippen':''}</small>`:'Satz abhaken'}</button>`})()}${saveHTML(key(w,d))}</div>
   </div></div>
  </div>${gymRestHTML()}`;if(G.slide){const dir=G.slide;G.slide=0;slideIn(dir)}else bbMount();gymPost()}
 
