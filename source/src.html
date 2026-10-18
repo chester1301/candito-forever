@@ -1182,6 +1182,12 @@ html.boot #view.enter>*{animation:none!important}
 .gp-here{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
 .gp-close{width:100%;margin-top:6px;height:48px;border-radius:14px;border:0;background:var(--gold);color:#111;font-weight:800;font-size:15px}
 .fx .sumbk{display:block;width:100%;margin-top:14px;background:#e8be5a;color:#111;border:0;font-weight:800}
+.evid{display:inline-flex;align-items:center;gap:6px;flex:none;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid currentColor;white-space:nowrap}
+.evid i{width:7px;height:7px;border-radius:50%;background:currentColor}.evid.lo{color:#8a8f9b}.evid.mid{color:#f0a066}.evid.hi{color:var(--ok)}
+.bo-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}.bo-r{border-left:3px solid var(--c);padding:6px 0 6px 10px;display:flex;flex-direction:column;gap:2px}.bo-r b{font-size:13.5px}.bo-r small{font-size:12px;color:var(--ink2);line-height:1.4}
+.bo-g{display:grid;gap:10px;margin-top:4px}.bo-c{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:14px;padding:11px 12px;background:var(--raise)}
+.bo-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.bo-h b{font-size:15px}
+.bo-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}.bo-k span{display:flex;flex-direction:column;gap:2px}.bo-k small{font-size:11px;color:var(--ink2)}.bo-k b{font-family:var(--mono);font-size:16px}
 .wuemp{font-style:normal;display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#f0a066;border:1px solid rgba(240,160,102,.45);background:rgba(240,160,102,.1);vertical-align:2px}
 .vtag{display:inline-flex;align-self:flex-start;justify-self:start;width:max-content;margin:2px 0 4px;padding:3px 8px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);background:rgba(67,192,138,.12);border:1px solid rgba(67,192,138,.4)}
 .empf{position:relative;z-index:2;display:grid;grid-template-columns:1fr;row-gap:1px;margin:4px 0 6px;padding:8px 12px;border-radius:14px;border:1.5px dashed #7fa8ff;background:rgba(18,24,44,.92);color:#b9ceff;width:min(210px,100%)}
@@ -1938,6 +1944,78 @@ async function readShots(files){const {w,d}=S.ui,k=key(w,d);if(S.ui.wEdit!==k||!
   S.ui.wDraft=dr;if(n)S.ui.wSrc='screenshot';S.ui.wMsg=n?`${n} Werte erkannt – bitte prüfen und mit „Werte übernehmen“ speichern.`:'Auf dem Bild wurden keine WHOOP-Werte erkannt. Am besten die Übersicht mit Recovery, HRV und Schlaf als Screenshot nehmen.'}
  else{const c=err&&err.code;S.ui.wMsg=(ERRT[c]||'Das Bild konnte nicht gelesen werden.')+(c?` (Code: ${c})`:'')+' Du kannst die Werte unten auch selbst eintragen.'}
  S.ui.wBusy=false;render();setTimeout(()=>{const el=document.getElementById('whoop');if(el)scrollTo({top:el.getBoundingClientRect().top+scrollY-170,behavior:'smooth'})},60)}
+
+/* ===================== Analyse-Ausbau: Belastbarkeit · Top & Backoff · fairer Kraft-Trend · Testwochen ===================== */
+// Belastbarkeit einer Kennzahl: n = Anzahl Datenpunkte, kind = 'sets' | 'ses'
+function evid(n,kind){const L=kind==='ses'?[3,6]:[5,15];const u=kind==='ses'?(n===1?'Einheit':'Einheiten'):(n===1?'Satz':'Sätze');
+ const c=n<L[0]?'lo':n<L[1]?'mid':'hi';const t=n<L[0]?'zu wenig Daten':n<L[1]?'vorläufig':'belastbar';
+ return `<span class="evid ${c}" title="Belastbarkeit: ${t}"><i></i>${n} ${u} · ${t}</span>`}
+// Paare Top-Satz → Backoff im aktuellen Programm
+function backoffPairs(){const out=[];
+ for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const day=P[w][d];const L=log(w,d);if(!L||!day.b.length)continue;
+  day.b.forEach((bl,b)=>{let t=null;
+   if(bl.ref==='TOP')t=b-(bl.back||1);
+   else if(bl.src&&bl.src[0]===w&&bl.src[1]===d)t=bl.src[2];
+   else if(b>0&&day.b[b-1].e===bl.e&&EX[bl.e]&&EX[bl.e].m&&!(day.b[b-1].ref==='TOP'||(day.b[b-1].src&&day.b[b-1].src[0]===w)))t=b-1;
+   if(!(EX[bl.e]&&EX[bl.e].m&&GN[EX[bl.e].g]))return;
+   if(t==null||t<0||!day.b[t]||day.b[t].e!==bl.e&&!(EX[day.b[t].e]&&EX[bl.e]&&EX[day.b[t].e].g===EX[bl.e].g))return;
+   const ts=(L.b[t]||[]).find(z=>z&&z.ok&&pnum(z.kg)&&pnum(z.r));if(!ts)return;
+   const bs=(L.b[b]||[]).filter(z=>z&&z.ok&&pnum(z.kg)&&pnum(z.r));if(!bs.length)return;
+   const tkg=pnum(ts.kg),tr=pnum(ts.r),trp=pnum(ts.rpe),te=e1rm(tkg,tr,trp);
+   let soll=null;if(bl.ref==='TOP')soll=bl.minus?(tkg-bl.minus)/tkg*100:bl.plus?(tkg+bl.plus)/tkg*100:(bl.pct??100);else if(bl.src)soll=bl.pct??100;else{const g0=sugg(w,d,b,0);if(g0&&g0.kg&&g0.t==='v'){const gt=sugg(w,d,t,0);if(gt&&gt.kg&&gt.t==='v')soll=g0.kg/gt.kg*100}}
+   const ist=bs.reduce((a,z)=>a+pnum(z.kg),0)/bs.length/tkg*100;
+   const rp=bs.map(z=>pnum(z.rpe)).filter(v=>v!=null);const be=bs.map(z=>e1rm(pnum(z.kg),pnum(z.r),pnum(z.rpe))).filter(Boolean);
+   const R=repsFor(w,d,b);const repSoll=R&&R.r!=null&&!R.amrap?R.r:null;const repHit=repSoll?bs.filter(z=>pnum(z.r)>=repSoll).length:null;
+   out.push({w,d,b,t,e:bl.e,g:EX[bl.e].g,tkg,tr,trp,te,n:bs.length,soll,ist,dPct:soll!=null?ist-soll:null,
+    rpeSoll:bl.rpe??null,rpeAvg:rp.length?rp.reduce((a,c)=>a+c,0)/rp.length:null,drift:rp.length>1?rp[rp.length-1]-rp[0]:null,
+    drop:te&&be.length?(be.reduce((a,c)=>a+c,0)/be.length/te-1)*100:null,repSoll,repHit})})}
+ return out}
+function backoffHTML(){const pr=backoffPairs();const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben',acc:'Weitere'};
+ const head=`<div class="ct"><div><p class="eyebrow">${esc(PROGS[PROG].name)}</p><h2 class="h2">Top-Satz & Backoffs</h2></div>${evid(pr.reduce((a,x)=>a+x.n,0),'sets')}</div>`;
+ if(!pr.length)return `<section class="card">${head}<div class="leer">Sobald du einen Top-Satz und die zugehörigen Backoff-Sätze abhakst, siehst du hier, ob die Backoffs Prozent, RPE und Wiederholungen getroffen haben und wie stark deine Leistung über die Sätze abfällt.</div></section>`;
+ const mean=a=>{const x=a.filter(v=>v!=null);return x.length?x.reduce((p,q)=>p+q,0)/x.length:null};const sg=(v,d=1)=>{if(v==null)return '–';const r=Math.round(v*10**d)/10**d;return (r>0?'+':r<0?'−':'±')+nf(Math.abs(r),d)};
+ const gs=['sq','bp','dl','acc'].filter(g=>pr.some(x=>(GN[x.g]?x.g:'acc')===g));
+ const card=g=>{const L=pr.filter(x=>(GN[x.g]?x.g:'acc')===g);const n=L.reduce((a,x)=>a+x.n,0);const dp=mean(L.map(x=>x.dPct)),dr=mean(L.map(x=>x.drop)),df=mean(L.map(x=>x.drift)),rv=mean(L.map(x=>x.rpeAvg!=null&&x.rpeSoll!=null?x.rpeAvg-x.rpeSoll:null));
+  const rh=L.filter(x=>x.repSoll);const rq=rh.length?rh.reduce((a,x)=>a+x.repHit,0)/rh.reduce((a,x)=>a+x.n,0)*100:null;
+  return `<div class="bo-c" style="--c:${GC[g]||'var(--acc)'}"><div class="bo-h"><b>${N[g]}</b>${evid(n,'sets')}</div>
+   <div class="bo-k"><span><small>Last Ist vs. Soll</small><b>${dp==null?'–':sg(dp)+' %'}</b></span><span><small>Leistungsabfall</small><b>${dr==null?'–':sg(dr)+' %'}</b></span><span><small>RPE Ist − Soll</small><b>${sg(rv,2)}</b></span><span><small>RPE-Anstieg</small><b>${sg(df,2)}</b></span><span><small>Wdh. erreicht</small><b>${rq==null?'–':Math.round(rq)+' %'}</b></span></div></div>`};
+ const rows=pr.slice().reverse().slice(0,30).map(x=>`<li class="bo-r" style="--c:${GC[x.g]}"><b>W${x.w+1} ${DAYS[x.d].tag} · ${esc(EX[x.e].n)}</b><small>Top ${nf(x.tkg,2)}×${nf(x.tr)}${x.trp!=null?' @'+nf(x.trp):''} · Backoff ${x.soll!=null?'Soll '+nf(x.soll,1)+' % · ':''}<span style="color:${x.dPct==null?'inherit':Math.abs(x.dPct)<=1.5?'var(--ok)':'var(--warn)'}">Ist ${nf(x.ist,1)} %</span>${x.drop!=null?' · Abfall '+sg(x.drop)+' %':''}${x.rpeAvg!=null?' · RPE '+nf(x.rpeAvg,1)+(x.rpeSoll!=null?'/'+nf(x.rpeSoll):''):''}</small></li>`).join('');
+ return `<section class="card">${head}<div class="bo-g">${gs.map(card).join('')}</div>
+  <p class="sec">Einheiten</p><ul class="bo-l">${rows}</ul>
+  <p class="note2"><b>Last Ist vs. Soll:</b> Backoff-Gewicht in % vom Top-Satz, verglichen mit der Vorgabe. <b>Leistungsabfall:</b> e1RM der Backoffs gegenüber dem Top-Satz – stark negative Werte zeigen hohe Ermüdung. <b>RPE-Anstieg:</b> letzter minus erster Backoff-Satz. Reine Auswertung, keine Änderung an Vorgaben.</p></section>`}
+// Fairer Kraft-Trend: nur Wettkampf-Lifts, abgehakt, 1–6 Wdh., RPE ≥ 8 – über alle Programme
+function fairTrend(){const comp={sq:'csq',bp:'pbb',dl:'cdl'};const pts={sq:[],bp:[],dl:[]};
+ ORD().concat(Object.keys(PROGS).filter(id=>isSQ(id))).forEach(pid=>{if(!PROGS[pid])return;withProg(pid,()=>{const A=allSets();const by={};
+  A.forEach(x=>{const g=Object.keys(comp).find(k=>comp[k]===x.e);if(!g||!x.ok||!x.e1||x.rpe==null||x.rpe<8||x.r<1||x.r>6)return;const k=g+'|'+x.w+'|'+x.d;if(!by[k]||x.e1>by[k].e1)by[k]={g,e1:x.e1,kg:x.kg,r:x.r,rpe:x.rpe,w:x.w,d:x.d}});
+  Object.values(by).forEach(o=>{const L=log(o.w,o.d);const dt=L&&L.date?new Date(L.date):dayDate(o.w,o.d);pts[o.g].push(Object.assign(o,{dt,pid}))})})});
+ Object.values(pts).forEach(a=>a.sort((x,y)=>(x.dt||0)-(y.dt||0)));return pts}
+function fairTrendHTML(){const pts=fairTrend();const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};const tot=Object.values(pts).reduce((a,v)=>a+v.length,0);
+ const head=`<div class="ct"><div><p class="eyebrow">Alle Programme</p><h2 class="h2">Vergleichbarer Kraft-Trend</h2></div>${evid(tot,'ses')}</div>`;
+ if(!tot)return `<section class="card">${head}<div class="leer">Hier zählen nur vergleichbare Sätze: Comp Squat, Comp Bench und Comp Deadlift mit 1–6 Wiederholungen und RPE ab 8. Sobald du solche Sätze abhakst, erscheint dein fairer e1RM-Verlauf.</div></section>`;
+ const W=420,H=200,pl=40,pr2=12,pt=14,pb=24;const all=Object.values(pts).flat();const t0=Math.min(...all.map(x=>+x.dt||0)),t1=Math.max(...all.map(x=>+x.dt||0));
+ const vals=all.map(x=>x.e1);let lo=Math.min(...vals),hi=Math.max(...vals);const pad=Math.max(5,(hi-lo)*.12);lo-=pad;hi+=pad;
+ const X=t=>pl+(t1>t0?((+t-t0)/(t1-t0)):.5)*(W-pl-pr2),Y=v=>pt+(1-(v-lo)/(hi-lo))*(H-pt-pb);let g='';
+ for(let k=0;k<=3;k++){const v=lo+(hi-lo)*k/3;g+=`<line x1="${pl}" x2="${W-pr2}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pl-6}" y="${Y(v)+4}" text-anchor="end">${Math.round(v)}</text>`}
+ ['sq','bp','dl'].forEach(k=>{const a=pts[k];if(!a.length)return;g+=`<polyline fill="none" stroke="${GC[k]}" stroke-width="2.4" stroke-linejoin="round" points="${a.map(x=>X(x.dt).toFixed(1)+','+Y(x.e1).toFixed(1)).join(' ')}"/>`+a.map(x=>`<circle cx="${X(x.dt).toFixed(1)}" cy="${Y(x.e1).toFixed(1)}" r="3.2" fill="${GC[k]}"/>`).join('')});
+ if(t1>t0)g+=`<text x="${pl}" y="${H-6}">${fmtD(new Date(t0))}</text><text x="${W-pr2}" y="${H-6}" text-anchor="end">${fmtD(new Date(t1))}</text>`;
+ const row=k=>{const a=pts[k];if(!a.length)return `<tr><td><span class="dot" style="--c:${GC[k]}"></span>${N[k]}<div style="margin-top:4px">${evid(0,'ses')}</div></td><td class="r">–</td><td class="r">–</td></tr>`;
+  const f=a[0],l=a[a.length-1];const dd=l.e1-f.e1;
+  return `<tr><td><span class="dot" style="--c:${GC[k]}"></span>${N[k]}<div style="margin-top:4px">${evid(a.length,'ses')}</div></td><td class="r">${nf(f.e1,0)}</td><td class="r">${nf(l.e1,0)}${a.length>1?`<small style="display:block;color:${dd>=0?'var(--ok)':'var(--hi)'}">${dd>=0?'+':'−'}${nf(Math.abs(dd),1)} kg</small>`:''}<small class="mut" style="display:block">${nf(l.kg,2)}×${nf(l.r)} @${nf(l.rpe)}</small></td></tr>`};
+ return `<section class="card">${head}<div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${N[k]}</span>`).join('')}</div>
+  <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Vergleichbarer e1RM-Verlauf">${g}</svg>
+  <div class="tw"><table class="tab"><thead><tr><th>Lift</th><th class="r">Erster</th><th class="r">Letzter</th></tr></thead><tbody>${['sq','bp','dl'].map(row).join('')}</tbody></table></div>
+  <p class="note2">Nur echte Wettkampf-Lifts (Comp Squat, Comp Bench, Comp Deadlift), abgehakt, 1–6 Wiederholungen, RPE ab 8 – pro Einheit der beste Satz. Varianten, hohe Wiederholungen und leichte Sätze fließen nicht ein, weil das e1RM dort zu ungenau ist.</p></section>`}
+// Alle Testwochen nebeneinander
+function testsAllHTML(){const N={sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben'};
+ const ids=ORD().concat(Object.keys(PROGS).filter(id=>isSQ(id)&&PROGS[id].tl));
+ const rows=ids.map(id=>{const r=withProg(id,()=>{const o={};['sq','bp','dl'].forEach(g=>{const ti=AMI(g);let v=null,raw=null;if(ti>=0){const st=setOf(TWg(g),TDg(g),ti,0);const kg=pnum(st.kg),rr=pnum(st.r);if(kg&&rr){v=e1rm(kg,rr,pnum(st.rpe)??(rr===1?10:9));raw=`${nf(kg,2)}×${nf(rr)}`}}o[g]={v,raw}});
+   const L=log(TW(),TD());o.dt=L&&L.date?new Date(L.date):dayDate(TW(),TD());return o});r.id=id;r.tot=['sq','bp','dl'].every(g=>r[g].v)?r.sq.v+r.bp.v+r.dl.v:null;return r}).filter(r=>['sq','bp','dl'].some(g=>r[g].v));
+ const head=`<div class="ct"><div><p class="eyebrow">Alle Phasen</p><h2 class="h2">Testwochen im Vergleich</h2></div>${evid(rows.length,'ses')}</div>`;
+ if(!rows.length)return `<section class="card">${head}<div class="leer">Nach deiner ersten abgeschlossenen Testwoche stehen hier alle Testergebnisse nebeneinander – Kniebeuge, Bank, Kreuzheben und Total, mit dem Fortschritt von Test zu Test.</div></section>`;
+ const dl=(a,b)=>a&&b?`<small style="display:block;color:${b-a>=0?'var(--ok)':'var(--hi)'}">${b-a>=0?'+':'−'}${nf(Math.abs(b-a),1)}</small>`:'';
+ return `<section class="card">${head}<div class="tw"><table class="tab"><thead><tr><th>Phase</th>${['sq','bp','dl'].map(g=>`<th class="r" style="color:${GC[g]}">${{sq:'SQ',bp:'BP',dl:'DL'}[g]}</th>`).join('')}<th class="r">Total</th></tr></thead><tbody>
+  ${rows.map((r,i)=>{const p=rows[i-1];return `<tr><td>${esc(PROGS[r.id].short)}<small class="mut" style="display:block">${r.dt?r.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):''}</small></td>${['sq','bp','dl'].map(g=>`<td class="r">${r[g].v?nf(r[g].v,0)+dl(p&&p[g].v,r[g].v):'–'}</td>`).join('')}<td class="r"><b>${r.tot?nf(r.tot,0):'–'}</b>${dl(p&&p.tot,r.tot)}</td></tr>`}).join('')}
+ </tbody></table></div><p class="note2">Werte sind e1RM aus dem jeweiligen Testsatz (Gewicht × Wdh. und RPE; ohne RPE-Angabe: Single = RPE 10, sonst RPE 9). Δ vergleicht mit dem vorherigen Test. Der verlässlichste Fortschrittsmaßstab im Candito-System.</p></section>`}
 function whoopSessions(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{let A=null,best=null;
   for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||!L.whoop||!P[w][d].b.length)continue;
    if(!A){A=allSets();best={};A.forEach(x=>{if(EX[x.e]&&EX[x.e].m&&x.e1&&(best[x.e]==null||x.e1>best[x.e]))best[x.e]=x.e1})}
@@ -1948,7 +2026,7 @@ function whoopSessions(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(p
    out.push({pid,w,d,v:L.whoop,dt,f:P[w][d].f,col:DAYCOL[d],dev:dv,devM:dv.length?dv.reduce((a,b)=>a+b,0)/dv.length:null,perf:pf.length?Math.max(...pf):null,adh:ad.ev?ad.hit/ad.ev*100:null,z:WZ(L.whoop.rec)})}}));
  return out.sort((a,b)=>(a.dt||0)-(b.dt||0))}
 function whoopProgHTML(A){const ses=whoopSessions();
- const head=`<div class="ct"><div><p class="eyebrow">WHOOP · alle Programme</p><h2 class="h2">Erholung & Leistung</h2></div>${ses.length?`<span class="chip plain">${ses.length} Einheiten</span>`:''}</div>`;
+ const head=`<div class="ct"><div><p class="eyebrow">WHOOP · alle Programme</p><h2 class="h2">Erholung & Leistung</h2></div>${ses.length?evid(ses.length,'ses'):''}</div>`;
  if(!ses.length)return `<section class="card">${head}<div class="leer">Sobald du WHOOP-Werte zu deinen Einheiten einträgst (Tagesform auf „Heute“), siehst du hier, wie Recovery, Schlaf und HRV mit deinem RPE, deiner Plan-Treue und deiner Leistung zusammenhängen.</div></section>`;
  const mean=a=>{const x=a.filter(v=>v!=null);return x.length?x.reduce((p,q)=>p+q,0)/x.length:null};
  const avg=f=>mean(ses.map(s=>s.v[f]));
@@ -3025,7 +3103,7 @@ function progData(){const A=allSets();
  const ttl=k=>`W${k}`;
  const sec={
   year:()=>yearHTML(),
-  kraft:()=>`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
+  kraft:()=>fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
    <div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${names[k]}</span>`).join('')}</div>
    ${lineChart(series,[...Array(NW()).keys()].map(w=>'W'+(w+1)),{mark:(nextSession()||{w:NW()-1}).w,label:'e1RM-Verlauf'})||'<div class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</div>'}</section>`:'<section class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</section>'}`,
   treue:()=>adhHTML()+reportCardHTML(),
@@ -3040,10 +3118,11 @@ function progData(){const A=allSets();
    ${barChart(tw,['sq','bp','dl','acc'])}</section>`:'<section class="leer">Noch keine Daten. Trag im Training-Tab Gewicht, Wiederholungen und RPE ein.</section>'}`,
   rpe:()=>`<section class="kpis"><div><span>RPE Ist − Soll</span>${dev==null?emp('RPE eintragen'):`<b class="zahl">${(dev>0?'+':'')+nf(dev,2)}</b>`}</div><div><span>Sätze mit RPE</span><b class="zahl">${rpeD.length}</b></div></section>${calibHTML()}`,
   whoop:()=>whoopProgHTML(A),
+  backoff:()=>backoffHTML(),
   punkte:()=>pointsHTML(A),
   rekorde:()=>recordsHTML(A),
   zyklen:()=>cyclesHTML()+nextCycleHTML(A),
-  test:()=>`<section class="card"><div class="ct"><h2 class="h2">${PROG==='intro'?'W4 · AMRAP-Test':'Testwoche'}</h2></div><div class="tw"><table class="tab">
+  test:()=>testsAllHTML()+`<section class="card"><div class="ct"><h2 class="h2">${PROG==='intro'?'W4 · AMRAP-Test':'Testwoche'}</h2></div><div class="tw"><table class="tab">
    <thead><tr><th>Lift</th><th class="r">${REFLBL()}</th><th class="r">Test</th><th class="r">e1RM</th><th class="r">Δ</th></tr></thead><tbody>
    ${amrap.map(a=>`<tr><td><span class="dot" style="--c:${GC[EX[a.bl.e].g]}"></span>${EX[a.bl.e].n}</td><td class="r">${a.ref?nf(a.ref,2):'–'}</td>
     <td class="r">${a.kg?nf(a.kg,2)+' × '+nf(a.r):'–'}</td><td class="r">${a.e1?nf(a.e1,0):'–'}</td>
@@ -3056,9 +3135,9 @@ function progData(){const A=allSets();
    </tbody></table></div>`:'<div class="leer">Abgeschlossene Einheiten erscheinen hier mit Datum, Dauer und Tonnage.</div>'}</section>`};
  return {A,sessions,tonnage,dev,rpeD,doneSets,plannedSets,best,total,series,tw,prs,amrap,names,sec};}
 
-const PDT={year:['Jahresplan','Phasen bis 31.12.2027'],kraft:['Kraft','e1RM & Verlauf'],treue:['Plan-Treue','Vorgaben & Umfang'],volumen:['Volumen','Tonnage & Sätze'],rpe:['RPE-Kalibrierung','Gefühl vs. Plan'],whoop:['Erholung','WHOOP & Leistung'],punkte:['Punkte','IPF GL & DOTS'],rekorde:['Rekorde','Bestwerte je Übung'],zyklen:['Zyklen','Phasen-Vergleich'],test:['Testwoche','Test & Referenz'],verlauf:['Verlauf','Abgeschlossene Einheiten']};
-const PDI={year:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',kraft:'<path d="M3 17l5-5 4 3 7-8"/><path d="M15 7h4v4"/>',treue:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',volumen:'<path d="M5 20V10M10 20V5M15 20v-7M20 20v-4"/>',rpe:'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/>',whoop:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',punkte:'<path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/>',rekorde:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/>',zyklen:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',test:'<path d="M9 4h6M10 4v5L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-10V4"/>',verlauf:'<path d="M4 6h16M4 12h16M4 18h10"/>'};
-const PDC={year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#9aa0a8'};
+const PDT={year:['Jahresplan','Phasen bis 31.12.2027'],kraft:['Kraft','e1RM & Verlauf'],treue:['Plan-Treue','Vorgaben & Umfang'],volumen:['Volumen','Tonnage & Sätze'],rpe:['RPE-Kalibrierung','Gefühl vs. Plan'],whoop:['Erholung','WHOOP & Leistung'],backoff:['Top & Backoff','Backoff-Qualität & Ermüdung'],punkte:['Punkte','IPF GL & DOTS'],rekorde:['Rekorde','Bestwerte je Übung'],zyklen:['Zyklen','Phasen-Vergleich'],test:['Testwoche','Test & Referenz'],verlauf:['Verlauf','Abgeschlossene Einheiten']};
+const PDI={year:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',kraft:'<path d="M3 17l5-5 4 3 7-8"/><path d="M15 7h4v4"/>',treue:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',volumen:'<path d="M5 20V10M10 20V5M15 20v-7M20 20v-4"/>',rpe:'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/>',whoop:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',backoff:'<path d="M4 6h10M4 12h7M4 18h4"/><path d="M17 5v14M14 16l3 3 3-3"/>',punkte:'<path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/>',rekorde:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/>',zyklen:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',test:'<path d="M9 4h6M10 4v5L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-10V4"/>',verlauf:'<path d="M4 6h16M4 12h16M4 18h10"/>'};
+const PDC={year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',backoff:'#ff7a59',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#9aa0a8'};
 function spark(v,c,W=120,H=34){const x=v.map((y,i)=>[i,y]).filter(p=>p[1]!=null);if(x.length<2)return `<svg class="tsp" viewBox="0 0 ${W} ${H}"><line x1="0" x2="${W}" y1="${H-4}" y2="${H-4}" stroke="rgba(255,255,255,.12)" stroke-dasharray="3 4"/></svg>`;
  const lo=Math.min(...x.map(p=>p[1])),hi=Math.max(...x.map(p=>p[1])),n=v.length-1||1;const pt=x.map(([i,y])=>[(i/n)*(W-4)+2,H-4-((y-lo)/((hi-lo)||1))*(H-10)]);
  const d=pt.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');return `<svg class="tsp" viewBox="0 0 ${W} ${H}"><path d="${d} L${pt[pt.length-1][0]} ${H} L${pt[0][0]} ${H}Z" fill="${c}" opacity=".14"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pt[pt.length-1][0]}" cy="${pt[pt.length-1][1]}" r="3" fill="${c}"/></svg>`}
@@ -3089,6 +3168,9 @@ function renderProg(){const D=progData(),{A}=D;
  const ws=[];for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(L&&L.whoop&&L.whoop.rec!=null)ws.push(L.whoop)}
  const ar=ws.length?ws.reduce((a,x)=>a+x.rec,0)/ws.length:null,hrv=ws.filter(x=>x.hrv!=null);
  const wh=T('whoop',ar!=null?nf(ar,0):'–',ar!=null?'% Ø Recovery':'',ws.length?`${ws.length} Einheit${ws.length===1?'':'en'}${hrv.length?' · Ø HRV '+nf(hrv.reduce((a,x)=>a+x.hrv,0)/hrv.length,0)+' ms':''}`:'WHOOP-Werte zu Einheiten eintragen',spark(ws.map(x=>x.rec),PDC.whoop));
+ // Top & Backoff
+ const bp2=backoffPairs();const bdr=bp2.map(x=>x.drop).filter(v=>v!=null);const bdm=bdr.length?bdr.reduce((a,c)=>a+c,0)/bdr.length:null;const bhit=bp2.filter(x=>x.dPct!=null);
+ const bo=T('backoff',bdm==null?'–':(bdm>0?'+':bdm<0?'−':'')+nf(Math.abs(bdm),1),bdm==null?'':'% Ø Abfall',bp2.length?`${bp2.length} Backoff-Blöcke${bhit.length?' · '+bhit.filter(x=>Math.abs(x.dPct)<=1.5).length+'/'+bhit.length+' Last getroffen':''}`:'erscheint nach Top-Satz + Backoffs');
  // Punkte
  const bw=curBw(),f=S.meta.sex==='w';const gl=D.total&&bw?ipfgl(D.total,bw,f):null;
  const pk=T('punkte',gl!=null?nf(gl,1):'–',gl!=null?'IPF GL':'',gl!=null?`DOTS ${nf(dots(D.total,bw,f),1)} · ${nf(bw,1)} kg KG`:!bw?'Körpergewicht eintragen':'braucht alle drei Lifts');
@@ -3104,7 +3186,7 @@ function renderProg(){const D=progData(),{A}=D;
  // Verlauf
  const ver=T('verlauf',D.sessions.length,'/ '+NS(),D.sessions.length?(()=>{const [w,d]=D.sessions[D.sessions.length-1];const L=log(w,d);return 'Zuletzt '+(L.date?new Date(L.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'W'+(w+1)+' '+DAYS[d].tag)})():'noch keine Einheit abgeschlossen',`<div class="tdots">${[...Array(NS()).keys()].map(i=>`<i class="${dayStatus(Math.floor(i/ND()),i%ND())==='done'?'on':''}"></i>`).join('')}</div>`);
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
-  <div class="pgrid">${year}${kraft}${treue}${vol}${rpe}${wh}${pk}${rek}${zy}${te}${ver}</div>`}
+  <div class="pgrid">${year}${kraft}${treue}${vol}${rpe}${bo}${wh}${pk}${rek}${zy}${te}${ver}</div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
   <div class="fgrid"><label class="fld">Körpergewicht (Standard)<span class="in"><input id="set-bw" inputmode="decimal" data-meta="bw" value="${m.bw?nf(m.bw,1):''}" placeholder="z. B. 90"><i>kg</i></span></label>
