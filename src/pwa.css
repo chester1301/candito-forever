@@ -1,3 +1,4 @@
+html,body{margin:0}
 #cfbar{position:fixed;left:12px;right:12px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:10000;display:flex;align-items:center;gap:10px;padding:11px 12px 11px 14px;border-radius:16px;background:rgba(28,31,39,.96);border:1px solid #3a3f4d;box-shadow:0 12px 34px rgba(0,0,0,.55);color:#f5f5f6;font-family:Manrope,system-ui,sans-serif;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:cfin .25s ease}
 #cfbar[hidden]{display:none}
 @keyframes cfin{from{transform:translateY(16px);opacity:0}}

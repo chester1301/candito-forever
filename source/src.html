@@ -31,6 +31,7 @@ html,body{background:var(--bg);color:var(--ink)}
 body{font-family:var(--f);font-size:14.5px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(90% 50% at 85% -10%,color-mix(in srgb,var(--day) 14%,transparent),transparent 60%),radial-gradient(70% 40% at -10% 0%,rgba(87,199,212,.05),transparent 60%);transition:background .4s}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:45;background:var(--bg)}
+body{padding-top:env(safe-area-inset-top,0px)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 h1,h2,h3,p,ul,ol{margin:0}
