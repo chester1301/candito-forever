@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-0705-872abdd";
+<script>window.CF_VERSION="2026.10.19-0834-74e274d";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1359,6 +1359,31 @@ html.boot #view.enter>*{animation:none!important}
 .gp-here{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
 .gp-close{width:100%;margin-top:6px;height:48px;border-radius:14px;border:0;background:var(--gold);color:#111;font-weight:800;font-size:15px}
 .fx .sumbk{display:block;width:100%;margin-top:14px;background:#e8be5a;color:#111;border:0;font-weight:800}
+.ckin{position:fixed;inset:0;z-index:10050;background:rgba(5,6,8,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:flex-end}
+.ckin[hidden]{display:none}body.ckopen{overflow:hidden}
+.ck-in{width:min(560px,100%);height:calc(100% - env(safe-area-inset-top,0px) - 8px);display:flex;flex-direction:column;background:linear-gradient(180deg,#16181e,#0c0d11 30%);border:1px solid var(--line2);border-bottom:0;border-radius:22px 22px 0 0;animation:gpu .22s ease}
+.ck-top{display:flex;align-items:center;gap:12px;padding:14px 16px 12px;border-bottom:1px solid var(--line)}.ck-top>div{flex:1;min-width:0}.ck-top h2{margin:2px 0 0;font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ck-n{font:800 12px var(--mono);color:var(--ink2);padding:5px 9px;border:1px solid var(--line2);border-radius:999px}
+.ck-sc{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 16px;overscroll-behavior:contain}
+.ck-h{margin:18px 2px 8px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand,#ed2438)}
+.ck-c{background:#1c1f26;border:1px solid var(--line);border-radius:18px;padding:13px 14px;margin-bottom:10px}
+.ck-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin-bottom:10px}.ck-t b{font-size:18px;font-weight:800}.ck-t small{flex-basis:100%;font-size:13px;color:var(--ink2)}.ck-flag{color:#f0a066;font-size:16px}
+.ck-b{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.ck-b button{position:relative;height:74px;border-radius:12px;border:1px solid rgba(255,255,255,.07);background:#25282f;padding:0;overflow:hidden}
+.ck-b button i{position:absolute;left:0;right:0;bottom:0;border-radius:10px 10px 11px 11px;background:#3d414a;transition:background .15s}
+.ck-b button[aria-pressed="true"]{border-color:transparent;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.ck-lh{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--ink2)}
+.ck-lv{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}.ck-lv span{text-align:center;font-size:10.5px;color:var(--ink2);line-height:1.2}.ck-lv span.on{color:var(--ink);font-weight:800}
+.ck-bw{display:flex;align-items:center;justify-content:space-between}.ck-bw button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line2);background:transparent;color:var(--brand,#ed2438);font-size:26px}
+.ck-bw div{display:flex;align-items:baseline;gap:6px}.ck-bw b{font-family:var(--d);font-stretch:85%;font-size:42px;font-weight:900}.ck-bw small{font-size:16px;color:var(--ink2)}
+.ck-wg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ck-wf{display:flex;flex-direction:column;gap:3px;background:#25282f;border-radius:12px;padding:7px 9px}.ck-wf small{font-size:10.5px;color:var(--ink2)}
+.ck-wf input{background:none;border:0;color:var(--ink);font:800 19px var(--mono);width:100%;padding:0}.ck-wf input:focus{outline:none;color:#5ad1e6}
+.ck-note{margin:8px 0 0;font-size:11.5px;color:var(--mut);line-height:1.4}
+.ck-mind{display:flex;gap:10px;align-items:flex-start}.ck-mind svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--ink2);stroke-width:1.8;stroke-linejoin:round;margin-top:4px}.ck-mind textarea{flex:1;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;resize:none}.ck-mind textarea:focus{outline:none}
+.ck-foot{display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:#0c0d11}.ck-foot .btn{height:50px;font-size:15px;font-weight:800}
+.rf-ckh{display:flex;justify-content:space-between;align-items:center;gap:10px}.rf-ckh b{font-size:14px}
+.rf-cks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.rf-cks span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:3px 8px;border-radius:999px;border:1px solid var(--line2)}.rf-cks i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.rf-w{margin:8px 0 0;font-size:12.5px;color:#f0a066}.rf-m{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--ink2)}
 .rf-bar{position:relative;height:38px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin:6px 0 12px}
 .rf-bar i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#e8484f,#f3c969 45%,#43c08a 80%);background-size:calc(100vw - 64px) 100%;transition:width .4s}
 .rf-bar b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:17px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
@@ -2853,7 +2878,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0705-872abdd</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0834-74e274d</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -3248,6 +3273,44 @@ function testsAllHTML(){const N={sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben'};
   ${rows.map((r,i)=>{const p=rows[i-1];return `<tr><td>${esc(PROGS[r.id].short)}<small class="mut" style="display:block">${r.dt?r.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):''}</small></td>${['sq','bp','dl'].map(g=>`<td class="r">${r[g].v?nf(r[g].v,0)+dl(p&&p[g].v,r[g].v):'–'}</td>`).join('')}<td class="r"><b>${r.tot?nf(r.tot,0):'–'}</b>${dl(p&&p.tot,r.tot)}</td></tr>`}).join('')}
  </tbody></table></div><p class="note2">Werte sind e1RM aus dem jeweiligen Testsatz (Gewicht × Wdh. und RPE; ohne RPE-Angabe: Single = RPE 10, sonst RPE 9). Δ vergleicht mit dem vorherigen Test. Der verlässlichste Fortschrittsmaßstab im Candito-System.</p></section>`}
 
+
+/* ===================== Check-in vor dem Training ===================== */
+// [key, Titel, Untertitel, links, rechts, negativ (Balken fallend)]
+const CKG=[['sleepq','Schlaf','Qualität & Dauer','schlecht','ausgezeichnet',0],['energy','Energie & Motivation','Antrieb fürs Training','niedrig','hoch',0],['mood','Stimmung','Mentaler Zustand','gedrückt','bestens',0],['strength','Kraftgefühl','Wie stark fühlst du dich?','schwach','stark',0],['stress','Stress','Belastung & Ablenkung','extrem','entspannt',1],['food','Ernährung','Letzte 24 h · Menge & Qualität','zu wenig','optimal',0],['hydra','Flüssigkeit','Urinfarbe','dunkel','klar',0]];
+const CKS=[['push','Druckmuskeln','Brust, Schultern, Trizeps'],['pull','Zugmuskeln','Lat, Trapez, Bizeps'],['lback','Unterer Rücken',''],['post','Gesäß & Beinbeuger',''],['quad','Quadrizeps','']];
+const CKL=[['rsq','Kniebeuge','sq'],['rbp','Bankdrücken','bp'],['rdl','Kreuzheben','dl']];
+const CKLV=['Verletzt','Nur Aufwärmen','Eher leicht','Normal','Topform'];
+const CKC={1:'#e8484f',2:'#f0a066',3:'#f3c969',4:'#7dd09a',5:'#43c08a'};
+let CK=null;
+function ckBlocks(k,v,neg,labels,lo,hi){return `<div class="ck-b">${[1,2,3,4,5].map(i=>{const h=neg?(6-i)*20:i*20;return `<button type="button" data-ck="${k}|${i}" aria-pressed="${v===i}" aria-label="${labels?labels[i-1]:i}"><i style="height:${h}%;${v===i?`background:${CKC[i]}`:''}"></i></button>`}).join('')}</div>${labels?`<div class="ck-lv">${labels.map((l,i)=>`<span class="${v===i+1?'on':''}">${l}</span>`).join('')}</div>`:`<div class="ck-lh"><span>${lo}</span><span>${hi}</span></div>`}`}
+function ckHTML(){const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
+ const card=(k,t,sub,lo,hi,neg)=>`<div class="ck-c"><div class="ck-t"><b>${t}</b>${sub?`<small>${sub}</small>`:''}</div>${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`;
+ const nA=[...CKG,...CKS].filter(q=>f[q[0]]!=null).length,nT=CKG.length+CKS.length;
+ const ws=WF.map(([k,l,u,mn,mx])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
+ return `<div class="ck-in"><div class="ck-top"><button type="button" class="iconbtn" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><p class="eyebrow">Check-in · vor dem Training</p><h2>W${w+1} · ${DAYS[d].tag} · ${esc(P[w][d].f)}</h2></div><span class="ck-n">${nA}/${nT}</span></div>
+ <div class="ck-sc">
+  <p class="ck-h">Körpergewicht</p><div class="ck-c ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div>
+  <p class="ck-h">WHOOP · heute</p><div class="ck-c"><div class="ck-wg">${ws}</div><p class="ck-note">Werte aus der WHOOP-App abtippen – werden bei dieser Einheit gespeichert.</p></div>
+  <p class="ck-h">Gesamtbereitschaft</p>${CKG.map(q=>card(...q)).join('')}
+  <p class="ck-h">Muskelkater</p>${CKS.map(([k,t,sub])=>card(k,t,sub,'stark','keiner',1)).join('')}
+  <p class="ck-h">Bereitschaft je Lift</p>${CKL.map(([k,t,g])=>`<div class="ck-c"><div class="ck-t"><b>${t}</b>${f[k]!=null&&f[k]<=2?'<span class="ck-flag">⚑</span>':''}<small>Wie bereit fühlst du dich?</small></div>${ckBlocks(k,f[k],0,CKLV)}</div>`).join('')}
+  <p class="ck-h">Mindset</p><div class="ck-c"><label class="ck-mind"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><textarea data-ckmind rows="2" placeholder="Heute werde ich …">${esc(L.mind||'')}</textarea></label></div>
+  <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung für dein Readiness-Center. Programm, Vorgaben und Lasten bleiben unverändert.</p>
+ </div>
+ <div class="ck-foot"><button type="button" class="btn" data-ckskip>${CK.go?'Überspringen':'Schließen'}</button><button type="button" class="btn primary" data-ckgo>${CK.go?'Weiter zum Training':'Speichern'}</button></div></div>`})}
+function ckOpen(pid,w,d,go){CK={pid,w,d,go};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();el.hidden=false;document.body.classList.add('ckopen')}
+function ckRefresh(){const el=document.getElementById('ckin');if(!el||!CK)return;const sc=el.querySelector('.ck-sc');const y=sc?sc.scrollTop:0;el.innerHTML=ckHTML();const s2=el.querySelector('.ck-sc');if(s2)s2.scrollTop=y}
+function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
+function ckSave(fn){withProg(CK.pid,()=>{const L=log(CK.w,CK.d,true);fn(L);saveLog(key(CK.w,CK.d))})}
+function needCk(w,d){const L=log(w,d);return !(L&&(L.ck||L.done||L.start))}
+document.addEventListener('click',e=>{if(!CK)return;const t=e.target.closest('#ckin button');if(!t)return;
+ if(t.dataset.ck){const [k,v]=t.dataset.ck.split('|');ckSave(L=>{if(!L.feel)L.feel={};if(L.feel[k]===+v)delete L.feel[k];else L.feel[k]=+v});ckRefresh();return}
+ if(t.dataset.ckbw){ckSave(L=>{const b=pnum(L.bw)??curBw()??80;L.bw=nf(Math.max(30,b+ +t.dataset.ckbw),1)});ckRefresh();return}
+ if(t.dataset.ckgo!=null){ckClose(true);return}
+ if(t.dataset.ckskip!=null||t.dataset.ckclose!=null){ckClose(t.dataset.ckskip!=null);return}});
+document.addEventListener('change',e=>{if(!CK)return;const t=e.target;
+ if(t.dataset&&t.dataset.ckw){const k=t.dataset.ckw;const v=pnum(t.value);ckSave(L=>{const W=Object.assign({},L.whoop||{});if(v==null)delete W[k];else W[k]=v;const has=WF.some(([f])=>W[f]!=null);if(has){W.src=W.src||'manuell';L.whoop=W}else delete L.whoop})}
+ if(t.dataset&&t.dataset.ckmind!=null){const v=t.value.trim();ckSave(L=>{if(v)L.mind=v;else delete L.mind})}});
 /* ===================== Readiness & Fatigue Center ===================== */
 // Drei getrennte Signale: Körper (WHOOP) · Gefühl (Check-in) · Leistung (Trainingsergebnisse). Reine Anzeige – ändert keine Vorgaben.
 const FEELQ=[['energy','Energie','leer','voll'],['sleepq','Schlafqualität','schlecht','top'],['sore','Muskelkater','stark','keiner'],['motiv','Motivation','null','hoch'],['stress','Stress','hoch','keiner']];
@@ -3259,7 +3322,7 @@ function readiness(){const n=nextSession();if(!n)return null;const L=log(n.w,n.d
  const bH=prev.length>=3?mean(prev.map(v=>v.hrv)):null,bR=prev.length>=3?mean(prev.map(v=>v.rhr)):null,bS=prev.length>=3?mean(prev.map(v=>v.sleepH)):null;
  const body=wv&&wv.rec!=null?{score:wv.rec,v:wv,bH,bR,bS,n:prev.length}:null;
  // Gefühl
- const f=L.feel||{};const fv=FEELQ.map(q=>f[q[0]]).filter(v=>v!=null);const feel=fv.length?{score:Math.round((mean(fv)-1)/4*100),n:fv.length,f}:null;
+ const f=L.feel||{};const fk=[...CKG,...CKS].map(q=>q[0]).concat(['sore','motiv'].filter(k=>f[k]!=null));const fv=fk.map(k=>f[k]).filter(v=>v!=null);const feel=fv.length?{score:Math.round((mean(fv)-1)/4*100),n:fv.length,tot:CKG.length+CKS.length,f}:null;
  // Leistung: abgeschlossene Einheiten mit Hauptlift-Sätzen
  const ses=[];all.forEach(x=>{if(x.pid===PROG&&x.w===n.w&&x.d===n.d)return;const sets=[];withProg(x.pid,()=>{x.day.b.forEach((bl,b)=>{if(!(EX[bl.e]&&EX[bl.e].m&&GN[EX[bl.e].g]))return;const R0=repsFor(x.w,x.d,b);(x.L.b[b]||[]).forEach(z=>{if(!z||!z.ok)return;const kg=pnum(z.kg),r=pnum(z.r),rp=pnum(z.rpe);if(!kg||!r)return;sets.push({e:bl.e,g:EX[bl.e].g,kg,r,rp,trpe:bl.rpe,rs:R0&&R0.r!=null&&!R0.amrap?R0.r:null,e1:rp!=null&&r<=6&&rp>=8&&['csq','pbb','cdl'].includes(bl.e)?e1rm(kg,r,rp):null})})})});if(sets.length)ses.push({dt:x.dt,sets})});
  let perf=null;if(ses.length>=3){const rec=ses.slice(-3),base=ses.slice(-9,-3);
@@ -3288,7 +3351,7 @@ function rfcHTML(){const R=readiness();if(!R)return '';const {n,body,feel,perf,t
  const sg=(v,d=1,u='')=>v==null?'–':(v>0?'+':v<0?'−':'±')+nf(Math.abs(v),d)+u;
  const comp=(k,t,sub,v,ev)=>`<div class="rf-c"><div class="rf-ch"><b>${t}</b>${ev||''}</div>${rfRing(v,rfCol(v))}<small>${sub}</small></div>`;
  const bodySub=body?`Recovery ${nf(body.v.rec,0)} %${body.v.hrv!=null?' · HRV '+nf(body.v.hrv,0):''}`:'WHOOP für heute fehlt';
- const feelSub=feel?rfLbl(feel.score)+' · '+feel.n+'/'+FEELQ.length+' Fragen':'Check-in unten';
+ const feelSub=feel?rfLbl(feel.score)+' · '+Math.min(feel.n,feel.tot)+'/'+feel.tot+' Fragen':'Check-in fehlt';
  const perfSub=perf?rfLbl(perf.score)+' · '+perf.nSes+' Einheiten':'ab 3 Einheiten';
  const det=[];
  if(body){const v=body.v;det.push(`<div class="rf-d"><p class="eyebrow" style="color:#5ad1e6">Körper · WHOOP</p><ul>
@@ -3302,13 +3365,18 @@ function rfcHTML(){const R=readiness();if(!R)return '';const {n,body,feel,perf,t
   <li><span>Wdh. erreicht</span><b>${perf.hR!=null?Math.round(perf.hR)+' %':'–'}${perf.hB!=null?` <small>davor ${Math.round(perf.hB)} %</small>`:''}</b></li>
   ${perf.e1d.map(x=>`<li><span>e1RM ${esc(EX[x.e].n)} <small>vs. Bestwert davor</small></span><b class="${x.pct<-2?'dn':'up'}">${sg(x.pct,1,' %')}</b></li>`).join('')}</ul><p class="note2" style="margin:4px 0 0">Positives RPE Ist − Soll = Sätze fühlten sich schwerer an als geplant. Nur Hauptlifts, nur abgehakte Sätze.</p></div>`);
  const f=R.L.feel||{};
- const chk=`<div class="rf-ck"><p class="eyebrow">Check-in · ${DAYS[n.d].wdl}${dayDate(n.w,n.d)?' '+fmtD(dayDate(n.w,n.d)):''}</p>${FEELQ.map(([k,t,lo,hi])=>`<div class="rf-q"><div class="rf-qh"><b>${t}</b><small>${lo} ← → ${hi}</small></div><div class="rf-qs">${[1,2,3,4,5].map(v=>`<button type="button" data-feel="${k}|${v}" aria-pressed="${f[k]===v}" class="v${v}">${v}</button>`).join('')}</div></div>`).join('')}</div>`;
+ const lowS=CKS.filter(([k])=>f[k]!=null&&f[k]<=2).map(x=>x[1]),lowL=CKL.filter(([k])=>f[k]!=null&&f[k]<=2).map(x=>`${x[1]}: ${CKLV[f[k]-1]}`);
+ const ansN=[...CKG,...CKS,...CKL].filter(q=>f[q[0]]!=null).length;
+ const chk=`<div class="rf-ck"><div class="rf-ckh"><div><p class="eyebrow">Check-in · ${DAYS[n.d].wdl}${dayDate(n.w,n.d)?' '+fmtD(dayDate(n.w,n.d)):''}</p><b>${ansN?ansN+' von '+(CKG.length+CKS.length+CKL.length)+' beantwortet':'Noch nicht ausgefüllt'}</b></div><button type="button" class="btn ${ansN?'':'primary'}" data-ckopen>${ansN?'Bearbeiten':'Check-in starten'}</button></div>
+  ${CKG.filter(([k])=>f[k]!=null).length?`<div class="rf-cks">${CKG.filter(([k])=>f[k]!=null).map(([k,t])=>`<span style="--c:${CKC[f[k]]}"><i></i>${t}</span>`).join('')}</div>`:''}
+  ${lowS.length?`<p class="rf-w">Muskelkater: ${lowS.join(', ')}</p>`:''}${lowL.length?`<p class="rf-w">⚑ ${lowL.join(' · ')}</p>`:''}${R.L.mind?`<p class="rf-m">„${esc(R.L.mind)}“</p>`:''}</div>`;
  return `<section class="card rfc"><div class="ct"><div><p class="eyebrow">Readiness & Fatigue</p><h2 class="h2">Tagesbereitschaft</h2></div>${total!=null?`<span class="chip" style="color:${rfCol(total)};border-color:currentColor">${rfLbl(total)}</span>`:''}</div>
   <div class="rf-bar"><i style="width:${total??0}%"></i><b>${total!=null?total+' %':'–'}</b></div>
   <div class="rf-g">${comp('body','Körper',bodySub,body&&Math.round(body.score),body?evid(body.n+1,'ses'):'')}${comp('feel','Gefühl',feelSub,feel&&feel.score,'')}${comp('perf','Leistung',perfSub,perf&&perf.score,perf?evid(perf.nSets,'sets'):'')}</div>
   <div class="rf-v ${R.vc}"><p>${R.vt}</p></div>
   ${chk}${det.join('')}
   <p class="note2">Gefühl (wie du dich fühlst) und Leistung (was deine Sätze zeigen) werden getrennt bewertet – Müdigkeitsgefühl allein ist kein Leistungsabfall. Reine Orientierung: Das Programm, die Vorgaben und Lasten werden dadurch nicht verändert.</p></section>`}
+document.addEventListener('click',e=>{if(e.target.closest('[data-ckopen]')){const n=nextSession();if(n)ckOpen(PROG,n.w,n.d,null);return}});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-feel]');if(!t)return;const n=nextSession();if(!n)return;const [k,v]=t.dataset.feel.split('|');const L=log(n.w,n.d,true);if(!L.feel)L.feel={};L.feel[k]=L.feel[k]===+v?undefined:+v;if(L.feel[k]===undefined)delete L.feel[k];saveLog(key(n.w,n.d));const y=scrollY;render();scrollTo(0,y)});
 function whoopSessions(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{let A=null,best=null;
   for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||!L.whoop||!P[w][d].b.length)continue;
@@ -4567,10 +4635,10 @@ $('#view').addEventListener('click',e=>{const t=e.target.closest('button');if(!t
  if(t.dataset.go){S.ui.tab=t.dataset.go;render();window.scrollTo({top:0});return}
  if(a==='homego'||a==='homeplan'||a==='homewhoop'){const n=nextSession();if(n){S.ui.w=n.w;S.ui.d=n.d}
   if(a==='homewhoop'){const td=isoD(new Date());for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(dt&&isoD(dt)===td){S.ui.w=w;S.ui.d=d}}}
-  if(a==='homego'){startSession(S.ui.w,S.ui.d);openGym();return}S.ui.tab='train';if(a==='homewhoop'){if(!S.ui.tdet)S.ui.tdet={};S.ui.tdet.train='whoop';const L=log(S.ui.w,S.ui.d);S.ui.wEdit=key(S.ui.w,S.ui.d);S.ui.wDraft=Object.assign({},L&&L.whoop||{});S.ui.wSrc=(L&&L.whoop&&L.whoop.src)||'manuell';S.ui.wMsg=''}
+  if(a==='homego'){const W=S.ui.w,D=S.ui.d,go=()=>{S.ui.w=W;S.ui.d=D;startSession(W,D);openGym()};if(needCk(W,D)){ckOpen(PROG,W,D,go);return}go();return}S.ui.tab='train';if(a==='homewhoop'){if(!S.ui.tdet)S.ui.tdet={};S.ui.tdet.train='whoop';const L=log(S.ui.w,S.ui.d);S.ui.wEdit=key(S.ui.w,S.ui.d);S.ui.wDraft=Object.assign({},L&&L.whoop||{});S.ui.wSrc=(L&&L.whoop&&L.whoop.src)||'manuell';S.ui.wMsg=''}
   render();if(a==='homewhoop')setTimeout(()=>{const el=document.getElementById('whoop');if(el)scrollTo({top:el.getBoundingClientRect().top+scrollY-180,behavior:'smooth'})},50);else window.scrollTo({top:0});return}
  if(a==='sreset'){const L=log(w,d,true);delete L.start;delete L.pausedAt;delete L.end;L.pauseMs=0;saveLog(key(w,d));toast('Timer verworfen');render();return}
- if(a==='gostart'){startSession(w,d);openGym();return}
+ if(a==='gostart'){const go=()=>{S.ui.w=w;S.ui.d=d;startSession(w,d);openGym()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(a==='gym')openGym();
  if(a==='done'){const L=log(w,d,true);if(L.done){reopenSession(w,d);toast('Einheit wieder offen')}else finishSession(w,d);render()}
  if(a==='spause'){toggleSessPause(w,d);return}
@@ -4832,6 +4900,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   <div class="gp-top"><div><p class="eyebrow">Tagesplan · Soll-Werte</p><h2>W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wdl}</h2><p class="gp-f">${esc(day.f||'')}${PROGS[PROG].WEEKS&&PROGS[PROG].WEEKS[w]?' · '+esc(PROGS[PROG].WEEKS[w]):''}</p></div><button type="button" class="iconbtn" data-gplan="0" aria-label="Tagesplan schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <div class="gp-sum"><span><b>${day.b.length}</b> Übungen</span><span><b>${tot}</b> Sätze</span><span><b>${done}</b> erledigt</span></div>
   <div class="gp-leg"><span class="v">Vorgabe laut Plan</span><span class="e">≈ Empfehlung</span><span class="f">frei / nach RPE</span></div>
+  ${L.mind?`<section class="gp-info" style="border-color:rgba(240,160,102,.4);background:rgba(240,160,102,.07)"><h3 style="color:#f0a066">Mein Vorsatz</h3><p>„${esc(L.mind)}“</p></section>`:''}
   ${info.length?`<section class="gp-info"><h3>Infos zum Tag</h3>${info.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`:''}
   ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
@@ -4856,7 +4925,7 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(t.dataset.gplan!=null){G.plan=t.dataset.gplan==='1';G.planY=0;if(!G.plan){const o=$('#gym .gplan');o&&o.remove();renderGym()}else renderGym();return}
  if(t.dataset.gpgo!=null){G.b=+t.dataset.gpgo;const Lg=log(w,d,true);const f=(Lg.b[G.b]||[]).findIndex(z=>!z.ok);G.i=f>=0?f:0;G.plan=false;renderGym();$('#gym').scrollTop=0;return}
  if(t.dataset.sp!=null){toggleSessPause(w,d);return}
- if(t.dataset.sstart!=null){startSession(w,d);gymRefresh();return}
+ if(t.dataset.sstart!=null){const go=()=>{startSession(w,d);gymRefresh()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(t.dataset.gs!=null){G.i=+t.dataset.gs;renderGym();return}
  if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);gymRefresh();return}
  if(t.dataset.step){const f=t.dataset.step,cv=curVals();let v=(f==='kg'?cv.kg:cv.r)||0;v=Math.max(0,v+parseFloat(t.dataset.v));gWrite(f,f==='kg'?rnd(v):v);
