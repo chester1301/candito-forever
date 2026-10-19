@@ -1271,6 +1271,23 @@ html.boot #view.enter>*{animation:none!important}
 .gp-here{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
 .gp-close{width:100%;margin-top:6px;height:48px;border-radius:14px;border:0;background:var(--gold);color:#111;font-weight:800;font-size:15px}
 .fx .sumbk{display:block;width:100%;margin-top:14px;background:#e8be5a;color:#111;border:0;font-weight:800}
+.rf-bar{position:relative;height:38px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin:6px 0 12px}
+.rf-bar i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#e8484f,#f3c969 45%,#43c08a 80%);background-size:calc(100vw - 64px) 100%;transition:width .4s}
+.rf-bar b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:17px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.rf-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rf-c{border:1px solid var(--line2);border-radius:14px;padding:9px 6px;background:var(--raise);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.rf-ch{display:flex;flex-direction:column;align-items:center;gap:3px}.rf-ch b{font-size:13px}.rf-ch .evid{font-size:9.5px;padding:1px 6px;max-width:100%;overflow:hidden;text-overflow:ellipsis}.rf-ch .evid .et{display:none}.rf-c small{font-size:10.5px;color:var(--ink2);line-height:1.3}
+.rf-ring{width:56px;height:56px}.rf-ring text{font:800 14px var(--mono);fill:var(--ink)}
+.rf-v{margin:12px 0;padding:12px 14px;border-radius:14px;border:1.5px solid;font-size:14px;line-height:1.45}.rf-v p{margin:0}
+.rf-v.g{border-color:rgba(67,192,138,.6);background:rgba(67,192,138,.07)}.rf-v.y{border-color:rgba(243,201,105,.6);background:rgba(243,201,105,.07)}.rf-v.r{border-color:rgba(232,72,79,.6);background:rgba(232,72,79,.07)}.rf-v.n{border-color:var(--line2)}
+.rf-ck{border:1px solid var(--line);border-radius:14px;padding:11px 12px;display:grid;gap:10px;background:rgba(255,255,255,.02)}
+.rf-qh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}.rf-qh b{font-size:13.5px}.rf-qh small{font-size:11px;color:var(--mut)}
+.rf-qs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.rf-qs button{height:36px;border-radius:10px;border:1px solid var(--line2);background:var(--raise);color:var(--ink2);font:800 14px var(--mono)}
+.rf-qs button[aria-pressed="true"].v1{background:#e8484f;color:#fff;border-color:#e8484f}.rf-qs button[aria-pressed="true"].v2{background:#f0a066;color:#111;border-color:#f0a066}.rf-qs button[aria-pressed="true"].v3{background:#f3c969;color:#111;border-color:#f3c969}.rf-qs button[aria-pressed="true"].v4{background:#8fd6a8;color:#08140e;border-color:#8fd6a8}.rf-qs button[aria-pressed="true"].v5{background:#43c08a;color:#08140e;border-color:#43c08a}
+.rf-d{margin-top:10px;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.rf-d ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
+.rf-d li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13.5px}.rf-d li small{font-size:11px;color:var(--mut)}.rf-d li b{font-family:var(--mono);font-size:13.5px;text-align:right}
+.rf-d em{font-style:normal;font-size:11.5px;margin-left:4px}.rf-d .up,.rf-d em.up{color:var(--ok)}.rf-d .dn,.rf-d em.dn{color:var(--hi)}
 .evid{display:inline-flex;align-items:center;gap:6px;flex:none;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid currentColor;white-space:nowrap}
 .evid i{width:7px;height:7px;border-radius:50%;background:currentColor}.evid.lo{color:#8a8f9b}.evid.mid{color:#f0a066}.evid.hi{color:var(--ok)}
 .bo-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}.bo-r{border-left:3px solid var(--c);padding:6px 0 6px 10px;display:flex;flex-direction:column;gap:2px}.bo-r b{font-size:13.5px}.bo-r small{font-size:12px;color:var(--ink2);line-height:1.4}
@@ -2044,7 +2061,7 @@ async function readShots(files){const {w,d}=S.ui,k=key(w,d);if(S.ui.wEdit!==k||!
 // Belastbarkeit einer Kennzahl: n = Anzahl Datenpunkte, kind = 'sets' | 'ses'
 function evid(n,kind){const L=kind==='ses'?[3,6]:[5,15];const u=kind==='ses'?(n===1?'Einheit':'Einheiten'):(n===1?'Satz':'Sätze');
  const c=n<L[0]?'lo':n<L[1]?'mid':'hi';const t=n<L[0]?'zu wenig Daten':n<L[1]?'vorläufig':'belastbar';
- return `<span class="evid ${c}" title="Belastbarkeit: ${t}"><i></i>${n} ${u} · ${t}</span>`}
+ return `<span class="evid ${c}" title="Belastbarkeit: ${t}"><i></i>${n} ${u}<span class="et"> · ${t}</span></span>`}
 // Paare Top-Satz → Backoff im aktuellen Programm
 function backoffPairs(){const out=[];
  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const day=P[w][d];const L=log(w,d);if(!L||!day.b.length)continue;
@@ -2111,6 +2128,69 @@ function testsAllHTML(){const N={sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben'};
  return `<section class="card">${head}<div class="tw"><table class="tab"><thead><tr><th>Phase</th>${['sq','bp','dl'].map(g=>`<th class="r" style="color:${GC[g]}">${{sq:'SQ',bp:'BP',dl:'DL'}[g]}</th>`).join('')}<th class="r">Total</th></tr></thead><tbody>
   ${rows.map((r,i)=>{const p=rows[i-1];return `<tr><td>${esc(PROGS[r.id].short)}<small class="mut" style="display:block">${r.dt?r.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):''}</small></td>${['sq','bp','dl'].map(g=>`<td class="r">${r[g].v?nf(r[g].v,0)+dl(p&&p[g].v,r[g].v):'–'}</td>`).join('')}<td class="r"><b>${r.tot?nf(r.tot,0):'–'}</b>${dl(p&&p.tot,r.tot)}</td></tr>`}).join('')}
  </tbody></table></div><p class="note2">Werte sind e1RM aus dem jeweiligen Testsatz (Gewicht × Wdh. und RPE; ohne RPE-Angabe: Single = RPE 10, sonst RPE 9). Δ vergleicht mit dem vorherigen Test. Der verlässlichste Fortschrittsmaßstab im Candito-System.</p></section>`}
+
+/* ===================== Readiness & Fatigue Center ===================== */
+// Drei getrennte Signale: Körper (WHOOP) · Gefühl (Check-in) · Leistung (Trainingsergebnisse). Reine Anzeige – ändert keine Vorgaben.
+const FEELQ=[['energy','Energie','leer','voll'],['sleepq','Schlafqualität','schlecht','top'],['sore','Muskelkater','stark','keiner'],['motiv','Motivation','null','hoch'],['stress','Stress','hoch','keiner']];
+function rfAllLogs(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L)continue;const dt=L.date?new Date(L.date):dayDate(w,d);if(!dt)continue;out.push({pid,w,d,L,dt,day:P[w][d]})}}));return out.sort((a,b)=>a.dt-b.dt)}
+function readiness(){const n=nextSession();if(!n)return null;const L=log(n.w,n.d,true);const key0=PROG+':'+n.w+'-'+n.d;const all=rfAllLogs();
+ const mean=a=>{const x=a.filter(v=>v!=null&&!isNaN(v));return x.length?x.reduce((p,q)=>p+q,0)/x.length:null};
+ // Körper
+ const wv=L.whoop||null;const prev=all.filter(x=>x.L.whoop&&!(x.pid===PROG&&x.w===n.w&&x.d===n.d)).slice(-30).map(x=>x.L.whoop);
+ const bH=prev.length>=3?mean(prev.map(v=>v.hrv)):null,bR=prev.length>=3?mean(prev.map(v=>v.rhr)):null,bS=prev.length>=3?mean(prev.map(v=>v.sleepH)):null;
+ const body=wv&&wv.rec!=null?{score:wv.rec,v:wv,bH,bR,bS,n:prev.length}:null;
+ // Gefühl
+ const f=L.feel||{};const fv=FEELQ.map(q=>f[q[0]]).filter(v=>v!=null);const feel=fv.length?{score:Math.round((mean(fv)-1)/4*100),n:fv.length,f}:null;
+ // Leistung: abgeschlossene Einheiten mit Hauptlift-Sätzen
+ const ses=[];all.forEach(x=>{if(x.pid===PROG&&x.w===n.w&&x.d===n.d)return;const sets=[];withProg(x.pid,()=>{x.day.b.forEach((bl,b)=>{if(!(EX[bl.e]&&EX[bl.e].m&&GN[EX[bl.e].g]))return;const R0=repsFor(x.w,x.d,b);(x.L.b[b]||[]).forEach(z=>{if(!z||!z.ok)return;const kg=pnum(z.kg),r=pnum(z.r),rp=pnum(z.rpe);if(!kg||!r)return;sets.push({e:bl.e,g:EX[bl.e].g,kg,r,rp,trpe:bl.rpe,rs:R0&&R0.r!=null&&!R0.amrap?R0.r:null,e1:rp!=null&&r<=6&&rp>=8&&['csq','pbb','cdl'].includes(bl.e)?e1rm(kg,r,rp):null})})})});if(sets.length)ses.push({dt:x.dt,sets})});
+ let perf=null;if(ses.length>=3){const rec=ses.slice(-3),base=ses.slice(-9,-3);
+  const dv=a=>mean(a.flatMap(s=>s.sets.filter(z=>z.rp!=null&&z.trpe!=null).map(z=>z.rp-z.trpe)));
+  const rh=a=>{const x=a.flatMap(s=>s.sets.filter(z=>z.rs));return x.length?x.filter(z=>z.r>=z.rs).length/x.length*100:null};
+  const dR=dv(rec),dB=base.length?dv(base):null,drift=dR!=null&&dB!=null?dR-dB:null;
+  const hR=rh(rec),hB=base.length?rh(base):null;
+  const e1d=[];['csq','pbb','cdl'].forEach(e=>{const pts=ses.flatMap(s=>s.sets.filter(z=>z.e===e&&z.e1).map(z=>({dt:s.dt,e1:z.e1})));if(pts.length<3)return;const lastDt=pts[pts.length-1].dt;const recent=Math.max(...pts.filter(p=>+p.dt===+lastDt).map(p=>p.e1));const earlier=pts.filter(p=>p.dt<lastDt).slice(-12);if(!earlier.length)return;const best=Math.max(...earlier.map(p=>p.e1));e1d.push({e,pct:(recent/best-1)*100})});
+  const e1m=mean(e1d.map(x=>x.pct));
+  let sc=100;if(drift!=null&&drift>0.25)sc-=Math.min(40,(drift-0.25)*30);if(dR!=null&&dR>0.5)sc-=Math.min(20,(dR-0.5)*15);if(e1m!=null&&e1m<-2)sc-=Math.min(35,(-e1m-2)*5);if(hR!=null&&hR<90)sc-=Math.min(25,(90-hR)*.8);
+  perf={score:Math.max(0,Math.round(sc)),drift,dR,hR,hB,e1d,e1m,nSes:rec.length+base.length,nSets:rec.concat(base).reduce((a,s)=>a+s.sets.length,0)}}
+ const comps=[body&&body.score,feel&&feel.score,perf&&perf.score].filter(v=>v!=null);const total=comps.length?Math.round(mean(comps)):null;
+ const feelLow=feel&&feel.score<50,perfLow=perf&&perf.score<70,bodyLow=body&&body.score<34;
+ let vt,vc;
+ if(!feel&&!perf&&!body){vt='Noch keine Daten für heute. Trag unten kurz ein, wie du dich fühlst, und erfasse deine WHOOP-Werte.';vc='n'}
+ else if(feelLow&&!perfLow){vt=perf?'Du fühlst dich müde – deine Trainingsergebnisse zeigen aber keinen Leistungsabfall. Starte normal und urteile nach dem ersten Satz anhand des RPE: Müdigkeitsgefühl allein ist oft kein Leistungsverlust.':'Du fühlst dich müde. Ob deine Leistung tatsächlich leidet, zeigt sich nach ein paar Einheiten mit eingetragenem RPE – heute: normal starten und nach dem ersten Satz urteilen.';vc='y'}
+ else if(perfLow&&!feelLow){vt='Deine letzten Einheiten weisen auf Leistungseinbußen hin, obwohl du dich gut fühlst. Achte heute besonders darauf, RPE-Vorgaben und RPE-Deckel nicht zu überschreiten.';vc='y'}
+ else if(perfLow&&feelLow){vt='Gefühl und Trainingsergebnisse zeigen beide Ermüdung. Der Plan bleibt unverändert – halte RPE-Deckel strikt ein und lass optionale Übungen weg.';vc='r'}
+ else {vt='Gefühl und Trainingsergebnisse sind im grünen Bereich – trainiere wie geplant.';vc='g'}
+ if(bodyLow)vt+=' WHOOP meldet niedrige Erholung – ein Signal mehr für sauberes Einhalten der RPE-Vorgaben.';
+ return {n,L,body,feel,perf,total,vt,vc,feelLow,perfLow,bodyLow}}
+const rfLbl=v=>v==null?'–':v>=80?'Optimal':v>=65?'Gut':v>=45?'Mittel':'Niedrig';
+const rfCol=v=>v==null?'#8a8f9b':v>=67?'#43c08a':v>=45?'#f3c969':'#e8484f';
+function rfRing(v,c){const C=2*Math.PI*20,f=v==null?0:Math.max(0,Math.min(1,v/100));return `<svg viewBox="0 0 48 48" class="rf-ring"><circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="5"/><circle cx="24" cy="24" r="20" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-f)}" transform="rotate(-90 24 24)"/><text x="24" y="28.5" text-anchor="middle">${v==null?'–':v}</text></svg>`}
+function rfcHTML(){const R=readiness();if(!R)return '';const {n,body,feel,perf,total}=R;
+ const sg=(v,d=1,u='')=>v==null?'–':(v>0?'+':v<0?'−':'±')+nf(Math.abs(v),d)+u;
+ const comp=(k,t,sub,v,ev)=>`<div class="rf-c"><div class="rf-ch"><b>${t}</b>${ev||''}</div>${rfRing(v,rfCol(v))}<small>${sub}</small></div>`;
+ const bodySub=body?`Recovery ${nf(body.v.rec,0)} %${body.v.hrv!=null?' · HRV '+nf(body.v.hrv,0):''}`:'WHOOP für heute fehlt';
+ const feelSub=feel?rfLbl(feel.score)+' · '+feel.n+'/'+FEELQ.length+' Fragen':'Check-in unten';
+ const perfSub=perf?rfLbl(perf.score)+' · '+perf.nSes+' Einheiten':'ab 3 Einheiten';
+ const det=[];
+ if(body){const v=body.v;det.push(`<div class="rf-d"><p class="eyebrow" style="color:#5ad1e6">Körper · WHOOP</p><ul>
+  <li><span>Recovery</span><b style="color:${rfCol(v.rec)}">${nf(v.rec,0)} %</b></li>
+  ${v.hrv!=null?`<li><span>HRV${body.bH?` <small>Ø ${nf(body.bH,0)} ms</small>`:''}</span><b>${nf(v.hrv,0)} ms${body.bH?` <em class="${v.hrv>=body.bH?'up':'dn'}">${sg((v.hrv/body.bH-1)*100,0,' %')}</em>`:''}</b></li>`:''}
+  ${v.rhr!=null?`<li><span>Ruhepuls${body.bR?` <small>Ø ${nf(body.bR,0)}</small>`:''}</span><b>${nf(v.rhr,0)} bpm${body.bR?` <em class="${v.rhr<=body.bR?'up':'dn'}">${sg(v.rhr-body.bR,0)}</em>`:''}</b></li>`:''}
+  ${v.sleepH!=null?`<li><span>Schlaf${body.bS?` <small>Ø ${nf(body.bS,1)} h</small>`:''}</span><b>${nf(v.sleepH,1)} h</b></li>`:''}</ul>${body.n<3?'<p class="note2" style="margin:4px 0 0">Persönliche Durchschnittswerte erscheinen ab 3 Tagen mit WHOOP-Werten.</p>':''}</div>`)}
+ if(perf)det.push(`<div class="rf-d"><p class="eyebrow" style="color:#b48cff">Leistung · letzte 3 Einheiten</p><ul>
+  <li><span>RPE Ist − Soll <small>letzte 3</small></span><b>${sg(perf.dR,2)}</b></li>
+  <li><span>Veränderung zu davor</span><b class="${perf.drift==null?'':perf.drift>0.25?'dn':'up'}">${sg(perf.drift,2)}</b></li>
+  <li><span>Wdh. erreicht</span><b>${perf.hR!=null?Math.round(perf.hR)+' %':'–'}${perf.hB!=null?` <small>davor ${Math.round(perf.hB)} %</small>`:''}</b></li>
+  ${perf.e1d.map(x=>`<li><span>e1RM ${esc(EX[x.e].n)} <small>vs. Bestwert davor</small></span><b class="${x.pct<-2?'dn':'up'}">${sg(x.pct,1,' %')}</b></li>`).join('')}</ul><p class="note2" style="margin:4px 0 0">Positives RPE Ist − Soll = Sätze fühlten sich schwerer an als geplant. Nur Hauptlifts, nur abgehakte Sätze.</p></div>`);
+ const f=R.L.feel||{};
+ const chk=`<div class="rf-ck"><p class="eyebrow">Check-in · ${DAYS[n.d].wdl}${dayDate(n.w,n.d)?' '+fmtD(dayDate(n.w,n.d)):''}</p>${FEELQ.map(([k,t,lo,hi])=>`<div class="rf-q"><div class="rf-qh"><b>${t}</b><small>${lo} ← → ${hi}</small></div><div class="rf-qs">${[1,2,3,4,5].map(v=>`<button type="button" data-feel="${k}|${v}" aria-pressed="${f[k]===v}" class="v${v}">${v}</button>`).join('')}</div></div>`).join('')}</div>`;
+ return `<section class="card rfc"><div class="ct"><div><p class="eyebrow">Readiness & Fatigue</p><h2 class="h2">Tagesbereitschaft</h2></div>${total!=null?`<span class="chip" style="color:${rfCol(total)};border-color:currentColor">${rfLbl(total)}</span>`:''}</div>
+  <div class="rf-bar"><i style="width:${total??0}%"></i><b>${total!=null?total+' %':'–'}</b></div>
+  <div class="rf-g">${comp('body','Körper',bodySub,body&&Math.round(body.score),body?evid(body.n+1,'ses'):'')}${comp('feel','Gefühl',feelSub,feel&&feel.score,'')}${comp('perf','Leistung',perfSub,perf&&perf.score,perf?evid(perf.nSets,'sets'):'')}</div>
+  <div class="rf-v ${R.vc}"><p>${R.vt}</p></div>
+  ${chk}${det.join('')}
+  <p class="note2">Gefühl (wie du dich fühlst) und Leistung (was deine Sätze zeigen) werden getrennt bewertet – Müdigkeitsgefühl allein ist kein Leistungsabfall. Reine Orientierung: Das Programm, die Vorgaben und Lasten werden dadurch nicht verändert.</p></section>`}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-feel]');if(!t)return;const n=nextSession();if(!n)return;const [k,v]=t.dataset.feel.split('|');const L=log(n.w,n.d,true);if(!L.feel)L.feel={};L.feel[k]=L.feel[k]===+v?undefined:+v;if(L.feel[k]===undefined)delete L.feel[k];saveLog(key(n.w,n.d));const y=scrollY;render();scrollTo(0,y)});
 function whoopSessions(){const out=[];Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{let A=null,best=null;
   for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||!L.whoop||!P[w][d].b.length)continue;
    if(!A){A=allSets();best={};A.forEach(x=>{if(EX[x.e]&&EX[x.e].m&&x.e1&&(best[x.e]==null||x.e1>best[x.e]))best[x.e]=x.e1})}
@@ -2987,6 +3067,7 @@ const TIC={book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0
 const tx=(el,sel)=>{const x=sel?el.querySelector(sel):el;return x?x.textContent.replace(/\s+/g,' ').trim():''};
 const TCFG={
  home:{keep:'.greet,.hero',list:[
+  {k:'ready',m:'.rfc',t:'Readiness',ic:'heart',c:'#43c08a',val:()=>{const R=readiness();return R&&R.total!=null?R.total+' %':'–'},sub:()=>{const R=readiness();return R?(R.total!=null?rfLbl(R.total)+' · '+(R.feelLow&&!R.perfLow?'müde, Leistung stabil':R.perfLow&&!R.feelLow?'Leistung sinkt':R.perfLow?'Ermüdung':'Körper · Gefühl · Leistung'):'Check-in & WHOOP'):''}},
   {k:'whoop',m:'.wcard',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wc-ring b')||'–',sub:e=>tx(e,'.wc-t b')},
   {k:'satz',m:'.fsc',t:'Erster Hauptsatz',ic:'bar',c:'#e8484f',val:e=>tx(e,'.r b')||'frei',sub:e=>tx(e,'.bbcap b')},
   {k:'zeit',m:'.wtime',t:'Trainingszeit',ic:'clock',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/Gesamt\s*([^\n]+)/);return m?m[1].trim():'–'},sub:e=>{const m=e.innerText.match(/Ø pro Einheit\s*([^\n]+)/);return m?'Ø '+m[1].trim()+' pro Einheit':'diese Woche'}},
@@ -3772,6 +3853,7 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
    <div class="r">${kg?`<b class="zahl glow" data-count="${kg}" data-dec="2">${pnum(L&&L.b[b0][0].kg)==null&&sg.t!=='v'?'<i class="apx" style="font-style:normal;opacity:.7;margin-right:3px">≈</i>':''}${nf(kg,2)}<small>kg</small></b><small class="mut">${pl.map(p=>nf(p,2)).join(' + ')} / Seite</small>`:`<b style="font-size:15px">Last nach Gefühl</b><small class="mut">danach rechnet die App</small>`}</div></div>
  </section>
  ${weekTimeHTML()}
+ ${rfcHTML()}
  <section class="wistile" hidden></section>
  ${doneN>=NS()-4?nxt:''}
  <section class="card"><div class="cyc"><span class="cring">${ringSVG(doneN/NS(),'var(--day)',84,8)}<b class="zahl" data-count="${doneN}">${doneN}</b><small>/${NS()}</small></span>
