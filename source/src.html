@@ -1814,6 +1814,26 @@ body.oled .gdock{background:linear-gradient(180deg,rgba(0,0,0,0),#000 18px)!impo
 .anad b{display:block;font-size:16px}.anad small{font-size:12.5px;color:var(--ink2)}
 .anad-b{grid-column:1/-1;display:flex;gap:8px}.anad-b button{flex:1;min-height:42px;border-radius:13px;border:1px solid var(--line2);background:var(--raise);color:var(--ink);font:inherit;font-weight:800}.anad-b .pri{background:var(--brand);border-color:transparent;color:#fff}
 </style>
+<style id="cf-runde6">
+/* 1 Check-in-Schritte */
+.ck-step{display:none}.ck-step.on{display:block;animation:auf .3s var(--ease,ease) both}
+.ck-prog{display:grid;gap:6px;padding:4px 16px 10px}.ck-pb{display:flex;gap:4px}.ck-pb i{flex:1;height:5px;border-radius:3px;background:var(--line2)}.ck-pb i.d{background:#43c08a}.ck-pb i.c{background:var(--brand);box-shadow:0 0 8px var(--brand)}
+.ck-prog small{font-size:12px;font-weight:700;color:var(--ink2)}
+.ck-step>p.ck-h:first-child{display:none}
+.ck-foot{display:flex;gap:8px}.ck-foot .btn{flex:1}.ck-foot [hidden]{display:none!important}
+/* 2 Satz-Meldung als Pille oben */
+.fx.done{place-items:start center!important;padding-top:calc(env(safe-area-inset-top,0px) + 70px)!important}
+.fx.done .fx-in{grid-auto-flow:column;align-items:center;gap:10px!important;padding:9px 18px 9px 10px!important;border-radius:999px!important;max-width:92vw;text-align:left!important;background:rgba(14,30,26,.96)!important;border-color:rgba(67,192,138,.5)!important}
+.fx.done .fx-ck{width:34px!important;height:34px!important}.fx.done .fx-in b{font-size:17px!important}.fx.done .fx-in small{font-size:12px!important}
+.fx.done .fx-in>b+small{display:none}
+/* 4 Readiness einklappen */
+.rf-more{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}.rf-more summary{display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;font-size:13px;font-weight:800;color:#9fb3ff}.rf-more summary::-webkit-details-marker{display:none}
+.rf-more summary svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.rf-more[open] summary{margin-bottom:6px}
+/* 6 Timer bleibt in der schmalen Kopfzeile */
+body.hdc .top .marke .psub:has(.sesschip:not([hidden])){max-height:30px;opacity:1}
+body.hdc .top .psub:has(.sesschip:not([hidden])) .t2,body.hdc .top .psub:has(.sesschip:not([hidden])) #progsub{display:none}
+body.hdc .top .psub .sesschip{margin-left:0}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -2479,8 +2499,17 @@ function ckHTML(){if(CK.rest)return ckRestHTML();const {w,d}=CK;return withProg(
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung für dein Readiness-Center. Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
  <div class="ck-foot"><button type="button" class="btn" data-ckskip>${CK.go?'Überspringen':'Schließen'}</button><button type="button" class="btn primary" data-ckgo>${CK.go?'Weiter zum Training':'Speichern'}</button></div></div>`})}
-function ckOpen(pid,w,d,go){CK={pid,w,d,go};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();el.hidden=false;document.body.classList.add('ckopen')}
-function ckRefresh(){const el=document.getElementById('ckin');if(!el||!CK)return;const sc=el.querySelector('.ck-sc');const y=sc?sc.scrollTop:0;el.innerHTML=ckHTML();const s2=el.querySelector('.ck-sc');if(s2)s2.scrollTop=y}
+function ckOpen(pid,w,d,go){CK={pid,w,d,go,step:0};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}
+function ckRefresh(){const el=document.getElementById('ckin');if(!el||!CK)return;const sc=el.querySelector('.ck-sc');const y=sc?sc.scrollTop:0;el.innerHTML=ckHTML();ckSteps(el);const s2=el.querySelector('.ck-sc');if(s2)s2.scrollTop=y}
+function ckSteps(el){const sc=el.querySelector('.ck-sc');if(!sc)return;const kids=[...sc.children];const groups=[];let cur=null;
+ kids.forEach(k=>{if(k.matches('p.ck-h')||!cur){cur={t:k.matches('p.ck-h')?k.textContent.trim():'',els:[]};groups.push(cur)}cur.els.push(k)});
+ if(groups.length<3)return;const n=groups.length;CK.step=Math.max(0,Math.min(n-1,CK.step||0));
+ groups.forEach((g,i)=>{const d=document.createElement('div');d.className='ck-step'+(i===CK.step?' on':'');g.els.forEach(x=>d.appendChild(x));sc.appendChild(d)});
+ const pr=document.createElement('div');pr.className='ck-prog';pr.innerHTML=`<div class="ck-pb">${groups.map((g,i)=>`<i class="${i<CK.step?'d':i===CK.step?'c':''}"></i>`).join('')}</div><small>Schritt ${CK.step+1} von ${n} · ${esc(groups[CK.step].t.replace(/\s+/g,' '))}</small>`;sc.before(pr);
+ const ft=el.querySelector('.ck-foot');if(!ft)return;const go=ft.querySelector('[data-ckgo]');const last=CK.step===n-1;
+ if(!last&&go){go.hidden=true;const nx=document.createElement('button');nx.type='button';nx.className='btn primary';nx.dataset.ckstep='1';nx.textContent='Weiter';ft.appendChild(nx)}
+ if(CK.step>0){const bk=document.createElement('button');bk.type='button';bk.className='btn';bk.dataset.ckstep='-1';bk.textContent='Zurück';const first=ft.firstElementChild;first.hidden=true;ft.prepend(bk)}}
+document.addEventListener('click',e=>{const t=e.target.closest('#ckin [data-ckstep]');if(!t||!CK)return;e.stopPropagation();CK.step=(CK.step||0)+ +t.dataset.ckstep;const el=document.getElementById('ckin');el.innerHTML=ckHTML();ckSteps(el);const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
 function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
 function ckSave(fn){if(CK.rest){if(!S.meta.rest)S.meta.rest={};const o=S.meta.rest[CK.rest]||(S.meta.rest[CK.rest]={});fn(o);o.at=Date.now();saveMeta();return}withProg(CK.pid,()=>{const L=log(CK.w,CK.d,true);fn(L);saveLog(key(CK.w,CK.d))})}
 function needCk(w,d){const L=log(w,d);return !(L&&(L.ck||L.done||L.start))}
@@ -2516,7 +2545,7 @@ function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());c
   ${hist.length?`<p class="sec" style="margin:12px 0 6px">Letzte Ruhetage</p><div class="rd-h">${hist.map(x=>`<span><em>${x.s??'–'}</em><b><i style="height:${Math.max(8,x.s??0)}%;background:${rfCol(x.s)}"></i></b><small>${new Date(x.k+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</small></span>`).join('')}</div>`:''}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn ${o?'':'primary'}" data-rdopen>${o?'Bearbeiten':'Check-in starten'}</button></div></section>`}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||b.tagName!=='BUTTON')return;try{localStorage.setItem('cf-theme',b.dataset.theme)}catch(err){}location.reload()});
-document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();el.hidden=false;document.body.classList.add('ckopen')}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}});
 /* ===================== Readiness & Fatigue Center ===================== */
 // Drei getrennte Signale: Körper (WHOOP) · Gefühl (Check-in) · Leistung (Trainingsergebnisse). Reine Anzeige – ändert keine Vorgaben.
 const FEELQ=[['energy','Energie','leer','voll'],['sleepq','Schlafqualität','schlecht','top'],['sore','Muskelkater','stark','keiner'],['motiv','Motivation','null','hoch'],['stress','Stress','hoch','keiner']];
@@ -3126,6 +3155,7 @@ function offerUndo(w,d,b,i,snap,tSnap){UNDO={w,d,b,i,snap,tSnap,at:Date.now()};l
  el.innerHTML=`<span>Satz ${i+1} abgehakt</span><button type="button" data-undo><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>Rückgängig</button><i></i>`;
  el.hidden=false;el.classList.remove('run');void el.offsetWidth;el.classList.add('run');
  clearTimeout(offerUndo.t);offerUndo.t=setTimeout(()=>{el.hidden=true;UNDO=null},5000)}
+function hideUndo(){const el=$('#undo');if(el)el.hidden=true}
 function doUndo(){const u=UNDO;if(!u)return;UNDO=null;$('#undo').hidden=true;clearTimeout(offerUndo.t);
  const L=log(u.w,u.d,true);L.b[u.b][u.i]=JSON.parse(JSON.stringify(u.snap));
  if(u.tSnap){Object.assign(T,u.tSnap);saveT();if(!T.on)closeSheet()}
@@ -3478,13 +3508,13 @@ const TCFG={
   {k:'claude',m:e=>/Claude-Coach/.test(e.textContent.slice(0,60)),t:'Claude-Coach',ic:'chat',c:'#b48cff',val:()=>'Analyse',sub:()=>'Wochenanalyse mit Fazit & Tipps'},
   {k:'cockpit',m:e=>/Cockpit/.test(e.textContent.slice(0,60)),t:'Cockpit',ic:'box',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/(\d+)\s*bereit/);return m?m[1]:'–'},sub:()=>'Pakete im Postausgang'}]},
  setup:{keep:'',list:[
-  {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>S.meta.bw?nf(S.meta.bw,1)+' kg':'–',sub:()=>S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln'},
+  {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>curBw()?nf(curBw(),1)+' kg':'offen',sub:()=>(curBw()?'':'Körpergewicht eintragen · ')+(S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln')},
   {k:'plan',m:/^Zeitplan/,t:'Zeitplan',ic:'cal',c:'#43c08a',val:()=>{const d=new Date(S.meta.start+'T12:00:00');return isNaN(d)?'–':d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})},sub:()=>'Startdaten aller Phasen'},
-  {k:'shift',m:/^Phasen verschieben/,t:'Verschieben',ic:'shift',c:'#7fa8ff',val:()=>'± Wochen',sub:()=>'Urlaub, Krankheit, Stress'},
+  {k:'shift',m:/^Phasen verschieben/,t:'Verschieben',ic:'shift',c:'#7fa8ff',val:()=>{const n=nextTest();return n?'Test '+n.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'–'},sub:()=>'Phasen bei Urlaub, Krankheit oder Stress verschieben'},
   {k:'design',m:/^Design/,t:'Design',ic:'palette',c:'#3d63f5',val:()=>(window.CF_THEME||'blue')==='blue'?'Blau':'Classic',sub:()=>'Farbthema der App'},
   {k:'timer',m:/^Pausen-Timer/,t:'Pausen-Timer',ic:'timer',c:'#5ad1e6',val:()=>mmss(S.meta.restMain||300),sub:()=>'Zubehör '+mmss(S.meta.restAcc||120)},
   {k:'hantel',m:/^Hantel/,t:'Hantel & Rundung',ic:'plate',c:'#e8484f',val:()=>nf(S.meta.bar||20,2)+' kg',sub:()=>'Rundung '+nf(S.meta.round||2.5,2)+' kg'},
-  {k:'rechnet',m:/^So rechnet/,t:'So rechnet die App',ic:'calc',c:'#b48cff',val:()=>'5',sub:()=>'Regeln für Vorgaben & Empfehlungen'},
+  {k:'rechnet',m:/^So rechnet/,t:'So rechnet die App',ic:'calc',c:'#b48cff',val:()=>'5 Regeln',sub:()=>'Vorgabe vs. Empfehlung, Rundung, RPE'},
   {k:'backup',m:/^Datensicherung/,t:'Datensicherung',ic:'shield',c:'#43c08a',val:e=>window.CF_PWA?(bkAge()==null?'offen':bkAge()+' T'):(/aktiv/.test(e.textContent.slice(0,40))?'aktiv':'–'),sub:()=>window.CF_PWA?bkText():'Sicherungen & Wiederherstellen'},
   {k:'export',m:/^Export/,t:'Export',ic:'down',c:'#f0a066',val:()=>'CSV',sub:()=>'Alle Sätze als Datei'},
   {k:'sheet',m:e=>e.classList.contains('gsync'),t:'Google Sheet',ic:'sheet',c:'#43c08a',val:()=>'Sync',sub:()=>'Abgleich App ↔ Sheet'}]}};
@@ -4033,6 +4063,9 @@ function anaDueHTML(){if((S.ui.tdet||{}).home)return '';let due=null;for(let w=0
 document.addEventListener('click',e=>{const g=e.target.closest('[data-anago]');if(g){S.ui.tab='coach';S.ui.aw=+g.dataset.anago;if(!S.ui.tdet)S.ui.tdet={};S.ui.tdet.coach='claude';render();scrollTo(0,0);return}
  const k=e.target.closest('[data-anaskip]');if(k){if(!S.meta.anaSkip)S.meta.anaSkip={};S.meta.anaSkip[k.dataset.anaskip]=1;saveMeta();render()}});
 
+document.addEventListener('click',e=>{if(e.target.closest('nav .nav button,#nav button,[data-g="close"]'))try{hideUndo()}catch(err){}},true);
+/* 4 Readiness: Erklärungen einklappen */
+function rfTidy(v){const t=v.querySelector('.tdet.rfc,.rfc.tdet')||(S.ui.tdet&&S.ui.tdet.home==='ready'?v.querySelector('.rfc'):null);if(!t||t.querySelector('.rf-more'))return;const ns=[...t.querySelectorAll('p.note2')];if(!ns.length)return;const d=document.createElement('details');d.className='rf-more';d.innerHTML='<summary><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>So wird bewertet</summary>';ns.forEach(n=>d.appendChild(n));t.appendChild(d)}
 let renderPending=false;
 setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
 (function(){let c=false,tk=false;addEventListener('scroll',()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;const y=scrollY;if(!c&&y>90){c=true;document.body.classList.add('hdc')}else if(c&&y<12){c=false;document.body.classList.remove('hdc')}})},{passive:true})})();
@@ -4041,7 +4074,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
