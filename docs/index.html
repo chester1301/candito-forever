@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1823-42cf9c3";
+<script>window.CF_VERSION="2026.10.19-1833-396d587";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2209,6 +2209,15 @@ html .gym .gtq.gtr.paused .gtr-t small.st i{background:#f3c969;box-shadow:0 0 4p
 html .gym .gym-in.tight .gtq.gtr,html .gym .gym-in.tight .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gym-in.tight .gtr-t b{font-size:16px!important}
 @media (max-height:760px){html .gym .gtq.gtr,html .gym .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gtr-t b{font-size:16px!important}}
 </style>
+<style id="cf-r7">
+.bkd{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;border:1px solid rgba(243,201,105,.35)!important;background:linear-gradient(180deg,#1a1f33,#11152a)!important}
+.bkd-i{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:rgba(243,201,105,.12);box-shadow:inset 0 0 0 1px rgba(243,201,105,.35)}.bkd-i svg{width:22px;height:22px;fill:none;stroke:#f3c969;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.bkd b{display:block;font-size:15.5px}.bkd small{font-size:12.5px;color:var(--ink2);line-height:1.4}
+.bkd-b{grid-column:1/-1;display:grid;grid-template-columns:2fr 1fr;gap:8px}.bkd-b button{min-height:42px;border-radius:13px;border:1px solid var(--line2);background:var(--raise);color:var(--ink);font:800 14px var(--f)}
+.bkd-b .pri{border:0;color:#1a1305;background:linear-gradient(180deg,#f6d482,#e2b04a);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 18px -10px rgba(226,176,74,.9)}
+#cfbar.bk{display:none!important}
+body.gymopen #cfbar{display:none!important}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -3476,7 +3485,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1823-42cf9c3</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1833-396d587</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -3876,7 +3885,7 @@ function fairTrend(){const comp={sq:'csq',bp:'pbb',dl:'cdl'};const pts={sq:[],bp
  Object.values(pts).forEach(a=>a.sort((x,y)=>(x.dt||0)-(y.dt||0)));return pts}
 function fairTrendHTML(){const pts=fairTrend();const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};const tot=Object.values(pts).reduce((a,v)=>a+v.length,0);
  const head=`<div class="ct"><div><p class="eyebrow">Alle Programme</p><h2 class="h2">Vergleichbarer Kraft-Trend</h2></div>${evid(tot,'ses')}</div>`;
- if(!tot)return `<section class="card">${head}<div class="leer">Hier zählen nur vergleichbare Sätze: Comp Squat, Comp Bench und Comp Deadlift mit 1–6 Wiederholungen und RPE ab 8. Sobald du solche Sätze abhakst, erscheint dein fairer e1RM-Verlauf.</div></section>`;
+ if(!tot)return `<section class="card">${head}<div class="leer">Dein Total oben stammt aus allen Wettkampf-Sätzen. Dieser Trend nutzt bewusst nur schwere, gut vergleichbare Sätze: Comp Squat, Comp Bench und Comp Deadlift mit 1–6 Wiederholungen ab RPE 8. Die kommen im Intro-Zyklus ab Woche 2 – dann erscheint hier der faire Verlauf.</div></section>`;
  const W=420,H=200,pl=40,pr2=12,pt=14,pb=24;const all=Object.values(pts).flat();const t0=Math.min(...all.map(x=>+x.dt||0)),t1=Math.max(...all.map(x=>+x.dt||0));
  const vals=all.map(x=>x.e1);let lo=Math.min(...vals),hi=Math.max(...vals);const pad=Math.max(5,(hi-lo)*.12);lo-=pad;hi+=pad;
  const X=t=>pl+(t1>t0?((+t-t0)/(t1-t0)):.5)*(W-pl-pr2),Y=v=>pt+(1-(v-lo)/(hi-lo))*(H-pt-pb);let g='';
@@ -4244,7 +4253,7 @@ function labHTMLBase(A){const comp={sq:'csq',bp:'pbb',dl:'cdl'},names={sq:'Knieb
  const wk=k=>[...Array(NW()).keys()].map(w=>{const v=A.filter(s=>s.e===comp[k]&&s.w===w).map(s=>s.e1).filter(Boolean);return v.length?Math.max(...v):null});
  const tiles=['sq','bp','dl'].map(k=>{const s=wk(k),nn=s.filter(v=>v!=null),best=nn.length?Math.max(...nn):null;const dl=nn.length>1?nn[nn.length-1]-nn[nn.length-2]:null;const rk=refKg(RK[k]);
   return {k,s,best,dl,rk,start:rk?e1rm(rk,1,9):null}});
- const total=tiles.every(t=>t.best)?tiles.reduce((a,t)=>a+t.best,0):null,start=tiles.every(t=>t.start)?tiles.reduce((a,t)=>a+t.start,0):null;
+ const total=tiles.every(t=>t.best)?tiles.reduce((a,t)=>a+Math.round(t.best),0):null,start=tiles.every(t=>t.start)?tiles.reduce((a,t)=>a+Math.round(t.start),0):null;
  return `<section class="card lab"><div class="lab-k"><div style="min-width:0"><p class="eyebrow">Performance Lab</p><h2 class="h2">Kraft · geschätztes 1RM</h2>
    <div class="lab-total"><b class="zahl" data-count="${total?Math.round(total):0}">${total?nf(total,0):'–'}<small>kg Total</small></b>${total&&start?`<span class="dlt ${total>=start?'up':'dn'}">${total>=start?'▲':'▼'} ${nf(Math.abs(total-start),0)} kg seit W1</span>`:''}</div></div>
   <span class="lab-ring">${ringSVG(doneN/NS(),'var(--day)',76,7)}<b class="zahl" data-count="${doneN}">${doneN}</b><small>/${NS()}</small></span></div>
@@ -4924,7 +4933,7 @@ const TCFG={
   {k:'ready',hide:1,m:'.rfc',t:'Readiness',ic:'heart',c:'#43c08a',val:()=>{const R=readiness();return R&&R.total!=null?R.total+' %':'–'},sub:()=>{const R=readiness();return R?(R.total!=null?rfLbl(R.total)+' · '+(R.feelLow&&!R.perfLow?'müde, Leistung stabil':R.perfLow&&!R.feelLow?'Leistung sinkt':R.perfLow?'Ermüdung':'Körper · Gefühl · Leistung'):'Check-in & WHOOP'):''}},
   {k:'whoop',hide:1,m:'.wcard',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wc-ring b')||'–',sub:e=>tx(e,'.wc-t b')},
   {k:'satz',m:'.fsc',t:'Erster Hauptsatz',ic:'bar',c:'#e8484f',val:e=>tx(e,'.r b')||'frei',sub:e=>tx(e,'.bbcap b')},
-  {k:'zeit',m:'.wtime',t:'Trainingszeit',ic:'clock',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/Gesamt\s*([^\n]+)/);return m?m[1].trim():'–'},sub:e=>{const m=e.innerText.match(/Ø pro Einheit\s*([^\n]+)/);return m?'Ø '+m[1].trim()+' pro Einheit':'diese Woche'}},
+  {k:'zeit',m:'.wtime',t:'Zeit · Woche',ic:'clock',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/Gesamt\s*([^\n]+)/);return m?m[1].trim():'–'},sub:e=>{const h=tx(e,'h2');const m=e.innerText.match(/Ø pro Einheit\s*([^\n]+)/);return (h?h.replace(/ · .*/,'')+' · ':'')+(m&&/\d/.test(m[1])?'Ø '+m[1].trim()+' pro Einheit':'Trainingszeit gesamt')}},
   {k:'next',m:'.nxtp',t:'Anschluss',ic:'next',c:'#7fa8ff',val:e=>tx(e,'.rct b').replace(/^Candito /,''),sub:e=>tx(e,'.rct small')},
   {k:'zyklus',m:e=>/Zyklus-Fortschritt/.test(e.textContent),t:'Zyklus',ic:'ring',c:'#43c08a',val:e=>tx(e,'.cring b')+' / '+NS(),sub:e=>tx(e,'h2')},
   {k:'wissen',m:'.wistile',t:'Wissen',ic:'book',c:'#e2b04a',go:'wissen',val:()=>wisSecs().length+'',sub:()=>'Kapitel zu Programmen, RPE, Hype & Pausen'}]},
@@ -5251,7 +5260,7 @@ function prHeroHTML(D){const RK={sq:'SQ',bp:'BP',dl:'DL'},N={sq:'Kniebeuge',bp:'
  const st={};['sq','bp','dl'].forEach(k=>{const rk=refKg(RK[k]);st[k]=rk?e1rm(rk,1,9):null});
  const dlt=(b,a)=>b!=null&&a?`<i class="${b>=a?'up':'dn'}">${b>=a?'+':'−'}${nf(Math.abs(b-a),1)}</i>`:`<i class="no">${b!=null?'e1RM':'noch offen'}</i>`;
  const col=k=>`<div><small>${N[k]}</small><b>${D.best[k]!=null?nf(D.best[k],0):'–'}${D.best[k]!=null?'<em>kg</em>':''}</b>${dlt(D.best[k],st[k])}</div>`;
- const tot=D.total,tst=['sq','bp','dl'].every(k=>st[k])?st.sq+st.bp+st.dl:null;
+ const tot=D.total!=null?Math.round(D.best.sq)+Math.round(D.best.bp)+Math.round(D.best.dl):null,tst=['sq','bp','dl'].every(k=>st[k])?Math.round(st.sq)+Math.round(st.bp)+Math.round(st.dl):null;
  return `<section class="card prh">${col('sq')}${col('bp')}${col('dl')}<div class="tot"><small>Total</small><b>${tot!=null?nf(tot,0):'–'}${tot!=null?'<em>kg</em>':''}</b>${dlt(tot,tst)}</div><p class="prh-n">Geschätztes 1RM (e1RM) aus deinen Wettkampf-Lifts · Veränderung zum Startwert${tot!=null&&curBw()?` · DOTS <span style="color:var(--ink);font-weight:800">${nf(dots(tot,curBw(),S.meta.sex==='w'),1)}</span> bei ${nf(curBw(),1)} kg`:''}</p></section>`}
 function renderProg(){const D=progData(),{A}=D;
  const pd=S.ui.pd;if(pd&&D.sec[pd]){const [t,sub]=PDT[pd];return `<div class="pdh" style="--pc:${PDC[pd]}"><button type="button" class="pdb" data-pdback aria-label="Zurück zur Übersicht"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><p class="eyebrow">Progress · ${esc(PROGS[PROG].short)}</p><h2 class="pdt">${t}</h2></div><span class="pdi"><svg viewBox="0 0 24 24">${PDI[pd]}</svg></span></div><div class="pdbody">${D.sec[pd]()}</div>`}
@@ -5264,7 +5273,7 @@ function renderProg(){const D=progData(),{A}=D;
  // Kraft
  const tot=[...Array(NW()).keys()].map(w=>{const v=D.series.map(s=>s.v[w]);return v.every(x=>x!=null)?v.reduce((a,b)=>a+b,0):null});
  const anyB=['sq','bp','dl'].filter(k=>D.best[k]);
- const kraft=T('kraft',D.total?nf(D.total,0):anyB.length?nf(anyB.reduce((a,k)=>a+D.best[k],0),0):'–',D.total?'kg Total':anyB.length?'kg (Teil)':'',D.total?`SQ ${nf(D.best.sq,0)} · BP ${nf(D.best.bp,0)} · DL ${nf(D.best.dl,0)}`:'e1RM aus deinen Wettkampf-Lifts',spark(tot,PDC.kraft));
+ const kraft=T('kraft',D.total?nf(Math.round(D.best.sq)+Math.round(D.best.bp)+Math.round(D.best.dl),0):anyB.length?nf(anyB.reduce((a,k)=>a+D.best[k],0),0):'–',D.total?'kg Total':anyB.length?'kg (Teil)':'',D.total?`SQ ${nf(D.best.sq,0)} · BP ${nf(D.best.bp,0)} · DL ${nf(D.best.dl,0)}`:'e1RM aus deinen Wettkampf-Lifts',spark(tot,PDC.kraft));
  // Treue
  const R=adhAll(),t=R.tot,hp=t.ev?t.hit/t.ev:null,vp=t.plan?t.done/t.plan:null;
  const treue=T('treue',hp!=null?Math.round(hp*100):'–',hp!=null?'%':'',hp!=null?`Umfang ${Math.round((vp||0)*100)} % · ${t.hit}/${t.ev} Vorgaben`:'erscheint nach den ersten Sätzen',`<span class="tring">${ringSVG(hp||0,PDC.treue,46,6)}</span>`);
@@ -5297,7 +5306,7 @@ function renderProg(){const D=progData(),{A}=D;
  // Verlauf
  const ver=T('verlauf',D.sessions.length,'/ '+NS(),D.sessions.length?(()=>{const [w,d]=D.sessions[D.sessions.length-1];const L=log(w,d);return 'Zuletzt '+(L.date?new Date(L.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'W'+(w+1)+' '+DAYS[d].tag)})():'noch keine Einheit abgeschlossen',`<div class="tdots">${[...Array(NS()).keys()].map(i=>`<i class="${dayStatus(Math.floor(i/ND()),i%ND())==='done'?'on':''}"></i>`).join('')}</div>`);
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
-  ${prHeroHTML(D)}${forecastHTML()}${calHTML()}<div class="pgrid">${psec('Kraft','Stärke & Bestwerte')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${psec('Training','Umfang & Ausführung')}${vol}${treue}${bo}${ver}${psec('Steuerung','Gefühl, Erholung & Planung')}${rpe}${wh}${T('rpeplan',(()=>{const m=rpMax();return m?nf(m,0):'kg'})(),(()=>rpMax()?'kg 1RM':'')(),'Last je RPE aus deinem Satz oder 1RM','',true)}${psec('Plan','Phasen & Termine')}${year}${zy}${te}</div>`}
+  ${prHeroHTML(D)}${['sq','bp','dl'].some(k=>{try{return e1Forecast(k).f}catch(e){return false}})?forecastHTML():''}${calHTML()}<div class="pgrid">${psec('Kraft','Stärke & Bestwerte')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${psec('Training','Umfang & Ausführung')}${vol}${treue}${bo}${ver}${psec('Steuerung','Gefühl, Erholung & Planung')}${rpe}${wh}${T('rpeplan',(()=>{const m=rpMax();return m?nf(m,0):'kg'})(),(()=>rpMax()?'kg 1RM':'')(),'Last je RPE aus deinem Satz oder 1RM','',true)}${psec('Plan','Phasen & Termine')}${year}${zy}${te}</div>`}
 function psec(t,s){return `<div class="psec"><h3>${t}</h3><small>${s}</small></div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
@@ -5396,14 +5405,15 @@ function liftVolHTML(){const G3=['sq','bp','dl'];const C=(window.CF_THEME||'blue
   <p class="note2" style="margin:6px 0 0">Umriss = geplante Sätze laut Candito (inkl. Varianten der jeweiligen Lift-Gruppe), Füllung = erledigt.</p></section>`}
 
 // --- Wochenrückblick ---
+function weekPlanned(st,end){let p=0;ORD().concat(sqActive()?[sqActive()]:[]).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt&&dt>=st&&dt<=end)p++}}));return p}
 function weekRecap(){const now=new Date();const dw=now.getDay();const show=(dw===0&&now.getHours()>=17)||dw===1;if(!show)return null;
  const end=new Date(now);end.setHours(23,59,59,999);if(dw===1)end.setDate(end.getDate()-1);const st=new Date(end);st.setDate(st.getDate()-6);st.setHours(0,0,0,0);
  let ses=0,sets=0,ton=0,best=null;const rec=[];
  rfAllLogs().forEach(x=>{if(x.dt<st||x.dt>end)return;let n=0;withProg(x.pid,()=>{x.day.b.forEach((bl,b)=>{(x.L.b[b]||[]).forEach(z=>{if(!z||!z.ok)return;n++;const kg=pnum(z.kg)||0,r=pnum(z.r)||0;ton+=kg*r;const ex=EX[bl.e];if(ex&&ex.m&&GN[ex.g]){const e=e1rm(kg,r,pnum(z.rpe)??bl.rpe);if(e&&(!best||e>best.e1))best={e1:e,n:ex.n,kg,r,rpe:pnum(z.rpe)}}})})});if(n){ses++;sets+=n}if(x.L.whoop&&x.L.whoop.rec!=null)rec.push(+x.L.whoop.rec)});
  Object.entries(S.meta.rest||{}).forEach(([k,o])=>{const d=new Date(k+'T12:00:00');if(d>=st&&d<=end&&o&&o.whoop&&o.whoop.rec!=null)rec.push(+o.whoop.rec)});
- return {st,end,ses,sets,ton,best,rec:rec.length?rec.reduce((a,b)=>a+b,0)/rec.length:null}}
+ return {st,end,ses,plan:weekPlanned(st,end),sets,ton,best,rec:rec.length?rec.reduce((a,b)=>a+b,0)/rec.length:null}}
 function weekRecapHTML(){const R=weekRecap();if(!R||!R.ses)return '';const f=d=>d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
- return `<section class="card wrc"><div class="wrc-h"><div><p class="eyebrow">Wochenrückblick · ${f(R.st)}–${f(R.end)}</p><h2 class="h2">${R.ses?'Starke Woche, Marcel':'Diese Woche ohne Training'}</h2></div><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg></div>
+ return `<section class="card wrc"><div class="wrc-h"><div><p class="eyebrow">Wochenrückblick · ${f(R.st)}–${f(R.end)}</p><h2 class="h2">${R.plan&&R.ses>=R.plan?'Starke Woche, Marcel':R.plan?`${R.ses} von ${R.plan} Einheiten geschafft`:'Woche abgeschlossen'}</h2></div><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg></div>
   <div class="wrc-s"><div><b>${R.ses}</b><small>Einheiten</small></div><div><b>${R.sets}</b><small>Sätze</small></div><div><b>${nf(R.ton/1000,1)} t</b><small>Tonnage</small></div><div><b>${R.rec!=null?Math.round(R.rec)+' %':'–'}</b><small>Ø Recovery</small></div></div>
   ${R.best?`<p class="wrc-b"><span>Beste Leistung</span><b>${esc(R.best.n)} · ${nf(R.best.kg,2)} kg × ${nf(R.best.r)}${R.best.rpe!=null?' @'+nf(R.best.rpe):''}</b><em>≈ ${nf(R.best.e1,1)} kg e1RM</em></p>`:''}
   <div class="erh-b"><button type="button" class="pri" data-wrcana>Zur Claude-Analyse</button><button type="button" data-wrcshare>Als Bild teilen</button></div></section>`}
@@ -5488,6 +5498,9 @@ function rpeLiftHTML(A){const G3=['sq','bp','dl'];const R=G3.map(g=>{const v=A.f
   <div class="rpl-sc"><span>leichter als geplant</span><span>Vorgabe</span><span>schwerer</span></div>
   <p class="note2" style="margin:6px 0 0">Vergleicht dein eingetragenes RPE mit Canditos Vorgabe-RPE. Die App ändert dadurch keine Lasten.</p></section>`}
 // 10 Analyse-Erinnerung
+function bkDueHTML(){if(!window.CF_PWA)return '';let tot=0;try{tot=totalOk()}catch(e){}if(!tot)return '';const a=bkAge();if(a!=null&&a<=7)return '';let sn=0;try{sn=+localStorage.getItem('cf-bksnooze')||0}catch(e){}if(Date.now()<sn)return '';
+ return `<section class="card bkd"><span class="bkd-i"><svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5z"/><path d="M12 11v6M9.5 14.5 12 17l2.5-2.5"/></svg></span><div><b>${a==null?'Noch keine iCloud-Sicherung':'Sicherung fällig'}</b><small>${a==null?'Einmal sichern – dann sind deine Trainingsdaten auch bei einem neuen iPhone sicher.':'Letzte iCloud-Sicherung vor '+a+' Tagen.'}</small></div><div class="bkd-b"><button type="button" class="pri" data-bkdo>Jetzt sichern</button><button type="button" data-bklater>Später</button></div></section>`}
+document.addEventListener('click',e=>{if(e.target.closest('[data-bkdo]')){try{downloadBackup()}catch(x){}return}if(e.target.closest('[data-bklater]')){try{localStorage.setItem('cf-bksnooze',String(Date.now()+2*864e5))}catch(x){}render()}});
 function anaDueHTML(){if((S.ui.tdet||{}).home)return '';let due=null;for(let w=0;w<NW();w++){let all=true;for(let d=0;d<ND();d++)if(P[w][d].b.length&&dayStatus(w,d)!=='done')all=false;if(all&&!S.ana[AK(w)]&&!((S.meta.anaSkip||{})[AK(w)]))due=w}
  if(due==null)return '';return `<section class="card anad"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg><div><b>W${due+1} ist fertig</b><small>Jetzt an Claude senden und Fazit & Tipps für die nächste Woche holen?</small></div><div class="anad-b"><button type="button" class="pri" data-anago="${due}">Senden</button><button type="button" data-anaskip="${AK(due)}" aria-label="Später">Später</button></div></section>`}
 document.addEventListener('click',e=>{const g=e.target.closest('[data-anago]');if(g){S.ui.tab='coach';S.ui.aw=+g.dataset.anago;if(!S.ui.tdet)S.ui.tdet={};S.ui.tdet.coach='claude';render();scrollTo(0,0);return}
@@ -5663,7 +5676,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
@@ -6352,6 +6365,7 @@ setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.met
   function checkBackup(){
     if(!box.hidden&&box.classList.contains('upd'))return;
     var d=Date.now(),le=lastExport();
+    if(box.classList.contains('bk'))hide();return; /* Erinnerung erscheint jetzt als Karte auf „Heute“ */
     if(!hasData()||d-le<7*864e5||d<snoozed()){if(box.classList.contains('bk'))hide();return}
     show('<div class="cft"><b>Sicherung fällig</b><small>'+(le?'Letzte iCloud-Sicherung vor '+Math.floor((d-le)/864e5)+' Tagen':'Noch keine Sicherung in iCloud gespeichert')+'</small></div><button type="button" data-cf="bk">Jetzt sichern</button><button type="button" class="x" data-cf="later" aria-label="Später erinnern">✕</button>','bk');
   }

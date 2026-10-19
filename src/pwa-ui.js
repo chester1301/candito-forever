@@ -28,6 +28,7 @@
   function checkBackup(){
     if(!box.hidden&&box.classList.contains('upd'))return;
     var d=Date.now(),le=lastExport();
+    if(box.classList.contains('bk'))hide();return; /* Erinnerung erscheint jetzt als Karte auf „Heute“ */
     if(!hasData()||d-le<7*864e5||d<snoozed()){if(box.classList.contains('bk'))hide();return}
     show('<div class="cft"><b>Sicherung fällig</b><small>'+(le?'Letzte iCloud-Sicherung vor '+Math.floor((d-le)/864e5)+' Tagen':'Noch keine Sicherung in iCloud gespeichert')+'</small></div><button type="button" data-cf="bk">Jetzt sichern</button><button type="button" class="x" data-cf="later" aria-label="Später erinnern">✕</button>','bk');
   }
