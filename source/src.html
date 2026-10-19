@@ -1296,6 +1296,14 @@ html.boot #view.enter>*{animation:none!important}
 .ck-in.rest .ck-h{color:#7fa8ff}
 .rd-row{display:flex;align-items:center;gap:12px}.rd-row>div{display:flex;flex-direction:column;gap:2px}.rd-row b{font-size:14px}.rd-row small{font-size:12px;color:var(--ink2)}
 .rd-h{display:flex;gap:8px}.rd-h span{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}.rd-h em{font:800 11px var(--mono);font-style:normal;color:var(--ink2)}.rd-h b{position:relative;display:block;width:100%;max-width:34px;height:64px;border-radius:9px;background:#25282f;overflow:hidden}.rd-h i{position:absolute;left:0;right:0;bottom:0;border-radius:8px}.rd-h small{font-size:10px;color:var(--mut)}
+.plc{overflow:hidden}.plc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.plc-t{display:flex;align-items:center;gap:8px;margin:0;font-size:21px;font-weight:800}.plc-t svg{width:20px;height:20px;fill:none;stroke:#5b7cff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.plc-h small{display:block;margin-top:2px;font-size:13.5px;color:var(--ink2)}
+.plc-go{width:34px;height:34px;border:0;background:none;color:#5b7cff;padding:0;flex:none}.plc-go svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.plc-c{position:relative;margin:12px 0 0}.plc-svg{width:100%;height:150px;display:block}
+.plc-m{position:relative;height:18px}.plc-m span{position:absolute;top:2px;font-size:11px;color:var(--mut);white-space:nowrap}
+.plc-leg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.plc-leg span{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:var(--raise);font-size:12.5px;font-weight:600}
+.plc-leg i{width:11px;height:11px;border-radius:50%}.plc-leg svg{width:15px;height:15px;fill:none;stroke:#5b7cff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .rf-ckh{display:flex;justify-content:space-between;align-items:center;gap:10px}.rf-ckh b{font-size:14px}
 .rf-cks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.rf-cks span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:3px 8px;border-radius:999px;border:1px solid var(--line2)}.rf-cks i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .rf-w{margin:8px 0 0;font-size:12.5px;color:#f0a066}.rf-m{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--ink2)}
@@ -3184,7 +3192,7 @@ function wisItems(its){return `<div class="wlist">${its.map(({it,i},k)=>`<detail
 const TIC={book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',bar:'<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',ring:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',next:'<path d="M5 12h14M13 6l6 6-6 6"/>',info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',box:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cal:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',shift:'<path d="M4 12h12M12 6l6 6-6 6M4 5v14"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',calc:'<path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',sheet:'<path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16"/>'};
 const tx=(el,sel)=>{const x=sel?el.querySelector(sel):el;return x?x.textContent.replace(/\s+/g,' ').trim():''};
 const TCFG={
- home:{keep:'.greet,.hero',list:[
+ home:{keep:'.greet,.hero,.plc',list:[
   {k:'rest',m:'.rdc',t:'Ruhetag',ic:'heart',c:'#7fa8ff',val:()=>{const o=(S.meta.rest||{})[isoD(new Date())];const sc=restScore(o);return sc!=null?sc+' %':'–'},sub:()=>{const o=(S.meta.rest||{})[isoD(new Date())];return o?'Erholung · '+rfLbl(restScore(o)):'Erholungs-Check-in'}},
   {k:'ready',m:'.rfc',t:'Readiness',ic:'heart',c:'#43c08a',val:()=>{const R=readiness();return R&&R.total!=null?R.total+' %':'–'},sub:()=>{const R=readiness();return R?(R.total!=null?rfLbl(R.total)+' · '+(R.feelLow&&!R.perfLow?'müde, Leistung stabil':R.perfLow&&!R.feelLow?'Leistung sinkt':R.perfLow?'Ermüdung':'Körper · Gefühl · Leistung'):'Check-in & WHOOP'):''}},
   {k:'whoop',m:'.wcard',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wc-ring b')||'–',sub:e=>tx(e,'.wc-t b')},
@@ -3325,6 +3333,47 @@ function cyclesHTML(){const rows=ORD().map(id=>({id,L:phaseLift(id),D:phaseDone(
   ${any?`<div class="leg">${['sq','bp','dl'].map(g=>`<span style="--c:${GC[g]}"><i></i>${N[g]}</span>`).join('')}</div>${lineChart(series,rows.map(r=>PROGS[r.id].short.replace('8 Week','8W').replace(' ','')),{label:'e1RM je Phase'})}`:'<div class="leer">Sobald du Sätze der Grundübungen einträgst, siehst du hier dein e1RM je Phase.</div>'}
   ${amHTML}<p class="note2">Pro Phase zählt das Test-Ergebnis (Intro W4-AMRAP, 8 Week W8-1RM, 10RM-Tests), sonst das beste e1RM der Phase.</p></section>`}
 // 3) Jahresplan
+
+/* ===================== Programm-Verlauf (Phasen-Grafik) ===================== */
+// Je Woche: Umfang = geplante Sätze, Charakter aus den Hauptlift-Wiederholungen, Intensität ≈ %1RM (Candito-Prozente, sonst Load/RIR-Tabelle mit Vorgabe-RPE bzw. RPE 8)
+function planWeeks(){if(planWeeks.c&&planWeeks.k===JSON.stringify(S.meta.order||'')+progStart())return planWeeks.c;const out=[];const comp=e=>EX[e]&&EX[e].m&&GN[EX[e].g];
+ ORD().forEach(pid=>withProg(pid,()=>{const st=new Date(progStart()+'T12:00:00');if(isNaN(st))return;
+  for(let w=0;w<NW();w++){let sets=0;const reps=[],ints=[];let test=false;
+   for(let d=0;d<ND();d++)P[w][d].b.forEach(bl=>{if(bl.opt)return;sets+=bl.s;if(!comp(bl.e))return;if(bl.test1||/amrap/i.test(bl.r))test=true;
+    let r=parseInt(bl.r);if(/^\d+-\d+$/.test(bl.r)){const [a,c]=bl.r.split('-').map(Number);r=Math.round((a+c)/2)}if(!r||isNaN(r))return;
+    let pc=null;if(bl.ref&&bl.ref!=='TOP'&&typeof bl.pct==='number')pc=bl.pct;else pc=lrcPct(r,bl.rpe??bl.cap??8);
+    for(let i=0;i<bl.s;i++){reps.push(r);if(pc)ints.push(pc)}});
+   if(w===TW())test=true;const mr=reps.length?reps.reduce((a,b)=>a+b,0)/reps.length:null;
+   const ty=(test&&w===NW()-1)||(mr!=null&&mr<=3.6)?'peak':mr!=null&&mr>=5.75?'hyp':'str';
+   const dt=new Date(st);dt.setDate(dt.getDate()+w*7);
+   out.push({pid,w,dt,sets,ty,int:ints.length?ints.reduce((a,b)=>a+b,0)/ints.length:null,test})}}));
+ planWeeks.c=out;planWeeks.k=JSON.stringify(S.meta.order||'')+progStart();return out}
+function nextTest(){const today=new Date();today.setHours(0,0,0,0);let best=null;
+ ORD().forEach(pid=>withProg(pid,()=>{const dt=dayDate(TW(),TD());if(!dt)return;const x=new Date(dt);x.setHours(0,0,0,0);if(x>=today&&(!best||x<best.dt))best={dt:x,pid}}));return best}
+function planChartHTML(compact){const ALL=planWeeks();if(!ALL.length)return '';const today=new Date();today.setHours(0,0,0,0);const all=!compact&&S.ui.plcAll;
+ let i0=ALL.findIndex(x=>+x.dt+7*864e5>+today);if(i0<0)i0=ALL.length-1;i0=Math.max(0,i0-1);const W=all?ALL:ALL.slice(i0,i0+28);
+ const nt=nextTest();const days=nt?Math.round((nt.dt-today)/864e5):null;
+ const VW=360,VH=170,pb=20,pt=8,n=W.length,bw=VW/n;const mxS=Math.max(...W.map(x=>x.sets))||1,mnS=Math.min(...W.map(x=>x.sets));
+ const ints=W.map(x=>x.int).filter(v=>v!=null);const iLo=Math.min(...ints)-3,iHi=Math.max(...ints)+2;
+ const C={hyp:'#5aaaf0',str:'#e98a3c',peak:'#e8484f'};
+ const y=v=>pt+(VH-pt-pb)*(1-v);let bars='',pts=[],months='',lm=-1;
+ W.forEach((x,i)=>{const h=(VH-pt-pb)*(.22+.7*(mxS>mnS?(x.sets-mnS)/(mxS-mnS):.5));const xx=i*bw+bw*(all?.18:.22),ww=bw*(all?.64:.56);const end=+x.dt+7*864e5;const cur=+x.dt<=+today&&end>+today;const done=end<=+today;
+  bars+=`<rect x="${xx.toFixed(1)}" y="${(VH-pb-h).toFixed(1)}" width="${ww.toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(ww/2,4).toFixed(1)}" fill="${cur||done?C[x.ty]:'none'}" fill-opacity="${cur?1:.35}" stroke="${C[x.ty]}" stroke-width="1.2" vector-effect="non-scaling-stroke"/>`;
+  if(x.int!=null)pts.push([i*bw+bw/2,y((x.int-iLo)/(iHi-iLo))]);
+  const m=x.dt.getMonth();if(m!==lm&&(m%2===0||n<60)){lm=m;months+=`<text x="${(i*bw+1).toFixed(1)}" y="${VH-5}">${x.dt.toLocaleDateString('de-DE',{month:'short'}).replace('.','')}${m===0?' '+String(x.dt.getFullYear()).slice(2):''}</text>`}else if(m!==lm)lm=m});
+ let path='';if(pts.length>1){path='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);for(let i=1;i<pts.length;i++){const [x0,y0]=pts[i-1],[x1,y1]=pts[i],cx=(x0+x1)/2;path+=` C${cx.toFixed(1)} ${y0.toFixed(1)} ${cx.toFixed(1)} ${y1.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`}}
+ const area=path?path+` L${pts[pts.length-1][0].toFixed(1)} ${VH-pb} L${pts[0][0].toFixed(1)} ${VH-pb} Z`:'';
+ const ti=W.findIndex(x=>+x.dt<=+today&&+x.dt+7*864e5>+today);const tx=ti>=0?ti*bw+bw/2:null;
+ const svg=`<svg class="plc-svg" viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="none" role="img" aria-label="Programmverlauf"><defs><linearGradient id="plcA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d63f5" stop-opacity=".75"/><stop offset="1" stop-color="#3d63f5" stop-opacity=".03"/></linearGradient></defs>
+  ${area?`<path d="${area}" fill="url(#plcA)"/>`:''}${bars}${path?`<path d="${path}" fill="none" stroke="#5b7cff" stroke-width="2.2" vector-effect="non-scaling-stroke"/>`:''}
+  ${tx!=null?`<line x1="${tx}" x2="${tx}" y1="${pt}" y2="${VH-pb}" stroke="#fff" stroke-opacity=".6" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/>`:''}</svg>`;
+ const mon=[];let lmm=-1;W.forEach((x,i)=>{const m=x.dt.getMonth();if(m!==lmm){lmm=m;if(all?m%3===0:true)mon.push(`<span style="left:${(i/n*100).toFixed(2)}%">${x.dt.toLocaleDateString('de-DE',{month:'short'}).replace('.','')}${m===0?" '"+String(x.dt.getFullYear()).slice(2):''}</span>`)}});
+ return `<section class="card plc"><div class="plc-h"><div><p class="plc-t"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg>${days==null?'Plan bis 31.12.2027':days===0?'Heute ist Testtag':days+' Tage bis zum Test'}</p><small>${nt?esc(PROGS[nt.pid].name)+' · '+nt.dt.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}):'Mein Programm'}</small></div>${compact?'<button type="button" class="plc-go" data-go-pd="year" aria-label="Jahresplan öffnen"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>':''}</div>
+  ${compact?'':`<div class="seg" style="grid-template-columns:repeat(2,1fr);margin:12px 0 0"><button type="button" data-plcall="0" aria-pressed="${!all}">Nächste 6 Monate</button><button type="button" data-plcall="1" aria-pressed="${!!all}">Gesamter Plan</button></div>`}<div class="plc-c">${svg}<div class="plc-m">${mon.join('')}</div></div>
+  <div class="plc-leg"><span><i style="background:${C.hyp}"></i>Hypertrophie</span><span><i style="background:${C.str}"></i>Kraft</span><span><i style="background:${C.peak}"></i>Test / Peak</span><span><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 3 10 3-8 2 3h5"/></svg>Intensität</span></div>
+  ${compact?'':`<p class="note2" style="margin-top:8px">Balken = geplante Sätze pro Woche (hell gefüllt = aktuelle Woche, blass = erledigt). Farbe nach durchschnittlichem Wiederholungsbereich der Hauptlifts: ab ca. 6 Wdh. Hypertrophie, 4–5 Kraft, bis ca. 3 Wdh. bzw. letzte Testwoche Test/Peak. Linie = durchschnittliche Intensität in % vom 1RM – aus Canditos Prozent-Vorgaben, sonst aus Vorgabe-RPE und Load/RIR-Tabelle. „Gesamter Plan“ zeigt alle ${ORD().length} Phasen bis Ende 2027.</p>`}</section>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-plcall]');if(!b)return;S.ui.plcAll=b.dataset.plcall==='1';render()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go-pd]');if(!b)return;S.ui.tab='prog';S.ui.pd=b.dataset.goPd;render();scrollTo(0,0)});
 function yearHTML(){const today=new Date();today.setHours(0,0,0,0);const fm=d=>d?d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):'–';
  return `<section class="card"><div class="ct"><div><p class="eyebrow">Jahresplan</p><h2 class="h2">Alle Phasen</h2></div><span class="chip plain">${ORD().length} Phasen</span></div>
  <div class="yl">${ORD().map(id=>{const g=PROGS[id],{a,b}=phaseRange(id),D=phaseDone(id),L=phaseLift(id);const td=withProg(id,()=>dayDate(TW(),TD()));
@@ -3399,7 +3448,7 @@ function progData(){const A=allSets();
   return {bl,kg,r,e1:e1rm(kg,r,pnum(s.rpe)),ref:rk,refE:rk?e1rm(rk,1,9):null}});
  const ttl=k=>`W${k}`;
  const sec={
-  year:()=>yearHTML(),
+  year:()=>planChartHTML(false)+yearHTML(),
   kraft:()=>fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
    <div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${names[k]}</span>`).join('')}</div>
    ${lineChart(series,[...Array(NW()).keys()].map(w=>'W'+(w+1)),{mark:(nextSession()||{w:NW()-1}).w,label:'e1RM-Verlauf'})||'<div class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</div>'}</section>`:'<section class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</section>'}`,
@@ -3974,6 +4023,7 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
   <div class="bbcap"><div style="min-width:0;display:flex;gap:10px;align-items:center">${icoX(day.b[b0].e)}<div style="min-width:0"><p class="eyebrow">Erster Hauptsatz</p><b>${esc(EX[day.b[b0].e].n)}</b><small class="mut">${esc(day.b[b0].x)}</small></div></div>
    <div class="r">${kg?`<b class="zahl glow" data-count="${kg}" data-dec="2">${pnum(L&&L.b[b0][0].kg)==null&&sg.t!=='v'?'<i class="apx" style="font-style:normal;opacity:.7;margin-right:3px">≈</i>':''}${nf(kg,2)}<small>kg</small></b><small class="mut">${pl.map(p=>nf(p,2)).join(' + ')} / Seite</small>`:`<b style="font-size:15px">Last nach Gefühl</b><small class="mut">danach rechnet die App</small>`}</div></div>
  </section>
+ ${planChartHTML(true)}
  ${weekTimeHTML()}
  ${restCardHTML()}
  ${rfcHTML()}
