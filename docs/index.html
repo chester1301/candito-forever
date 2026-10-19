@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1326-5a4bd79";
+<script>window.CF_VERSION="2026.10.19-1419-fe7c7a7";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1877,6 +1877,10 @@ html[data-theme=blue] body:not(.nomo) .nav button[aria-current="page"] .ni::afte
 .gym .strip{display:none!important}
 </style>
 <style id="cf-runde5">
+.top .psub .sesschip{min-height:22px;padding:0 8px;font-size:12px;margin-left:auto;flex:none;gap:5px}.top .psub .sesschip i{width:6px;height:6px}
+.top .psub:has(.sesschip:not([hidden])) #progsub{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.rf-ckh button,.rf-ck button{white-space:nowrap}
+
 /* Sicherungs-Punkt */
 #gear{position:relative}.bkdot{position:absolute;top:3px;right:3px;width:10px;height:10px;border-radius:50%;border:2px solid #0b1236;pointer-events:none}.bkdot.g{background:#43c08a}.bkdot.y{background:#f3c969}.bkdot.r{background:#e8484f;box-shadow:0 0 8px #e8484f}
 /* Textgröße */
@@ -3174,7 +3178,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1326-5a4bd79</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1419-fe7c7a7</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4088,7 +4092,7 @@ function renderTrain(){const {w,d}=S.ui,day=P[w][d],D=DAYS[d],L=log(w,d),st=dayS
   </section>
   <div class="sechead"><h2>Übungen</h2><span>${day.b.length} Übungen · ${doneSets}/${total} Sätze</span></div>
   <div class="exlist">${day.b.map((_,b)=>blockHTML(w,d,b)).join('')}</div>
-  <section class="card"><details class="info" id="info-${w}-${d}" ${S.ui.infoClosed?'':'open'}><summary><div><p class="eyebrow">Tagesinfo · Programm: ${ORIG[d]} (W${w+1})</p><h2 class="h2">Darauf kommt es heute an</h2></div></summary>
+  <section class="card"><details class="info" id="info-${w}-${d}" ${S.ui.infoClosed?'':'open'}><summary><div><p class="eyebrow">Tagesinfo · Original: ${deDay(ORIG[d])} · W${w+1}</p><h2 class="h2">Darauf kommt es heute an</h2></div></summary>
    <p class="lead">${esc(day.d)}</p>
    ${info.length?`<p class="sec">Coach-Hinweise · ${info.length}</p><div class="tips">${info.map((t,i)=>{const m=t.match(/^(.{12,90}?[.:!])\s(.*)$/);return `<div class="tipc"><span class="tn">${i+1}</span><b>${esc(m?m[1]:t)}</b>${m?`<p>${esc(m[2])}</p>`:''}</div>`}).join('')}</div>`:''}
    <p class="sec">Ablauf</p><div class="prows">${day.b.map((bl,b)=>{const ex=EX[bl.e];const ok=L&&L.b[b].slice(0,bl.s).every(s=>s.ok);const tg=targets(w,d,b);
@@ -4104,6 +4108,7 @@ function allSets(){const out=[];for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){c
  P[w][d].b.forEach((bl,b)=>(L.b[b]||[]).forEach((s,i)=>{const kg=pnum(s.kg),r=pnum(s.r);if(kg&&r)out.push({w,d,b,i,e:bl.e,g:EX[bl.e].g,kg,r,rpe:pnum(s.rpe),trpe:bl.rpe,ok:!!s.ok,rest:s.rest,e1:e1rm(kg,r,pnum(s.rpe))})}))}return out}
 /* ===================== Plan-Treue · RPE-Kalibrierung · Rekorde · Technik ===================== */
 const GN={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};
+function deDay(t){const M={Monday:'Montag',Tuesday:'Dienstag',Wednesday:'Mittwoch',Thursday:'Donnerstag',Friday:'Freitag',Saturday:'Samstag',Sunday:'Sonntag'};return String(t||'').replace(/\bDay\b/g,'Tag').replace(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/g,m=>M[m])}
 function sollReps(w,d,b){const bl=P[w][d].b[b],R=repsFor(w,d,b);if(R.amrap||R.r==null)return null;
  if(/^\d+-\d+$/.test(bl.r)){const [a,c]=bl.r.split('-').map(Number);return {lo:a,hi:c,disp:a+'–'+c}}
  return {lo:R.r,hi:R.r,disp:String(R.r)}}
@@ -4581,7 +4586,7 @@ const WCOL=['#e2b04a','#43c08a','#5ad1e6','#e8484f','#b48cff','#f0a066','#7fa8ff
 function wisItems(its){return `<div class="wlist">${its.map(({it,i},k)=>`<details class="card wq" ${S.ui.wq?'open':''}><summary><span class="wn">${i+1}</span><b>${esc(it.q)}</b><svg class="wch" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><div class="wa">${it.a.map(p=>/^<(table|div|ol|ul)/.test(p)?p:`<p>${p}</p>`).join('')}</div></details>`).join('')}</div>`}
 
 /* ===================== Kachel-Ebene für Heute · Training · Coach · Einstellungen ===================== */
-const TIC={book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',bar:'<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',ring:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',next:'<path d="M5 12h14M13 6l6 6-6 6"/>',info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',box:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cal:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',shift:'<path d="M4 12h12M12 6l6 6-6 6M4 5v14"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',calc:'<path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',sheet:'<path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16"/>'};
+const TIC={palette:'<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4-4-7.4-9-7.4z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/>',book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',bar:'<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',ring:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',next:'<path d="M5 12h14M13 6l6 6-6 6"/>',info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',box:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cal:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',shift:'<path d="M4 12h12M12 6l6 6-6 6M4 5v14"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',calc:'<path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',sheet:'<path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16"/>'};
 const tx=(el,sel)=>{const x=sel?el.querySelector(sel):el;return x?x.textContent.replace(/\s+/g,' ').trim():''};
 const TCFG={
  home:{keep:'.greet,.hero,.plc',list:[
@@ -4604,7 +4609,7 @@ const TCFG={
   {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>S.meta.bw?nf(S.meta.bw,1)+' kg':'–',sub:()=>S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln'},
   {k:'plan',m:/^Zeitplan/,t:'Zeitplan',ic:'cal',c:'#43c08a',val:()=>{const d=new Date(S.meta.start+'T12:00:00');return isNaN(d)?'–':d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})},sub:()=>'Startdaten aller Phasen'},
   {k:'shift',m:/^Phasen verschieben/,t:'Verschieben',ic:'shift',c:'#7fa8ff',val:()=>'± Wochen',sub:()=>'Urlaub, Krankheit, Stress'},
-  {k:'design',m:/^Design/,t:'Design',ic:'shift',c:'#3d63f5',val:()=>(window.CF_THEME||'blue')==='blue'?'Blau':'Classic',sub:()=>'Farbthema der App'},
+  {k:'design',m:/^Design/,t:'Design',ic:'palette',c:'#3d63f5',val:()=>(window.CF_THEME||'blue')==='blue'?'Blau':'Classic',sub:()=>'Farbthema der App'},
   {k:'timer',m:/^Pausen-Timer/,t:'Pausen-Timer',ic:'timer',c:'#5ad1e6',val:()=>mmss(S.meta.restMain||300),sub:()=>'Zubehör '+mmss(S.meta.restAcc||120)},
   {k:'hantel',m:/^Hantel/,t:'Hantel & Rundung',ic:'plate',c:'#e8484f',val:()=>nf(S.meta.bar||20,2)+' kg',sub:()=>'Rundung '+nf(S.meta.round||2.5,2)+' kg'},
   {k:'rechnet',m:/^So rechnet/,t:'So rechnet die App',ic:'calc',c:'#b48cff',val:()=>'5',sub:()=>'Regeln für Vorgaben & Empfehlungen'},
@@ -4906,7 +4911,7 @@ if((window.CF_THEME||'blue')==='blue'){const {A,G,Y,R,N}=HC;
  Object.assign(PDC,{year:A,kraft:A,treue:A,volumen:A,rpe:A,whoop:G,backoff:A,punkte:Y,rekorde:Y,zyklen:A,test:R,verlauf:N});
  const TM={rest:G,ready:G,whoop:G,satz:A,zeit:A,next:A,zyklus:A,wissen:Y,info:Y,notiz:N,claude:A,cockpit:A,athlet:A,plan:A,shift:A,design:A,timer:A,hantel:A,rechnet:A,backup:G,export:A,sheet:G};
  Object.values(TCFG).forEach(t=>t.list.forEach(c=>{if(TM[c.k])c.c=TM[c.k]}));
- Object.values(SQF).forEach(f=>{f.c=A});WCOL.splice(0,WCOL.length,A,G,Y,A,G,Y,A,Y)}
+ Object.values(SQF).forEach(f=>{f.c=A});Object.assign(GC,{sq:'#6f8cff',bp:'#5ad1e6',dl:'#b48cff',acc:'#8f9bc4'});WCOL.splice(0,WCOL.length,A,G,Y,A,G,Y,A,Y)}
 function spark(v,c,W=120,H=34){const x=v.map((y,i)=>[i,y]).filter(p=>p[1]!=null);if(x.length<2)return `<svg class="tsp" viewBox="0 0 ${W} ${H}"><line x1="0" x2="${W}" y1="${H-4}" y2="${H-4}" stroke="rgba(255,255,255,.12)" stroke-dasharray="3 4"/></svg>`;
  const lo=Math.min(...x.map(p=>p[1])),hi=Math.max(...x.map(p=>p[1])),n=v.length-1||1;const pt=x.map(([i,y])=>[(i/n)*(W-4)+2,H-4-((y-lo)/((hi-lo)||1))*(H-10)]);
  const d=pt.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');return `<svg class="tsp" viewBox="0 0 ${W} ${H}"><path d="${d} L${pt[pt.length-1][0]} ${H} L${pt[0][0]} ${H}Z" fill="${c}" opacity=".14"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pt[pt.length-1][0]}" cy="${pt[pt.length-1][1]}" r="3" fill="${c}"/></svg>`}
@@ -5784,7 +5789,7 @@ function showSummary(w,d){const L=log(w,d);const sets=L.b.flat().filter(s=>s.ok)
   <div class="prv"><b class="zahl" style="color:var(--ok)">${fmtHMS(L.dur)}</b></div>
   <div class="sumg"><span><small>Sätze</small><b>${sets.length}</b></span><span><small>Tonnage</small><b>${nf(ton/1000,2)} t</b></span><span><small>Pausen gesamt</small><b>${fmtHM(L.pauseMs||0)}</b></span>${(()=>{const a=dayAdh(w,d);return a.ev?`<span><small>Plan-Treue</small><b style="color:${a.hit/a.ev>=.8?'var(--ok)':'var(--warn)'}">${Math.round(a.hit/a.ev*100)} %</b></span>`:''})()}</div>
   ${PWA?'<button type="button" class="btn sumbk" data-sumbk>☁︎ Jetzt in iCloud sichern</button><p class="note2" style="margin:6px 0 0;font-size:12px">Ein Tipp – dann verlierst du höchstens die nächste Einheit.</p>':''}<div class="fx-bt"><button type="button" class="btn" data-sharesum>Als Bild teilen</button><button type="button" class="btn primary">Stark – weiter</button></div></div>`;f.hidden=false;sfx('pr');hap([20,60,30]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},PWA?25000:9000)}
-function sessTick(){const r=runningSession();const chip=$('#sesschip');
+function sessTick(){const r=runningSession();const chip=$('#sesschip');{const ps=document.querySelector('.top .psub');if(chip&&ps&&chip.parentElement!==ps)ps.appendChild(chip)}
  if(chip){if(!r)chip.hidden=true;else{chip.hidden=false;chip.querySelector('b').textContent=fmtHMS(sessEl(r.L));chip.classList.toggle('paused',!!r.L.pausedAt);chip.dataset.w=r.w;chip.dataset.d=r.d}}
  document.querySelectorAll('[data-sesst]').forEach(e=>{const [w,d]=e.dataset.sesst.split('-').map(Number);e.textContent=fmtHMS(sessEl(log(w,d)))});
  document.querySelectorAll('[data-sessmin]').forEach(e=>{const [w,d]=e.dataset.sessmin.split('-').map(Number);e.textContent=fmtHM(sessEl(log(w,d)))})}
