@@ -9,7 +9,8 @@
 
   /* ---------- Service Worker: offline + Updates ---------- */
   var waiting=null,reloading=false,wantReload=false;
-  function offerUpdate(w){waiting=w;show('<div class="cft"><b>Neue Version verfügbar</b><small>Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>','upd')}
+  function offerUpdate(w){waiting=w||waiting;if(document.body.classList.contains('gymopen')){offerUpdate.later=true;return}show('<div class="cft"><b>Neue Version verfügbar</b><small>Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>','upd')}
+  setInterval(function(){if(offerUpdate.later&&!document.body.classList.contains('gymopen')){offerUpdate.later=false;offerUpdate()}},3000);
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
       if(reg.waiting&&navigator.serviceWorker.controller)offerUpdate(reg.waiting);
@@ -18,7 +19,8 @@
       document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')check()});
       setInterval(check,30*60*1000);
     }).catch(function(){});
-    navigator.serviceWorker.addEventListener('controllerchange',function(){if(reloading||!wantReload)return;reloading=true;location.reload()});
+    var hadCtrl=!!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',function(){if(reloading)return;if(wantReload){reloading=true;location.reload();return}if(hadCtrl)offerUpdate(null);hadCtrl=true});
   }
 
   /* ---------- Erinnerung: Sicherung in iCloud ---------- */
@@ -36,7 +38,9 @@
   setTimeout(checkBackup,4000);setInterval(checkBackup,60*1000);
 
   box.addEventListener('click',function(e){var b=e.target.closest('[data-cf]');if(!b)return;var a=b.dataset.cf;
-    if(a==='upd'){wantReload=true;if(waiting)waiting.postMessage('skip');b.disabled=true;b.textContent='Lädt …';setTimeout(function(){if(!reloading)location.reload()},4000)}
+    if(a==='upd'){wantReload=true;b.disabled=true;b.textContent='Lädt …';
+      navigator.serviceWorker.getRegistration().then(function(r){var w=(r&&r.waiting)||(waiting&&waiting.state!=='redundant'?waiting:null);if(w&&w.state!=='activated'){w.postMessage('skip')}else{reloading=true;location.reload()}}).catch(function(){location.reload()});
+      setTimeout(function(){if(!reloading){reloading=true;location.reload()}},2500)}
     if(a==='bk'){try{downloadBackup()}catch(err){}}
     if(a==='later'){try{localStorage.setItem('cf-bksnooze',String(Date.now()+2*864e5))}catch(err){}hide()}
   });

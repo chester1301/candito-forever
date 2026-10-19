@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1833-396d587";
+<script>window.CF_VERSION="2026.10.19-1853-2b0f40a";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2209,6 +2209,16 @@ html .gym .gtq.gtr.paused .gtr-t small.st i{background:#f3c969;box-shadow:0 0 4p
 html .gym .gym-in.tight .gtq.gtr,html .gym .gym-in.tight .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gym-in.tight .gtr-t b{font-size:16px!important}
 @media (max-height:760px){html .gym .gtq.gtr,html .gym .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gtr-t b{font-size:16px!important}}
 </style>
+<style id="cf-jank2">
+/* Kopfzeile bleibt beim Scrollen stehen (keine Höhenänderung = kein Springen) */
+body.hdc .top .marke b.mtred{font-size:inherit!important}
+/* Glaskugel ohne Live-Weichzeichner */
+.nav .ni,.nav button[aria-current="page"] .ni,html[data-theme=blue] .nav button[aria-current="page"] .ni{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* Hintergrund-Animationen pausieren, solange gescrollt wird */
+body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,body.scrl .hb-m i.miss em{animation-play-state:paused!important}
+.amb{transform:translateZ(0)}
+#view{contain:layout style}
+</style>
 <style id="cf-r7">
 .bkd{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;border:1px solid rgba(243,201,105,.35)!important;background:linear-gradient(180deg,#1a1f33,#11152a)!important}
 .bkd-i{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:rgba(243,201,105,.12);box-shadow:inset 0 0 0 1px rgba(243,201,105,.35)}.bkd-i svg{width:22px;height:22px;fill:none;stroke:#f3c969;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -3485,7 +3495,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1833-396d587</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1853-2b0f40a</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -5670,7 +5680,7 @@ let renderPending=false;
 setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}
  if(!document.querySelector('#gym .grule')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const gz=document.querySelector('#gym .gziel');if(bl&&gz)gz.insertAdjacentHTML('beforebegin',gymRuleHTML(bl))}
  if(!document.querySelector('#gym .gprev')){const {w,d}=S.ui;const L=log(w,d);const pv=G.i>0&&L&&L.b[G.b]&&L.b[G.b][G.i-1];const cur=L&&L.b[G.b]&&L.b[G.b][G.i];let cv=null;try{cv=curVals()}catch(e){}if(pv&&pv.ok&&cur&&!cur.ok&&cv&&(cv.kg!==pnum(pv.kg)||cv.r!==pnum(pv.r))){const st=document.querySelector('#gym .gdock .stp2');if(st)st.insertAdjacentHTML('beforebegin',`<div class="gprev"><button type="button" data-gsame><svg viewBox="0 0 24 24"><path d="M4 7h11a4 4 0 0 1 0 8H9M12 12l-3 3 3 3"/></svg>Wie Satz ${G.i}: ${pnum(pv.kg)!=null?nf(pnum(pv.kg),2)+' kg':'–'} × ${pnum(pv.r)!=null?nf(pnum(pv.r)):'–'}</button></div>`)}}const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
-(function(){let c=false,tm=null;const top=()=>document.querySelector('.top');const apply=()=>{const y=scrollY;const want=!c?y>120:!(y<12);if(want===c)return;const t=top();const h0=t?t.getBoundingClientRect().height:0;c=want;document.body.classList.toggle('hdc',c);const h1=t?t.getBoundingClientRect().height:0;const dh=h1-h0;if(dh&&scrollY>0)scrollTo({top:Math.max(0,scrollY+dh),behavior:'instant'})};addEventListener('scroll',()=>{clearTimeout(tm);tm=setTimeout(apply,120);if(c&&scrollY<12)apply()},{passive:true})})();
+(function(){let tm=null,on=false;addEventListener('scroll',()=>{if(!on){on=true;document.body.classList.add('scrl')}clearTimeout(tm);tm=setTimeout(()=>{on=false;document.body.classList.remove('scrl')},180)},{passive:true})})();
 function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.prog||'intro');if(S.ui.w>=NW())S.ui.w=0;const ps=document.getElementById('progsub');}{const ps=document.getElementById('progsub');if(ps)ps.textContent=`${PROGS[PROG].name} · ${PROGS[PROG].sub} · ${DAYS.map(x=>x.wd).join(' / ')}`;}renderPending=false;try{applySwaps()}catch(e){}SG.clear();cleanStale();if(!$('#gym').hidden&&render.sig){applyDay();renderHead();render.stale=true;renderGym();if(!$('#sheet').hidden)renderSheet();return}render.stale=false;if(S.ui.tab==='home'){const n=nextSession();if(n){S.ui.w=n.w;S.ui.d=n.d}}applyDay();renderHead();
  document.querySelectorAll('#nav button').forEach(b=>b.setAttribute('aria-current',(b.dataset.tab==='gym'?!$('#gym').hidden:(b.dataset.tab===S.ui.tab&&$('#gym').hidden))?'page':'false'));
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
@@ -6346,7 +6356,8 @@ setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.met
 
   /* ---------- Service Worker: offline + Updates ---------- */
   var waiting=null,reloading=false,wantReload=false;
-  function offerUpdate(w){waiting=w;show('<div class="cft"><b>Neue Version verfügbar</b><small>Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>','upd')}
+  function offerUpdate(w){waiting=w||waiting;if(document.body.classList.contains('gymopen')){offerUpdate.later=true;return}show('<div class="cft"><b>Neue Version verfügbar</b><small>Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>','upd')}
+  setInterval(function(){if(offerUpdate.later&&!document.body.classList.contains('gymopen')){offerUpdate.later=false;offerUpdate()}},3000);
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
       if(reg.waiting&&navigator.serviceWorker.controller)offerUpdate(reg.waiting);
@@ -6355,7 +6366,8 @@ setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.met
       document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')check()});
       setInterval(check,30*60*1000);
     }).catch(function(){});
-    navigator.serviceWorker.addEventListener('controllerchange',function(){if(reloading||!wantReload)return;reloading=true;location.reload()});
+    var hadCtrl=!!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',function(){if(reloading)return;if(wantReload){reloading=true;location.reload();return}if(hadCtrl)offerUpdate(null);hadCtrl=true});
   }
 
   /* ---------- Erinnerung: Sicherung in iCloud ---------- */
@@ -6373,7 +6385,9 @@ setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.met
   setTimeout(checkBackup,4000);setInterval(checkBackup,60*1000);
 
   box.addEventListener('click',function(e){var b=e.target.closest('[data-cf]');if(!b)return;var a=b.dataset.cf;
-    if(a==='upd'){wantReload=true;if(waiting)waiting.postMessage('skip');b.disabled=true;b.textContent='Lädt …';setTimeout(function(){if(!reloading)location.reload()},4000)}
+    if(a==='upd'){wantReload=true;b.disabled=true;b.textContent='Lädt …';
+      navigator.serviceWorker.getRegistration().then(function(r){var w=(r&&r.waiting)||(waiting&&waiting.state!=='redundant'?waiting:null);if(w&&w.state!=='activated'){w.postMessage('skip')}else{reloading=true;location.reload()}}).catch(function(){location.reload()});
+      setTimeout(function(){if(!reloading){reloading=true;location.reload()}},2500)}
     if(a==='bk'){try{downloadBackup()}catch(err){}}
     if(a==='later'){try{localStorage.setItem('cf-bksnooze',String(Date.now()+2*864e5))}catch(err){}hide()}
   });
