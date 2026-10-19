@@ -1768,7 +1768,7 @@ body.hdc .top .iconbtn,body.hdc .top .setbtn{transform:scale(.82)}
 #tipbox{font-family:var(--f)!important;font-weight:700!important;font-size:12.5px!important;padding:7px 10px!important;border-radius:10px!important;background:rgba(14,18,36,.96)!important;border:1px solid rgba(130,155,255,.4)!important;color:#fff!important;box-shadow:0 10px 26px -10px rgba(0,0,0,.8)!important;max-width:260px}
 /* 9 Lebendiger Hintergrund */
 @media (prefers-reduced-motion:no-preference){
-html[data-theme=blue] body:not(.nomo)::before{content:"";position:fixed;z-index:-1;left:-30vw;top:-35vh;width:110vw;height:80vh;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(61,99,245,.32),transparent);animation:ambf 26s ease-in-out infinite alternate}
+html[data-theme=blue] body:not(.nomo) .amb::before{content:"";position:absolute;z-index:0;left:-30vw;top:-35vh;width:110vw;height:80vh;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(61,99,245,.32),transparent);animation:ambf 26s ease-in-out infinite alternate}
 @keyframes ambf{0%{transform:translate(0,0) scale(1)}50%{transform:translate(22vw,6vh) scale(1.12)}100%{transform:translate(8vw,14vh) scale(.95)}}
 html[data-theme=blue] body:not(.nomo) .nav button[aria-current="page"] .ni::after{animation:shim 4.5s ease-in-out infinite}
 @keyframes shim{0%,100%{opacity:.75}50%{opacity:1;transform:translateX(3px)}}}
@@ -1833,6 +1833,28 @@ body.oled .gdock{background:linear-gradient(180deg,rgba(0,0,0,0),#000 18px)!impo
 body.hdc .top .marke .psub:has(.sesschip:not([hidden])){max-height:30px;opacity:1}
 body.hdc .top .psub:has(.sesschip:not([hidden])) .t2,body.hdc .top .psub:has(.sesschip:not([hidden])) #progsub{display:none}
 body.hdc .top .psub .sesschip{margin-left:0}
+</style>
+<style id="cf-coach">
+.chb{display:grid;gap:10px;border:1px solid rgba(120,150,255,.36)!important;background:linear-gradient(180deg,#19224b,#0d1330 70%)!important}
+.chb-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:-4px}.chb-h h2{margin:0}.chb-p{font-size:15px;font-weight:800;color:#9fb3ff}
+.chb-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}.chb-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#3d63f5,#7f98ff)}
+.chb-n{display:flex;align-items:center;gap:8px;margin:2px 0 0;font-size:13.5px;font-weight:700;color:var(--ink2)}.chb-n svg{width:18px;height:18px;flex:none;fill:none;stroke:#8fa8ff;stroke-width:2;stroke-linecap:round}
+.chb-go{margin-top:2px}.chb-ok{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:14px;border:1px solid rgba(67,192,138,.5);background:rgba(67,192,138,.14);color:#7fe0b4;font:inherit;font-size:15px;font-weight:800}.chb-ok svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.chb-f{margin:0;font-size:12.5px;color:var(--mut)}
+.chl{display:grid;gap:8px}.chl-g{display:grid;gap:6px}
+.chr{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:10px 10px 10px 8px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);font:inherit;text-align:left;cursor:pointer;width:100%}
+.chr.cur{border-color:rgba(120,150,255,.45);background:rgba(91,124,255,.08)}
+.chr-i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--raise);color:var(--mut)}.chr-i svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.chr.ana .chr-i{background:rgba(67,192,138,.16);color:#5fd6a0}.chr.fin .chr-i{background:rgba(91,124,255,.2)}.chr.fin .dot{width:12px;height:12px;border-radius:50%;background:#6f8cff;box-shadow:0 0 10px #6f8cff}.chr.run .chr-i{color:#8fa8ff}
+.chr-m{display:grid;gap:1px;min-width:0}.chr-m b{font-size:14.5px}.chr-m small{font-size:12px;color:var(--ink2);font-weight:700}.chr.fin .chr-m small{color:#9fb3ff}
+.chr-m em{font-style:normal;font-size:12px;color:var(--mut);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
+.chr-c{width:18px;height:18px;fill:none;stroke:var(--mut);stroke-width:2.2;stroke-linecap:round}
+.chc{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,#121729,#0c1020);color:var(--ink);font:inherit;text-align:left;cursor:pointer;margin-top:2px}
+.chc-i{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(90,209,230,.12)}.chc-i svg{width:20px;height:20px;fill:none;stroke:#5ad1e6;stroke-width:1.9;stroke-linejoin:round}
+.chc-m{display:grid;gap:1px}.chc-m b{font-size:14.5px}.chc-m small{font-size:12px;color:var(--ink2);font-weight:700}
+.chc-n{font-style:normal;min-width:24px;height:24px;padding:0 7px;border-radius:12px;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:12.5px;font-weight:800}
+/* Statusleiste im blauen Thema */
+html[data-theme=blue] body::before{background:linear-gradient(180deg,#2340c4,#2642c8)!important;z-index:45!important}
 </style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
@@ -2311,6 +2333,23 @@ async function runAnalysis(w){if(PWA){shareText('Wochenanalyse W'+(w+1),anaShare
 
 /* ===================== Coach-Tab ===================== */
 const AK=w=>PROGS[PROG].pre+'w'+(w+1);
+function anaSnip(t){return String(t||'').replace(/[#*_>`|-]+/g,' ').replace(/\s+/g,' ').trim().slice(0,150)}
+function coachHubHTML(){const nd=ND(),nw=NW();const today=new Date();today.setHours(0,0,0,0);const fd=d=>d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+ const wk=[...Array(nw).keys()].map(w=>{let dn=0,tot=0,lastOpen=null;for(let d=0;d<nd;d++){if(!P[w][d].b.length)continue;tot++;if(dayStatus(w,d)==='done')dn++;else{const dt=dayDate(w,d);if(dt&&(!lastOpen||dt>lastOpen))lastOpen=dt}}const a=S.ana[AK(w)];const st=a?'ana':dn>=tot&&tot?'fin':dn>0||w===S.ui.w?'run':'plan';return {w,dn,tot,a,st,lastOpen}});
+ let cw=wk.find(x=>x.st==='fin')||wk.find(x=>x.st==='run')||wk.find(x=>x.st==='plan')||wk[wk.length-1];
+ const c=cw;const pct=c.tot?c.dn/c.tot:0;
+ const cta=c.st==='fin'?`<button type="button" class="cta chb-go" data-coachw="${c.w}"><span>W${c.w+1} an Claude senden</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`
+  :c.st==='ana'?`<button type="button" class="chb-ok" data-coachw="${c.w}"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Fazit lesen</button>`
+  :`<p class="chb-n"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${c.lastOpen?`Nächste Analyse nach ${fd(c.lastOpen)}`:'Nächste Analyse nach Abschluss der Woche'} · noch ${c.tot-c.dn} ${c.tot-c.dn===1?'Einheit':'Einheiten'}</p>`;
+ const first=!wk.some(x=>x.a);
+ const icon={ana:'<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',fin:'<i class="dot"></i>',run:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/></svg>',plan:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>'};
+ const rows=wk.map(x=>`<button type="button" class="chr ${x.st} ${x.w===c.w?'cur':''}" data-coachw="${x.w}"><span class="chr-i">${icon[x.st]}</span><span class="chr-m"><b>W${x.w+1} · ${esc(WEEKS[x.w]||'')}</b><small>${x.st==='ana'?`Analysiert${x.a.at?' am '+new Date(x.a.at).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):''}`:x.st==='fin'?'Fertig – jetzt senden':x.st==='run'?`Läuft · ${x.dn}/${x.tot} Einheiten`:`Geplant · ${x.tot} Einheiten`}</small>${x.st==='ana'&&x.a.text?`<em>„${esc(anaSnip(x.a.text))}…“</em>`:''}</span><svg class="chr-c" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`).join('');
+ const outN=Object.values(S.out||{}).filter(o=>o.status==='bereit').length;
+ return `<section class="card cwk chb"><p class="eyebrow">Wochenanalyse · ${esc(PROGS[PROG].short)}</p><div class="chb-h"><h2 class="h2">Woche ${c.w+1} · ${esc(WEEKS[c.w]||'')}</h2><span class="chb-p">${c.dn}/${c.tot}</span></div>
+  <div class="chb-bar"><i style="width:${pct*100}%"></i></div>${cta}${first&&c.st!=='fin'?`<p class="chb-f">Deine erste Analyse kommt nach Woche 1 – Claude liest dann alle Sätze, RPE-Werte, Pausen und Notizen.</p>`:''}</section>
+  <section class="card cwk chl"><p class="eyebrow">Alle Wochen</p><div class="chl-g">${rows}</div></section>
+  <button type="button" class="cwk chc" data-tdk="cockpit"><span class="chc-i"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></span><span class="chc-m"><b>Cockpit · Postausgang</b><small>${outN?outN+' '+(outN===1?'Paket':'Pakete')+' bereit zum Teilen':'Keine Pakete bereit'}</small></span>${outN?`<em class="chc-n">${outN}</em>`:''}<svg class="chr-c" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-coachw]');if(!b)return;S.ui.aw=+b.dataset.coachw;if(!S.ui.tdet)S.ui.tdet={};S.ui.tdet.coach='claude';render();scrollTo(0,0)});
 function coachWeekHTML(){const w=S.ui.w,nd=ND();let dn=0;const bar=[];for(let d=0;d<nd;d++){const on=dayStatus(w,d)==='done';if(on)dn++;bar.push(`<i class="${on?'on':''}"></i>`)}
  const keys=[];for(let x=0;x<NW();x++)if(S.ana[AK(x)])keys.push(x);const last=keys.length?S.ana[AK(keys[keys.length-1])]:null;const ld=last&&last.at?new Date(last.at):null;
  const ana=!!S.ana[AK(w)];const open=nd-dn;
@@ -2322,7 +2361,7 @@ function coachWeekHTML(){const w=S.ui.w,nd=ND();let dn=0;const bar=[];for(let d=
   <div class="cwk-s"><div><b>${dn}/${nd}</b><small>Einheiten</small></div><div><b>${keys.length}</b><small>Analysen</small></div><div><b>${ld?ld.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'–'}</b><small>Letzte Analyse</small></div></div>${hint}</section>`}
 function renderCoach(){const aw=S.ui.aw??S.ui.w;const saved=S.ana[AK(aw)];const live=anaLive&&anaLive.w===aw?anaLive:null;
  const done=[];for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')done.push([w,d]);
- return coachWeekHTML()+`<section class="card"><div class="ct"><div><p class="eyebrow">Claude-Coach · ${esc(PROGS[PROG].name)}</p><h2 class="h2">Wochenanalyse</h2></div></div>
+ return coachHubHTML()+`<section class="card"><div class="ct"><div><p class="eyebrow">Claude-Coach · ${esc(PROGS[PROG].name)}</p><h2 class="h2">Wochenanalyse</h2></div></div>
   <div class="seg" style="margin-bottom:12px">${WEEKS.map((n,w)=>`<button type="button" data-aw="${w}" aria-pressed="${aw===w}">W${w+1}<small>${S.ana[AK(w)]?'analysiert':n}</small></button>`).join('')}</div>
   <p class="note2" style="margin-top:0">${PWA?'Tippe auf „An Claude senden“ und wähle im Teilen-Menü die Claude-App (oder „Kopieren“ und in einem Claude-Chat einfügen). Die Nachricht enthält alle Sätze, RPE-Werte, Pausen, Notizen, Hype- und Planvorgaben der Woche samt Analyseauftrag. Claudes Antwort kannst du danach unten einfügen und hier speichern.':'Claude liest alle Sätze, RPE-Werte, Pausen, Notizen, Hype- und Planvorgaben der Woche und gibt dir Fazit, RPE-Treffsicherheit und konkrete Hinweise für die nächste Woche. Die Analyse läuft über dein Claude-Konto und wird hier gespeichert.'}</p>
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn primary" data-act="ana" ${live&&live.busy?'disabled':''}>${PWA?`W${aw+1} an Claude senden`:live&&live.busy?'Claude analysiert …':saved?`W${aw+1} neu analysieren`:`W${aw+1} analysieren`}</button>${PWA?'<button type="button" class="btn" data-act="anacopy">Text kopieren</button>':''}${live&&live.busy?'<button type="button" class="btn" data-act="anastop">Stopp</button>':''}</div>
@@ -3505,8 +3544,8 @@ const TCFG={
   {k:'whoop',m:'#whoop',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wring2 .mid b')?tx(e,'.wring2 .mid b')+' %':'–',sub:e=>e.classList.contains('empty')?'Noch nicht eingetragen':tx(e,'.wk h2')},
   {k:'notiz',m:e=>/Notizen/.test(e.textContent.slice(0,80)),t:'Notizen',ic:'note',c:'#9aa0a8',val:e=>{const t=e.querySelector('textarea');return t&&t.value.trim()?t.value.trim().length+'':'–'},sub:e=>{const t=e.querySelector('textarea');return t&&t.value.trim()?t.value.trim().slice(0,60):'Gedanken zur Einheit festhalten'}}]},
  coach:{keep:'.cwk',list:[
-  {k:'claude',m:e=>/Claude-Coach/.test(e.textContent.slice(0,60)),t:'Claude-Coach',ic:'chat',c:'#b48cff',val:()=>'Analyse',sub:()=>'Wochenanalyse mit Fazit & Tipps'},
-  {k:'cockpit',m:e=>/Cockpit/.test(e.textContent.slice(0,60)),t:'Cockpit',ic:'box',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/(\d+)\s*bereit/);return m?m[1]:'–'},sub:()=>'Pakete im Postausgang'}]},
+  {k:'claude',hide:1,m:e=>/Claude-Coach/.test(e.textContent.slice(0,60)),t:'Claude-Coach',ic:'chat',c:'#b48cff',val:()=>'Analyse',sub:()=>'Wochenanalyse mit Fazit & Tipps'},
+  {k:'cockpit',hide:1,m:e=>/Cockpit/.test(e.textContent.slice(0,60)),t:'Cockpit',ic:'box',c:'#5ad1e6',val:e=>{const m=e.innerText.match(/(\d+)\s*bereit/);return m?m[1]:'–'},sub:()=>'Pakete im Postausgang'}]},
  setup:{keep:'',list:[
   {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>curBw()?nf(curBw(),1)+' kg':'offen',sub:()=>(curBw()?'':'Körpergewicht eintragen · ')+(S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln')},
   {k:'plan',m:/^Zeitplan/,t:'Zeitplan',ic:'cal',c:'#43c08a',val:()=>{const d=new Date(S.meta.start+'T12:00:00');return isNaN(d)?'–':d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})},sub:()=>'Startdaten aller Phasen'},
