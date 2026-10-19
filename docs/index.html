@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1732-f9af509";
+<script>window.CF_VERSION="2026.10.19-1748-e2bac46";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2041,6 +2041,15 @@ html[data-theme=blue] body:not(.nomo) .amb::before{width:80vw;height:60vh;left:-
 .rp-pl{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--ink2)}.rp-pl span{margin-right:4px}.rp-pl i{font-style:normal;min-width:30px;height:26px;padding:0 7px;border-radius:7px;display:grid;place-items:center;background:var(--p);color:#fff;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}.rp-pl i[style*="#eeeeee"],.rp-pl i[style*="#b8bcc2"],.rp-pl i[style*="#e2b21c"]{color:#111}.rp-pl em{font-style:normal;color:var(--mut)}
 .rc-plan{display:grid;gap:2px;width:100%;text-align:left;margin-top:10px;padding:11px 14px;border-radius:14px;border:1px solid rgba(90,209,230,.45);background:rgba(90,209,230,.1);color:#bfeaf2;font:800 14px var(--f)}.rc-plan span{font-size:12px;font-weight:700;color:var(--ink2)}
 </style>
+<style id="cf-rpeplan2">
+.rp-apply{display:block;width:100%;min-height:54px;margin-top:10px;border-radius:16px;border:0;background:linear-gradient(180deg,#86d5e4,#56aec4);color:#0b1a22;font:800 17px var(--f);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -10px rgba(90,209,230,.8);cursor:pointer}
+.rp-apply:active{transform:scale(.99)}
+.rp-tgt{border:1px solid rgba(90,209,230,.45)!important;background:linear-gradient(180deg,#0f2630,#0b1a28)!important}
+.rp-tg{display:grid;gap:2px;padding:12px 14px;border-radius:14px;background:rgba(90,209,230,.08);border:1px dashed rgba(90,209,230,.45)}
+.rp-tg b{font:800 40px/1 var(--d,var(--f));letter-spacing:-.02em;color:#bfeaf2}.rp-tg b em{font-style:normal;font-size:16px;margin-left:4px;color:#5ad1e6}.rp-tg b.na{color:var(--mut)}.rp-tg small{font-size:12.5px;color:var(--ink2);font-weight:700}
+.rpo .gp-in{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}.rpo .rp-wrap{display:grid;gap:12px}
+.rpo .gp-top{margin-bottom:4px}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -3308,7 +3317,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1732-f9af509</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1748-e2bac46</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -5335,23 +5344,32 @@ function rfTidy(v){const t=v.querySelector('.tdet.rfc,.rfc.tdet')||(S.ui.tdet&&S
 function rpState(){if(!S.ui.rp)S.ui.rp={mode:'satz',kg:null,r:5,rpe:8,m1:null,cr:5,sel:null};return S.ui.rp}
 function rpMax(){const o=rpState();if(o.mode==='max')return o.m1>0?o.m1:null;if(!(o.kg>0)||!o.r||o.rpe==null)return null;return e1rm(o.kg,o.r,o.rpe)}
 function rpRows(){const o=rpState(),m=rpMax();const rows=[];for(let v=10;v>=5;v-=.5){const pc=lrcPct(o.cr,v);if(pc==null)continue;rows.push({rpe:v,pc,kg:m?m*pc/100:null,rk:m?rnd(m*pc/100):null})}return rows}
-function rpHTML(){const o=rpState(),m=rpMax(),rows=rpRows();const REPS=[1,2,3,4,5,6,7,8,9,10,11,12,15,20];const RP=[10,9.5,9,8.5,8,7.5,7,6.5,6,5.5,5];
+function rpCtx(){if($('#gym').hidden||!G.rpo)return null;const {w,d}=S.ui;const bl=P[w][d].b[G.b];if(!bl)return null;const RL=setRule(bl);const R0=repsFor(w,d,G.b);const cv=curVals();return {w,d,b:G.b,i:G.i,ex:EX[bl.e].n,setNo:G.i+1,ok:!!(cv.s&&cv.s.ok),pr:R0&&R0.r?R0.r:null,prpe:bl.rpe!=null?bl.rpe:RL.rpe!=null?RL.rpe:null,need:RL.need(G.i)}}
+function rpTargetHTML(o,m,ctx){const tr=o.tr||ctx.pr||o.r||5,trpe=o.trpe!=null?o.trpe:(ctx.prpe!=null?ctx.prpe:8);const pc=lrcPct(tr,trpe);const kg=m&&pc?m*pc/100:null;const rk=kg!=null?rnd(kg):null;const pl=rk?plates(rk):null;
+ const chips=(arr,cur,k,fmt)=>`<div class="rp-chips c6">${arr.map(v=>`<button type="button" data-rp="${k}|${v}" aria-pressed="${cur===v}">${fmt?fmt(v):v}</button>`).join('')}</div>`;
+ return `<section class="card rp rp-tgt"><div class="rp-th"><span>Zielsatz · Satz ${ctx.setNo} · ${esc(ctx.ex)}</span><small>Empfehlung – keine Vorgabe</small></div>
+  <div class="rp-two"><div><p class="rp-l">Wdh.${ctx.pr?' · Plan '+ctx.pr:''}</p>${chips([1,2,3,4,5,6,7,8,9,10,11,12],tr,'tr')}</div><div><p class="rp-l">RPE${ctx.prpe!=null?' · Plan '+nf(ctx.prpe):''}</p>${chips([10,9.5,9,8.5,8,7.5,7,6.5,6,5.5,5],trpe,'trpe',v=>nf(v))}</div></div>
+  <div class="rp-tg">${rk!=null?`<b>${nf(rk,2)}<em>kg</em></b><small>${tr} × @ RPE ${nf(trpe)} = ${nf(pc,1)} % vom 1RM${Math.abs(rk-kg)>=.05?' · exakt '+nf(kg,1)+' kg':''}</small><div class="rp-pl" style="margin-top:6px">${pl&&pl.length?pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join(''):`<em>nur Stange (${nf(S.meta.bar||20,2)} kg)</em>`}</div>`:`<b class="na">–</b><small>Erst oben einen Satz oder dein 1RM eintragen.</small>`}</div>
+  ${rk!=null&&!ctx.ok?`<button type="button" class="rp-apply" data-rpapply="${rk}">${nf(rk,2)} kg für Satz ${ctx.setNo} übernehmen</button>`:rk!=null?`<p class="note2" style="margin:0">Satz ${ctx.setNo} ist schon abgehakt – wechsle zum nächsten Satz, um die Last zu übernehmen.</p>`:''}</section>`}
+function rpHTML(){const ctx=rpCtx();const o=rpState(),m=rpMax(),rows=rpRows();const REPS=[1,2,3,4,5,6,7,8,9,10,11,12,15,20];const RP=[10,9.5,9,8.5,8,7.5,7,6.5,6,5.5,5];
  const chips=(arr,cur,k,fmt)=>`<div class="rp-chips ${k==='rpe'?'c4':'c6'}">${arr.map(v=>`<button type="button" data-rp="${k}|${v}" aria-pressed="${cur===v}">${fmt?fmt(v):v}</button>`).join('')}</div>`;
  const selRow=rows.find(x=>x.rpe===o.sel);const pl=selRow&&selRow.rk?plates(selRow.rk):null;
- return `<section class="card rp"><div class="seg rp-mode" style="grid-template-columns:repeat(2,minmax(0,1fr))"><button type="button" data-rp="mode|satz" aria-pressed="${o.mode==='satz'}">Aus einem Satz</button><button type="button" data-rp="mode|max" aria-pressed="${o.mode==='max'}">Aus dem 1RM</button></div>
+ return `<div class="rp-wrap"><section class="card rp"><div class="seg rp-mode" style="grid-template-columns:repeat(2,minmax(0,1fr))"><button type="button" data-rp="mode|satz" aria-pressed="${o.mode==='satz'}">Aus einem Satz</button><button type="button" data-rp="mode|max" aria-pressed="${o.mode==='max'}">Aus dem 1RM</button></div>
   ${o.mode==='satz'?`<label class="rp-in"><span>Gehobenes Gewicht</span><div><input id="rpKg" size="6" inputmode="decimal" placeholder="z. B. 100" value="${o.kg!=null?esc(nf(o.kg,2)):''}" aria-label="Gewicht in kg"><em>kg</em></div></label>
    <div class="rp-two"><div><p class="rp-l">Wiederholungen</p>${chips([1,2,3,4,5,6,7,8,9,10,11,12],o.r,'r')}</div><div><p class="rp-l">RPE</p>${chips(RP,o.rpe,'rpe',v=>nf(v))}</div></div>`
   :`<label class="rp-in"><span>1RM</span><div><input id="rpM1" size="6" inputmode="decimal" placeholder="z. B. 140" value="${o.m1!=null?esc(nf(o.m1,2)):''}" aria-label="1RM in kg"><em>kg</em></div></label>`}</section>
   <section class="card rp rp-res ${m?'':'empty'}"><p class="eyebrow">Geschätztes 1RM · Schätzung</p><div class="rp-big">${m?`<b>${nf(m,1)}</b><em>kg</em>`:'<b class="na">–</b>'}</div>${m&&o.mode==='satz'?`<small>${nf(o.kg,2)} kg × ${o.r} @ RPE ${nf(o.rpe)} = ${nf(lrcPct(o.r,o.rpe),1)} % vom 1RM</small>`:m?'<small>direkt eingegeben</small>':'<small>Gewicht eintragen, dann rechnet der Planer.</small>'}</section>
+  ${ctx?rpTargetHTML(o,m,ctx):''}
   <section class="card rp"><p class="rp-l">Wiederholungen für die Tabelle</p>${chips(REPS,o.cr,'cr')}
    <div class="rp-th"><span>${o.cr} Wdh. · Last je RPE</span><small>Empfehlung · gerundet auf ${nf(S.meta.round||2.5,2)} kg</small></div>
    <table class="rp-t"><thead><tr><th>RPE</th><th>RIR</th><th>% 1RM</th><th class="r">Last</th></tr></thead><tbody>${rows.map(x=>`<tr data-rp="sel|${x.rpe}" class="${x.rpe===o.sel?'on':''} ${o.mode==='satz'&&x.rpe===o.rpe&&o.cr===o.r?'is':''}"><td><b>${nf(x.rpe)}</b></td><td>${nf(10-x.rpe)}</td><td>${nf(x.pc,1)} %</td><td class="r">${x.rk!=null?`<b>${nf(x.rk,2)}</b><small>${Math.abs(x.rk-x.kg)>=.05?' ≈ '+nf(x.kg,1):''}</small>`:'<span class="na">–</span>'}</td></tr>`).join('')}</tbody></table>
-   ${selRow&&selRow.rk?`<div class="rp-pl"><span>RPE ${nf(selRow.rpe)} · ${nf(selRow.rk,2)} kg · pro Seite:</span>${pl&&pl.length?pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join(''):`<em>nur Stange (${nf(S.meta.bar||20,2)} kg)</em>`}</div>`:'<p class="note2" style="margin:8px 0 0">Zeile antippen → Scheiben pro Seite.</p>'}
+   ${selRow&&selRow.rk?`<div class="rp-pl"><span>RPE ${nf(selRow.rpe)} · ${nf(selRow.rk,2)} kg · pro Seite:</span>${pl&&pl.length?pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join(''):`<em>nur Stange (${nf(S.meta.bar||20,2)} kg)</em>`}</div>${ctx&&!ctx.ok?`<button type="button" class="rp-apply" data-rpapply="${selRow.rk}">${nf(selRow.rk,2)} kg für Satz ${ctx.setNo} übernehmen</button>`:''}`:'<p class="note2" style="margin:8px 0 0">Zeile antippen → Scheiben pro Seite'+(ctx?' und übernehmen':'')+'.</p>'}
   </section>
-  <p class="note2">Grundlage: Modernized Load/RIR Chart (Nuzzo et al. 2023, Data Driven Strength) – dieselbe Tabelle wie im Gym-Rechner. Alles hier ist Orientierung, keine Vorgabe: Canditos Lasten und RPE-Ziele im Plan bleiben unverändert.</p>`}
-function rpRefresh(){const v=document.querySelector('#view .pdbody');if(!v)return;const a=document.activeElement;const id=a&&a.id;const pos=a&&a.selectionStart;v.innerHTML=rpHTML();if(id){const e=document.getElementById(id);if(e){e.focus({preventScroll:true});try{e.setSelectionRange(pos,pos)}catch(x){}}}}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-rp]');if(!t||S.ui.pd!=='rpeplan')return;const [k,v]=t.dataset.rp.split('|');const o=rpState();if(k==='mode')o.mode=v;else if(k==='sel')o.sel=o.sel===+v?null:+v;else o[k]=+v;if(k==='r'&&o.mode==='satz'&&!o.crTouched)o.cr=+v;if(k==='cr')o.crTouched=1;rpRefresh()});
-document.addEventListener('input',e=>{const t=e.target;if(!t||S.ui.pd!=='rpeplan')return;if(t.id==='rpKg'){rpState().kg=pnum(t.value);rpRefresh()}if(t.id==='rpM1'){rpState().m1=pnum(t.value);rpRefresh()}});
+  <p class="note2">Grundlage: Modernized Load/RIR Chart (Nuzzo et al. 2023, Data Driven Strength) – dieselbe Tabelle wie im Gym-Rechner. Alles hier ist Orientierung, keine Vorgabe: Canditos Lasten und RPE-Ziele im Plan bleiben unverändert.</p></div>`}
+function rpRefresh(){const v=document.querySelector('.rp-wrap');if(!v)return;const a=document.activeElement;const id=a&&a.id;const pos=a&&a.selectionStart;v.outerHTML=rpHTML();if(id){const e=document.getElementById(id);if(e){e.focus({preventScroll:true});try{e.setSelectionRange(pos,pos)}catch(x){}}}}
+document.addEventListener('click',e=>{const ap=e.target.closest('[data-rpapply]');if(ap&&G.rpo&&!$('#gym').hidden){const kg=+ap.dataset.rpapply;gWrite('kg',kg);const cv=curVals();if(cv.r!=null&&pnum(cv.s.r)==null)gWrite('r',cv.r);G.rpo=false;renderGym();toast(nf(kg,2)+' kg übernommen – Empfehlung, keine Vorgabe');return}
+ const t=e.target.closest('[data-rp]');if(!t||!t.closest('.rp-wrap'))return;const [k,v]=t.dataset.rp.split('|');const o=rpState();if(k==='mode')o.mode=v;else if(k==='sel')o.sel=o.sel===+v?null:+v;else o[k]=+v;if(k==='r'&&o.mode==='satz'&&!o.crTouched)o.cr=+v;if(k==='cr')o.crTouched=1;rpRefresh()});
+document.addEventListener('input',e=>{const t=e.target;if(!t||!t.closest('.rp-wrap'))return;if(t.id==='rpKg'){rpState().kg=pnum(t.value);rpRefresh()}if(t.id==='rpM1'){rpState().m1=pnum(t.value);rpRefresh()}});
 
 /* ===================== Satz-Regel laut Plan (RPE wo, Last wie) ===================== */
 function setRule(bl){const x=bl.x||'',s=bl.s,k=kindOf(bl);const T=nf;const pn=v=>v==null?null:+String(v).replace(',','.');
@@ -5677,7 +5695,7 @@ const G={b:0,i:0};let wake=null;
 async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
-function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
+function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&!$('#gym').hidden&&navigator.wakeLock){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
 function plates(kg){const bar=S.meta.bar||20;let side=(kg-bar)/2;if(!(side>0))return [];const PL=[25,20,15,10,5,2.5,1.25],out=[];for(const p of PL){while(side>=p-1e-6){out.push(p);side-=p}}return out}
 const PC={25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28]};
@@ -5737,6 +5755,10 @@ function gymHiHTML(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const ex=bl.e;cons
   <button type="button" class="gp-close" data-hiclose>Zurück zum Training</button></div></div>`}
 const GI_RC='<svg class="gis" viewBox="0 0 24 24"><rect x="5" y="2.8" width="14" height="18.4" rx="3.4"/><rect x="8" y="5.8" width="8" height="3.4" rx="1" class="d"/><path d="M8.6 12.7h.01M12 12.7h.01M15.4 12.7h.01M8.6 15.9h.01M12 15.9h.01M8.6 19h.01M12 19h.01M15.4 15.9V19"/></svg>';
 const RCICO='<span class="rci"><svg viewBox="0 0 24 24"><rect x="5" y="2.8" width="14" height="18.4" rx="3"/><path d="M8 7h8"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01M8.5 15h.01M12 15h.01M15.5 15v3M8.5 18.5h.01M12 18.5h.01"/></svg></span>';
+function rpOpenGym(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const L=log(w,d,true);const o=rpState();const R0=repsFor(w,d,G.b);const cv=curVals();
+ let src=null;for(let i=G.i-1;i>=0;i--){const z=L.b[G.b][i];if(z&&z.ok&&pnum(z.kg)&&pnum(z.r)){src=z;break}}
+ if(src){o.mode='satz';o.kg=pnum(src.kg);o.r=pnum(src.r);o.rpe=pnum(src.rpe)??bl.rpe??8}else if(cv.kg){o.mode='satz';o.kg=cv.kg;o.r=cv.r||R0.r||5;o.rpe=cv.rpe??bl.rpe??8}
+ o.tr=R0&&R0.r?R0.r:(o.r||5);o.trpe=bl.rpe!=null?bl.rpe:(setRule(bl).rpe!=null?setRule(bl).rpe:8);o.cr=o.tr;o.crTouched=0;o.sel=null;G.rpo=true}
 function rcInit(){const {w,d}=S.ui;const cv=curVals();const bl=P[w][d].b[G.b];const R0=repsFor(w,d,G.b);
  G.rc={kg:cv.kg||null,r:cv.r||R0.r||5,rpe:cv.rpe??bl.rpe??8,tr:R0&&R0.r?R0.r:(cv.r||5),trpe:bl.rpe??8}}
 const rcClamp=o=>{o.r=Math.max(1,Math.min(30,Math.round(o.r||1)));o.tr=Math.max(1,Math.min(30,Math.round(o.tr||1)));o.rpe=Math.max(0,Math.min(10,Math.round((o.rpe??8)*2)/2));o.trpe=Math.max(0,Math.min(10,Math.round((o.trpe??8)*2)/2));if(o.kg!=null)o.kg=Math.max(0,o.kg)};
@@ -5789,19 +5811,20 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   ${info.length?`<section class="gp-info"><h3>Infos zum Tag</h3>${info.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`:''}
   ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
-function fitGym(){const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi)return;
+function fitGym(){const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
  const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight')}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
- if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false}
+ if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
- if(G.rc&&!G.plan&&!G.wu){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymRcHTML())}
+ if(G.rpo&&!G.plan&&!G.wu){const gi=$('#gym .gym-in')||$('#gym');const {w,d}=S.ui;gi.insertAdjacentHTML('beforeend',`<div class="gplan rcs rpo" role="dialog" aria-modal="true" aria-label="RPE-Planer"><div class="gp-in"><div class="gp-top"><div><p class="eyebrow" style="color:#5ad1e6">RPE-Planer</p><h2>1RM & Last je RPE</h2><p class="gp-f">${esc(EX[P[w][d].b[G.b].e].n)} · Satz ${G.i+1}</p></div><button type="button" class="iconbtn" data-rpclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>${rpHTML()}</div></div>`)}
  if(G.wu&&!G.plan){const {w,d}=S.ui;const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymWuHTML(w,d))}
  if(G.plan){const {w,d}=S.ui;const old=$('#gym .gplan');const html=gymPlanHTML(w,d);const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',html);const pl=$('#gym .gplan .gp-in');if(pl&&G.planY)pl.scrollTop=G.planY}}}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(G.plan||G.rc||G.wu||G.hi)&&!$('#gym').hidden){G.plan=false;G.rc=null;G.wu=false;G.hi=false;renderGym()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(G.plan||G.rc||G.wu||G.hi||G.rpo)&&!$('#gym').hidden){G.plan=false;G.rc=null;G.wu=false;G.hi=false;G.rpo=false;renderGym()}});
 $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const {w,d}=S.ui;const day=P[w][d];
  if(t.dataset.hiopen!=null){G.hi=true;renderGym();return}
  if(t.dataset.hiclose!=null){G.hi=false;renderGym();return}
- if(t.dataset.rcopen!=null){rcInit();renderGym();return}
+ if(t.dataset.rcopen!=null){rpOpenGym();renderGym();return}
+ if(t.dataset.rpclose!=null){G.rpo=false;renderGym();return}
  if(t.dataset.rcclose!=null){G.rc=null;renderGym();return}
  if(t.dataset.rc!=null&&G.rc){const [f,dv]=t.dataset.rc.split('|');const st={kg:S.meta.round||2.5,r:1,rpe:.5,tr:1,trpe:.5}[f];if(f==='kg'){const v=(G.rc.kg||0)+(+dv)*st;G.rc.kg=Math.max(0,rnd(v));const i=document.getElementById('rcKg');if(i)i.value=nf(G.rc.kg,2)}else G.rc[f]=(G.rc[f]||0)+(+dv)*st;
   if(f==='tr'||f==='trpe'){rcClamp(G.rc);const sec=t.closest('.rc-st');const b=sec&&sec.querySelector('b');}rcRefresh();return}
