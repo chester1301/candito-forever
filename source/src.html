@@ -2090,6 +2090,24 @@ html[data-theme=blue] .grest[data-ph="g"]{--gph:rgba(61,99,245,.30)}html[data-th
 html[data-theme=blue] .grest[data-ph="r"] .grr [data-tring]{stroke:#f3c969!important}html[data-theme=blue] .grest[data-ph="o"] .grr [data-tring]{stroke:#43c08a!important}html[data-theme=blue] .grest[data-ph="p"] .grr [data-tring]{stroke:#f3c969!important}
 .gym-in.tight .bigbtn.hb2{min-height:56px!important;padding:6px 14px 6px 10px!important}.gym-in.tight .hb-ic{width:36px;height:36px}.gym-in.tight .hb-tx>b{font-size:18px}.gym-in.tight .gtq.gtr{min-height:56px}
 </style>
+<style id="cf-timer3">
+.gtq.gtr{min-height:64px!important}
+.gtq .gtr-r{height:calc(100% - 10px)!important;width:auto!important;aspect-ratio:1;max-height:66px!important;max-width:66px}
+.gtr-r circle{stroke-width:2.6!important}
+.gtq .gtr-r .fg{filter:none!important}.gtq.gtr .gtr-r{overflow:visible}
+.gtq.gtr.run .gtr-r .bg{stroke:rgba(127,152,255,.16)!important;stroke-width:6!important}
+.gtq.gtr.paused .gtr-r .bg{stroke:rgba(243,201,105,.14)!important}.gtq.gtr.over .gtr-r .bg{stroke:rgba(255,107,115,.16)!important}
+.gtr-t b{font-size:15px!important}
+.gtr-t{gap:3px!important}
+.gtr-t b{font-size:16px!important;letter-spacing:-.03em!important}
+.gtr-t small.pl{width:15px;height:15px;border-radius:50%;display:grid!important;place-items:center;background:rgba(127,152,255,.18)}
+.gtq .gtr-t small.pl svg{width:7px!important;height:7px!important;fill:#a9b9ff!important;margin-left:1px}
+.gtr-t small.st{display:block!important}.gtr-t small.st i{display:block;width:5px;height:5px;border-radius:50%;background:#9fb3ff;box-shadow:0 0 4px rgba(127,152,255,.9)}
+.gtq.gtr.paused .gtr-t small.st i{background:#f3c969;box-shadow:0 0 4px #f3c969}.gtq.gtr.over .gtr-t small.st i{background:#ff6b73;box-shadow:0 0 4px #ff6b73}
+.gym-in.tight .gtq.gtr,.gtq.gtr{min-height:60px!important}
+@media (max-height:760px){.gtr-t b{font-size:14px!important}}
+.gym-in.tight .gtr-t b{font-size:14px!important}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -4999,8 +5017,8 @@ function labHTML(A){let h=labHTMLBase(A);
 
 /* ---------- Gym: Timer klein bis zum Abhaken ---------- */
 function gymTimerQ(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const def=restFor(bl.e);
- const C=2*Math.PI*25;if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq gtr run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" class="bg"/><circle data-tring data-c="${C}" cx="30" cy="30" r="25" class="fg" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)}"/></svg><span class="gtr-t"><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><small>${T.paused?'Pausiert':over?'Überzeit':'Läuft'}</small></span></button>`}
- return `<button type="button" class="gtq gtr" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" class="bg"/><circle cx="30" cy="30" r="25" class="fg idle" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><span class="gtr-t"><b>${mmss(def)}</b><small><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Pause</small></span></button>`}
+ const C=2*Math.PI*27;if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq gtr run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" class="bg"/><circle data-tring data-c="${C}" cx="30" cy="30" r="27" class="fg" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)}"/></svg><span class="gtr-t"><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><small class="st"><i></i></small></span></button>`}
+ return `<button type="button" class="gtq gtr" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" class="bg"/><circle cx="30" cy="30" r="27" class="fg idle" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><span class="gtr-t"><b>${mmss(def)}</b><small class="pl"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></small></span></button>`}
 function gymTimerMini(){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;
  return `<div class="gtmini ${over?'over':''} ${T.paused?'paused':''}"><div class="gtm-t" data-t="gmax" role="button" aria-label="Timer groß öffnen"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b></div>
  <div class="gtm-c"><button type="button" class="rbtn" data-t="add" data-v="-15">−15</button><button type="button" class="rbtn" data-t="pause">${T.paused?'Weiter':'Pause'}</button><button type="button" class="rbtn" data-t="add" data-v="15">+15</button><button type="button" class="rbtn go" data-t="skip">${over?'Los':'Ende'}</button></div>
