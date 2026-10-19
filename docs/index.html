@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1853-2b0f40a";
+<script>window.CF_VERSION="2026.10.19-1915-60374b1";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2228,6 +2228,61 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 #cfbar.bk{display:none!important}
 body.gymopen #cfbar{display:none!important}
 </style>
+<style id="cf-flow">
+/* ===== Ablauf: Aufwärmen · Readiness · Trainingsende ===== */
+.ck-in.fl{background:radial-gradient(120% 40% at 50% -6%,rgba(61,99,245,.42),transparent 60%),#05060b!important;border:0!important;border-radius:0!important;width:100%!important;height:100%!important;max-width:none!important}
+.ckin:has(.ck-in.fl){padding:0!important;background:#05060b!important}
+.fl-top{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 10px}
+.fl-top>div{text-align:center;display:grid;line-height:1.2}.fl-top>div b{font-size:15.5px;font-weight:800}.fl-top>div small{font-size:12.5px;color:var(--ink2);font-weight:700}
+.fl-bk{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(10,12,22,.8);display:grid;place-items:center}.fl-bk svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.fl-n{min-width:44px;text-align:right;font-size:12.5px;font-weight:800;color:#8fa2d8}
+.ck-in.fl .ck-sc{padding:4px 16px 150px!important;max-width:620px;margin:0 auto;width:100%}
+.fl-h{margin:6px 2px 8px;font:900 34px/1.05 var(--f);letter-spacing:-.02em;color:#fff}
+.fl-p{margin:0 2px 8px;font-size:15px;line-height:1.5;color:var(--ink2)}
+.fl-tag{display:inline-block;margin:0 2px 14px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:800;letter-spacing:.04em;background:rgba(243,201,105,.12);color:#f3c969;box-shadow:inset 0 0 0 1px rgba(243,201,105,.35)}
+.fl-foot{position:absolute;left:0;right:0;bottom:0;padding:18px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(5,6,11,0),rgba(5,6,11,.92) 30%,#05060b);display:grid;gap:6px;justify-items:center}
+.ck-in.fl{position:relative}
+.fl-foot .hbtn{max-width:588px;margin-top:0}.fl-foot .hbtn.dis{filter:saturate(.35) brightness(.7)}
+.fl-skip{border:0;background:none;color:#8fa2d8;font:700 13px var(--f);padding:6px 10px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+/* Aufwärm-Liste */
+.wuq{border-radius:20px;border:1px solid rgba(130,155,255,.18);background:linear-gradient(180deg,rgba(16,21,42,.9),rgba(10,13,28,.95));margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.wuq-r{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:16px 14px 16px 18px}
+.wuq-m{display:grid;gap:4px;min-width:0}.wuq-m b{font-size:17px;font-weight:800}.wuq-m small{font-size:14px;color:var(--ink2);font-weight:600}
+.wuq-i{width:40px;height:40px;border:0;background:none;display:grid;place-items:center}.wuq-i svg{width:26px;height:26px;fill:none;stroke:#6f8cff;stroke-width:2;stroke-linecap:round}
+.wuq-c{width:42px;height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);display:grid;place-items:center}
+.wuq-c svg{width:22px;height:22px;fill:none;stroke:transparent;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.wuq-c[aria-pressed="true"]{border-color:transparent;background:linear-gradient(180deg,#5b7dff,#3157e8);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 14px -6px rgba(61,99,245,.9)}.wuq-c[aria-pressed="true"] svg{stroke:#fff}
+.wuq.ok{border-color:rgba(111,140,255,.5)}.wuq.ok .wuq-m b{color:#c9d5ff}
+.wuq-t{margin:0;padding:0 18px 16px;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.wuq.open{border-color:rgba(111,140,255,.45)}
+/* Readiness-Karten im Balken-Design */
+.ck-in.fl .ck-c{background:#0b0d14!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:22px!important;padding:18px 18px 16px!important;margin-bottom:12px!important}
+.ck-in.fl .ck-h{margin:22px 4px 10px!important;color:#8fa2d8!important;letter-spacing:.12em!important}
+.ckq{margin:0 0 4px;font-size:17px;font-weight:700;color:#fff;line-height:1.3}.ckqs{display:block;font-size:12.5px;color:var(--mut);margin:-2px 0 4px}.ckopt{font-size:11px;font-weight:800;color:#8fa2d8;margin-left:6px;letter-spacing:.04em}
+.ckv{display:grid;justify-items:center;gap:4px;margin:14px 0 14px;min-height:44px}.ckv b{font:900 30px/1.1 var(--f);letter-spacing:-.015em;color:#fff;text-align:center}.ckv b.na{font-size:16px;font-weight:700;color:#4c587f}
+.ckv small{font-size:13.5px;color:var(--ink2);font-weight:600;text-align:center}
+.ckbars{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:center}
+.ckbars button{border:0;background:none;padding:0;height:76px;cursor:pointer}.ckbars svg{width:100%;height:100%;display:block;overflow:visible}
+.ckbars path{transition:fill .18s}.ckbars path.off{fill:#1d2030}.ckbars path.lo{fill:#26398f}.ckbars path.on{fill:#4069f5;filter:drop-shadow(0 6px 12px rgba(64,105,245,.55))}
+.ckbars button:active path{fill:#3355d8}
+.ckends{display:flex;justify-content:space-between;margin-top:12px;font-size:13.5px;font-weight:800;color:#fff}
+.ck-bwq .ck-bw{display:grid;grid-template-columns:56px 1fr 56px;align-items:center;margin-top:10px}
+.ck-bwq .ck-bw b{font:900 42px/1 var(--f);color:#fff}.ck-bwq .ck-bw>div{display:flex;align-items:baseline;justify-content:center;gap:6px}.ck-bwq .ck-bw small{font-size:18px;color:var(--mut);font-weight:700}
+.ck-bwq .ck-bw button{height:52px;border-radius:16px;border:1px solid rgba(130,155,255,.22);background:linear-gradient(180deg,#1f2847,#141a31);color:#c9d5ff;font:700 26px var(--f)}
+.ck-in.fl .ck-lv,.ck-in.fl .ck-lh,.ck-in.fl .ck-b{display:none}
+.end-note{width:100%;margin-top:8px;min-height:84px;border-radius:14px;border:1px solid rgba(130,155,255,.2);background:#070910;color:var(--ink);font:600 15px/1.45 var(--f);padding:12px}
+/* Ruhetag-Check-in nutzt dieselben Balken */
+.ck-in:not(.fl) .ckv{margin:8px 0 10px}.ck-in:not(.fl) .ckv b{font-size:20px}
+/* Auto-Timer-Karte */
+.rt-h{display:flex;justify-content:space-between;align-items:center;gap:12px}.rt-h small{display:block;font-size:12.5px;color:var(--ink2);margin-top:2px}
+.rt-sw{flex:none;width:64px;height:36px;border-radius:999px;border:0;background:#2a2f45;position:relative;transition:background .2s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}.rt-sw i{position:absolute;top:3px;left:3px;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:left .2s}
+.rt-sw.on{background:linear-gradient(180deg,#5b7dff,#3157e8)}.rt-sw.on i{left:31px}
+.rt-l{display:grid;gap:8px;margin-top:12px}.rt-r{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 12px 12px 16px;border-radius:16px;background:#0b0d14;border:1px solid rgba(255,255,255,.07)}
+.rt-r b{display:block;font-size:15.5px}.rt-r small{font-size:12.5px;color:var(--ink2)}
+.rt-st{display:flex;align-items:center;gap:6px}.rt-st button{width:36px;height:36px;border-radius:11px;border:1px solid rgba(130,155,255,.22);background:#151b33;color:#c9d5ff;font:700 19px var(--f)}
+.rt-st span{min-width:74px;text-align:center;font:900 18px var(--f);color:#7f98ff;font-variant-numeric:tabular-nums}.rt-st span em{font-style:normal;font-size:12px;color:#8fa2d8;margin-left:3px;font-weight:800}
+.grsrc{display:block;font-style:normal;font-size:11.5px;font-weight:800;color:#9fb3ff;margin-top:4px;letter-spacing:.02em}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -3495,7 +3550,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1853-2b0f40a</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1915-60374b1</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -3715,6 +3770,7 @@ function anaPrompt(w){const lines=[];
   day.b.forEach((bl,b)=>{const sets=L?(L.b[b]||[]).map(setLine).filter(Boolean):[];
    lines.push(`- ${EX[bl.e].n}: Vorgabe „${bl.x}“${bl.rpe!=null?' · Soll-RPE '+nf(bl.rpe):''}${bl.h?' · '+HYPE[bl.h]:''}${bl.opt?' · optional':''}\n  Ist: ${sets.length?sets.map((s,i)=>(i+1)+') '+s).join('; '):'keine Einträge'}`)});
   if(L&&L.whoop)lines.push(`WHOOP an diesem Tag: ${whoopLine(L.whoop)}`);
+  if(L&&L.diff)lines.push(`Schweregrad (eigene Einschätzung): ${CKW.diff[L.diff-1]} (${L.diff}/5)`);
   if(L&&L.note)lines.push(`Notiz: ${L.note}`)}
  if(w<NW()-1){lines.push(`\n### Plan nächste Woche (W${w+2}) mit den automatisch berechneten Startgewichten`);
   for(let d=0;d<ND();d++)P[w+1][d].b.forEach((bl,b)=>{const sg=sugg(w+1,d,b,0);lines.push(`- ${DAYS[d].tag} ${EX[bl.e].n}: ${bl.x}${sg.kg?(sg.t!=='v'?' → Empfehlung ≈ '+nf(sg.kg,2)+' kg':' → Vorgabe '+nf(sg.kg,2)+' kg'):''}`)})}
@@ -3930,14 +3986,38 @@ const CKL=[['rsq','Kniebeuge','sq'],['rbp','Bankdrücken','bp'],['rdl','Kreuzheb
 const CKLV=['Verletzt','Nur Aufwärmen','Eher leicht','Normal','Topform'];
 const CKC={1:'#e8484f',2:'#f0a066',3:'#f3c969',4:'#7dd09a',5:'#43c08a'};
 let CK=null;
-function ckBlocks(k,v,neg,labels,lo,hi){return `<div class="ck-b">${[1,2,3,4,5].map(i=>{const h=neg?(6-i)*20:i*20;return `<button type="button" data-ck="${k}|${i}" aria-pressed="${v===i}" aria-label="${labels?labels[i-1]:i}"><i style="height:${h}%;${v===i?`background:${CKC[i]}`:''}"></i></button>`}).join('')}</div>${labels?`<div class="ck-lv">${labels.map((l,i)=>`<span class="${v===i+1?'on':''}">${l}</span>`).join('')}</div>`:`<div class="ck-lh"><span>${lo}</span><span>${hi}</span></div>`}`}
-function ckHTML(){if(CK.rest)return ckRestHTML();const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
- const card=(k,t,sub,lo,hi,neg)=>`<div class="ck-c"><div class="ck-t"><b>${t}</b>${sub?`<small>${sub}</small>`:''}</div>${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`;
+const CKW={sleepq:['Sehr schlecht','Schlecht','Okay','Gut','Ausgezeichnet'],energy:['Ausgelaugt','Niedrig','Motiviert','Hoch','Voll geladen'],mood:['Gedrückt','Gereizt','Ausgeglichen','Gut','Bestens'],strength:['Schwach','Müde','Solide','Stark','Topform'],stress:['Extrem','Hoch','Mittel','Gering','Entspannt'],food:['Viel zu wenig','Zu wenig','Moderat','Gut','Optimal'],hydra:['Dunkel','Eher dunkel','Hellgelb','Hell','Klar'],sore:['Stark','Deutlich','Leicht','Kaum','Keiner'],diff:['Sehr leicht','Leicht','Moderat','Schwer','Sehr schwer']};
+const CKD={energy:['Kaum Antrieb heute','Eher wenig Lust','Fühle mich gut und bereit','Richtig Lust aufs Training','Kann es kaum erwarten'],strength:['Fühle mich schwach','Müde, aber trainierbar','Fühle mich gut und bereit','Kräftig und erholt','Alles fühlt sich leicht an'],sleepq:['Kaum geschlafen','Unruhig, zu kurz','Ausreichend','Erholsam','Tief und lang'],diff:['Lief locker durch','Gut machbar','Fordernd, aber kontrolliert','Richtig hart','Am Limit']};
+function ckBar(i,st){const W=56,H=[34,42,50,58,66][i-1],hr=H+10,y0=(80-H)/2,y1=(80-hr)/2,r=9;
+ const path=`M${r} ${y0+2} Q2 ${y0+2.5} 2 ${y0+r} L2 ${80-y0-r} Q2 ${80-y0-2.5} ${r} ${80-y0-2} L${W-r} ${80-y1-1} Q${W-2} ${80-y1-1.5} ${W-2} ${80-y1-r} L${W-2} ${y1+r} Q${W-2} ${y1+1.5} ${W-r} ${y1+1} Z`;
+ return `<svg viewBox="0 0 ${W} 80" preserveAspectRatio="none"><path d="${path}" class="${st}"/></svg>`}
+function ckBlocks(k,v,neg,labels,lo,hi){const key=CKW[k]?k:/^(push|pull|lback|post|quad|sore)$/.test(k)?'sore':null;const L=labels||(key&&CKW[key])||[lo,'','','',hi];const D=CKD[k];
+ const val=v!=null?L[v-1]:null;
+ return `<div class="ckv"><b class="${val?'':'na'}">${val||'Antippen'}</b>${val&&D?`<small>${D[v-1]}</small>`:''}</div><div class="ckbars">${[1,2,3,4,5].map(i=>`<button type="button" data-ck="${k}|${i}" aria-pressed="${v===i}" aria-label="${esc(L[i-1]||String(i))}">${ckBar(i,v==null?'off':i===v?'on':i<v?'lo':'off')}</button>`).join('')}</div><div class="ckends"><span>${esc(lo||L[0])}</span><span>${esc(hi||L[4])}</span></div>`}
+const GWU=[['b90','90/90-Atmung','1 × 10–15 Atemzüge','Rückenlage, Füße auf Bank oder Wand, Hüfte und Knie 90°. Tief durch die Nase in den Bauch und die Flanken atmen, lange ausatmen, bis die unteren Rippen sinken. Beruhigt und bringt den Rumpf in Position.'],
+ ['dbug','Dead Bugs','1 × 10 pro Seite','Rückenlage, Arme senkrecht, Knie 90°. Gegengleich Arm und Bein langsam strecken, unterer Rücken bleibt am Boden. Aktiviert die tiefe Rumpfspannung fürs Bracing.'],
+ ['gbr','Glute Bridge','1 × 15–20','Rückenlage, Füße hüftbreit. Hüfte über die Fersen hochdrücken, oben das Gesäß 1 s fest anspannen, ohne ins Hohlkreuz zu gehen.'],
+ ['bdog','Bird Dogs','1 × 10 pro Seite','Vierfüßlerstand. Gegengleich Arm und Bein lang machen, Becken bleibt ruhig und gerade. Kurz halten, kontrolliert zurück.'],
+ ['bear','Bear Crawl Shoulder Touches','1 × 5–10 je Hand','Bärenstand, Knie knapp über dem Boden. Abwechselnd die gegenüberliegende Schulter antippen, ohne dass die Hüfte schaukelt. Schultern und Rumpf werden warm.'],
+ ['tkg','Kniender Glute-Aktivator','1 × 10–20','Aufrecht knien (Tall Kneeling). Hüfte nach hinten schieben, dann über das Gesäß wieder kraftvoll nach vorn strecken – optional mit Band um die Hüfte.'],
+ ['gsq','Goblet Squat','1 × 10–20','Kurzhantel vor der Brust, tief und aufrecht beugen, Knie über den Zehen. Öffnet Hüfte und Sprunggelenke für die Kniebeuge.'],
+ ['cub','KH Cuban Press','1 × 10–15 · leichtes Gewicht','Leichte Kurzhanteln: Ellbogen auf Schulterhöhe heben, Unterarme nach oben rotieren, dann über Kopf drücken. Wärmt die Rotatorenmanschette fürs Bankdrücken und Low-Bar-Halten.']];
+const CKQ={sleepq:'Wie hast du geschlafen?',energy:'Wie motiviert bist du fürs Training?',mood:'Wie ist deine Stimmung?',strength:'Wie stark und erholt fühlst du dich?',stress:'Wie gestresst bist du?',food:'Wie war deine Ernährung in den letzten 24 h?',hydra:'Wie ist deine Urinfarbe?'};
+function wuHTML(){const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const g=L.gwu||{};const n=GWU.filter(x=>g[x[0]]).length;
+ return `<div class="ck-in fl"><div class="fl-top"><button type="button" class="fl-bk" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${n}/${GWU.length}</span></div>
+ <div class="ck-sc"><h1 class="fl-h">Aufwärmen</h1><p class="fl-p">Mach diese Aktivierungsübungen vor dem Check-in. So spürst du deinen Körper schon und beantwortest die Fragen genauer.</p><p class="fl-tag">Allgemeines Aufwärmen · ergänzend, nicht Teil von Canditos Plan</p>
+  ${GWU.map(([k,t,rx,info])=>`<div class="wuq ${g[k]?'ok':''} ${S.ui.wui===k?'open':''}"><div class="wuq-r"><div class="wuq-m"><b>${t}</b><small>${rx}</small></div><button type="button" class="wuq-i" data-wui="${k}" aria-label="Info zu ${esc(t)}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button><button type="button" class="wuq-c" data-wuck="${k}" aria-pressed="${!!g[k]}" aria-label="${esc(t)} erledigt"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>${S.ui.wui===k?`<p class="wuq-t">${info}</p>`:''}</div>`).join('')}
+  <p class="ck-note" style="margin:12px 2px 0">Die übungsspezifischen Aufwärmsätze mit Gewicht findest du weiterhin im Gym-Modus (Flammen-Symbol).</p></div>
+ <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckstep="1"><span><b>Weiter</b><small>zum Readiness-Check-in</small></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>`})}
+document.addEventListener('click',e=>{if(!CK)return;const i=e.target.closest('[data-wui]');if(i){e.stopPropagation();S.ui.wui=S.ui.wui===i.dataset.wui?null:i.dataset.wui;ckRefresh();return}
+ const c=e.target.closest('[data-wuck]');if(c){e.stopPropagation();ckSave(L=>{if(!L.gwu)L.gwu={};if(L.gwu[c.dataset.wuck])delete L.gwu[c.dataset.wuck];else L.gwu[c.dataset.wuck]=1});ckRefresh()}},true);
+function ckHTML(){if(CK.rest)return ckRestHTML();if(CK.go&&!CK.step)return wuHTML();const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
+ const card=(k,t,sub,lo,hi,neg)=>`<div class="ck-c ckqc"><p class="ckq">${CKQ[k]||t}</p>${sub&&!CKQ[k]?`<small class="ckqs">${sub}</small>`:''}${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`;
  const nA=[...CKG,...CKS].filter(q=>f[q[0]]!=null).length,nT=CKG.length+CKS.length;
  const ws=WF.map(([k,l,u,mn,mx])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
- return `<div class="ck-in"><div class="ck-top"><button type="button" class="iconbtn" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><p class="eyebrow">Check-in · vor dem Training</p><h2>W${w+1} · ${DAYS[d].tag} · ${esc(P[w][d].f)}</h2></div><span class="ck-n">${nA}/${nT}</span></div>
- <div class="ck-sc">
-  <p class="ck-h">Körpergewicht</p><div class="ck-c ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div>
+ return `<div class="ck-in fl rd"><div class="fl-top"><button type="button" class="fl-bk" ${CK.go?'data-ckstep="-1"':'data-ckclose'} aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${nA}/${nT}</span></div>
+ <div class="ck-sc"><h1 class="fl-h">Readiness-Check-in</h1>
+  <div class="ck-c ck-bwq"><p class="ckq">Wie viel wiegst du heute?</p><div class="ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div></div>
   <p class="ck-h">WHOOP · heute</p><div class="ck-c"><div class="ck-wg">${ws}</div><p class="ck-note">Werte aus der WHOOP-App abtippen – werden bei dieser Einheit gespeichert.</p></div>
   <p class="ck-h">Gesamtbereitschaft</p>${CKG.map(q=>card(...q)).join('')}
   <p class="ck-h">Muskelkater</p>${CKS.map(([k,t,sub])=>card(k,t,sub,'stark','keiner',1)).join('')}
@@ -3945,10 +4025,10 @@ function ckHTML(){if(CK.rest)return ckRestHTML();const {w,d}=CK;return withProg(
   <p class="ck-h">Mindset</p><div class="ck-c"><label class="ck-mind"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><textarea data-ckmind rows="2" placeholder="Heute werde ich …">${esc(L.mind||'')}</textarea></label></div>
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung für dein Readiness-Center. Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
- <div class="ck-foot"><button type="button" class="btn" data-ckskip>${CK.go?'Überspringen':'Schließen'}</button><button type="button" class="btn primary" data-ckgo>${CK.go?'Weiter zum Training':'Speichern'}</button></div></div>`})}
+ <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckgo><span><b>${CK.go?'Training starten':'Speichern'}</b><small>${nA}/${nT} beantwortet${CK.go?' · weiter in den Gym-Modus':''}</small></span><svg viewBox="0 0 24 24"><path d="${CK.go?'M8 5v14l11-7z':'M5 12.5l4.5 4.5L19 7'}"/></svg></button>${CK.go?'<button type="button" class="fl-skip" data-ckskip>Check-in überspringen</button>':''}</div></div>`})}
 function ckOpen(pid,w,d,go){CK={pid,w,d,go,step:0};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}
 function ckRefresh(){const el=document.getElementById('ckin');if(!el||!CK)return;const sc=el.querySelector('.ck-sc');const y=sc?sc.scrollTop:0;el.innerHTML=ckHTML();ckSteps(el);const s2=el.querySelector('.ck-sc');if(s2)s2.scrollTop=y}
-function ckSteps(el){const sc=el.querySelector('.ck-sc');if(!sc)return;const kids=[...sc.children];const groups=[];let cur=null;
+function ckSteps(el){return;const sc=el.querySelector('.ck-sc');if(!sc)return;const kids=[...sc.children];const groups=[];let cur=null;
  kids.forEach(k=>{if(k.matches('p.ck-h')||!cur){cur={t:k.matches('p.ck-h')?k.textContent.trim():'',els:[]};groups.push(cur)}cur.els.push(k)});
  if(groups.length<3)return;const n=groups.length;CK.step=Math.max(0,Math.min(n-1,CK.step||0));
  groups.forEach((g,i)=>{const d=document.createElement('div');d.className='ck-step'+(i===CK.step?' on':'');g.els.forEach(x=>d.appendChild(x));sc.appendChild(d)});
@@ -3956,7 +4036,7 @@ function ckSteps(el){const sc=el.querySelector('.ck-sc');if(!sc)return;const kid
  const ft=el.querySelector('.ck-foot');if(!ft)return;const go=ft.querySelector('[data-ckgo]');const last=CK.step===n-1;
  if(!last&&go){go.hidden=true;const nx=document.createElement('button');nx.type='button';nx.className='btn primary';nx.dataset.ckstep='1';nx.textContent='Weiter';ft.appendChild(nx)}
  if(CK.step>0){const bk=document.createElement('button');bk.type='button';bk.className='btn';bk.dataset.ckstep='-1';bk.textContent='Zurück';const first=ft.firstElementChild;first.hidden=true;ft.prepend(bk)}}
-document.addEventListener('click',e=>{const t=e.target.closest('#ckin [data-ckstep]');if(!t||!CK)return;e.stopPropagation();CK.step=(CK.step||0)+ +t.dataset.ckstep;const el=document.getElementById('ckin');el.innerHTML=ckHTML();ckSteps(el);const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
+document.addEventListener('click',e=>{const t=e.target.closest('#ckin [data-ckstep]');if(!t||!CK)return;e.stopPropagation();CK.step=Math.max(0,(CK.step||0)+ +t.dataset.ckstep);const el=document.getElementById('ckin');el.innerHTML=ckHTML();const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
 function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
 function ckSave(fn){if(CK.rest){if(!S.meta.rest)S.meta.rest={};const o=S.meta.rest[CK.rest]||(S.meta.rest[CK.rest]={});fn(o);o.at=Date.now();saveMeta();return}withProg(CK.pid,()=>{const L=log(CK.w,CK.d,true);fn(L);saveLog(key(CK.w,CK.d))})}
 function needCk(w,d){const L=log(w,d);return !(L&&(L.ck||L.done||L.start))}
@@ -3978,7 +4058,7 @@ function ckRestHTML(){const o=(S.meta.rest||{})[CK.rest]||{};const f=o.feel||{};
  const ws=WF.map(([k,l,u])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
  return `<div class="ck-in rest"><div class="ck-top"><button type="button" class="iconbtn" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><p class="eyebrow" style="color:#7fa8ff">Ruhetag · Erholung</p><h2>${dt.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit'})}</h2></div><span class="ck-n">${nA}/${CKR.length}</span></div>
  <div class="ck-sc">
-  <p class="ck-h">Körpergewicht</p><div class="ck-c ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div>
+  <div class="ck-c ck-bwq"><p class="ckq">Wie viel wiegst du heute?</p><div class="ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div></div>
   <p class="ck-h">WHOOP · heute</p><div class="ck-c"><div class="ck-wg">${ws}</div><p class="ck-note">Ruhetage fließen in deine persönlichen WHOOP-Durchschnitte ein – so werden die Vergleichswerte im Readiness-Center genauer.</p></div>
   <p class="ck-h">Erholung</p>${CKR.map(([k,t,sub,lo,hi,neg])=>`<div class="ck-c"><div class="ck-t"><b>${t}</b><small>${sub}</small></div>${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`).join('')}
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung. Programm, Vorgaben und Lasten bleiben unverändert.</p>
@@ -5332,11 +5412,11 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
  <section class="card"><div class="ct"><h2 class="h2">Design</h2></div><p class="note2" style="margin-top:0">Farbthema der App. Die Signalfarben (Grün/Gelb/Rot, Lift-Farben) bleiben in beiden Varianten gleich.</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:10px 0 0"><button type="button" data-theme="blue" aria-pressed="${(window.CF_THEME||'blue')==='blue'}">Midnight Blue</button><button type="button" data-theme="classic" aria-pressed="${window.CF_THEME==='classic'}">Classic Rot/Gold</button></div><p class="note2" style="margin:12px 0 0">Bewegter Hintergrund & schimmernde Navigation</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-motion="1" aria-pressed="${S.meta.motion!==false}">An</button><button type="button" data-motion="0" aria-pressed="${S.meta.motion===false}">Aus</button></div>
  <p class="note2" style="margin:14px 0 0">Textgröße (ganze App, im Gym-Modus besonders deutlich)</p><div class="seg" style="grid-template-columns:repeat(3,1fr);margin:6px 0 0"><button type="button" data-fs="s" aria-pressed="${!S.meta.fs||S.meta.fs==='s'}">Standard</button><button type="button" data-fs="m" aria-pressed="${S.meta.fs==='m'}">Groß</button><button type="button" data-fs="l" aria-pressed="${S.meta.fs==='l'}">Sehr groß</button></div>
  <p class="note2" style="margin:14px 0 0">Gym-Modus in reinem Schwarz (OLED – spart Akku, blendet weniger)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-oled="1" aria-pressed="${!!S.meta.oled}">An</button><button type="button" data-oled="0" aria-pressed="${!S.meta.oled}">Aus</button></div></section>
- <section class="card"><div class="ct"><h2 class="h2">Pausen-Timer</h2></div>
+ ${rtHTML()}<section class="card"><div class="ct"><h2 class="h2">Pausen-Timer</h2></div>
   <div class="fgrid"><label class="fld">Grundübungen<span class="in"><input id="set-rm" inputmode="numeric" data-meta="restMain" value="${m.restMain}"><i>Sek.</i></span></label>
   <label class="fld">Zubehör<span class="in"><input id="set-ra" inputmode="numeric" data-meta="restAcc" value="${m.restAcc}"><i>Sek.</i></span></label></div>
   <div class="toggles" style="justify-content:flex-start;margin-top:12px">${tg('sound','Ton')}${tg('vibe','Vibration')}${tg('autoSheet','Timer groß öffnen')}${tg('overtime','Überzeit weiterzählen')}</div>
-  <p class="note2">Der Timer startet automatisch beim Abhaken eines Satzes. High Bar Squat startet mit 8 Minuten, wie im Plan empfohlen. Eigene Zeiten pro Übung legst du im Timer mit „Für diese Übung merken“ fest.</p>
+  <p class="note2">Der Timer startet automatisch beim Abhaken eines Satzes. Mit Auto-Timer richtet sich die Pause der Grundübungen nach dem RPE (siehe oben); die feste Zeit gilt, wenn Auto aus ist. Steht im Plan „8–10+ Minuten“, startet der Timer mit 8:00. Eigene Zeiten pro Übung legst du im Timer mit „Für diese Übung merken“ fest.</p>
   ${ov.length?`<p class="sec">Eigene Pausen pro Übung</p><div class="prows">${ov.map(k=>`<div class="prow" style="--c:${GC[EX[k].g]}"><span class="pk"></span><div class="pn"><b>${esc(EX[k].n)}</b></div><div class="pl">${mmss(m.restEx[k])} <button type="button" class="btn klein" data-unrest="${k}" style="margin-left:8px">Zurücksetzen</button></div></div>`).join('')}</div>`:''}</section>
  <section class="card"><div class="ct"><h2 class="h2">Hantel & Rundung</h2></div>
   <div class="fgrid"><label class="fld">Stangengewicht<span class="in"><input id="set-bar" inputmode="decimal" data-meta="bar" value="${nf(m.bar,2)}"><i>kg</i></span></label>
@@ -5676,6 +5756,44 @@ async function preIcons(){if((window.CF_THEME||'blue')!=='blue'||preIcons.done)r
  const hp=document.querySelector('img.hpic');const hs=hp&&hp.getAttribute('src');if(hs&&/^data:/.test(hs)){jobs.push(proc(hs,'tint').then(u=>{if(u)window._hpic=[hs,u]}))}
  await Promise.all(jobs);document.documentElement.classList.add('icopre');render()}
 setTimeout(()=>{try{preIcons()}catch(e){}},900);
+(function(){const _fs=finishSession;finishSession=function(w,d){const L=log(w,d,true);if(L.diff==null&&!finishSession.force&&!L.done){endOpen(w,d);return}finishSession.force=false;return _fs.apply(this,arguments)}})();
+let END=null;
+function endHTML(){const {w,d}=END;const L=log(w,d,true);const v=END.v;const sets=L.b.flat().filter(s=>s&&s.ok).length;
+ return `<div class="ck-in fl end"><div class="fl-top"><button type="button" class="fl-bk" data-endback aria-label="Zurück zum Training"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${sets} ${sets===1?'Satz':'Sätze'}</span></div>
+ <div class="ck-sc"><h1 class="fl-h">Training beenden</h1><p class="fl-p">Kurz einschätzen, wie hart die Einheit insgesamt war – das hilft Claude bei der Wochenanalyse, Ermüdung und Planabweichungen zu erkennen.</p>
+  <div class="ck-c ckqc"><p class="ckq">Wie schwer war das Training insgesamt?</p>${ckBlocks('diff',v,0,CKW.diff,'Sehr leicht','Sehr schwer').replace(/data-ck="diff\|/g,'data-endv="')}</div>
+  <div class="ck-c ckqc"><p class="ckq">Notiz zur Einheit <span class="ckopt">optional</span></p><textarea class="end-note" data-endnote rows="3" placeholder="z. B. Technik, Schmerzen, Besonderheiten …">${esc(L.note||'')}</textarea></div></div>
+ <div class="fl-foot"><button type="button" class="hbtn fl-go ${v?'':'dis'}" data-endsave ${v?'':'aria-disabled="true"'}><span><b>Speichern & beenden</b><small>${v?CKW.diff[v-1]+' · Einheit wird gespeichert':'Bitte zuerst den Schweregrad wählen'}</small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button><button type="button" class="fl-skip" data-endskip>Ohne Einschätzung beenden</button></div></div>`}
+function endOpen(w,d){END={w,d,v:null};let el=document.getElementById('endq');if(!el){el=document.createElement('div');el.id='endq';el.className='ckin';document.body.appendChild(el)}el.innerHTML=endHTML();el.hidden=false;document.body.classList.add('ckopen')}
+function endClose(){const el=document.getElementById('endq');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');END=null}
+function endDone(withV){const {w,d,v}=END;const L=log(w,d,true);if(withV&&v)L.diff=v;else L.diff=0;saveLog(key(w,d));endClose();finishSession.force=true;finishSession(w,d);render()}
+document.addEventListener('click',e=>{if(!END)return;const t=e.target.closest('#endq button');if(!t)return;
+ if(t.dataset.endv){END.v=+t.dataset.endv;const sc=document.querySelector('#endq .ck-sc');const y=sc?sc.scrollTop:0;document.getElementById('endq').innerHTML=endHTML();const s2=document.querySelector('#endq .ck-sc');if(s2)s2.scrollTop=y;return}
+ if(t.dataset.endsave!=null){if(!END.v){toast('Bitte zuerst den Schweregrad wählen');return}endDone(true);return}
+ if(t.dataset.endskip!=null){endDone(false);return}
+ if(t.dataset.endback!=null){const {w,d}=END;endClose();S.ui.w=w;S.ui.d=d;openGym()}});
+document.addEventListener('input',e=>{if(!END||!e.target.dataset||e.target.dataset.endnote==null)return;const L=log(END.w,END.d,true);L.note=e.target.value;saveLog(key(END.w,END.d))});
+/* ---------- Auto-Timer nach Candito ---------- */
+const RT0=[240,240,300,360];
+function rtTiers(side){const m=S.meta.restTiers||{};return (m[side]&&m[side].length===4)?m[side]:RT0.slice()}
+function restAuto(w,d,b,rp){const bl=P[w][d].b[b];if(!bl)return {s:S.meta.restMain||240,src:''};const e=bl.e,ex=EX[e]||{};
+ if(S.meta.restEx&&S.meta.restEx[e]!=null)return {s:S.meta.restEx[e],src:'deine Zeit für diese Übung'};
+ const txt=[bl.x,ex.t,P[w][d].d,...((INFO&&INFO[w+'-'+d])||[])].join(' ');
+ if(ex.m&&/8\s*[–-]\s*10\+?\s*(Minuten|min)/.test(txt))return {s:480,src:'Candito: 8–10+ min laut Plan'};
+ if(!ex.m)return {s:S.meta.restAcc||120,src:'Zubehör'};
+ if(S.meta.autoT===false)return {s:S.meta.restMain||240,src:'Grundübung'};
+ let r=rp!=null?rp:(bl.rpe!=null?bl.rpe:(setRule(bl).rpe));const side=ex.g==='bp'?'upper':'lower';const T=rtTiers(side);const i=r==null?0:r<=6.5?0:r<=7.5?1:r<=8.5?2:3;
+ return {s:T[i],src:`Auto · ${side==='upper'?'Oberkörper':'Unterkörper'}${r!=null?' · RPE '+nf(r):''}`}}
+function rtHTML(){const side=S.ui.rts||'lower';const T=rtTiers(side);const on=S.meta.autoT!==false;const L=[['RPE 6,5 oder weniger','4 oder mehr RIR'],['RPE 7–7,5','3 RIR'],['RPE 8–8,5','2 RIR'],['RPE 9+','1–0 RIR']];
+ return `<section class="card rt"><div class="rt-h"><div><h2 class="h2">Auto-Timer</h2><small>Pause nach RPE des Satzes · Grundübungen</small></div><button type="button" class="rt-sw ${on?'on':''}" data-rtauto aria-pressed="${on}" aria-label="Auto-Timer ${on?'aus':'an'}schalten"><i></i></button></div>
+  ${on?`<div class="rpx-tabs" style="margin-top:12px"><button type="button" data-rts="lower" aria-pressed="${side==='lower'}">Unterkörper</button><button type="button" data-rts="upper" aria-pressed="${side==='upper'}">Oberkörper</button></div>
+  <p class="note2" style="margin:10px 0 0">Candito gibt keine feste Pausenzeit vor, sondern <b>volle Erholung</b>: meist rund <b>4 Minuten</b>, in manchen Fällen 5–10 Minuten. Die Standardwerte folgen dem – bei harten Sätzen mehr. Ausdrückliche Plan-Vorgaben (z. B. 8–10+ min) haben immer Vorrang.</p>
+  <div class="rt-l">${T.map((v,i)=>`<div class="rt-r"><div><b>${L[i][0]}</b><small>${L[i][1]}</small></div><div class="rt-st"><button type="button" data-rt="${side}|${i}|-30" aria-label="weniger">−</button><span>${mmss(v)}<em>min</em></span><button type="button" data-rt="${side}|${i}|30" aria-label="mehr">+</button></div></div>`).join('')}</div>
+  <button type="button" class="fl-skip" data-rtreset style="margin-top:6px">Auf Candito-Standard zurücksetzen</button>`:'<p class="note2" style="margin:8px 0 0">Aus: Grundübungen nutzen die feste Zeit unten.</p>'}</section>`}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-rtauto]');if(a){S.meta.autoT=S.meta.autoT===false;saveMeta();render();return}
+ const sd=e.target.closest('[data-rts]');if(sd){S.ui.rts=sd.dataset.rts;render();return}
+ const r=e.target.closest('[data-rt]');if(r){const [side,i,dv]=r.dataset.rt.split('|');const T=rtTiers(side);T[+i]=Math.max(60,Math.min(900,T[+i]+ +dv));if(!S.meta.restTiers)S.meta.restTiers={};S.meta.restTiers[side]=T;saveMeta();render();return}
+ if(e.target.closest('[data-rtreset]')){S.meta.restTiers={};saveMeta();render()}});
 let renderPending=false;
 setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}
  if(!document.querySelector('#gym .grule')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const gz=document.querySelector('#gym .gziel');if(bl&&gz)gz.insertAdjacentHTML('beforebegin',gymRuleHTML(bl))}
@@ -5758,7 +5876,7 @@ function completeSet(w,d,b,i){const L=log(w,d,true),s=L.b[b][i];const now=Date.n
  if(S.ui.openB&&S.ui.openB[key(w,d)]===b&&L.b[b].slice(0,P[w][d].b[b].s).every(x=>x.ok))delete S.ui.openB[key(w,d)];
  {const bl=P[w][d].b[b],e=e1Of(s,bl);const rp=repPRof(w,d,b,i);if(prevB&&e&&e>prevB+.5)showPR({ex:EX[bl.e].n,e1:e,prev:prevB,kg:pnum(s.kg),r:pnum(s.r),rpe:pnum(s.rpe)});else if(rp)showRepPR(rp);else showDone(`Satz ${i+1} erledigt`,`${EX[bl.e].n} · ${s.kg??'–'} kg × ${s.r??'–'}`)}
  const nx=nextOpen(w,d,b,i);
- if(nx){T.lastRpe=pnum(s.rpe);startRest(restFor(P[w][d].b[nx.b].e===P[w][d].b[b].e?P[w][d].b[b].e:P[w][d].b[b].e),{w,d,b:nx.b,i:nx.i,from:P[w][d].b[b].e});}
+ if(nx){T.lastRpe=pnum(s.rpe);const RA=restAuto(w,d,b,pnum(s.rpe));startRest(RA.s,{w,d,b:nx.b,i:nx.i,from:P[w][d].b[b].e});T.src=RA.src;saveT();}
  else{stopRest();toast('Alle Sätze erledigt – Einheit abschließen')}
  offerUndo(w,d,b,i,_snap,_tsnap)}
 
@@ -5812,7 +5930,7 @@ function beep(f=880,ms=140,delay=0,vol=.22){if(!actx||!S.meta.sound)return;try{c
  o.connect(g);g.connect(actx.destination);const t0=actx.currentTime+delay;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+ms/1000);o.start(t0);o.stop(t0+ms/1000+.03)}catch(e){}}
 const vib=p=>{if(!S.meta.vibe)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
 const tLeft=()=>T.paused?T.left:(T.end-Date.now())/1000;
-function startRest(sec,ctx){T.on=true;T.gmin=false;T.total=sec;T.end=Date.now()+sec*1000;T.paused=false;T.left=sec;T.ctx=ctx||T.ctx;T.beeped=Math.ceil(sec)+1;saveT();
+function startRest(sec,ctx){T.src='';T.on=true;T.gmin=false;T.total=sec;T.end=Date.now()+sec*1000;T.paused=false;T.left=sec;T.ctx=ctx||T.ctx;T.beeped=Math.ceil(sec)+1;saveT();
  if(S.meta.autoSheet&&$('#gym').hidden)openSheet();gymRefresh();tick()}
 function stopRest(){T.on=false;saveT();closeSheet();gymRefresh();tick()}
 function gymRefresh(){if(!$('#gym').hidden){const y=$('#gym').scrollTop;renderGym();$('#gym').scrollTop=y}}
@@ -6171,7 +6289,7 @@ function labHTML(A){let h=labHTMLBase(A);
  return h.replace(/class="lt"/g,'class="lt glowt"')}
 
 /* ---------- Gym: Timer klein bis zum Abhaken ---------- */
-function gymTimerQ(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const def=restFor(bl.e);
+function gymTimerQ(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const def=restAuto(w,d,G.b,null).s;
  const C=2*Math.PI*27;if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq gtr run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" class="bg"/><circle data-tring data-c="${C}" cx="30" cy="30" r="27" class="fg" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)}"/></svg><span class="gtr-t"><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><small class="st"><i></i></small></span></button>`}
  return `<button type="button" class="gtq gtr" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" class="bg"/><circle cx="30" cy="30" r="27" class="fg idle" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><span class="gtr-t"><b>${mmss(def)}</b><small class="pl"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></small></span></button>`}
 function gymTimerMini(){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;
@@ -6190,7 +6308,7 @@ function gymRestHTML(){if(!T.on||T.gmin)return '';const C=2*Math.PI*104,left=tLe
  return `<div class="grest" data-ph="${over?'o':T.paused?'p':f>.5?'g':f>.2?'y':'r'}" role="dialog" aria-label="Satzpause">
   <div class="grt"><p class="eyebrow">Satzpause${from?' · nach '+esc(EX[from].n):''}</p><button type="button" class="iconbtn" data-t="gmin" aria-label="Timer verkleinern"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>
   <div class="grr"><svg viewBox="0 0 240 240"><defs><linearGradient id="grrG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fb3ff"/><stop offset="1" stop-color="#3d63f5"/></linearGradient></defs><circle cx="120" cy="120" r="104" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="14"/><circle data-tring data-c="${C}" cx="120" cy="120" r="104" fill="none" stroke="#43c08a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)};transition:stroke-dashoffset .25s linear,stroke .4s"/></svg>
-   <div class="grm"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><em>von ${mmss(T.total)}</em></div></div>
+   <div class="grm"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><em>von ${mmss(T.total)}</em>${T.src?`<i class="grsrc">${esc(T.src)}</i>`:''}</div></div>
   ${sug?`<button type="button" class="grsug" data-t="add" data-v="60"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Schwerer Satz (RPE ${nf(T.lastRpe)}) – Pause +1:00 empfohlen</button>`:''}
   <div class="grc"><button type="button" class="rbtn" data-t="add" data-v="-15">−15</button><button type="button" class="grp" data-t="pause" aria-label="${T.paused?'Fortsetzen':'Anhalten'}">${T.paused?'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>'}</button><button type="button" class="rbtn" data-t="add" data-v="15">+15</button></div>
   <div class="gt-pre">${[60,90,120,180,240,300,480].map(v=>`<button type="button" data-t="preset" data-v="${v}" aria-pressed="${T.total===v}">${mmss(v)}</button>`).join('')}</div>
