@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-0846-e62a08f";
+<script>window.CF_VERSION="2026.10.19-0905-1f2ae2a";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1376,8 +1376,8 @@ html.boot #view.enter>*{animation:none!important}
 .ck-lv{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}.ck-lv span{text-align:center;font-size:10.5px;color:var(--ink2);line-height:1.2}.ck-lv span.on{color:var(--ink);font-weight:800}
 .ck-bw{display:flex;align-items:center;justify-content:space-between}.ck-bw button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line2);background:transparent;color:var(--brand,#ed2438);font-size:26px}
 .ck-bw div{display:flex;align-items:baseline;gap:6px}.ck-bw b{font-family:var(--d);font-stretch:85%;font-size:42px;font-weight:900}.ck-bw small{font-size:16px;color:var(--ink2)}
-.ck-wg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ck-wf{display:flex;flex-direction:column;gap:3px;background:#25282f;border-radius:12px;padding:7px 9px}.ck-wf small{font-size:10.5px;color:var(--ink2)}
-.ck-wf input{background:none;border:0;color:var(--ink);font:800 19px var(--mono);width:100%;padding:0}.ck-wf input:focus{outline:none;color:#5ad1e6}
+.ck-wg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.ck-wf{display:flex;flex-direction:column;gap:6px;background:#25282f;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px;min-height:96px;justify-content:space-between}.ck-wf:focus-within{border-color:#5ad1e6;box-shadow:0 0 0 3px rgba(90,209,230,.15)}.ck-wf small{font-size:13px;color:var(--ink2)}
+.ck-wf input{background:none;border:0;color:var(--ink);font:800 32px var(--mono);width:100%;padding:0;height:40px}.ck-wf input:focus{outline:none;color:#5ad1e6}
 .ck-note{margin:8px 0 0;font-size:11.5px;color:var(--mut);line-height:1.4}
 .ck-mind{display:flex;gap:10px;align-items:flex-start}.ck-mind svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--ink2);stroke-width:1.8;stroke-linejoin:round;margin-top:4px}.ck-mind textarea{flex:1;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;resize:none}.ck-mind textarea:focus{outline:none}
 .ck-foot{display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:#0c0d11}.ck-foot .btn{height:50px;font-size:15px;font-weight:800}
@@ -2881,7 +2881,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0846-e62a08f</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0905-1f2ae2a</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
