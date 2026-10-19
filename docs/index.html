@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1109-cd043d9";
+<script>window.CF_VERSION="2026.10.19-1116-38c4402";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1674,7 +1674,7 @@ css+='\n:root{--bg:#05060b;--bg2:#151a2b;--card:#0f1322;--raise:#1a2034;--line:#
  +'\nhtml,body{background:#05060b}body{background:radial-gradient(140% 55% at 0% -8%,rgba(46,78,222,.55),rgba(46,78,222,.12) 45%,transparent 70%) no-repeat,#05060b!important;background-attachment:fixed!important}'
  +'\n.top{background:linear-gradient(170deg,rgba(38,66,200,.92) 0%,rgba(16,24,64,.9) 55%,rgba(6,8,16,.92) 100%)!important;border-bottom:1px solid rgba(110,140,255,.18)!important}'
  +'\n.card,.ptile{background:linear-gradient(180deg,#121729,#0c1020)!important;border-color:#1f2640!important}'
- +'\n.nav{background:rgba(8,10,20,.94)!important;border-top-color:#1c2340!important}';
+ +'\n.nav{background:rgba(8,10,20,.94)!important;border-top-color:#1c2340!important}'+'\n.mtred{background:none!important;-webkit-text-fill-color:initial!important;color:#fff!important;filter:drop-shadow(0 2px 10px rgba(20,40,160,.55))!important;letter-spacing:.02em}'+'\n.mtred .mt1{background:linear-gradient(180deg,#ffffff 0%,#e6ebff 55%,#b9c6ff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}'+'\n.mtred .mt2{background:linear-gradient(180deg,#a9bcff 0%,#6f8cff 55%,#4a6cf7 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}'+'\nbody::before{background:linear-gradient(170deg,#2a46cf,#1a2a7a)!important}';
 st.textContent=css;try{var m=document.querySelector('meta[name="theme-color"]');if(m)m.content='#0b1236'}catch(e){}})();
 </script>
 
@@ -1714,7 +1714,7 @@ st.textContent=css;try{var m=document.querySelector('meta[name="theme-color"]');
 <path d="M14 40 A37 37 0 0 1 64 13" fill="none" stroke="url(#pfGl)" stroke-width="5" stroke-linecap="round" opacity=".55"/>
 <ellipse cx="34" cy="24" rx="15" ry="7" transform="rotate(-32 34 24)" fill="#fff" fill-opacity=".12"/>
 </svg></span>
-    <div class="mt"><b class="mtred">Candito Forever</b><span class="psub"><i class="t2">Programm</i><span id="progsub">Powerlifting · 4 Wochen · Sa / So / Di / Do</span></span></div>
+    <div class="mt"><b class="mtred"><span class="mt1">Candito</span> <span class="mt2">Forever</span></b><span class="psub"><i class="t2">Programm</i><span id="progsub">Powerlifting · 4 Wochen · Sa / So / Di / Do</span></span></div>
     <button type="button" class="sesschip" id="sesschip" hidden aria-label="Laufendes Training öffnen"><i></i><b>0:00</b></button>
     <div class="sync" id="sync"><i></i><span>lädt…</span></div>
     <button type="button" class="iconbtn gear dots" id="gear" aria-label="Menü und Einstellungen"><svg class="cog" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
@@ -2911,7 +2911,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1109-cd043d9</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1116-38c4402</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
