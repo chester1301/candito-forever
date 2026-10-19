@@ -1861,6 +1861,27 @@ body.hdc .top .psub .sesschip{margin-left:0}
 /* Statusleiste im blauen Thema */
 html[data-theme=blue] body::before{background:linear-gradient(180deg,#2340c4,#2642c8)!important;z-index:45!important}
 </style>
+<style id="cf-swap">
+.swg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.swbtn{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 11px;border-radius:999px;border:1px solid rgba(130,155,255,.5);background:rgba(91,124,255,.12);color:#c9d5ff;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.swbtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.swrow{padding:0 14px 10px}
+.swtag{display:inline-block;margin-top:4px;padding:3px 8px;border-radius:7px;font-size:11px;font-weight:800;line-height:1.3}
+.swtag.c{background:rgba(67,192,138,.14);color:#7fe0b4;border:1px solid rgba(67,192,138,.4)}
+.swtag.k{background:rgba(243,201,105,.14);color:#f3c969;border:1px solid rgba(243,201,105,.45)}
+.blk .mn .swtag{display:block;width:max-content;max-width:100%}
+.swsh{position:fixed;inset:0;z-index:110;background:rgba(3,4,10,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center}
+.sw-in{width:min(560px,100%);max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#151b33,#0b0f1e);border:1px solid #232b4a;border-bottom:0;border-radius:24px 24px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:10px}
+.sw-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.sw-top h2{margin:2px 0 0;font-size:22px;font-weight:800}
+.sw-rx{margin:0;font-size:13px;color:var(--ink2);line-height:1.45}.sw-rx b{color:var(--ink)}
+.sw-hint{margin:0;font-size:12.5px;color:#7fe0b4;font-weight:700}
+.sw-l{display:grid;gap:6px}.sw-h{margin:8px 2px 0;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}.sw-h em{font-style:normal;text-transform:none;letter-spacing:0;margin-left:6px;padding:2px 6px;border-radius:6px;background:rgba(243,201,105,.14);color:#f3c969}
+.swo{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.swo.on{border-color:rgba(130,155,255,.7);background:rgba(91,124,255,.14)}
+.swr{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink2);display:grid;place-items:center}.swo.on .swr{border-color:#7f98ff}.swo.on .swr i{width:10px;height:10px;border-radius:50%;background:#7f98ff}
+.swm{display:grid;gap:1px}.swm b{font-size:15px}.swm small{font-size:11.5px;font-weight:800}.src-o{color:var(--ink2)}.src-c{color:#7fe0b4}.src-k{color:#f3c969}
+.sw-st{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}.sw-lnk{border:0;background:none;color:#9fb3ff;font:inherit;font-weight:800;padding:0;text-decoration:underline;cursor:pointer}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -2194,7 +2215,12 @@ function estE1(ex,w,d,b,i){const L=log(w,d);
 const REL={cgb:[['pbb',.9]],sgdl:[['cdl',.75],['pdl',.75]],rdle:[['cdl',.65]],rdlt:[['cdl',.65]],mach:[['csq',.85]],fub:[['pbb',.85],['pb3',.85]],ecc:[['pbb',.85],['pb3',.85]],hbs:[['csq',.85],['psq',.85]],sgdl:[['cdl',.7],['pdl',.7]],platz:[['csq',.7],['psq',.7]],pbb:[['pb3',1]],csq:[['psq',1]],cdl:[['pdl',1]],psq:[['csq',.95]],pdl:[['cdl',.95]],pb3:[['pbb',.97]]};
 function maxKg(ex,w,d){let m=null;for(let x=w*ND()+d;x>=0;x--){const W=Math.floor(x/ND()),D=x%ND();const L=log(W,D);if(!L)continue;P[W][D].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L.b[B]||[]).forEach(s=>{const k=pnum(s.kg);if(k&&(m==null||k>m))m=k})})}return m}
 const SG=new Map();
-function sugg(w,d,b,i){const k=`${w}-${d}-${b}-${i}`;if(SG.has(k))return SG.get(k);const v=suggCalc(w,d,b,i);SG.set(k,v);return v}
+function suggSwap(w,d,b,i,v){const bl=P[w][d].b[b];if(!bl||!bl.e0||bl.e===bl.e0)return v;
+ if(i>0&&v&&v.kg!=null&&/Satz \d/.test(v.why||''))return Object.assign({},v,{t:v.t==='v'?'e':v.t});
+ const H=exHistory(bl.e);const last=H.length?H[0]:null;const z=last?(last.sets.find(x=>x.ok)||last.sets[0]):null;
+ return z?{kg:z.kg,t:'e',r:v&&v.r,rdisp:v&&v.rdisp||bl.r,rpe:bl.rpe,why:`Ersatzübung: zuletzt ${nf(z.kg,2)} kg × ${nf(z.r)} am ${last.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}`}
+  :{kg:null,t:'e',r:v&&v.r,rdisp:v&&v.rdisp||bl.r,rpe:bl.rpe,why:'Ersatzübung – Last frei wählen (keine Vorgabe von Candito)'}}
+function sugg(w,d,b,i){const k=`${w}-${d}-${b}-${i}`;if(SG.has(k))return SG.get(k);const v=suggSwap(w,d,b,i,suggCalc(w,d,b,i));SG.set(k,v);return v}
 function suggCalc(w,d,b,i){const bl=P[w][d].b[b],L=log(w,d),k3=(PROG==='intro'?'':PROG+':')+w+'-'+d+'-'+b,R=repsFor(w,d,b),kind=kindOf(bl),inc=S.meta.inc||2.5;
  const out=(kg,why,t='e')=>({kg:kg!=null&&kg>0?rnd(kg):null,t,r:R.r,rdisp:R.disp,rpe:bl.rpe,why:[why,R.why].filter(Boolean).join(' · ')});
  const tIn=(entered,sgf)=>entered!=null?'v':(sgf()||{}).t||'e';
@@ -4110,15 +4136,85 @@ document.addEventListener('click',e=>{const g=e.target.closest('[data-anago]');i
 document.addEventListener('click',e=>{if(e.target.closest('nav .nav button,#nav button,[data-g="close"]'))try{hideUndo()}catch(err){}},true);
 /* 4 Readiness: Erklärungen einklappen */
 function rfTidy(v){const t=v.querySelector('.tdet.rfc,.rfc.tdet')||(S.ui.tdet&&S.ui.tdet.home==='ready'?v.querySelector('.rfc'):null);if(!t||t.querySelector('.rf-more'))return;const ns=[...t.querySelectorAll('p.note2')];if(!ns.length)return;const d=document.createElement('details');d.className='rf-more';d.innerHTML='<summary><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>So wird bewertet</summary>';ns.forEach(n=>d.appendChild(n));t.appendChild(d)}
+
+/* ===================== Übungstausch ===================== */
+// Nur Zusatz-/Maschinenübungen. Langhantel-Varianten von Kniebeuge, Bank und Kreuzheben sind gesperrt.
+// c = Alternative laut Candito (aus dem Plan), k = Alternative von Claude (keine Candito-Vorgabe)
+const SWN={};const swK=(n,g,eq)=>{const k='sw_'+n.toLowerCase().replace(/[^a-z0-9]+/g,'');if(!EX[k])EX[k]={n,g,m:0,eq,t:'Ersatzübung – Sätze, Wiederholungen und RPE wie im Plan.'};return k};
+const CL=(n,g,eq)=>['k',n,g,eq],CA=(n,g,eq)=>['c',n,g,eq];
+const LATK=[CL('Klimmzug (gleicher Griff wie geplant)','acc','bw'),CL('Kniender Band-Latzug','acc','band')];
+const CURLK=[CL('Kurzhantel-Curl stehend','acc','db'),CL('Langhantel-Curl','acc','bb')];
+const TRIK=[CL('Kurzhantel-Trizepsstrecken über Kopf','acc','db'),CL('Band-Trizepsdrücken','acc','band')];
+const HAMK=[CL('Nordic Curl','acc','bw'),CL('Liegender Kurzhantel-Beinbeuger','acc','db')];
+const ABK=[CL('Gewichteter Crunch am Boden','acc','db'),CL('Kniender Band-Crunch','acc','band')];
+const LATRK=[CL('Kurzhantel-Seitheben','acc','db'),CL('Band-Seitheben','acc','band')];
+const ROWK=[CL('Einarmiges Kurzhantelrudern (Lat-Fokus)','acc','db'),CL('Brustgestütztes Kurzhantelrudern','acc','db')];
+const QUADK=[CL('Heel-Elevated Goblet Squat','sq','db'),CL('DB Bulgarian Split Squat','sq','db')];
+const EXTK=[CL('Sissy Squat','acc','bw'),CL('Band-Beinstrecken','acc','band')];
+const SWALT={
+ platz:[['c','xbeltsquat'],CA('Leg Press','sq','mach'),CA('Pendulum Squat','sq','mach'),...QUADK],
+ mach:[CA('Super Squat','sq','mach'),['c','xbeltsquat'],CA('Pendulum Squat','sq','mach'),['c','xhacksquat'],...QUADK],
+ xbeltsquat:[...QUADK],xbeltsquatpreferred:[['c','xbeltsquat'],...QUADK],xhacksquat:[...QUADK],xsinglelegpresswdeeprompreferred:[CA('Single Leg Press','sq','mach'),...QUADK],
+ bbss:[['c','xbeltsquat'],CA('Leg Press','sq','mach')],
+ mrow:[['c','row'],...ROWK],xmachinerowpreferred:[['c','mrow'],['c','row'],...ROWK],xsinglearmmachinerowlatbias:[...ROWK],xiliaclatrow:[...ROWK],xilliaclatrow:[...ROWK],xiliaclatroww3secondeccentric:[...ROWK],
+ shc:[['c','sgm'],...HAMK],lhc:[['c','xbarbellbackextension'],...HAMK],xhamstringcurl:[...HAMK],xhamstringcurlpreferred:[['c','xhamstringcurl'],...HAMK],xsingleleghamstringcurl:[...HAMK],
+ xbarbellbackextension:[['c','lhc'],CL('Reverse Hyper am Bankende','dl','bw'),CL('Good Morning (leicht)','dl','bb')],
+ lat:LATK,wlat:LATK,ilat:LATK,nlat:LATK,xlatpulldownpreferred:LATK,xunderhandgriplatpulldown:LATK,xsinglearmlatpulldown:LATK,
+ xverticalpullofyourchoice:[CA('Lat Pulldown','acc','mach'),CA('Klimmzug','acc','bw'),CA('Neutral Grip Lat Pulldown','acc','mach')],xverticalpullofyourchoicedifferentfromweeks14:[CA('Lat Pulldown','acc','mach'),CA('Klimmzug','acc','bw'),CA('Neutral Grip Lat Pulldown','acc','mach')],
+ lext:EXTK,slext:EXTK,xbottomhalflegextension:EXTK,
+ sacc:CURLK,ccurl:CURLK,xcablecurl:CURLK,xcablecurlpreferred:CURLK,xsinglearmcablecurlpreferred:CURLK,
+ xmachinepreachercurlpreferred:[['c','pcurl']],xpreachercurlcanbedbormachine:[['c','pcurl'],CA('Machine Preacher Curl','acc','mach')],
+ cte:TRIK,octe:TRIK,xcabletriceppushdown:TRIK,xcabletriceppushdownaggressiveform:TRIK,xstandingcabletricepextension:TRIK,
+ dbf:[CL('Kurzhantel-Fliegende (Schrägbank)','bp','db'),CL('Band Chest Press-Around','bp','band')],xcablechestpressaround:[CL('Kurzhantel-Fliegende (Schrägbank)','bp','db'),CL('Band Chest Press-Around','bp','band')],
+ xmachinechestpress:[CL('Kurzhantel-Bankdrücken (Neutralgriff)','bp','db')],xmachinechestpresspreferred:[['c','xmachinechestpress'],CL('Kurzhantel-Bankdrücken (Neutralgriff)','bp','db')],
+ xmachinechestfly:[CL('Kurzhantel-Fliegende (Schrägbank)','bp','db')],xmachinechestflypreferred:[['c','xmachinechestfly'],CL('Kurzhantel-Fliegende (Schrägbank)','bp','db')],
+ xmachinechestflypreferredorinclinedbchestflyhomeg:[CA('Machine Chest Fly','bp','mach'),CA('Incline DB Chest Fly','bp','db')],
+ xcablelateraldeltraisepreferred:[['c','xstandingdblaterraise'],...LATRK],xcabledblateraldeltraise:LATRK,xmachinelateralraiseordbleaninlateralraise:[CA('Machine Lateral Raise','acc','mach'),CA('DB Lean-in Lateral Raise','acc','db')],
+ cab:ABK,xweightedabcrunchpreferablysttandingcablecrunch:[CA('Standing Cable Crunch','acc','cablec'),...ABK],xstandingweightedabcrunch:ABK
+};
+const LOCKG=new Set(['sq','bp','dl']);const SWMACH=new Set(['platz']);
+function swOpts(e0){const L=SWALT[e0];if(!L)return null;if(LOCKG.has(EX[e0]&&EX[e0].g)&&eqType(e0)==='bb'&&!SWMACH.has(e0))return null;
+ return L.map(x=>{if(x.length===2)return {k:x[1],src:x[0]};const k=swK(x[1],x[2],x[3]);return {k,src:x[0]}}).filter(o=>EX[o.k]&&o.k!==e0)}
+function swSrc(e0,k){const o=(swOpts(e0)||[]).find(x=>x.k===k);return o?o.src:null}
+function applySwaps(){if(!applySwaps.init){applySwaps.init=1;Object.keys(SWALT).forEach(k=>{if(EX[k])swOpts(k)})}const M=S.meta.swap||{};Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=S.logs[key(w,d)];P[w][d].b.forEach((bl,b)=>{if(!bl.e0)bl.e0=bl.e;const t=L&&L.sw&&L.sw[b];const nx=t||M[bl.e0]||bl.e0;bl.e=EX[nx]?nx:bl.e0})}}))}
+function swFreeze(e0){Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=S.logs[key(w,d)];if(!L)continue;let ch=false;P[w][d].b.forEach((bl,b)=>{if(bl.e0!==e0)return;const has=(L.b[b]||[]).some(z=>z&&(z.ok||pnum(z.kg)!=null));if(has&&!(L.sw&&L.sw[b])){if(!L.sw)L.sw={};L.sw[b]=bl.e;ch=true}});if(ch)saveLog(key(w,d))}}))}
+let SW=null;
+function swSheet(w,d,b){const bl=P[w][d].b[b];const e0=bl.e0||bl.e;const op=swOpts(e0);if(!op)return;SW={w,d,b,e0,mode:SW&&SW.e0===e0?SW.mode:(/ganzen (Monat|Zyklus)/.test(EX[e0].t||'')?'perm':'temp')};swRender()}
+function swRender(){const {w,d,b,e0,mode}=SW;const bl=P[w][d].b[b];const cur=bl.e;const op=swOpts(e0);const perm=(S.meta.swap||{})[e0];
+ const row=(k,lab,cls)=>`<button type="button" class="swo ${k===cur?'on':''}" data-swpick="${k}"><span class="swr"><i></i></span><span class="swm"><b>${esc(EX[k].n)}</b><small class="${cls}">${lab}</small></span></button>`;
+ const C=op.filter(o=>o.src==='c'),K=op.filter(o=>o.src==='k');let el=document.getElementById('swsh');if(!el){el=document.createElement('div');el.id='swsh';el.className='swsh';document.body.appendChild(el)}
+ el.innerHTML=`<div class="sw-in" role="dialog" aria-modal="true" aria-label="Übung tauschen"><div class="sw-top"><div><p class="eyebrow">Übung tauschen · ${esc(PROGS[PROG].short)} W${w+1} ${DAYS[d].tag}</p><h2>${esc(EX[e0].n)}</h2></div><button type="button" class="iconbtn" data-swclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <p class="sw-rx">Bleibt exakt wie im Plan: <b>${bl.s} × ${esc(bl.r)}${bl.rpe!=null?' @ RPE '+nf(bl.rpe):''}</b> – nur die Übung ändert sich. Für die Ersatzübung gibt es keine Last-Vorgabe.</p>
+  <div class="seg sw-mode" style="grid-template-columns:1fr 1fr"><button type="button" data-swmode="temp" aria-pressed="${mode==='temp'}">Nur heute</button><button type="button" data-swmode="perm" aria-pressed="${mode==='perm'}">Ab jetzt immer</button></div>
+  ${/ganzen (Monat|Zyklus)/.test(EX[e0].t||'')?`<p class="sw-hint">Candito: Eine Variante wählen und dann ${/Monat/.test(EX[e0].t)?'den ganzen Monat':'den ganzen Zyklus'} dabei bleiben.</p>`:''}
+  <div class="sw-l">${row(e0,'Original laut Plan','src-o')}
+  ${C.length?`<p class="sw-h">Alternativen laut Candito</p>${C.map(o=>row(o.k,'Alternative laut Candito','src-c')).join('')}`:''}
+  ${K.length?`<p class="sw-h">Alternativen von Claude <em>keine Candito-Vorgabe</em></p>${K.map(o=>row(o.k,'Alternative von Claude – nicht von Candito','src-k')).join('')}`:''}</div>
+  ${perm?`<p class="sw-st">Dauerhaft ersetzt durch <b>${esc(EX[perm].n)}</b> · <button type="button" class="sw-lnk" data-swreset>Original dauerhaft wiederherstellen</button></p>`:''}</div>`;el.hidden=false}
+function swPick(k){const {w,d,b,e0,mode}=SW;if(mode==='perm'){swFreeze(e0);if(!S.meta.swap)S.meta.swap={};if(k===e0)delete S.meta.swap[e0];else S.meta.swap[e0]=k;saveMeta();withProg(PROG,()=>{const L=S.logs[key(w,d)];if(L&&L.sw&&L.sw[b]&&!(L.b[b]||[]).some(z=>z&&z.ok)){delete L.sw[b];saveLog(key(w,d))}})}
+ else{const L=log(w,d,true);if(!L.sw)L.sw={};const perm=(S.meta.swap||{})[e0]||e0;P[w][d].b.forEach((x,bb)=>{if((x.e0||x.e)!==e0)return;if((L.b[bb]||[]).some(z=>z&&z.ok)&&bb!==b)return;if(k===perm)delete L.sw[bb];else L.sw[bb]=k});saveLog(key(w,d))}
+ applySwaps();SG.clear();toast(k===e0?'Original laut Plan':'Getauscht: '+EX[k].n+(swSrc(e0,k)==='k'?' (Alternative von Claude)':''));swClose();render()}
+function swClose(){const el=document.getElementById('swsh');if(el){el.hidden=true;el.innerHTML=''}SW=null}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-swap]');if(t){e.preventDefault();e.stopPropagation();const [w,d,b]=t.dataset.swap.split('-').map(Number);swSheet(w,d,b);return}
+ if(!SW)return;if(e.target.id==='swsh'||e.target.closest('[data-swclose]')){swClose();return}
+ const m=e.target.closest('[data-swmode]');if(m){SW.mode=m.dataset.swmode;swRender();return}
+ const pk=e.target.closest('[data-swpick]');if(pk){swPick(pk.dataset.swpick);return}
+ if(e.target.closest('[data-swreset]')){SW.mode='perm';swPick(SW.e0)}},true);
+function swTag(bl){if(!bl.e0||bl.e===bl.e0)return '';const src=swSrc(bl.e0,bl.e);return `<span class="swtag ${src==='k'?'k':'c'}">⇄ Ersatz für ${esc(EX[bl.e0].n)} · ${src==='k'?'Alternative von Claude':'laut Candito'}</span>`}
+function swBtn(w,d,b){const bl=P[w][d].b[b];return swOpts(bl.e0||bl.e)?`<button type="button" class="swbtn" data-swap="${w}-${d}-${b}"><svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>${bl.e0&&bl.e!==bl.e0?'Getauscht':'Tauschen'}</button>`:''}
+function swDecorate(v){if(S.ui.tab!=='train')return;const {w,d}=S.ui;const ex=v.querySelector('.exlist');if(!ex)return;const kids=[...ex.children].filter(x=>x.classList.contains('blk'));
+ kids.forEach((c,b)=>{const bl=P[w][d].b[b];if(!bl)return;const tag=swTag(bl);const mn=c.querySelector('.mn')||c.querySelector('.bh div')||c;if(tag&&!c.querySelector('.swtag'))mn.insertAdjacentHTML('beforeend',tag);
+  if(c.classList.contains('open')&&!c.querySelector('.swbtn')){const h=swBtn(w,d,b);if(h)(c.querySelector('.bh')||c).insertAdjacentHTML('afterend',`<div class="swrow">${h}</div>`)}})}
+
 let renderPending=false;
-setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
+setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
 (function(){let c=false,tk=false;addEventListener('scroll',()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;const y=scrollY;if(!c&&y>90){c=true;document.body.classList.add('hdc')}else if(c&&y<12){c=false;document.body.classList.remove('hdc')}})},{passive:true})})();
-function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.prog||'intro');if(S.ui.w>=NW())S.ui.w=0;const ps=document.getElementById('progsub');}{const ps=document.getElementById('progsub');if(ps)ps.textContent=`${PROGS[PROG].name} · ${PROGS[PROG].sub} · ${DAYS.map(x=>x.wd).join(' / ')}`;}renderPending=false;SG.clear();cleanStale();if(!$('#gym').hidden&&render.sig){applyDay();renderHead();render.stale=true;renderGym();if(!$('#sheet').hidden)renderSheet();return}render.stale=false;if(S.ui.tab==='home'){const n=nextSession();if(n){S.ui.w=n.w;S.ui.d=n.d}}applyDay();renderHead();
+function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.prog||'intro');if(S.ui.w>=NW())S.ui.w=0;const ps=document.getElementById('progsub');}{const ps=document.getElementById('progsub');if(ps)ps.textContent=`${PROGS[PROG].name} · ${PROGS[PROG].sub} · ${DAYS.map(x=>x.wd).join(' / ')}`;}renderPending=false;try{applySwaps()}catch(e){}SG.clear();cleanStale();if(!$('#gym').hidden&&render.sig){applyDay();renderHead();render.stale=true;renderGym();if(!$('#sheet').hidden)renderSheet();return}render.stale=false;if(S.ui.tab==='home'){const n=nextSession();if(n){S.ui.w=n.w;S.ui.d=n.d}}applyDay();renderHead();
  document.querySelectorAll('#nav button').forEach(b=>b.setAttribute('aria-current',(b.dataset.tab==='gym'?!$('#gym').hidden:(b.dataset.tab===S.ui.tab&&$('#gym').hidden))?'page':'false'));
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
