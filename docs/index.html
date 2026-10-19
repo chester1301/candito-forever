@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1816-83bd6c2";
+<script>window.CF_VERSION="2026.10.19-1823-42cf9c3";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2188,22 +2188,26 @@ html[data-theme=blue] .grest[data-ph="r"] .grr [data-tring]{stroke:#f3c969!impor
 .gym-in.tight .bigbtn.hb2{min-height:56px!important;padding:6px 14px 6px 10px!important}.gym-in.tight .hb-ic{width:36px;height:36px}.gym-in.tight .hb-tx>b{font-size:18px}.gym-in.tight .gtq.gtr{min-height:56px}
 </style>
 <style id="cf-timer3">
-.gtq.gtr{min-height:64px!important}
-.gtq .gtr-r{height:calc(100% - 10px)!important;width:auto!important;aspect-ratio:1;max-height:66px!important;max-width:66px}
-.gtr-r circle{stroke-width:2.6!important}
-.gtq .gtr-r .fg{filter:none!important}.gtq.gtr .gtr-r{overflow:visible}
-.gtq.gtr.run .gtr-r .bg{stroke:rgba(127,152,255,.16)!important;stroke-width:6!important}
-.gtq.gtr.paused .gtr-r .bg{stroke:rgba(243,201,105,.14)!important}.gtq.gtr.over .gtr-r .bg{stroke:rgba(255,107,115,.16)!important}
-.gtr-t b{font-size:15px!important}
-.gtr-t{gap:3px!important}
-.gtr-t b{font-size:16px!important;letter-spacing:-.03em!important}
-.gtr-t small.pl{width:15px;height:15px;border-radius:50%;display:grid!important;place-items:center;background:rgba(127,152,255,.18)}
-.gtq .gtr-t small.pl svg{width:7px!important;height:7px!important;fill:#a9b9ff!important;margin-left:1px}
-.gtr-t small.st{display:block!important}.gtr-t small.st i{display:block;width:5px;height:5px;border-radius:50%;background:#9fb3ff;box-shadow:0 0 4px rgba(127,152,255,.9)}
-.gtq.gtr.paused .gtr-t small.st i{background:#f3c969;box-shadow:0 0 4px #f3c969}.gtq.gtr.over .gtr-t small.st i{background:#ff6b73;box-shadow:0 0 4px #ff6b73}
-.gym-in.tight .gtq.gtr,.gtq.gtr{min-height:60px!important}
-@media (max-height:760px){.gtr-t b{font-size:14px!important}}
-.gym-in.tight .gtr-t b{font-size:14px!important}
+html .gym .gdock .gdk-b{align-items:center!important}
+html .gym .gtq.gtr{width:76px!important;height:76px!important;min-height:76px!important;border-radius:50%!important;align-self:center;flex:none;border:0!important;
+ background:radial-gradient(70% 70% at 50% 30%,rgba(91,124,255,.22),rgba(91,124,255,0) 75%),linear-gradient(180deg,#1d2546,#0e1329)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 0 1px rgba(5,8,20,.95),0 10px 24px -12px rgba(0,0,0,.95)!important}
+html .gym .gtq .gtr-r{width:76px!important;height:76px!important;max-width:none!important;max-height:none!important}
+html .gym .gtr-r circle{stroke-width:2.8!important}
+html .gym .gtq .gtr-r .fg{filter:none!important}
+html .gym .gtq.gtr .gtr-r .bg{stroke:rgba(127,152,255,.22)!important}
+html .gym .gtq.gtr .gtr-r .fg.idle{stroke:rgba(127,152,255,.5)!important}
+html .gym .gtq.gtr.run{box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 0 1px rgba(5,8,20,.95),0 0 26px -6px rgba(91,124,255,.85)!important}
+html .gym .gtq.gtr.run .gtr-r .bg{stroke:rgba(127,152,255,.16)!important;stroke-width:6!important}
+html .gym .gtq.gtr.paused .gtr-r .bg{stroke:rgba(243,201,105,.14)!important}html .gym .gtq.gtr.over .gtr-r .bg{stroke:rgba(255,107,115,.16)!important}
+html .gym .gtr-t{gap:4px!important}
+html .gym .gtr-t b{font-size:18px!important;letter-spacing:-.03em!important}
+html .gym .gtr-t small.pl{width:17px;height:17px;border-radius:50%;display:grid!important;place-items:center;background:rgba(127,152,255,.2)}
+html .gym .gtq .gtr-t small.pl svg{width:8px!important;height:8px!important;fill:#a9b9ff!important;margin-left:1px}
+html .gym .gtr-t small.st{display:block!important}html .gym .gtr-t small.st i{display:block;width:6px;height:6px;border-radius:50%;background:#9fb3ff;box-shadow:0 0 4px rgba(127,152,255,.9)}
+html .gym .gtq.gtr.paused .gtr-t small.st i{background:#f3c969;box-shadow:0 0 4px #f3c969}html .gym .gtq.gtr.over .gtr-t small.st i{background:#ff6b73;box-shadow:0 0 4px #ff6b73}
+html .gym .gym-in.tight .gtq.gtr,html .gym .gym-in.tight .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gym-in.tight .gtr-t b{font-size:16px!important}
+@media (max-height:760px){html .gym .gtq.gtr,html .gym .gtq .gtr-r{width:66px!important;height:66px!important;min-height:66px!important}html .gym .gtr-t b{font-size:16px!important}}
 </style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
@@ -3472,7 +3476,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1816-83bd6c2</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1823-42cf9c3</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
