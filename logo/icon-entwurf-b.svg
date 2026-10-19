@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><defs><radialGradient id="bgA" cx="30%" cy="18%" r="95%"><stop offset="0" stop-color="#2b4fd8"/><stop offset=".45" stop-color="#101a5a"/><stop offset="1" stop-color="#05060b"/></radialGradient><radialGradient id="glw" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#5b7cff" stop-opacity=".55"/><stop offset="1" stop-color="#5b7cff" stop-opacity="0"/></radialGradient></defs><rect width="1024" height="1024" fill="url(#bgA)"/><circle cx="512" cy="400" r="380" fill="url(#glw)"/><g transform="translate(232 120) scale(5.6)"><defs>
+<radialGradient id="pfR" cx="40%" cy="34%" r="72%"><stop offset="0" stop-color="#6b93ff"/><stop offset=".45" stop-color="#1f56dc"/><stop offset=".85" stop-color="#0f2f94"/><stop offset="1" stop-color="#081b5e"/></radialGradient>
+<linearGradient id="pfLip" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9ab8ff"/><stop offset=".4" stop-color="#1b49cc"/><stop offset="1" stop-color="#0a1f63"/></linearGradient>
+<linearGradient id="pfIn" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7a9eff" stop-opacity=".55"/><stop offset=".5" stop-color="#1843bd" stop-opacity="0"/><stop offset="1" stop-color="#040f3f" stop-opacity=".6"/></linearGradient>
+<linearGradient id="pfSt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="#d9dce2"/><stop offset=".5" stop-color="#7d828c"/><stop offset=".72" stop-color="#eef0f3"/><stop offset="1" stop-color="#8a8f98"/></linearGradient>
+<linearGradient id="pfSt2" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f4f5f7"/><stop offset=".5" stop-color="#9aa0a8"/><stop offset="1" stop-color="#4b4f57"/></linearGradient>
+<radialGradient id="pfH" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#000"/><stop offset=".75" stop-color="#121317"/><stop offset="1" stop-color="#3a3d44"/></radialGradient>
+<linearGradient id="pfGl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<path id="pfTop" d="M50 50 m-35.5 0 a35.5 35.5 0 0 1 71 0"/><path id="pfBot" d="M50 50 m-38.6 0 a38.6 38.6 0 0 0 77.2 0"/>
+</defs>
+<circle cx="50" cy="50" r="49" fill="#030c35"/>
+<circle cx="50" cy="50" r="48" fill="url(#pfLip)"/>
+<circle cx="50" cy="50" r="44.5" fill="url(#pfR)"/>
+<circle cx="50" cy="50" r="44.5" fill="none" stroke="#020926" stroke-opacity=".55" stroke-width="1.2"/>
+<circle cx="50" cy="50" r="43.4" fill="none" stroke="#aec6ff" stroke-opacity=".35" stroke-width=".6"/>
+<circle cx="50" cy="50" r="44" fill="url(#pfIn)"/>
+<circle cx="50" cy="50" r="30" fill="none" stroke="#000" stroke-opacity=".22" stroke-width=".8"/>
+<circle cx="50" cy="50" r="29.3" fill="none" stroke="#a2bdff" stroke-opacity=".22" stroke-width=".5"/>
+<g font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" fill="#fff" letter-spacing="1.2">
+<text font-size="10.5"><textPath href="#pfTop" startOffset="50%" text-anchor="middle">20 KG</textPath></text>
+<text font-size="5.2" fill-opacity=".9" letter-spacing="1.6"><textPath href="#pfBot" startOffset="50%" text-anchor="middle">45 LB · COMPETITION</textPath></text>
+</g>
+<circle cx="50" cy="50" r="21" fill="#1a1b1f"/>
+<circle cx="50" cy="50" r="20.2" fill="url(#pfSt)"/>
+<circle cx="50" cy="50" r="15.6" fill="url(#pfSt2)"/>
+<circle cx="50" cy="50" r="15.6" fill="none" stroke="#3a3d44" stroke-width=".7"/>
+<g fill="#4b4f57" stroke="#e6e8ec" stroke-width=".35">
+<circle cx="50" cy="32.2" r="1.15"/><circle cx="65.4" cy="41.1" r="1.15"/><circle cx="65.4" cy="58.9" r="1.15"/><circle cx="50" cy="67.8" r="1.15"/><circle cx="34.6" cy="58.9" r="1.15"/><circle cx="34.6" cy="41.1" r="1.15"/></g>
+<circle cx="50" cy="50" r="10.4" fill="#d9dce2"/>
+<circle cx="50" cy="50" r="9.4" fill="url(#pfH)"/>
+<ellipse cx="50" cy="47.6" rx="6.4" ry="3.2" fill="#fff" fill-opacity=".06"/>
+<path d="M14 40 A37 37 0 0 1 64 13" fill="none" stroke="url(#pfGl)" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+<ellipse cx="34" cy="24" rx="15" ry="7" transform="rotate(-32 34 24)" fill="#fff" fill-opacity=".12"/>
+</g>
+<text x="512" y="842" text-anchor="middle" font-family="Archivo Black,Arial Black,Arial,sans-serif" font-weight="900" font-size="118" letter-spacing="2" fill="#ffffff">CANDITO</text><text x="512" y="948" text-anchor="middle" font-family="Archivo Black,Arial Black,Arial,sans-serif" font-weight="900" font-size="96" letter-spacing="10" fill="#8fa8ff">FOREVER</text></svg>
