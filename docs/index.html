@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1758-34984ba";
+<script>window.CF_VERSION="2026.10.19-1808-f86ac23";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2127,6 +2127,66 @@ html[data-theme=blue] .gtq.paused{box-shadow:inset 0 1px 0 rgba(255,255,255,.1),
 html[data-theme=blue] .gtq.over{box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 0 1px rgba(232,72,79,.6)!important}html[data-theme=blue] .gtq.over b{color:#ff9aa0!important}html[data-theme=blue] .gtq.over .gtqb i{background:#e8484f!important}
 html[data-theme=blue] .savest{color:#7f8bb0!important}html[data-theme=blue] .savest.ok i{background:#5b7dff!important;box-shadow:0 0 8px #5b7dff!important}
 </style>
+<style id="cf-btn2">
+/* ===== Satz abhaken · Premium ===== */
+.gdock .gdk-b{column-gap:10px!important;align-items:stretch}
+.bigbtn.hb2{display:grid!important;grid-template-columns:auto 1fr;align-items:center;gap:14px;min-height:68px!important;height:auto!important;padding:10px 18px 10px 12px!important;text-align:left;position:relative;overflow:hidden;isolation:isolate;
+ border-radius:22px!important;border:0!important;color:#fff!important;font-family:var(--f)!important;font-stretch:100%!important;
+ background:radial-gradient(120% 140% at 0% 0%,#7a95ff 0%,rgba(122,149,255,0) 55%),linear-gradient(160deg,#4c6dfa 0%,#2f52e4 45%,#1d36b4 100%)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 1px rgba(24,40,140,.9),0 18px 34px -14px rgba(46,78,222,.95),0 4px 10px -4px rgba(0,0,0,.6)!important}
+.bigbtn.hb2::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 42%,rgba(255,255,255,0) 43%);pointer-events:none;z-index:-1}
+.bigbtn.hb2::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.bigbtn.hb2.plan:not(.nor)::after{animation:hbsheen 3.6s ease-in-out infinite}}
+@keyframes hbsheen{0%,70%{left:-60%}100%{left:130%}}
+.hb-ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.08));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.18),0 6px 14px -6px rgba(0,0,0,.55)}
+.hb-ic svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.hb-tx{display:grid;gap:5px;min-width:0}
+.hb-tx>b{font:900 21px/1.05 var(--f);letter-spacing:-.015em;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.hb-m{display:flex;flex-wrap:wrap;align-items:center;gap:0}
+.hb-m i{font-style:normal;font-size:13.5px;font-weight:800;color:rgba(255,255,255,.9);font-variant-numeric:tabular-nums;display:inline-flex;align-items:center}
+.hb-m i+i::before{content:"";width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.5);margin:0 8px}
+.hb-m i.rpv{color:#dfe7ff}.hb-m i.dim{color:rgba(255,255,255,.7);font-weight:700}
+.hb-m i.miss{color:#ffe4a8;flex-basis:100%;margin-top:3px}.hb-m i.miss::before{display:none!important}.hb-m i.miss em{width:7px;height:7px;border-radius:50%;background:#f3c969;box-shadow:0 0 0 3px rgba(243,201,105,.25),0 0 10px #f3c969;margin-right:6px}
+@media (prefers-reduced-motion:no-preference){.hb-m i.miss em{animation:hbpulse 1.6s ease-in-out infinite}}@keyframes hbpulse{50%{box-shadow:0 0 0 5px rgba(243,201,105,0),0 0 6px #f3c969}}
+.bigbtn.hb2:not(.plan):not(.okb){background:linear-gradient(160deg,#2a3561,#1a2246)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(130,155,255,.3),0 12px 24px -16px rgba(0,0,0,.9)!important}
+.bigbtn.hb2:not(.plan):not(.okb) .hb-ic{background:rgba(255,255,255,.07)}.bigbtn.hb2:not(.plan):not(.okb) .hb-ic svg{stroke:#8fa8ff}
+.bigbtn.hb2.okb{background:linear-gradient(160deg,#16213f,#0e1530)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(67,192,138,.45),0 0 22px -10px rgba(67,192,138,.8)!important;color:#fff!important}
+.bigbtn.hb2.okb .hb-ic{background:linear-gradient(180deg,#56d79e,#2ea874);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 14px -6px rgba(46,168,116,.8)}.bigbtn.hb2.okb .hb-m i{color:#9fe9c6}
+.bigbtn.hb2:active{transform:translateY(1px) scale(.992);filter:brightness(.97)}
+html[data-theme=classic] .bigbtn.hb2.plan{background:linear-gradient(160deg,#ff5a62,#d81f30 55%,#9e1020)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 1px rgba(110,10,20,.9),0 18px 34px -14px rgba(237,36,56,.9)!important}
+/* ===== Pausen-Timer · Ring-Instrument ===== */
+.gtq.gtr{position:relative;width:86px!important;min-height:68px;padding:0!important;display:grid!important;place-items:center;border-radius:22px!important;border:0!important;overflow:hidden;
+ background:radial-gradient(90% 90% at 50% 20%,rgba(91,124,255,.18),rgba(91,124,255,0) 70%),linear-gradient(180deg,#1b2342,#0e1329)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(130,155,255,.22),0 0 0 1px rgba(5,8,20,.9),0 14px 26px -16px rgba(0,0,0,.95)!important}
+.gtq .gtr-r{position:absolute;width:62px!important;height:62px!important;stroke:none!important;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg)}
+.gtr-r circle{fill:none;stroke-width:3.6}.gtr-r .bg{stroke:rgba(255,255,255,.08)}
+.gtr-r .fg{stroke:#7f98ff!important;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(111,140,255,.8));transition:stroke-dashoffset .25s linear}
+.gtr-r .fg.idle{stroke:rgba(127,152,255,.35)!important;filter:none}
+.gtr-t{position:relative;display:grid;justify-items:center;gap:2px}
+.gtr-t b{font:900 17px/1 var(--f)!important;color:#fff!important;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.gtr-t small{display:inline-flex;align-items:center;gap:3px;font-size:9px!important;font-weight:800!important;letter-spacing:.08em;text-transform:uppercase;color:#8fa2d8!important}
+.gtr-t small svg{width:8px;height:8px;fill:#8fa2d8;stroke:none}
+.gtq.gtr.run{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(130,155,255,.4),0 0 0 1px rgba(5,8,20,.9),0 0 24px -8px rgba(91,124,255,.9)!important}
+.gtq.gtr.paused .gtr-r .fg{stroke:#f3c969!important;filter:drop-shadow(0 0 4px rgba(243,201,105,.8))}.gtq.gtr.paused .gtr-t b{color:#ffe4a8!important}
+.gtq.gtr.over .gtr-r .fg{stroke:#ff6b73!important;filter:drop-shadow(0 0 5px rgba(232,72,79,.9))}.gtq.gtr.over .gtr-t b{color:#ffb3b8!important}
+.gtq.gtr:active{transform:scale(.97)}
+.gtq.gtr .gtqb{display:none}
+html[data-theme=blue] .gtq.gtr{border:0!important}
+@media (max-height:760px){.bigbtn.hb2{min-height:58px!important;padding:6px 14px 6px 10px!important;gap:10px}.hb-ic{width:38px;height:38px}.hb-tx>b{font-size:18px}.gtq.gtr{min-height:58px;width:78px!important}.gtq .gtr-r{width:54px!important;height:54px!important}}
+.gtq .gtr-t small svg{width:8px!important;height:8px!important;fill:#8fa2d8!important;stroke:none!important}
+/* Pause beenden – Premium */
+html[data-theme=blue] .grgo{position:relative;overflow:hidden;isolation:isolate;min-height:64px;border-radius:22px;color:#fff;font:900 19px var(--f);letter-spacing:-.01em;
+ background:radial-gradient(120% 140% at 0% 0%,#7a95ff 0%,rgba(122,149,255,0) 55%),linear-gradient(160deg,#4c6dfa 0%,#2f52e4 45%,#1d36b4 100%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.35),0 0 0 1px rgba(24,40,140,.9),0 18px 34px -14px rgba(46,78,222,.95),0 4px 10px -4px rgba(0,0,0,.6)}
+html[data-theme=blue] .grgo::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 42%,rgba(255,255,255,0) 43%);pointer-events:none;z-index:-1}
+html[data-theme=blue] .grgo svg{width:34px;height:34px;padding:8px;border-radius:11px;background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);stroke:#fff}
+html[data-theme=blue] .grest[data-ph="o"] .grgo{background:radial-gradient(120% 140% at 0% 0%,#8fe6c0 0%,rgba(143,230,192,0) 55%),linear-gradient(160deg,#3cc58a,#22975f 55%,#146b42);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 0 1px rgba(10,70,40,.9),0 18px 34px -14px rgba(46,168,116,.9)}
+html[data-theme=blue] .grest .grr [data-tring]{stroke:url(#grrG)!important}
+html[data-theme=blue] .grest{background:radial-gradient(90% 55% at 50% 28%,var(--gph,rgba(61,99,245,.30)),transparent 70%),#05060b!important}
+html[data-theme=blue] .grest[data-ph="g"]{--gph:rgba(61,99,245,.30)}html[data-theme=blue] .grest[data-ph="y"]{--gph:rgba(91,124,255,.24)}html[data-theme=blue] .grest[data-ph="r"]{--gph:rgba(243,201,105,.20)}html[data-theme=blue] .grest[data-ph="p"]{--gph:rgba(243,201,105,.18)}html[data-theme=blue] .grest[data-ph="o"]{--gph:rgba(67,192,138,.26)}
+html[data-theme=blue] .grest[data-ph="r"] .grr [data-tring]{stroke:#f3c969!important}html[data-theme=blue] .grest[data-ph="o"] .grr [data-tring]{stroke:#43c08a!important}html[data-theme=blue] .grest[data-ph="p"] .grr [data-tring]{stroke:#f3c969!important}
+.gym-in.tight .bigbtn.hb2{min-height:56px!important;padding:6px 14px 6px 10px!important}.gym-in.tight .hb-ic{width:36px;height:36px}.gym-in.tight .hb-tx>b{font-size:18px}.gym-in.tight .gtq.gtr{min-height:56px}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -3394,7 +3454,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1758-34984ba</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1808-f86ac23</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -6067,8 +6127,8 @@ function labHTML(A){let h=labHTMLBase(A);
 
 /* ---------- Gym: Timer klein bis zum Abhaken ---------- */
 function gymTimerQ(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const def=restFor(bl.e);
- if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><span class="gtqb"><i data-tlin style="width:${over?100:(1-f)*100}%"></i></span></button>`}
- return `<button type="button" class="gtq" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/></svg><b>${mmss(def)}</b><small>▶ Pause</small></button>`}
+ const C=2*Math.PI*25;if(T.on){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;return `<button type="button" class="gtq gtr run ${over?'over':''} ${T.paused?'paused':''}" data-t="gmax" aria-label="Pausen-Timer öffnen"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" class="bg"/><circle data-tring data-c="${C}" cx="30" cy="30" r="25" class="fg" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)}"/></svg><span class="gtr-t"><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><small>${T.paused?'Pausiert':over?'Überzeit':'Läuft'}</small></span></button>`}
+ return `<button type="button" class="gtq gtr" data-t="preset" data-v="${def}" aria-label="Pause ${mmss(def)} starten"><svg class="gtr-r" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" class="bg"/><circle cx="30" cy="30" r="25" class="fg idle" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><span class="gtr-t"><b>${mmss(def)}</b><small><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Pause</small></span></button>`}
 function gymTimerMini(){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;
  return `<div class="gtmini ${over?'over':''} ${T.paused?'paused':''}"><div class="gtm-t" data-t="gmax" role="button" aria-label="Timer groß öffnen"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b></div>
  <div class="gtm-c"><button type="button" class="rbtn" data-t="add" data-v="-15">−15</button><button type="button" class="rbtn" data-t="pause">${T.paused?'Weiter':'Pause'}</button><button type="button" class="rbtn" data-t="add" data-v="15">+15</button><button type="button" class="rbtn go" data-t="skip">${over?'Los':'Ende'}</button></div>
@@ -6084,7 +6144,7 @@ function gymRestHTML(){if(!T.on||T.gmin)return '';const C=2*Math.PI*104,left=tLe
  const def=from?restFor(from):T.total;const sug=T.lastRpe!=null&&T.lastRpe>=9&&T.total<def+60&&!over;
  return `<div class="grest" data-ph="${over?'o':T.paused?'p':f>.5?'g':f>.2?'y':'r'}" role="dialog" aria-label="Satzpause">
   <div class="grt"><p class="eyebrow">Satzpause${from?' · nach '+esc(EX[from].n):''}</p><button type="button" class="iconbtn" data-t="gmin" aria-label="Timer verkleinern"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>
-  <div class="grr"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="104" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="14"/><circle data-tring data-c="${C}" cx="120" cy="120" r="104" fill="none" stroke="#43c08a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)};transition:stroke-dashoffset .25s linear,stroke .4s"/></svg>
+  <div class="grr"><svg viewBox="0 0 240 240"><defs><linearGradient id="grrG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fb3ff"/><stop offset="1" stop-color="#3d63f5"/></linearGradient></defs><circle cx="120" cy="120" r="104" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="14"/><circle data-tring data-c="${C}" cx="120" cy="120" r="104" fill="none" stroke="#43c08a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${over?0:C*(1-f)};transition:stroke-dashoffset .25s linear,stroke .4s"/></svg>
    <div class="grm"><small data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Satzpause'}</small><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><em>von ${mmss(T.total)}</em></div></div>
   ${sug?`<button type="button" class="grsug" data-t="add" data-v="60"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Schwerer Satz (RPE ${nf(T.lastRpe)}) – Pause +1:00 empfohlen</button>`:''}
   <div class="grc"><button type="button" class="rbtn" data-t="add" data-v="-15">−15</button><button type="button" class="grp" data-t="pause" aria-label="${T.paused?'Fortsetzen':'Anhalten'}">${T.paused?'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>'}</button><button type="button" class="rbtn" data-t="add" data-v="15">+15</button></div>
@@ -6177,7 +6237,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   ${(()=>{const RL=setRule(bl);const need=RL.need(G.i);const open=need||rpe!=null||G.rpeOpen===G.b+'-'+G.i;const over=RL.cap!=null&&rpe!=null&&rpe>RL.cap+1e-9;const tgt=bl.rpe!=null?bl.rpe:RL.cap!=null?RL.cap:RL.rpe;
    return `<div class="grpe ${need?'req':'opt'} ${over?'over':''}"><div class="grpe-h"><small class="eyebrow">${need?`RPE · Satz ${G.i+1} eintragen${tgt!=null?' · '+(RL.cap!=null?'Deckel ':bl.rpeEst?'≈ ':'Soll ')+nf(tgt):''}`:`RPE · optional – laut Plan ${bl.rpe!=null&&RL.mode==='first'?'nur im 1. Satz':bl.rpe!=null&&RL.mode==='last'?'nur im letzten Satz':'nicht nötig'}`}</small><span class="rpedesc">${over?`<b>über dem Deckel</b> · Last für den nächsten Satz senken`:rpe!=null?`<b>RPE ${nf(rpe)}</b> · ${RPED[rpe]||''}`:need&&bl.rpe!=null?`${RPED[bl.rpe]||''}`:need?'Wie schwer war der Satz?':''}</span></div>
     ${open?`<div class="rpechips rpe1">${RPES.map(v=>`<button type="button" data-rpe="${v}" class="${bl.rpe===v?'soll':''} ${RL.cap!=null&&v>RL.cap?'cap':''}" aria-pressed="${rpe===v}">${nf(v)}</button>`).join('')}</div>`:`<button type="button" class="rpeopen" data-rpeopen>RPE trotzdem eintragen</button>`}</div>`})()}
-  <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const nd=rpeNeed(bl,G.i);const noR=show&&rpe==null&&nd;return `<button type="button" class="bigbtn ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log">${s.ok?'Erledigt ✓ · weiter':show?`<span>Satz abhaken</span><small>${nf(kg,2)} kg × ${nf(r)}${rpe!=null?' @ RPE '+nf(rpe):nd?' · RPE oben antippen':''}</small>`:'Satz abhaken'}</button>`})()}${saveHTML(key(w,d))}</div>
+  <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const nd=rpeNeed(bl,G.i);const noR=show&&rpe==null&&nd;const ICK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',INX='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';return `<button type="button" class="bigbtn hb2 ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log"><span class="hb-ic">${s.ok?INX:ICK}</span><span class="hb-tx"><b>${s.ok?'Erledigt · weiter':'Satz '+(G.i+1)+' abhaken'}</b>${s.ok?`<span class="hb-m"><i>${pnum(s.kg)!=null?nf(pnum(s.kg),2)+' kg':'–'}</i><i>× ${pnum(s.r)!=null?nf(pnum(s.r)):'–'}</i>${pnum(s.rpe)!=null?`<i>@ ${nf(pnum(s.rpe))}</i>`:''}</span>`:show?`<span class="hb-m"><i>${nf(kg,2)} kg</i><i>× ${nf(r)}</i>${rpe!=null?`<i class="rpv">RPE ${nf(rpe)}</i>`:nd?'<i class="miss"><em></em>RPE fehlt</i>':''}</span>`:`<span class="hb-m"><i class="dim">Gewicht eintragen</i></span>`}</span></button>`})()}${saveHTML(key(w,d))}</div>
   </div></div>
  </div>${gymRestHTML()}`;if(G.slide){const dir=G.slide;G.slide=0;slideIn(dir)}else bbMount();gymPost()}
 
