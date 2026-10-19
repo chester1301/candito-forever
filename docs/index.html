@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1710-b1fd5bf";
+<script>window.CF_VERSION="2026.10.19-1732-f9af509";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2019,6 +2019,28 @@ html[data-theme=blue] body:not(.nomo) .amb::before{width:80vw;height:60vh;left:-
 .card,.ptile{contain:layout paint}
 #view.enter>*{will-change:transform,opacity}
 </style>
+<style id="cf-rpeplan">
+.rp{display:grid;gap:12px}
+.rp>*{min-width:0}.rp-in{display:grid;gap:6px;min-width:0}.rp-in>div{min-width:0}.rp-in input{width:100%}.rp-in>span{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.rp-in>div{display:flex;align-items:baseline;gap:8px;border-bottom:2px solid #3d63f5;padding:2px 2px 6px}
+.rp-in input{flex:1;min-width:0;background:none;border:0;color:var(--ink);font:800 44px/1 var(--d,var(--f));letter-spacing:-.02em;outline:none;padding:0}.rp-in input::placeholder{color:var(--mut);font-weight:700}
+.rp-in em{font-style:normal;font-size:18px;font-weight:700;color:var(--mut)}.rp-in input:focus,.rp-in input:focus-visible{outline:none;box-shadow:none;border:0}.rp-th{flex-direction:column;align-items:flex-start;gap:2px}
+.rp-l{margin:0 0 6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.rp-two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;min-width:0}.rp-two>div{min-width:0}.rp{min-width:0}.rp-mode{min-width:0}.rp-mode button{min-width:0;padding:0 4px!important}
+.rp-chips{display:grid;gap:6px;min-width:0}.rp-chips.c6{grid-template-columns:repeat(6,minmax(0,1fr))}.rp-chips.c4{grid-template-columns:repeat(3,minmax(0,1fr))}.rp-two .rp-chips.c6{grid-template-columns:repeat(4,minmax(0,1fr))}.rp-chips button{min-width:0;padding:0 2px}
+.rp-chips button{min-height:40px;border-radius:11px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--ink);font:800 15px var(--f)}
+.rp-chips button[aria-pressed="true"]{border-color:#6f8cff;background:rgba(91,124,255,.18);box-shadow:0 0 0 1px rgba(111,140,255,.6) inset,0 6px 16px -8px rgba(61,99,245,.8)}
+.rp-res{gap:4px;border:1px solid rgba(120,150,255,.36)!important;background:linear-gradient(180deg,#19224b,#0d1330 70%)!important}
+.rp-big{display:flex;align-items:baseline;gap:6px}.rp-big b{font:800 52px/1 var(--d,var(--f));letter-spacing:-.02em}.rp-big b.na{color:var(--mut)}.rp-big em{font-style:normal;font-size:20px;font-weight:700;color:#9fb3ff}
+.rp-res small{font-size:12.5px;color:var(--ink2);font-weight:700}
+.rp-th{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:2px}.rp-th span{font-size:15px;font-weight:800}.rp-th small{font-size:11px;font-weight:800;color:#f3c969;white-space:nowrap}
+.rp-t{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}.rp-t th{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);text-align:left;padding:4px 8px 8px}.rp-t th.r,.rp-t td.r{text-align:right}
+.rp-t td{padding:11px 8px;border-top:1px solid var(--line);font-size:15px;font-weight:700;color:var(--ink2)}.rp-t td b{color:var(--ink);font-size:17px;font-weight:800}.rp-t td small{font-size:11px;color:var(--mut);margin-left:2px}
+.rp-t tr{cursor:pointer}.rp-t tr.on td{background:rgba(91,124,255,.12)}.rp-t tr.is td:first-child b{color:#f3c969}.rp-t tr.is td{background:rgba(243,201,105,.06)}
+.rp-t tbody tr:first-child td{border-top-color:var(--line2)}
+.rp-pl{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--ink2)}.rp-pl span{margin-right:4px}.rp-pl i{font-style:normal;min-width:30px;height:26px;padding:0 7px;border-radius:7px;display:grid;place-items:center;background:var(--p);color:#fff;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}.rp-pl i[style*="#eeeeee"],.rp-pl i[style*="#b8bcc2"],.rp-pl i[style*="#e2b21c"]{color:#111}.rp-pl em{font-style:normal;color:var(--mut)}
+.rc-plan{display:grid;gap:2px;width:100%;text-align:left;margin-top:10px;padding:11px 14px;border-radius:14px;border:1px solid rgba(90,209,230,.45);background:rgba(90,209,230,.1);color:#bfeaf2;font:800 14px var(--f)}.rc-plan span{font-size:12px;font-weight:700;color:var(--ink2)}
+</style>
 <style id="cf-harmonie-all">/* gilt für beide Themen */
 /* 5 leere Zustände */
 .ptile.empty .ptv{display:none}
@@ -3286,7 +3308,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1710-b1fd5bf</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1732-f9af509</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -5035,6 +5057,7 @@ function progData(){const A=allSets();
     <td class="r">${a.kg?nf(a.kg,2)+' × '+nf(a.r):'–'}</td><td class="r">${a.e1?nf(a.e1,0):'–'}</td>
     <td class="r" style="color:${a.e1&&a.refE?(a.e1>=a.refE?'var(--ok)':'var(--hi)'):'inherit'}">${a.e1&&a.refE?(a.e1>=a.refE?'+':'')+nf(a.e1-a.refE,0):'–'}</td></tr>`).join('')}
    </tbody></table></div><p class="note2">Δ vergleicht das Test-e1RM mit dem Referenz-Wert (gerechnet als RPE 9).</p></section>`,
+  rpeplan:()=>rpHTML(),
   verlauf:()=>`<section class="card"><div class="ct"><h2 class="h2">Abgeschlossene Einheiten</h2></div>${sessions.length?`<div class="tw"><table class="tab">
    <thead><tr><th>Einheit</th><th>Datum</th><th class="r">Dauer</th><th class="r">Sätze</th><th class="r">Tonnage</th></tr></thead><tbody>
    ${sessions.map(([w,d])=>{const L=log(w,d);const ss=A.filter(s=>s.w===w&&s.d===d);return `<tr><td><span class="dot" style="--c:${DAYCOL[d]}"></span>W${w+1} ${DAYS[d].tag} · ${esc(P[w][d].f)}</td><td>${L.date?new Date(L.date).toLocaleDateString('de-DE'):'–'}</td>
@@ -5042,13 +5065,13 @@ function progData(){const A=allSets();
    </tbody></table></div>`:'<div class="leer">Abgeschlossene Einheiten erscheinen hier mit Datum, Dauer und Tonnage.</div>'}</section>`};
  return {A,sessions,tonnage,dev,rpeD,doneSets,plannedSets,best,total,series,tw,prs,amrap,names,sec};}
 
-const PDT={year:['Jahresplan','Phasen bis 31.12.2027'],kraft:['Kraft','e1RM & Verlauf'],treue:['Plan-Treue','Vorgaben & Umfang'],volumen:['Volumen','Tonnage & Sätze'],rpe:['RPE-Kalibrierung','Gefühl vs. Plan'],whoop:['Erholung','WHOOP & Leistung'],backoff:['Top & Backoff','Backoff-Qualität & Ermüdung'],punkte:['Punkte','IPF GL & DOTS'],rekorde:['Rekorde','Bestwerte je Übung'],zyklen:['Zyklen','Phasen-Vergleich'],test:['Testwoche','Test & Referenz'],verlauf:['Verlauf','Abgeschlossene Einheiten']};
-const PDI={year:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',kraft:'<path d="M3 17l5-5 4 3 7-8"/><path d="M15 7h4v4"/>',treue:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',volumen:'<path d="M5 20V10M10 20V5M15 20v-7M20 20v-4"/>',rpe:'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/>',whoop:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',backoff:'<path d="M4 6h10M4 12h7M4 18h4"/><path d="M17 5v14M14 16l3 3 3-3"/>',punkte:'<path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/>',rekorde:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/>',zyklen:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',test:'<path d="M9 4h6M10 4v5L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-10V4"/>',verlauf:'<path d="M4 6h16M4 12h16M4 18h10"/>'};
-const PDC={year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',backoff:'#ff7a59',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#9aa0a8'};
+const PDT={rpeplan:['RPE-Planer','1RM & Last je RPE'],year:['Jahresplan','Phasen bis 31.12.2027'],kraft:['Kraft','e1RM & Verlauf'],treue:['Plan-Treue','Vorgaben & Umfang'],volumen:['Volumen','Tonnage & Sätze'],rpe:['RPE-Kalibrierung','Gefühl vs. Plan'],whoop:['Erholung','WHOOP & Leistung'],backoff:['Top & Backoff','Backoff-Qualität & Ermüdung'],punkte:['Punkte','IPF GL & DOTS'],rekorde:['Rekorde','Bestwerte je Übung'],zyklen:['Zyklen','Phasen-Vergleich'],test:['Testwoche','Test & Referenz'],verlauf:['Verlauf','Abgeschlossene Einheiten']};
+const PDI={rpeplan:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h3M13 11h3M8 15h3M13 15h3"/>',year:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',kraft:'<path d="M3 17l5-5 4 3 7-8"/><path d="M15 7h4v4"/>',treue:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',volumen:'<path d="M5 20V10M10 20V5M15 20v-7M20 20v-4"/>',rpe:'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/>',whoop:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',backoff:'<path d="M4 6h10M4 12h7M4 18h4"/><path d="M17 5v14M14 16l3 3 3-3"/>',punkte:'<path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/>',rekorde:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/>',zyklen:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',test:'<path d="M9 4h6M10 4v5L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-10V4"/>',verlauf:'<path d="M4 6h16M4 12h16M4 18h10"/>'};
+const PDC={rpeplan:'#5ad1e6',year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',backoff:'#ff7a59',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#9aa0a8'};
 /* Farbsystem im blauen Thema: Blau = Training & Plan · Grün = Erholung · Gold = Erfolge · Rot = Test/Warnung */
 const HC={A:'#6f8cff',G:'#43c08a',Y:'#e2b04a',R:'#e8484f',N:'#8f9bc4'};
 if((window.CF_THEME||'blue')==='blue'){const {A,G,Y,R,N}=HC;
- Object.assign(PDC,{year:A,kraft:A,treue:A,volumen:A,rpe:A,whoop:G,backoff:A,punkte:Y,rekorde:Y,zyklen:A,test:R,verlauf:N});
+ Object.assign(PDC,{rpeplan:A,year:A,kraft:A,treue:A,volumen:A,rpe:A,whoop:G,backoff:A,punkte:Y,rekorde:Y,zyklen:A,test:R,verlauf:N});
  const TM={rest:G,ready:G,whoop:G,satz:A,zeit:A,next:A,zyklus:A,wissen:Y,info:Y,notiz:N,claude:A,cockpit:A,athlet:A,plan:A,shift:A,design:A,timer:A,hantel:A,rechnet:A,backup:G,export:A,sheet:G};
  Object.values(TCFG).forEach(t=>t.list.forEach(c=>{if(TM[c.k])c.c=TM[c.k]}));
  Object.values(SQF).forEach(f=>{f.c=A});Object.assign(GC,{sq:'#6f8cff',bp:'#5ad1e6',dl:'#b48cff',acc:'#8f9bc4'});WCOL.splice(0,WCOL.length,A,G,Y,A,G,Y,A,Y)}
@@ -5106,7 +5129,7 @@ function renderProg(){const D=progData(),{A}=D;
  // Verlauf
  const ver=T('verlauf',D.sessions.length,'/ '+NS(),D.sessions.length?(()=>{const [w,d]=D.sessions[D.sessions.length-1];const L=log(w,d);return 'Zuletzt '+(L.date?new Date(L.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'W'+(w+1)+' '+DAYS[d].tag)})():'noch keine Einheit abgeschlossen',`<div class="tdots">${[...Array(NS()).keys()].map(i=>`<i class="${dayStatus(Math.floor(i/ND()),i%ND())==='done'?'on':''}"></i>`).join('')}</div>`);
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
-  ${prHeroHTML(D)}${forecastHTML()}${calHTML()}<div class="pgrid">${psec('Kraft','Stärke & Bestwerte')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${psec('Training','Umfang & Ausführung')}${vol}${treue}${bo}${ver}${psec('Steuerung','Gefühl & Erholung')}${rpe}${wh}${psec('Plan','Phasen & Termine')}${year}${zy}${te}</div>`}
+  ${prHeroHTML(D)}${forecastHTML()}${calHTML()}<div class="pgrid">${psec('Kraft','Stärke & Bestwerte')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${psec('Training','Umfang & Ausführung')}${vol}${treue}${bo}${ver}${psec('Steuerung','Gefühl, Erholung & Planung')}${rpe}${wh}${T('rpeplan',(()=>{const m=rpMax();return m?nf(m,0):'kg'})(),(()=>rpMax()?'kg 1RM':'')(),'Last je RPE aus deinem Satz oder 1RM','',true)}${psec('Plan','Phasen & Termine')}${year}${zy}${te}</div>`}
 function psec(t,s){return `<div class="psec"><h3>${t}</h3><small>${s}</small></div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
@@ -5306,6 +5329,29 @@ document.addEventListener('click',e=>{if(e.target.closest('nav .nav button,#nav 
 /* 4 Readiness: Erklärungen einklappen */
 function rfTidy(v){const t=v.querySelector('.tdet.rfc,.rfc.tdet')||(S.ui.tdet&&S.ui.tdet.home==='ready'?v.querySelector('.rfc'):null);if(!t||t.querySelector('.rf-more'))return;const ns=[...t.querySelectorAll('p.note2')];if(!ns.length)return;const d=document.createElement('details');d.className='rf-more';d.innerHTML='<summary><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>So wird bewertet</summary>';ns.forEach(n=>d.appendChild(n));t.appendChild(d)}
 
+
+
+/* ===================== RPE-Planer (nur kg, Load/RIR-Tabelle) ===================== */
+function rpState(){if(!S.ui.rp)S.ui.rp={mode:'satz',kg:null,r:5,rpe:8,m1:null,cr:5,sel:null};return S.ui.rp}
+function rpMax(){const o=rpState();if(o.mode==='max')return o.m1>0?o.m1:null;if(!(o.kg>0)||!o.r||o.rpe==null)return null;return e1rm(o.kg,o.r,o.rpe)}
+function rpRows(){const o=rpState(),m=rpMax();const rows=[];for(let v=10;v>=5;v-=.5){const pc=lrcPct(o.cr,v);if(pc==null)continue;rows.push({rpe:v,pc,kg:m?m*pc/100:null,rk:m?rnd(m*pc/100):null})}return rows}
+function rpHTML(){const o=rpState(),m=rpMax(),rows=rpRows();const REPS=[1,2,3,4,5,6,7,8,9,10,11,12,15,20];const RP=[10,9.5,9,8.5,8,7.5,7,6.5,6,5.5,5];
+ const chips=(arr,cur,k,fmt)=>`<div class="rp-chips ${k==='rpe'?'c4':'c6'}">${arr.map(v=>`<button type="button" data-rp="${k}|${v}" aria-pressed="${cur===v}">${fmt?fmt(v):v}</button>`).join('')}</div>`;
+ const selRow=rows.find(x=>x.rpe===o.sel);const pl=selRow&&selRow.rk?plates(selRow.rk):null;
+ return `<section class="card rp"><div class="seg rp-mode" style="grid-template-columns:repeat(2,minmax(0,1fr))"><button type="button" data-rp="mode|satz" aria-pressed="${o.mode==='satz'}">Aus einem Satz</button><button type="button" data-rp="mode|max" aria-pressed="${o.mode==='max'}">Aus dem 1RM</button></div>
+  ${o.mode==='satz'?`<label class="rp-in"><span>Gehobenes Gewicht</span><div><input id="rpKg" size="6" inputmode="decimal" placeholder="z. B. 100" value="${o.kg!=null?esc(nf(o.kg,2)):''}" aria-label="Gewicht in kg"><em>kg</em></div></label>
+   <div class="rp-two"><div><p class="rp-l">Wiederholungen</p>${chips([1,2,3,4,5,6,7,8,9,10,11,12],o.r,'r')}</div><div><p class="rp-l">RPE</p>${chips(RP,o.rpe,'rpe',v=>nf(v))}</div></div>`
+  :`<label class="rp-in"><span>1RM</span><div><input id="rpM1" size="6" inputmode="decimal" placeholder="z. B. 140" value="${o.m1!=null?esc(nf(o.m1,2)):''}" aria-label="1RM in kg"><em>kg</em></div></label>`}</section>
+  <section class="card rp rp-res ${m?'':'empty'}"><p class="eyebrow">Geschätztes 1RM · Schätzung</p><div class="rp-big">${m?`<b>${nf(m,1)}</b><em>kg</em>`:'<b class="na">–</b>'}</div>${m&&o.mode==='satz'?`<small>${nf(o.kg,2)} kg × ${o.r} @ RPE ${nf(o.rpe)} = ${nf(lrcPct(o.r,o.rpe),1)} % vom 1RM</small>`:m?'<small>direkt eingegeben</small>':'<small>Gewicht eintragen, dann rechnet der Planer.</small>'}</section>
+  <section class="card rp"><p class="rp-l">Wiederholungen für die Tabelle</p>${chips(REPS,o.cr,'cr')}
+   <div class="rp-th"><span>${o.cr} Wdh. · Last je RPE</span><small>Empfehlung · gerundet auf ${nf(S.meta.round||2.5,2)} kg</small></div>
+   <table class="rp-t"><thead><tr><th>RPE</th><th>RIR</th><th>% 1RM</th><th class="r">Last</th></tr></thead><tbody>${rows.map(x=>`<tr data-rp="sel|${x.rpe}" class="${x.rpe===o.sel?'on':''} ${o.mode==='satz'&&x.rpe===o.rpe&&o.cr===o.r?'is':''}"><td><b>${nf(x.rpe)}</b></td><td>${nf(10-x.rpe)}</td><td>${nf(x.pc,1)} %</td><td class="r">${x.rk!=null?`<b>${nf(x.rk,2)}</b><small>${Math.abs(x.rk-x.kg)>=.05?' ≈ '+nf(x.kg,1):''}</small>`:'<span class="na">–</span>'}</td></tr>`).join('')}</tbody></table>
+   ${selRow&&selRow.rk?`<div class="rp-pl"><span>RPE ${nf(selRow.rpe)} · ${nf(selRow.rk,2)} kg · pro Seite:</span>${pl&&pl.length?pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join(''):`<em>nur Stange (${nf(S.meta.bar||20,2)} kg)</em>`}</div>`:'<p class="note2" style="margin:8px 0 0">Zeile antippen → Scheiben pro Seite.</p>'}
+  </section>
+  <p class="note2">Grundlage: Modernized Load/RIR Chart (Nuzzo et al. 2023, Data Driven Strength) – dieselbe Tabelle wie im Gym-Rechner. Alles hier ist Orientierung, keine Vorgabe: Canditos Lasten und RPE-Ziele im Plan bleiben unverändert.</p>`}
+function rpRefresh(){const v=document.querySelector('#view .pdbody');if(!v)return;const a=document.activeElement;const id=a&&a.id;const pos=a&&a.selectionStart;v.innerHTML=rpHTML();if(id){const e=document.getElementById(id);if(e){e.focus({preventScroll:true});try{e.setSelectionRange(pos,pos)}catch(x){}}}}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-rp]');if(!t||S.ui.pd!=='rpeplan')return;const [k,v]=t.dataset.rp.split('|');const o=rpState();if(k==='mode')o.mode=v;else if(k==='sel')o.sel=o.sel===+v?null:+v;else o[k]=+v;if(k==='r'&&o.mode==='satz'&&!o.crTouched)o.cr=+v;if(k==='cr')o.crTouched=1;rpRefresh()});
+document.addEventListener('input',e=>{const t=e.target;if(!t||S.ui.pd!=='rpeplan')return;if(t.id==='rpKg'){rpState().kg=pnum(t.value);rpRefresh()}if(t.id==='rpM1'){rpState().m1=pnum(t.value);rpRefresh()}});
 
 /* ===================== Satz-Regel laut Plan (RPE wo, Last wie) ===================== */
 function setRule(bl){const x=bl.x||'',s=bl.s,k=kindOf(bl);const T=nf;const pn=v=>v==null?null:+String(v).replace(',','.');
@@ -5711,6 +5757,7 @@ function gymRcHTML(){const o=G.rc;rcClamp(o);const bl=P[S.ui.w][S.ui.d].b[G.b];
   <div class="gp-top"><div><p class="eyebrow" style="color:#5ad1e6">RPE-Rechner</p><h2>e1RM & Zielgewicht</h2><p class="gp-f">${esc(EX[bl.e].n)}</p></div><button type="button" class="iconbtn" data-rcclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <div class="rc-sec"><p class="eyebrow">Dein Satz</p><div class="rc-grid three">${rcStep('kg','Gewicht',o.kg,'')}${rcStep('r','Wdh.',o.r,o.r)}${rcStep('rpe','RPE',o.rpe,nf(o.rpe),rirTxt(o.rpe))}</div></div>
   <div id="rcOut">${rcOutHTML()}</div>
+  <button type="button" class="rc-plan" data-rcplan>Großer RPE-Planer öffnen <span>Tabelle für alle RPE-Stufen & Scheiben</span></button>
   <p class="note2" style="margin-top:12px">Grundlage: Modernized Load/RIR Chart (Durchschnittliche Wiederholungskapazität, Meta-Regression Nuzzo et al. 2023, zusammengestellt von Data Driven Strength) · RPE = 10 − RIR (DDS RPE/RIR-Guide). Werte sind Durchschnitte – individuelle Abweichungen sind normal. Das Ergebnis ist eine Empfehlung, keine Programmvorgabe.</p>
   </div></div>`}
 function rcRefresh(){const o=G.rc;rcClamp(o);const out=document.getElementById('rcOut');if(out)out.innerHTML=rcOutHTML();
@@ -5760,6 +5807,7 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
   if(f==='tr'||f==='trpe'){rcClamp(G.rc);const sec=t.closest('.rc-st');const b=sec&&sec.querySelector('b');}rcRefresh();return}
  if(t.dataset.rcset!=null&&G.rc){G.rc.tr=+t.dataset.rcset;rcRefresh();return}
  if(t.dataset.rcapply!=null&&G.rc){const c=rcCalc();if(c.tkr){gWrite('kg',c.tkr);toast(nf(c.tkr,2)+' kg übernommen')}G.rc=null;renderGym();return}
+ if(t.dataset.rcplan!=null){const o=rpState();if(G.rc){if(G.rc.kg>0){o.mode='satz';o.kg=G.rc.kg;o.r=G.rc.r||o.r;o.rpe=G.rc.rpe||o.rpe;o.cr=o.r}}G.rc=null;closeGym(true);S.ui.tab='prog';S.ui.pd='rpeplan';render();scrollTo(0,0);return}
  if(t.dataset.rpeopen!=null){G.rpeOpen=G.b+'-'+G.i;renderGym();return}
  if(t.dataset.gsame!=null){const L=log(w,d,true);const pv=L.b[G.b][G.i-1]||{};if(pnum(pv.kg)!=null)gWrite('kg',pnum(pv.kg));if(pnum(pv.r)!=null)gWrite('r',pnum(pv.r));renderGym();return}
  if(t.dataset.gwuopen!=null){G.wu=true;renderGym();return}
