@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-0530-1a07029";
+<script>window.CF_VERSION="2026.10.19-0549-6c03f4d";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1247,7 +1247,25 @@ html.boot #view.enter>*{animation:none!important}
 .gico::before{content:"";position:absolute;inset:1px 1px 50% 1px;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0));pointer-events:none}
 .gico .gis{width:22px;height:22px;fill:none;stroke:color-mix(in srgb,var(--gc) 35%,#fff);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
 .gico.wu{--gc:#ff6b4a}.gico.wu .gis{width:25px;height:25px}.gico.wu .gis .f{fill:url(#giFl);stroke:none}.gico.wu .gis .c{fill:#fff1cf;stroke:none}.gico.wu.done .gis .f{fill:#5fd6a0}
-.gico.tv{--gc:#e2b04a}.gico.rc{--gc:#5ad1e6}.gico.rc .gis .d{fill:color-mix(in srgb,var(--gc) 45%,transparent);stroke-width:1.6}
+.gico.tv{--gc:#e2b04a}.gico.hi{--gc:#b48cff}
+#gym p.ghy{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;margin-top:4px!important;line-height:1.55}#gym .ghy .hype,#gym .ghy .wzc{display:inline-flex!important;vertical-align:middle;margin-right:6px}
+#gym .hytx::before{display:none}
+#gym .ghy .hype{padding:1px 7px 1px 3px!important;gap:5px!important}#gym .ghy .hype .htx small{display:none}#gym .ghy .hype .htx b{font-size:12px!important}#gym .ghy .hype .hic{width:19px!important;height:19px!important}#gym .ghy .hype .hmt{display:none}
+#gym .ghy .wzc{padding:1px 7px;font-size:10.5px}
+#gym .ghero{row-gap:2px!important}#gym .ghero .gz-k{gap:2px!important}#gym .ldt{display:flex!important;flex-wrap:wrap;align-items:center;gap:2px 8px}#gym .ldt>small{display:none!important}#gym .ldh .ldr{margin-top:0!important}#gym .ghero .gz-pl{margin-top:0!important}#gym .ldh{padding:6px 10px!important;gap:10px!important;margin-top:0}#gym .ldh .ldi{width:30px!important;height:30px!important}#gym .ldh b{font-size:13.5px}#gym .ldh small{font-size:11px}#gym .ldh .ldr{margin-top:2px}
+.his .gp-in{background:linear-gradient(180deg,#17131f,#0d0f14 40%)}
+.hi-cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;margin:4px 0 2px}
+.hi-col{border:1px solid var(--line2);border-radius:14px;padding:10px;background:var(--raise);display:flex;flex-direction:column;gap:3px;min-width:0}
+.hi-col.now{border-color:rgba(180,140,255,.5);background:radial-gradient(120% 120% at 0 0,rgba(180,140,255,.18),transparent 60%),var(--raise)}
+.hi-col small{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.hi-col b{font-family:var(--mono);font-size:19px;font-weight:800;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}.hi-col b i{font-style:normal;font-size:12px;color:var(--ink2);margin-left:2px}
+.hi-col span{font-size:11.5px;color:var(--ink2);line-height:1.35}
+.hi-col em{font-style:normal;font-size:12px;font-weight:800;color:var(--ink2)}.hi-col em.up{color:var(--ok)}.hi-col em.dn{color:var(--hi)}
+.hi-vs{align-self:center;font:800 11px var(--mono);color:#b48cff}
+.hi-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hi-r{border:1px solid var(--line);border-left:3px solid #b48cff55;border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.02)}.hi-r.last{border-left-color:#b48cff}
+.hi-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.hi-h b{font-size:14px}.hi-h small{font-size:11.5px;color:var(--ink2)}.hi-e{margin-left:auto;font:700 11.5px var(--mono);color:#cdb6ff}
+.hi-s{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.hi-s span{font-family:var(--mono);font-size:12.5px;font-weight:700;padding:4px 7px;border-radius:8px;background:var(--raise);border:1px solid var(--line2)}.hi-s span i{font-style:normal;color:#cdb6ff;margin-left:2px}.hi-s span.no{opacity:.45}.gico.rc{--gc:#5ad1e6}.gico.rc .gis .d{fill:color-mix(in srgb,var(--gc) 45%,transparent);stroke-width:1.6}
 .gico.wu.done{--gc:#43c08a}
 #gym .gico em{right:-6px!important;top:-8px!important;min-width:24px!important;height:17px!important;padding:0 5px!important;border-radius:9px!important;background:#16181e!important;border:1.5px solid color-mix(in srgb,var(--gc) 70%,transparent)!important;color:color-mix(in srgb,var(--gc) 40%,#fff)!important;font:800 9.5px var(--mono)!important;box-shadow:0 2px 6px rgba(0,0,0,.5)}
 .gico.rc-old{background:linear-gradient(160deg,rgba(90,209,230,.22),rgba(20,30,40,.9));border-color:rgba(90,209,230,.45)}
@@ -2818,7 +2836,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0530-1a07029</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-0549-6c03f4d</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4626,7 +4644,7 @@ const G={b:0,i:0};let wake=null;
 async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){wake=null}}
-function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
+function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&!$('#gym').hidden&&navigator.wakeLock){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
 function plates(kg){const bar=S.meta.bar||20;let side=(kg-bar)/2;if(!(side>0))return [];const PL=[25,20,15,10,5,2.5,1.25],out=[];for(const p of PL){while(side>=p-1e-6){out.push(p);side-=p}}return out}
 const PC={25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28]};
@@ -4658,6 +4676,32 @@ const LRC_HALF=[98.8,96.4,94.0,91.7,89.5,87.3,85.1,83.1,81.0,79.0,77.1,75.2,73.4
 function lrcPct(reps,rpe){const n=Math.round((reps+(10-rpe))*2)/2;if(!(n>=1&&n<=40))return null;return Number.isInteger(n)?LRC_INT[n-1]:LRC_HALF[Math.floor(n)-1]}
 const GI_WU='<svg class="gis" viewBox="0 0 24 24"><defs><linearGradient id="giFl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset=".55" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff4d3d"/></linearGradient></defs><path class="f" d="M12.2 1.8c.9 3.6 6.3 5.9 6.3 12a6.5 6.5 0 0 1-13 0c0-3 1.6-5 3-6.2.2 2 1.1 3.3 2.4 3.8-.3-3.7-.1-6.6 1.3-9.6z"/><path class="c" d="M12 22.2a3.6 3.6 0 0 1-3.6-3.6c0-1.9 1.3-3.1 2.3-4 .2 1.3.9 2.1 1.8 2.4.3-1.4.8-2.4 1.7-3.3.8 1.5 1.4 2.7 1.4 4a3.6 3.6 0 0 1-3.6 4.5z"/></svg>';
 const GI_TV='<svg class="gis" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M7 15.5l3.2-3.6 2.8 2.4L17 9"/><path d="M14.4 9H17v2.6"/></svg>';
+const GI_HI='<svg class="gis" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.2 4.2v4h4"/><path d="M12 7.6V12l3 2"/></svg>';
+/* ---------- Verlauf: frühere Einheiten dieser Übung (alle Programme) ---------- */
+function exHistory(ex){const out=[];const cur={pid:PROG,w:S.ui.w,d:S.ui.d};
+ Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(pid===cur.pid&&w===cur.w&&d===cur.d)continue;const L=log(w,d);if(!L)continue;
+  const sets=[];P[w][d].b.forEach((bl,b)=>{if(bl.e!==ex)return;(L.b[b]||[]).forEach(z=>{const kg=pnum(z.kg),r=pnum(z.r);if(kg!=null&&r)sets.push({kg,r,rpe:pnum(z.rpe),ok:!!z.ok,b})})});
+  if(!sets.length)continue;const dt=L.date?new Date(L.date):dayDate(w,d);
+  const e1=Math.max(...sets.map(z=>e1rm(z.kg,z.r,z.rpe??(z.r===1?10:9))||0));
+  out.push({pid,w,d,dt,sets,top:sets.reduce((m,z)=>z.kg>m.kg||(z.kg===m.kg&&z.r>m.r)?z:m),vol:sets.reduce((a,z)=>a+z.kg*z.r,0),e1,f:P[w][d].f})}}));
+ return out.filter(x=>x.dt).sort((a,b)=>b.dt-a.dt)}
+function gymHiHTML(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const ex=bl.e;const H=exHistory(ex);const L=log(w,d,true);
+ const today=[];P[w][d].b.forEach((x,b)=>{if(x.e!==ex)return;(L.b[b]||[]).forEach((z,i)=>{const kg=pnum(z.kg),r=pnum(z.r);if(kg!=null&&r&&z.ok)today.push({kg,r,rpe:pnum(z.rpe)})})});
+ const sl=z=>`${nf(z.kg,2)}×${nf(z.r)}${z.rpe!=null?`<i>@${nf(z.rpe)}</i>`:''}`;
+ const dd=(a,b,u,dg=1)=>{if(a==null||b==null)return '';const v=Math.round((a-b)*10**dg)/10**dg;return `<em class="${v>0?'up':v<0?'dn':''}">${v>0?'+':v<0?'−':'±'}${nf(Math.abs(v),dg)}${u}</em>`};
+ const last=H[0];let cmp='';
+ if(last){const tt=today.length?today.reduce((m,z)=>z.kg>m.kg||(z.kg===m.kg&&z.r>m.r)?z:m):null;const sg0=sugg(w,d,G.b,0);const plan=tt?null:(sg0&&sg0.kg?{kg:sg0.kg,r:sg0.r,t:sg0.t}:null);
+  const tv=today.reduce((a,z)=>a+z.kg*z.r,0),te=today.length?Math.max(...today.map(z=>e1rm(z.kg,z.r,z.rpe??(z.r===1?10:9))||0)):null;
+  cmp=`<div class="hi-cmp"><div class="hi-col"><small>Letztes Mal · ${last.dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})}</small><b>${sl(last.top)}</b><span>${last.sets.length} Satz${last.sets.length===1?'':'e'} · ${nf(last.vol/1000,2)} t · e1RM ${nf(last.e1,0)}</span></div>
+   <div class="hi-vs">vs</div>
+   <div class="hi-col now"><small>Heute${tt?'':plan?(plan.t==='v'?' · Vorgabe':' · Empfehlung'):''}</small>${tt?`<b>${sl(tt)} ${dd(tt.kg,last.top.kg,' kg',2)}</b><span>${today.length} Satz${today.length===1?'':'e'} · ${nf(tv/1000,2)} t${te?` · e1RM ${nf(te,0)} ${dd(te,last.e1,'',0)}`:''}</span>`:plan?`<b>${nf(plan.kg,2)}×${nf(plan.r)} ${dd(plan.kg,last.top.kg,' kg',2)}</b><span>noch kein Satz abgehakt</span>`:'<b>–</b><span>noch kein Satz abgehakt</span>'}</div></div>`}
+ const rows=H.slice(0,12).map((x,k)=>`<li class="hi-r ${k===0?'last':''}"><div class="hi-h"><b>${x.dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'})}</b><small>${esc(PROGS[x.pid].short)} · W${x.w+1} ${withProg(x.pid,()=>DAYS[x.d].tag)}</small><span class="hi-e">e1RM ${nf(x.e1,0)}</span></div><div class="hi-s">${x.sets.map(z=>`<span class="${z.ok?'':'no'}">${sl(z)}</span>`).join('')}</div></li>`).join('');
+ return `<div class="gplan his" role="dialog" aria-modal="true" aria-label="Verlauf"><div class="gp-in">
+  <div class="gp-top"><div><p class="eyebrow" style="color:#b48cff">Verlauf · alle Programme</p><h2>${esc(EX[ex].n)}</h2><p class="gp-f">${H.length?H.length+' frühere Einheit'+(H.length===1?'':'en'):'noch keine früheren Einheiten'}</p></div><button type="button" class="iconbtn" data-hiclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  ${cmp}
+  ${H.length?`<p class="sec" style="margin:14px 0 8px">Frühere Einheiten</p><ul class="hi-l">${rows}</ul>`:'<p class="gp-t">Sobald du diese Übung trainiert hast, erscheinen hier alle früheren Sätze mit Datum, Gewicht, Wiederholungen und RPE.</p>'}
+  <p class="note2" style="margin-top:10px">Satz-Format: Gewicht × Wdh. @ RPE. Blass = eingetragen, aber nicht abgehakt. e1RM = bester Satz der Einheit.</p>
+  <button type="button" class="gp-close" data-hiclose>Zurück zum Training</button></div></div>`}
 const GI_RC='<svg class="gis" viewBox="0 0 24 24"><rect x="5" y="2.8" width="14" height="18.4" rx="3.4"/><rect x="8" y="5.8" width="8" height="3.4" rx="1" class="d"/><path d="M8.6 12.7h.01M12 12.7h.01M15.4 12.7h.01M8.6 15.9h.01M12 15.9h.01M8.6 19h.01M12 19h.01M15.4 15.9V19"/></svg>';
 const RCICO='<span class="rci"><svg viewBox="0 0 24 24"><rect x="5" y="2.8" width="14" height="18.4" rx="3"/><path d="M8 7h8"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01M8.5 15h.01M12 15h.01M15.5 15v3M8.5 18.5h.01M12 18.5h.01"/></svg></span>';
 function rcInit(){const {w,d}=S.ui;const cv=curVals();const bl=P[w][d].b[G.b];const R0=repsFor(w,d,G.b);
@@ -4711,11 +4755,15 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
+ if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false}
+ if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
  if(G.rc&&!G.plan&&!G.wu){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymRcHTML())}
  if(G.wu&&!G.plan){const {w,d}=S.ui;const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymWuHTML(w,d))}
  if(G.plan){const {w,d}=S.ui;const old=$('#gym .gplan');const html=gymPlanHTML(w,d);const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',html);const pl=$('#gym .gplan .gp-in');if(pl&&G.planY)pl.scrollTop=G.planY}}}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(G.plan||G.rc||G.wu)&&!$('#gym').hidden){G.plan=false;G.rc=null;G.wu=false;renderGym()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(G.plan||G.rc||G.wu||G.hi)&&!$('#gym').hidden){G.plan=false;G.rc=null;G.wu=false;G.hi=false;renderGym()}});
 $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const {w,d}=S.ui;const day=P[w][d];
+ if(t.dataset.hiopen!=null){G.hi=true;renderGym();return}
+ if(t.dataset.hiclose!=null){G.hi=false;renderGym();return}
  if(t.dataset.rcopen!=null){rcInit();renderGym();return}
  if(t.dataset.rcclose!=null){G.rc=null;renderGym();return}
  if(t.dataset.rc!=null&&G.rc){const [f,dv]=t.dataset.rc.split('|');const st={kg:S.meta.round||2.5,r:1,rpe:.5,tr:1,trpe:.5}[f];if(f==='kg'){const v=(G.rc.kg||0)+(+dv)*st;G.rc.kg=Math.max(0,rnd(v));const i=document.getElementById('rcKg');if(i)i.value=nf(G.rc.kg,2)}else G.rc[f]=(G.rc[f]||0)+(+dv)*st;
@@ -4948,9 +4996,9 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
    <span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span>${!L.start&&!L.done?`<button type="button" class="sessbtn start" data-sstart aria-label="Training starten"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><b>Start</b></button>`:L.done?`<span class="sessbtn done"><b>${fmtHMS(sessEl(L))}</b></span>`:`<button type="button" class="sessbtn ${L.pausedAt?'paused':''}" data-sp aria-label="${L.pausedAt?'Trainings-Timer fortsetzen':'Trainings-Timer pausieren'}"><i></i><b data-sesst="${w}-${d}">${fmtHMS(sessEl(L))}</b><svg viewBox="0 0 24 24">${L.pausedAt?'<path d="M8 5v14l11-7z"/>':'<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>'}</svg></button>`}</div>
   <div class="strip">${strip}</div>
   <div class="gsw">
-  <div class="gmeta">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}<span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
-   return `<span class="gicons">${wl?`<button type="button" class="gico wu ${wl.length&&nd>=wl.length?'done':''}" data-gwuopen aria-label="Aufwärmsätze">${GI_WU}${wl.length?`<em>${nd}/${wl.length}</em>`:''}</button>`:''}<button type="button" class="gico tv" data-ex="${bl.e}" aria-label="Technik & Verlauf">${GI_TV}</button><button type="button" class="gico rc" data-rcopen aria-label="RPE-Rechner">${GI_RC}</button></span>`})()}</div>
-  <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h?`<p class="hytx ${bl.h}">${HYPETXT[bl.h]}</p>`:''}</div></div>
+  <div class="gmeta"><span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
+   return `<span class="gicons">${wl?`<button type="button" class="gico wu ${wl.length&&nd>=wl.length?'done':''}" data-gwuopen aria-label="Aufwärmsätze">${GI_WU}${wl.length?`<em>${nd}/${wl.length}</em>`:''}</button>`:''}<button type="button" class="gico tv" data-ex="${bl.e}" aria-label="Technik & Verlauf">${GI_TV}</button><button type="button" class="gico hi" data-hiopen aria-label="Verlauf der Vorwochen">${GI_HI}</button><button type="button" class="gico rc" data-rcopen aria-label="RPE-Rechner">${GI_RC}</button></span>`})()}</div>
+  <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h||wz?`<p class="ghy hytx ${bl.h||''}">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip wzc" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}${bl.h?HYPETXT[bl.h]:''}</p>`:''}</div></div>
   <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''}" aria-label="Satz ${i+1}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
     ${(()=>{const em=sg.kg!=null&&sg.t!=='v';return `<div class="gz-n"><b class="zahl ${!em&&sg.kg!=null?'':'nokg'}">${!em&&sg.kg!=null?nf(sg.kg,2):(bl.rpe!=null?'RPE '+nf(bl.rpe):'frei')}${!em&&sg.kg!=null?'<small>kg</small>':''}</b><span class="gz-r"><b>× ${esc(sg.rdisp)}</b>${!em&&sg.kg!=null&&bl.rpe!=null?`<small>${bl.rpeEst?'≈ ':''}RPE ${nf(bl.rpe)}</small>`:em||sg.kg==null?'<small>Last frei</small>':''}</span></div>
     ${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}
