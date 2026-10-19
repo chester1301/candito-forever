@@ -23,7 +23,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1116-38c4402";
+<script>window.CF_VERSION="2026.10.19-1123-06fd6d0";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -100,7 +100,7 @@ body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 :root{
   --bg:#090a0e; --bg2:#1c1f27; --card:#15171d; --raise:#242833;
   --line:#262a35; --line2:#3a3f4d;
-  --ink:#f5f5f6; --ink2:#a6a9b4; --mut:#8a8f9b;
+  --ink:#f5f5f6; --ink2:#c3c6cf; --mut:#a5aab6;
   --brand:#ed2438; --action:#d21c2f; --hi:#ff5a5f; --brand-soft:rgba(237,36,56,.12);
   --ok:#43c08a; --ok-soft:rgba(67,192,138,.12); --warn:#e39150; --warn-soft:rgba(227,145,80,.13); --cyan:#57c7d4;
   --sq:#f0625d; --bp:#e3b34c; --dl:#6e9fd6; --acc:#8e93a1;
@@ -116,7 +116,7 @@ body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{background:var(--bg);color:var(--ink)}
-body{font-family:var(--f);font-size:14.5px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--f);font-weight:600;font-size:14.5px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(90% 50% at 85% -10%,color-mix(in srgb,var(--day) 14%,transparent),transparent 60%),radial-gradient(70% 40% at -10% 0%,rgba(87,199,212,.05),transparent 60%);transition:background .4s}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:45;background:var(--bg)}
 body{padding-top:env(safe-area-inset-top,0px)}
@@ -146,7 +146,7 @@ ul,ol{padding:0;list-style:none}
 .sync.on i{background:var(--ok)} .sync.err i{background:var(--warn)}
 .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:var(--r-m);background:var(--card);border:1px solid var(--line)}
 .seg button{min-height:44px;border:0;border-radius:var(--r-s);background:transparent;color:var(--ink2);font-weight:800;font-size:13.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;padding:4px 2px;transition:background .2s}
-.seg button small{font-size:11.5px;font-weight:500;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.seg button small{font-size:11.5px;font-weight:600;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .seg button[aria-pressed="true"]{background:var(--raise);color:var(--ink);box-shadow:0 0 0 1px var(--line2) inset}
 .seg button[aria-pressed="true"] small{color:var(--ink2)}
 .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
@@ -233,7 +233,7 @@ details.info[open]>summary::after{transform:rotate(-135deg)}
 .pn b{font-size:14px;font-weight:700;overflow-wrap:anywhere}
 .pn small{font-size:12.5px;color:var(--ink2)}
 .pl{text-align:right;font-family:var(--d);font-stretch:90%;font-size:16px;font-weight:800;white-space:nowrap;line-height:1.2}
-.pl small{display:block;font-family:var(--f);font-size:12px;font-weight:500;color:var(--mut)}
+.pl small{display:block;font-family:var(--f);font-size:12px;font-weight:600;color:var(--mut)}
 .pl.ok{color:var(--ok)}
 
 /* Übungsblock */
@@ -782,7 +782,7 @@ body:has(.sesschip:not([hidden])) .sync{display:none}
 .adh.hit{border-color:color-mix(in srgb,var(--ok) 45%,transparent);background:var(--ok-soft)}.adh.hit>b{color:var(--ok)}
 .adh.miss{border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:var(--warn-soft)}.adh.miss>b{color:var(--warn)}
 .adh>div{display:flex;flex-wrap:wrap;gap:8px}.adh span{display:inline-flex;flex-direction:column;padding:6px 10px;border-radius:12px;background:rgba(0,0,0,.25);font-weight:700;font-size:14px}
-.adh span small{font-weight:500;font-size:11.5px;color:var(--mut)}.adh span.ok{color:var(--ok)}.adh span.off{color:var(--warn)}
+.adh span small{font-weight:600;font-size:11.5px;color:var(--mut)}.adh span.ok{color:var(--ok)}.adh span.off{color:var(--warn)}
 .calh{margin:10px 2px 0;font-size:12.5px;line-height:1.45;color:var(--mut);padding:8px 10px;border-radius:12px;background:var(--warn-soft)}.calh b{color:var(--ink)}
 .cuec{padding:14px}.cuec ul{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px}.cuec li{position:relative;padding-left:18px;font-size:14px;line-height:1.4}
 .cuec li::before{content:"";position:absolute;left:2px;top:.5em;width:7px;height:7px;border-radius:50%;background:var(--day)}
@@ -1135,6 +1135,12 @@ details.fold[open] .fchev{transform:rotate(90deg)}
 :root{--hair:rgba(255,255,255,.075);--hair2:rgba(255,255,255,.12);--goldline:rgba(226,176,74,.34);--ease2:cubic-bezier(.2,.8,.2,1)}
 html{-webkit-tap-highlight-color:transparent}
 body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+/* Lesbarkeit: Fließ- und Nebentexte kräftiger */
+:where(small,.mut,.note,.note2,.pts,.rx,.tsub,.rpedesc,.ghy,.phs,.mprog,.marke>div>span,.marke>span,.plc-m span,label,td,th,li,input,textarea,select){font-weight:600}
+:where(p){font-weight:600}
+.mtred span{font-weight:inherit!important}
+svg text{font-weight:600}
+.progsw button small{font-size:10.5px!important}
 ::selection{background:rgba(237,36,56,.35)}
 .zahl,.num,.mono,[data-count],.tt,.gtm-t b,.stp input{font-variant-numeric:tabular-nums}
 /* Karten: ruhiger, edler */
@@ -2911,7 +2917,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1116-38c4402</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1123-06fd6d0</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
