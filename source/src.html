@@ -1762,7 +1762,10 @@ function nextOpen(w,d,b,i){const L=log(w,d);const bls=P[w][d].b;
 
 /* ===================== Automatische Satz-Berechnung ===================== */
 const PICK={'1-3-0':{r:5,rpe:7,m:'closest'},'2-3-0':{r:3,rpe:7.5,m:'closest'},'3-2-0':{r:5,rpe:9,m:'max'},'3-2-1':{r:5,rpe:10,m:'max'},'3-2-2':{r:5,rpe:10,m:'max'}};
-const kgFor=(e1,r,rpe)=>e1/e1rm(1,r,rpe);
+// Empfehlungen rechnen mit dem Modernized Load/RIR Chart (RPE-Rechner); außerhalb der Tabelle Rückfall auf die alte Formel
+function e1L(kg,r,rpe){if(!kg||!r)return null;const p=lrcPct(r,rpe==null?10:rpe);return p?kg/(p/100):e1rm(kg,r,rpe)}
+const kgFor=(e1,r,rpe)=>{const p=lrcPct(r,rpe==null?10:rpe);return p?e1*p/100:e1/e1rm(1,r,rpe)};
+function e1OfL(s,bl){const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1L(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
 function kindOf(bl){if(bl.s===1||/in jedem Satz/.test(bl.x))return 'each';if(/ersten Satz/.test(bl.x))return 'first';if(/im Schnitt/.test(bl.x))return 'avg';if(/(letzten|\d\.) Satz/.test(bl.x))return 'last';return 'same'}
 function repsFor(w,d,b){const bl=P[w][d].b[b];
  if(/^\d+$/.test(bl.r))return {r:+bl.r,disp:bl.r};
@@ -1772,9 +1775,9 @@ function repsFor(w,d,b){const bl=P[w][d].b[b];
  return {r:null,disp:bl.r}}
 function e1Of(s,bl){const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1rm(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
 function estE1(ex,w,d,b,i){const L=log(w,d);
- if(L){let best=null;P[w][d].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L.b[B]||[]).forEach((s,I)=>{if(B>b||(B===b&&I>=i))return;const e=e1Of(s,bl);if(e)best={e1:e,src:'heute, Satz davor'}})});if(best)return best}
+ if(L){let best=null;P[w][d].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L.b[B]||[]).forEach((s,I)=>{if(B>b||(B===b&&I>=i))return;const e=e1OfL(s,bl);if(e)best={e1:e,src:'heute, Satz davor'}})});if(best)return best}
  for(let x=w*ND()+d-1;x>=0;x--){const W=Math.floor(x/ND()),D=x%ND();const L2=log(W,D);if(!L2)continue;let mx=null;
-  P[W][D].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L2.b[B]||[]).forEach(s=>{const e=e1Of(s,bl);if(e&&(!mx||e>mx.e1))mx={e1:e,src:`W${W+1} ${DAYS[D].tag}`}})});
+  P[W][D].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L2.b[B]||[]).forEach(s=>{const e=e1OfL(s,bl);if(e&&(!mx||e>mx.e1))mx={e1:e,src:`W${W+1} ${DAYS[D].tag}`}})});
   if(mx)return mx}
  if(PROG!=='intro'&&!estE1.px){estE1.px=1;try{for(const pid of prevOf(PROG)){const r=withProg(pid,()=>estE1(ex,NW(),0,99,0));if(r)return {e1:r.e1,src:PROGS[pid].short+', '+r.src}}}finally{estE1.px=0}}
  const rel=REL[ex];if(rel&&!estE1.busy){estE1.busy=true;try{for(const [rx,f] of rel){const e=estE1(rx,w,d,99,0);if(e){return {e1:e.e1*f,src:`${EX[rx].n}, ${e.src}`}}}}finally{estE1.busy=false}}
@@ -1809,7 +1812,7 @@ function suggCalc(w,d,b,i){const bl=P[w][d].b[b],L=log(w,d),k3=(PROG==='intro'?'
  if(i>0){
   if(R.amrap||kind!=='each'||bl.rpe==null||!R.r)return out(prevKg,`gleiche Last wie Satz ${i}`,prevT);
   const kgp=pnum(prevSet&&prevSet.kg),rp=pnum(prevSet&&prevSet.rpe),r=pnum(prevSet&&prevSet.r)??R.r;
-  if(kgp&&rp!=null){const e=e1rm(kgp,r,rp);return out(kgFor(e,R.r,bl.rpe),`Satz ${i}: ${nf(kgp,2)} × ${r} @ ${nf(rp)} → angepasst auf RPE ${nf(bl.rpe)}`)}
+  if(kgp&&rp!=null){const e=e1L(kgp,r,rp);return out(kgFor(e,R.r,bl.rpe),`Satz ${i}: ${nf(kgp,2)} × ${r} @ ${nf(rp)} → angepasst auf RPE ${nf(bl.rpe)}`)}
   return out(prevKg,`gleiche Last wie Satz ${i} – RPE eintragen, dann passt die App an`)}
  // 3) erster Satz: Sonderregeln aus dem Plan
  const lt=lastTime(w,d,b);
