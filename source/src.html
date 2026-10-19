@@ -1861,6 +1861,38 @@ body.hdc .top .psub .sesschip{margin-left:0}
 /* Statusleiste im blauen Thema */
 html[data-theme=blue] body::before{background:linear-gradient(180deg,#2340c4,#2642c8)!important;z-index:45!important}
 </style>
+<style id="cf-rule">
+.grule{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:14px;background:rgba(91,124,255,.08);border:1px solid rgba(130,155,255,.3)}
+.grule .gr-i{flex:none;min-width:36px;height:24px;padding:0 7px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.06em;background:rgba(91,124,255,.22);color:#c9d5ff}
+.grule b{display:block;font-size:14px;line-height:1.25}.grule small{display:block;margin-top:3px;font-size:12.5px;line-height:1.4;color:var(--ink2)}
+.grule.m-none{background:rgba(255,255,255,.03);border-color:var(--line2)}.grule.m-none .gr-i{background:var(--raise);color:var(--mut)}
+.grule.m-cap,.grule.m-amrap{background:rgba(243,201,105,.08);border-color:rgba(243,201,105,.4)}.grule.m-cap .gr-i,.grule.m-amrap .gr-i{background:rgba(243,201,105,.2);color:#f3c969}
+.grule.cmp small{display:none}
+.blk.open .grule{margin:0 14px 10px}
+#gym .grule{margin-bottom:0}
+.grpe.req .eyebrow{color:#f3c969!important}.grpe.opt .eyebrow{color:var(--mut)!important}
+.grpe.over .eyebrow,.grpe.over .rpedesc b{color:#ff8a8f!important}
+.rpeopen{display:inline-flex;align-items:center;min-height:30px;padding:0 11px;margin-top:6px;border-radius:999px;border:1px dashed var(--line2);background:none;color:var(--ink2);font:inherit;font-size:12.5px;font-weight:700}
+.rpechips button.cap{opacity:.45}
+.gsl button.rq .n{box-shadow:0 0 0 2px rgba(243,201,105,.55)}.gsl button.rq small{color:#f3c969;font-weight:800}
+.gsets button.rq{box-shadow:inset 0 -3px 0 rgba(243,201,105,.75)}
+select.rpe.optr{opacity:.55}select.rpe.req.empty{box-shadow:inset 0 0 0 1.5px rgba(243,201,105,.6)}
+.gprev{display:flex;justify-content:flex-end;margin:-2px 0 6px}.gprev button{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 11px;border-radius:999px;border:1px solid rgba(130,155,255,.45);background:rgba(91,124,255,.1);color:#c9d5ff;font:inherit;font-size:12.5px;font-weight:800}.gprev svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gprog{cursor:pointer}.gexl{position:absolute;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 96px);z-index:60}
+.gexl-in{background:linear-gradient(180deg,#151b33,#0b0f1e);border:1px solid #2a3356;border-radius:18px;padding:10px;box-shadow:0 24px 50px -20px #000;display:grid;gap:6px}
+.gexl button{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);font:inherit;text-align:left}
+.gexl button.cur{border-color:rgba(130,155,255,.6);background:rgba(91,124,255,.14)}.gexl button.fin{opacity:.6}
+.gexl .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--raise);font-size:12px;font-weight:800}.gexl button.fin .n{background:rgba(67,192,138,.2);color:#5fd6a0}
+.gexl .m{display:grid;min-width:0}.gexl .m b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gexl .m small{font-size:11.5px;color:var(--ink2)}.gexl .c{font-size:12px;font-weight:800;color:var(--ink2)}
+/* 2 kompakte Kachelzeile auf der Trainingsseite */
+body[data-tab="train"] .tgrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}
+body[data-tab="train"] .tgrid .ptile{min-height:118px;padding:11px 10px 10px;grid-column:auto!important;gap:4px}
+body[data-tab="train"] .tgrid .ptl{font-size:10px!important;letter-spacing:.03em!important;padding-right:10px}
+body[data-tab="train"] .tgrid .ptv b{font-size:19px!important}body[data-tab="train"] .tgrid .ptv b.tw{font-size:16px!important}
+body[data-tab="train"] .tgrid .pts{font-size:10.5px!important;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;padding-right:0}
+body[data-tab="train"] .tgrid .ptile.empty .pte{width:32px;height:32px;margin:2px 0 0}body[data-tab="train"] .tgrid .ptile.empty .pte svg{width:17px;height:17px}
+body[data-tab="train"] .tgrid .ptc{display:none}
+</style>
 <style id="cf-swap">
 .swg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
 .swbtn{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 11px;border-radius:999px;border:1px solid rgba(130,155,255,.5);background:rgba(91,124,255,.12);color:#c9d5ff;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
@@ -3031,7 +3063,7 @@ function blockHTMLFull(w,d,b){const bl=P[w][d].b[b],ex=EX[bl.e],L=log(w,d),sets=
    <span class="ix">${i+1}</span>
    <input id="k-${w}-${d}-${b}-${i}" data-f="kg" inputmode="decimal" autocomplete="off" aria-label="Gewicht Satz ${i+1}" placeholder="${esc(ph)}" value="${esc(s.kg??'')}">
    <input id="r-${w}-${d}-${b}-${i}" data-f="r" inputmode="numeric" autocomplete="off" aria-label="Wiederholungen Satz ${i+1}" placeholder="${esc(rph)}" value="${esc(s.r??'')}">
-   <select id="p-${w}-${d}-${b}-${i}" data-f="rpe" class="rpe ${pnum(s.rpe)==null?'empty':''}" aria-label="RPE Satz ${i+1}"><option value="">${bl.rpe!=null?nf(bl.rpe):'RPE'}</option>${RPES.map(v=>`<option value="${nf(v)}" ${pnum(s.rpe)===v?'selected':''}>${nf(v)}</option>`).join('')}</select>
+   <select id="p-${w}-${d}-${b}-${i}" data-f="rpe" class="rpe ${pnum(s.rpe)==null?'empty':''} ${rpeNeed(bl,i)?'req':'optr'}" aria-label="RPE Satz ${i+1}${rpeNeed(bl,i)?' – laut Plan eintragen':' – optional'}"><option value="">${rpeNeed(bl,i)?(bl.rpe!=null?nf(bl.rpe):'RPE'):'opt.'}</option>${RPES.map(v=>`<option value="${nf(v)}" ${pnum(s.rpe)===v?'selected':''}>${nf(v)}</option>`).join('')}</select>
    <button type="button" class="ck" data-ck aria-label="Satz ${i+1} abhaken" aria-pressed="${!!s.ok}">${CHECK}</button></div>`}).join('');
  const best=sets.map(s=>e1rm(pnum(s.kg),pnum(s.r),pnum(s.rpe))).filter(Boolean);
  const rests=sets.map(s=>s.rest).filter(Boolean);
@@ -3083,13 +3115,13 @@ function deDay(t){const M={Monday:'Montag',Tuesday:'Dienstag',Wednesday:'Mittwoc
 function sollReps(w,d,b){const bl=P[w][d].b[b],R=repsFor(w,d,b);if(R.amrap||R.r==null)return null;
  if(/^\d+-\d+$/.test(bl.r)){const [a,c]=bl.r.split('-').map(Number);return {lo:a,hi:c,disp:a+'–'+c}}
  return {lo:R.r,hi:R.r,disp:String(R.r)}}
-function rpeApplies(bl,i){if(bl.rpe==null||bl.rpeEst)return false;const k=kindOf(bl);
- if(k==='each')return true;if(k==='first')return i===0;if(k==='avg')return false;return i===bl.s-1}
+function rpeApplies(bl,i){if(bl.rpe==null||bl.rpeEst)return false;const R=setRule(bl);if(R.mode==='avg'||R.mode==='none'||R.mode==='fail'||R.mode==='est'||R.mode==='cap')return false;return R.need(i)}
 // Bewertung eines erledigten Satzes gegen die Vorgabe
 function setAdh(w,d,b,i){const bl=P[w][d].b[b],L=log(w,d);if(!L||!L.b[b])return null;const s=L.b[b][i];
  if(!s||!s.ok)return null;const kg=pnum(s.kg),r=pnum(s.r),rpe=pnum(s.rpe);const o={parts:[]};
  const SR=sollReps(w,d,b);if(SR&&r!=null){const hit=r>=SR.lo&&r<=SR.hi;o.reps={soll:SR.disp,ist:r,hit,diff:r<SR.lo?r-SR.lo:r>SR.hi?r-SR.hi:0};o.parts.push(hit)}
- if(rpeApplies(bl,i)){if(rpe!=null){const df=rpe-bl.rpe;o.rpe={soll:bl.rpe,ist:rpe,diff:df,hit:Math.abs(df)<=.5};o.parts.push(o.rpe.hit)}else{o.rpe={soll:bl.rpe,ist:null,hit:false,miss:true};o.parts.push(false)}}
+ {const RL=setRule(bl);if(RL.mode==='cap'&&RL.cap!=null&&rpe!=null){const df=rpe-RL.cap;o.rpe={soll:RL.cap,ist:rpe,diff:df,hit:df<=1e-9,cap:true};o.parts.push(o.rpe.hit)}}
+ if(setRule(bl).mode!=='cap'&&rpeApplies(bl,i)){if(rpe!=null){const df=rpe-bl.rpe;o.rpe={soll:bl.rpe,ist:rpe,diff:df,hit:Math.abs(df)<=.5};o.parts.push(o.rpe.hit)}else{o.rpe={soll:bl.rpe,ist:null,hit:false,miss:true};o.parts.push(false)}}
  if(kindOf(bl)==='avg'&&bl.rpe!=null&&i===bl.s-1){const v=L.b[b].slice(0,bl.s).map(x=>pnum(x.rpe)).filter(x=>x!=null);
   if(v.length){const av=v.reduce((a,x)=>a+x,0)/v.length,df=av-bl.rpe;o.rpe={soll:bl.rpe,ist:Math.round(av*10)/10,diff:df,hit:Math.abs(df)<=.5,avg:true};o.parts.push(o.rpe.hit)}}
  if((bl.ref||bl.pct!=null)&&kg){const sg=sugg(w,d,b,i);if(sg&&sg.kg){const tol=Math.max(2.5,sg.kg*.02),df=kg-sg.kg;o.kg={soll:sg.kg,ist:kg,diff:df,hit:Math.abs(df)<=tol+1e-9};o.parts.push(o.kg.hit)}}
@@ -3571,7 +3603,7 @@ const TCFG={
   {k:'zyklus',m:e=>/Zyklus-Fortschritt/.test(e.textContent),t:'Zyklus',ic:'ring',c:'#43c08a',val:e=>tx(e,'.cring b')+' / '+NS(),sub:e=>tx(e,'h2')},
   {k:'wissen',m:'.wistile',t:'Wissen',ic:'book',c:'#e2b04a',go:'wissen',val:()=>wisSecs().length+'',sub:()=>'Kapitel zu Programmen, RPE, Hype & Pausen'}]},
  train:{keep:'.trh,.sechead,.exlist',list:[
-  {k:'info',m:e=>/Tagesinfo/.test(tx(e,'.eyebrow,h2')),t:'Tagesinfo',ic:'info',c:'#e2b04a',val:()=>'Coach',sub:()=>'Hinweise aus dem Original-Programm'},
+  {k:'info',m:e=>/Tagesinfo/.test(tx(e,'.eyebrow,h2')),t:'Tagesinfo',ic:'info',c:'#e2b04a',val:()=>{const n=(INFO[S.ui.w+'-'+S.ui.d]||[]).length;return n?n+' '+(n===1?'Hinweis':'Hinweise'):'Info'},sub:()=>{const dd=P[S.ui.w][S.ui.d].d||'';return dd.length>95?dd.slice(0,92).replace(/\s+\S*$/,'')+' …':dd||'Hinweise aus dem Original-Programm'}},
   {k:'whoop',m:'#whoop',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wring2 .mid b')?tx(e,'.wring2 .mid b')+' %':'–',sub:e=>e.classList.contains('empty')?'Noch nicht eingetragen':tx(e,'.wk h2')},
   {k:'notiz',m:e=>/Notizen/.test(e.textContent.slice(0,80)),t:'Notizen',ic:'note',c:'#9aa0a8',val:e=>{const t=e.querySelector('textarea');return t&&t.value.trim()?t.value.trim().length+'':'–'},sub:e=>{const t=e.querySelector('textarea');return t&&t.value.trim()?t.value.trim().slice(0,60):'Gedanken zur Einheit festhalten'}}]},
  coach:{keep:'.cwk',list:[
@@ -4137,6 +4169,36 @@ document.addEventListener('click',e=>{if(e.target.closest('nav .nav button,#nav 
 /* 4 Readiness: Erklärungen einklappen */
 function rfTidy(v){const t=v.querySelector('.tdet.rfc,.rfc.tdet')||(S.ui.tdet&&S.ui.tdet.home==='ready'?v.querySelector('.rfc'):null);if(!t||t.querySelector('.rf-more'))return;const ns=[...t.querySelectorAll('p.note2')];if(!ns.length)return;const d=document.createElement('details');d.className='rf-more';d.innerHTML='<summary><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>So wird bewertet</summary>';ns.forEach(n=>d.appendChild(n));t.appendChild(d)}
 
+
+/* ===================== Satz-Regel laut Plan (RPE wo, Last wie) ===================== */
+function setRule(bl){const x=bl.x||'',s=bl.s,k=kindOf(bl);const T=nf;const pn=v=>v==null?null:+String(v).replace(',','.');
+ const mcap=x.match(/RPE-Cap\s*(\d+(?:[.,]\d)?)|RPE-(\d+(?:[.,]\d)?)-Deckel/);const capV=bl.cap!=null?pn(bl.cap):mcap?pn(mcap[1]||mcap[2]):null;
+ const mt=x.match(/(?:näher an|Ziel:?|bis)\s*RPE\s*(\d+(?:[.,]\d)?)/);const rpe=bl.rpe!=null?bl.rpe:capV!=null?capV:mt?pn(mt[1]):null;const oderLeichter=/oder (weniger|leichter)/.test(x);
+ const fail=/[Vv]ersagen/.test(x),cap=capV!=null||/Deckel|RPE-Cap|oder weniger|oder leichter/.test(x),amrap=bl.r==='AMRAP'||/bis RPE/.test(x)||/AMRAP/.test(x);
+ const noR=/kein RPE/.test(x)||(rpe==null&&!/RPE|Reserve|Versagen/.test(x));
+ const sameLoad=/gleiche Last|gleiches Gewicht|Last halten|gleicher Last|beiden Sätzen|Last aus|Last der Vorwoche|Last von letzter Woche/.test(x)||!!bl.same;
+ const adjust=/Last bei Bedarf|Satz für Satz/.test(x);
+ const given=!!(bl.ref||bl.pct!=null||bl.same||bl.inc||/Last vorgegeben|%|Inkrement|Vorwoche|letzte Woche|Woche \d|Top-Satz/.test(x));
+ let mode=fail?'fail':bl.rpeEst?'est':noR?'none':amrap?'amrap':cap?'cap':k==='each'?'each':k==='first'?'first':k==='last'?'last':k==='avg'?'avg':rpe!=null?'last':'none';
+ const need=i=>mode==='each'||mode==='avg'||mode==='cap'||mode==='amrap'||mode==='est'?true:mode==='first'?i===0:mode==='last'?i===s-1:false;
+ const lastN=s===2?'2.':s===3?'3.':s+'.';const G=given?'Last laut Plan vorgegeben.':'';
+ let title='',detail='';
+ if(mode==='none'){title=s>1?'Last vorgegeben · kein RPE nötig':'Last vorgegeben · kein RPE nötig';detail=`${s>1?'Alle '+s+' Sätze':'Der Satz'} mit der vorgegebenen Last. RPE kannst du optional notieren – die App ändert dadurch nichts.`}
+ else if(mode==='fail'){title='Bis zum Muskelversagen';detail=`${s>1?'Jeder Satz':'Der Satz'} bis zum echten Versagen – Wiederholungen eintragen. Versagen entspricht RPE 10 (optional antippen).`}
+ else if(mode==='est'){title='Test-Single · RPE schätzen';detail=`Ein Single mit Reserve laut Plan (${esc(x.replace(/^1 Single mit\s*/,''))}). Trag ein, wie schwer er war – das entspricht etwa RPE ${T(rpe)}.`}
+ else if(mode==='amrap'){title=`So viele Wdh wie möglich${rpe!=null?' bis RPE '+T(rpe):''}`;detail=`${s>1?'Jeder Satz':'Der Satz'} bis RPE ${T(rpe)} – Wiederholungen und RPE eintragen.${s>1&&(sameLoad||k==='first')?' Gleiche Last in allen Sätzen.':''}${rpe!=null?' RPE '+T(rpe)+' ist der Deckel, nicht darüber hinaus.':''}`}
+ else if(mode==='cap'){title=`RPE-Deckel ${T(rpe)} · nicht überschreiten`;detail=`${G||'Last wie beschrieben.'} RPE nach ${s>1?'jedem Satz':'dem Satz'} eintragen – ${s>1?'kein Satz':'er'} darf ${oderLeichter?'nicht schwerer als RPE '+T(rpe)+' sein (leichter ist in Ordnung)':'nicht schwerer als RPE '+T(rpe)+' werden'}.${s>1?' Würde er es, Last senken.':''}`}
+ else if(mode==='each'&&rpe==null){title='RPE eintragen';detail=`Wähle die Last laut Vorgabe und trag ein, wie schwer ${s>1?'jeder Satz':'der Satz'} war.`}
+ else if(mode==='each'){title=s>1?`RPE in jedem Satz · Ziel ${T(rpe)}`:`RPE eintragen · Ziel ${T(rpe)}`;detail=s>1?`Jeder Satz soll bei RPE ${T(rpe)} liegen – RPE nach jedem Satz eintragen.${adjust?' Die Last darf dafür von Satz zu Satz angepasst werden.':' Die Last darf dafür zwischen den Sätzen angepasst werden.'}`:`Ein Satz: Last so wählen, dass du bei RPE ${T(rpe)} landest – RPE eintragen.`}
+ else if(mode==='first'){title='RPE nur im 1. Satz · danach gleiche Last';detail=`Satz 1: Last so wählen, dass er bei RPE ${T(rpe)} landet – RPE eintragen. ${s>2?'Sätze 2–'+s:'Satz 2'}: gleiche Last, kein RPE nötig – es steigt durch die Ermüdung von selbst leicht an.`}
+  else if(mode==='last'&&rpe==null){title=`Last vorgegeben · RPE im ${lastN} Satz notieren`;detail=`${G} Im ${lastN} Satz RPE eintragen – er zeigt, ob die Last gepasst hat.`}
+ else if(mode==='last'){title=given?`Last vorgegeben · RPE im ${lastN} Satz notieren`:`Gleiche Last · RPE nur im ${lastN} Satz`;detail=given?`${G} Nur im ${lastN} Satz RPE eintragen${rpe!=null?' – Ziel '+T(rpe):''}. Er zeigt, ob die Last gepasst hat.`:`Alle ${s} Sätze mit derselben Last. Nur im ${lastN} Satz RPE eintragen – Ziel ${T(rpe)}. Die ersten Sätze fühlen sich entsprechend leichter an.`}
+ else if(mode==='avg'){title=`RPE im Schnitt ${T(rpe)} · jeden Satz eintragen`;detail=`Gleiche Last in allen ${s} Sätzen. Trag das RPE jedes Satzes ein – der Durchschnitt soll ${T(rpe)} sein (frühe Sätze leichter, späte schwerer).`}
+ return {mode,need,title,detail,rpe,cap:mode==='cap'||mode==='amrap'?rpe:null,given,sameLoad}}
+const rpeNeed=(bl,i)=>setRule(bl).need(i);
+function gymRuleHTML(bl){const R=setRule(bl);const M={none:'n',fail:'f',est:'e',amrap:'a',cap:'c',each:'e',first:'f',last:'l',avg:'v'};return `<div class="grule m-${R.mode}"><span class="gr-i">${R.mode==='none'?'–':'RPE'}</span><div><b>${R.title}</b><small>${R.detail}</small></div></div>`}
+function gymSetFlags(bl,L){return Array.from({length:bl.s},(_,i)=>rpeNeed(bl,i)&&!(L.b[G.b][i]&&L.b[G.b][i].ok))}
+
 /* ===================== Übungstausch ===================== */
 // Nur Zusatz-/Maschinenübungen. Langhantel-Varianten von Kniebeuge, Bank und Kreuzheben sind gesperrt.
 // c = Alternative laut Candito (aus dem Plan), k = Alternative von Claude (keine Candito-Vorgabe)
@@ -4195,7 +4257,10 @@ function swPick(k){const {w,d,b,e0,mode}=SW;if(mode==='perm'){swFreeze(e0);if(!S
  else{const L=log(w,d,true);if(!L.sw)L.sw={};const perm=(S.meta.swap||{})[e0]||e0;P[w][d].b.forEach((x,bb)=>{if((x.e0||x.e)!==e0)return;if((L.b[bb]||[]).some(z=>z&&z.ok)&&bb!==b)return;if(k===perm)delete L.sw[bb];else L.sw[bb]=k});saveLog(key(w,d))}
  applySwaps();SG.clear();toast(k===e0?'Original laut Plan':'Getauscht: '+EX[k].n+(swSrc(e0,k)==='k'?' (Alternative von Claude)':''));swClose();render()}
 function swClose(){const el=document.getElementById('swsh');if(el){el.hidden=true;el.innerHTML=''}SW=null}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-swap]');if(t){e.preventDefault();e.stopPropagation();const [w,d,b]=t.dataset.swap.split('-').map(Number);swSheet(w,d,b);return}
+document.addEventListener('click',e=>{const gp=e.target.closest('#gym .gprog');if(gp&&!e.target.closest('[data-gpgo]')){const {w,d}=S.ui;const L=log(w,d)||{b:[]};let el=document.getElementById('gexl');if(el){el.remove();return}el=document.createElement('div');el.id='gexl';el.className='gexl';
+  el.innerHTML=`<div class="gexl-in"><p class="eyebrow">Übungen heute · antippen zum Wechseln</p>${P[w][d].b.map((bl,b)=>{const sets=(L.b[b]||[]).slice(0,bl.s);const dn=sets.filter(z=>z&&z.ok).length;return `<button type="button" data-gpgo="${b}" class="${b===G.b?'cur':''} ${dn>=bl.s?'fin':''}"><span class="n">${dn>=bl.s?'✓':b+1}</span><span class="m"><b>${esc(EX[bl.e].n)}</b><small>${bl.s} × ${esc(bl.r)}${bl.rpe!=null?' · RPE '+nf(bl.rpe):''}</small></span><span class="c">${dn}/${bl.s}</span></button>`}).join('')}</div>`;document.getElementById('gym').appendChild(el);return}
+ if(e.target.closest('[data-gpgo]')||(!e.target.closest('#gexl')&&document.getElementById('gexl'))){const el=document.getElementById('gexl');if(el)el.remove()}
+ const t=e.target.closest('[data-swap]');if(t){e.preventDefault();e.stopPropagation();const [w,d,b]=t.dataset.swap.split('-').map(Number);swSheet(w,d,b);return}
  if(!SW)return;if(e.target.id==='swsh'||e.target.closest('[data-swclose]')){swClose();return}
  const m=e.target.closest('[data-swmode]');if(m){SW.mode=m.dataset.swmode;swRender();return}
  const pk=e.target.closest('[data-swpick]');if(pk){swPick(pk.dataset.swpick);return}
@@ -4204,10 +4269,15 @@ function swTag(bl){if(!bl.e0||bl.e===bl.e0)return '';const src=swSrc(bl.e0,bl.e)
 function swBtn(w,d,b){const bl=P[w][d].b[b];return swOpts(bl.e0||bl.e)?`<button type="button" class="swbtn" data-swap="${w}-${d}-${b}"><svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>${bl.e0&&bl.e!==bl.e0?'Getauscht':'Tauschen'}</button>`:''}
 function swDecorate(v){if(S.ui.tab!=='train')return;const {w,d}=S.ui;const ex=v.querySelector('.exlist');if(!ex)return;const kids=[...ex.children].filter(x=>x.classList.contains('blk'));
  kids.forEach((c,b)=>{const bl=P[w][d].b[b];if(!bl)return;const tag=swTag(bl);const mn=c.querySelector('.mn')||c.querySelector('.bh div')||c;if(tag&&!c.querySelector('.swtag'))mn.insertAdjacentHTML('beforeend',tag);
-  if(c.classList.contains('open')&&!c.querySelector('.swbtn')){const h=swBtn(w,d,b);if(h)(c.querySelector('.bh')||c).insertAdjacentHTML('afterend',`<div class="swrow">${h}</div>`)}})}
+  if(c.classList.contains('open')&&!c.querySelector('.swbtn')){const h=swBtn(w,d,b);if(h)(c.querySelector('.bh')||c).insertAdjacentHTML('afterend',`<div class="swrow">${h}</div>`)}if(c.classList.contains('open')&&!c.querySelector('.grule')){const bh=c.querySelector('.bh');if(bh)bh.insertAdjacentHTML('afterend',gymRuleHTML(bl))}})}
 
+(function(){let tm=null,iv=null;const stop=()=>{clearTimeout(tm);clearInterval(iv);tm=iv=null};
+ document.addEventListener('pointerdown',e=>{const b=e.target.closest('#gym [data-step]');if(!b)return;stop();tm=setTimeout(()=>{iv=setInterval(()=>{if(!b.isConnected){stop();return}const nb=document.querySelector(`#gym [data-step="${b.dataset.step}"][data-v="${b.dataset.v}"]`);nb&&nb.click()},110)},420)},{passive:true});
+ ['pointerup','pointercancel','pointerleave','touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,stop,{passive:true}))})();
 let renderPending=false;
-setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
+setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}
+ if(!document.querySelector('#gym .grule')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const gz=document.querySelector('#gym .gziel');if(bl&&gz)gz.insertAdjacentHTML('beforebegin',gymRuleHTML(bl))}
+ if(!document.querySelector('#gym .gprev')){const {w,d}=S.ui;const L=log(w,d);const pv=G.i>0&&L&&L.b[G.b]&&L.b[G.b][G.i-1];const cur=L&&L.b[G.b]&&L.b[G.b][G.i];let cv=null;try{cv=curVals()}catch(e){}if(pv&&pv.ok&&cur&&!cur.ok&&cv&&(cv.kg!==pnum(pv.kg)||cv.r!==pnum(pv.r))){const st=document.querySelector('#gym .gdock .stp2');if(st)st.insertAdjacentHTML('beforebegin',`<div class="gprev"><button type="button" data-gsame><svg viewBox="0 0 24 24"><path d="M4 7h11a4 4 0 0 1 0 8H9M12 12l-3 3 3 3"/></svg>Wie Satz ${G.i}: ${pnum(pv.kg)!=null?nf(pnum(pv.kg),2)+' kg':'–'} × ${pnum(pv.r)!=null?nf(pnum(pv.r)):'–'}</button></div>`)}}const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}fitGym()}catch(e){}}},0);
 (function(){let c=false,tk=false;addEventListener('scroll',()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;const y=scrollY;if(!c&&y>90){c=true;document.body.classList.add('hdc')}else if(c&&y<12){c=false;document.body.classList.remove('hdc')}})},{passive:true})})();
 function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.prog||'intro');if(S.ui.w>=NW())S.ui.w=0;const ps=document.getElementById('progsub');}{const ps=document.getElementById('progsub');if(ps)ps.textContent=`${PROGS[PROG].name} · ${PROGS[PROG].sub} · ${DAYS.map(x=>x.wd).join(' / ')}`;}renderPending=false;try{applySwaps()}catch(e){}SG.clear();cleanStale();if(!$('#gym').hidden&&render.sig){applyDay();renderHead();render.stale=true;renderGym();if(!$('#sheet').hidden)renderSheet();return}render.stale=false;if(S.ui.tab==='home'){const n=nextSession();if(n){S.ui.w=n.w;S.ui.d=n.d}}applyDay();renderHead();
  document.querySelectorAll('#nav button').forEach(b=>b.setAttribute('aria-current',(b.dataset.tab==='gym'?!$('#gym').hidden:(b.dataset.tab===S.ui.tab&&$('#gym').hidden))?'page':'false'));
@@ -4524,7 +4594,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
 function fitGym(){const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi)return;
- const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return;sl.remove();if(!over())return}gi.classList.add('tight')}
+ const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight')}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
@@ -4541,6 +4611,8 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
   if(f==='tr'||f==='trpe'){rcClamp(G.rc);const sec=t.closest('.rc-st');const b=sec&&sec.querySelector('b');}rcRefresh();return}
  if(t.dataset.rcset!=null&&G.rc){G.rc.tr=+t.dataset.rcset;rcRefresh();return}
  if(t.dataset.rcapply!=null&&G.rc){const c=rcCalc();if(c.tkr){gWrite('kg',c.tkr);toast(nf(c.tkr,2)+' kg übernommen')}G.rc=null;renderGym();return}
+ if(t.dataset.rpeopen!=null){G.rpeOpen=G.b+'-'+G.i;renderGym();return}
+ if(t.dataset.gsame!=null){const L=log(w,d,true);const pv=L.b[G.b][G.i-1]||{};if(pnum(pv.kg)!=null)gWrite('kg',pnum(pv.kg));if(pnum(pv.r)!=null)gWrite('r',pnum(pv.r));renderGym();return}
  if(t.dataset.gwuopen!=null){G.wu=true;renderGym();return}
  if(t.dataset.gwuclose!=null){G.wu=false;renderGym();return}
  if(t.dataset.gplan!=null){G.plan=t.dataset.gplan==='1';G.planY=0;if(!G.plan){const o=$('#gym .gplan');o&&o.remove();renderGym()}else renderGym();return}
@@ -4763,7 +4835,7 @@ function todayWhoop(){const td=isoD(new Date()),y=new Date();y.setDate(y.getDate
  return best&&best.wh}
 function gSetList(L,bl){const sets=L.b[G.b].slice(0,bl.s);const dn=sets.filter(z=>z.ok).length;
  return `<div class="gsl"><div class="gsl-h"><span>Sätze dieser Übung</span><span>${dn}/${bl.s}</span></div>${sets.map((z,i)=>{const kg=pnum(z.kg),r=pnum(z.r),rp=pnum(z.rpe);const jt=G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500;
-  return `<button type="button" data-gs="${i}" class="${z.ok?'ok':''} ${i===G.i?'cur':''} ${jt?'just':''}"><span class="n">${z.ok?'✓':i+1}</span><span>${z.ok?`${kg!=null?nf(kg,2)+' kg':'–'} × ${r!=null?nf(r):'–'}`:i===G.i?'jetzt':'offen'}</span><small>${z.ok&&rp!=null?'@ '+nf(rp):''}</small></button>`}).join('')}</div>`}
+  const nd=rpeNeed(bl,i);return `<button type="button" data-gs="${i}" class="${z.ok?'ok':''} ${i===G.i?'cur':''} ${jt?'just':''} ${nd&&!z.ok?'rq':''}"><span class="n">${z.ok?'✓':i+1}</span><span>${z.ok?`${kg!=null?nf(kg,2)+' kg':'–'} × ${r!=null?nf(r):'–'}`:i===G.i?'jetzt':'offen'}</span><small>${z.ok&&rp!=null?'@ '+nf(rp):nd&&!z.ok?'RPE':''}</small></button>`}).join('')}</div>`}
 function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
  const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e];$('#gym').dataset.hy=bl.h||'';const calm=L.b[G.b].slice(0,bl.s).some(x=>x.ok);
  const strip=day.b.map((x,b)=>{const all=L.b[b].slice(0,x.s).every(z=>z.ok);return `<span class="${b===G.b?'c':all?'d':''}"></span>`}).join('');
@@ -4777,7 +4849,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   <div class="gmeta"><span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
    return `<span class="gicons">${wl?`<button type="button" class="gico wu ${wl.length&&nd>=wl.length?'done':''}" data-gwuopen aria-label="Aufwärmsätze">${GI_WU}${wl.length?`<em>${nd}/${wl.length}</em>`:''}</button>`:''}<button type="button" class="gico tv" data-ex="${bl.e}" aria-label="Technik & Verlauf">${GI_TV}</button><button type="button" class="gico hi" data-hiopen aria-label="Verlauf der Vorwochen">${GI_HI}</button><button type="button" class="gico rc" data-rcopen aria-label="RPE-Rechner">${GI_RC}</button></span>`})()}</div>
   <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h||wz?`<p class="ghy hytx ${bl.h||''}">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip wzc" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}${bl.h?HYPETXT[bl.h]:''}</p>`:''}</div></div>
-  <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''} ${G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500?'just':''}" aria-label="Satz ${i+1}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
+  <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''} ${G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500?'just':''} ${rpeNeed(bl,i)&&!L.b[G.b][i].ok?'rq':''}" aria-label="Satz ${i+1}${rpeNeed(bl,i)?' – RPE eintragen':''}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
     ${(()=>{const em=sg.kg!=null&&sg.t!=='v';return `<div class="gz-n"><b class="zahl ${!em&&sg.kg!=null?'':'nokg'}">${!em&&sg.kg!=null?nf(sg.kg,2):(bl.rpe!=null?'RPE '+nf(bl.rpe):'frei')}${!em&&sg.kg!=null?'<small>kg</small>':''}</b><span class="gz-r"><b>× ${esc(sg.rdisp)}</b>${!em&&sg.kg!=null&&bl.rpe!=null?`<small>${bl.rpeEst?'≈ ':''}RPE ${nf(bl.rpe)}</small>`:em||sg.kg==null?'<small>Last frei</small>':''}</span></div>
     ${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}
     ${em?`<div class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b><small>${typeof PWA!=='undefined'?'nur Orientierung – Plan gibt keine Last vor':'nur Orientierung – der Plan gibt hier keine Last vor'}</small></div>`:''}
@@ -4798,9 +4870,10 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   <div class="card stp"><button type="button" data-step="r" data-v="-1" aria-label="Wiederholungen verringern">−</button>
     <div class="mid"><small>Wdh.${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</small><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></div>
     <button type="button" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></div>
-  <div class="grpe"><div class="grpe-h"><small class="eyebrow">RPE${bl.rpe!=null?' · Soll '+(bl.rpeEst?'≈ ':'')+nf(bl.rpe):''}</small><span class="rpedesc">${rpe!=null?`<b>RPE ${nf(rpe)}</b> · ${RPED[rpe]||''}`:bl.rpe!=null?`${RPED[bl.rpe]||''}`:'Wie schwer war der Satz?'}</span></div>
-    <div class="rpechips rpe1">${RPES.map(v=>`<button type="button" data-rpe="${v}" class="${bl.rpe===v?'soll':''}" aria-pressed="${rpe===v}">${nf(v)}</button>`).join('')}</div></div>
-  <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const noR=show&&rpe==null&&bl.rpe!=null;return `<button type="button" class="bigbtn ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log">${s.ok?'Erledigt ✓ · weiter':show?`<span>Satz abhaken</span><small>${nf(kg,2)} kg × ${nf(r)}${rpe!=null?' @ RPE '+nf(rpe):bl.rpe!=null?' · RPE oben antippen':''}</small>`:'Satz abhaken'}</button>`})()}${saveHTML(key(w,d))}</div>
+  ${(()=>{const RL=setRule(bl);const need=RL.need(G.i);const open=need||rpe!=null||G.rpeOpen===G.b+'-'+G.i;const over=RL.cap!=null&&rpe!=null&&rpe>RL.cap+1e-9;const tgt=bl.rpe!=null?bl.rpe:RL.cap!=null?RL.cap:RL.rpe;
+   return `<div class="grpe ${need?'req':'opt'} ${over?'over':''}"><div class="grpe-h"><small class="eyebrow">${need?`RPE · Satz ${G.i+1} eintragen${tgt!=null?' · '+(RL.cap!=null?'Deckel ':bl.rpeEst?'≈ ':'Soll ')+nf(tgt):''}`:`RPE · optional – laut Plan ${bl.rpe!=null&&RL.mode==='first'?'nur im 1. Satz':bl.rpe!=null&&RL.mode==='last'?'nur im letzten Satz':'nicht nötig'}`}</small><span class="rpedesc">${over?`<b>über dem Deckel</b> · Last für den nächsten Satz senken`:rpe!=null?`<b>RPE ${nf(rpe)}</b> · ${RPED[rpe]||''}`:need&&bl.rpe!=null?`${RPED[bl.rpe]||''}`:need?'Wie schwer war der Satz?':''}</span></div>
+    ${open?`<div class="rpechips rpe1">${RPES.map(v=>`<button type="button" data-rpe="${v}" class="${bl.rpe===v?'soll':''} ${RL.cap!=null&&v>RL.cap?'cap':''}" aria-pressed="${rpe===v}">${nf(v)}</button>`).join('')}</div>`:`<button type="button" class="rpeopen" data-rpeopen>RPE trotzdem eintragen</button>`}</div>`})()}
+  <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const nd=rpeNeed(bl,G.i);const noR=show&&rpe==null&&nd;return `<button type="button" class="bigbtn ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log">${s.ok?'Erledigt ✓ · weiter':show?`<span>Satz abhaken</span><small>${nf(kg,2)} kg × ${nf(r)}${rpe!=null?' @ RPE '+nf(rpe):nd?' · RPE oben antippen':''}</small>`:'Satz abhaken'}</button>`})()}${saveHTML(key(w,d))}</div>
   </div></div>
  </div>${gymRestHTML()}`;if(G.slide){const dir=G.slide;G.slide=0;slideIn(dir)}else bbMount();gymPost()}
 
