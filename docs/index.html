@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.19-1515-590047f";
+<script>window.CF_VERSION="2026.10.19-1546-9a4f86c";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1912,6 +1912,11 @@ body.oled .gdock{background:linear-gradient(180deg,rgba(0,0,0,0),#000 18px)!impo
 .anad-b{grid-column:1/-1;display:flex;gap:8px}.anad-b button{flex:1;min-height:42px;border-radius:13px;border:1px solid var(--line2);background:var(--raise);color:var(--ink);font:inherit;font-weight:800}.anad-b .pri{background:var(--brand);border-color:transparent;color:#fff}
 </style>
 <style id="cf-runde6">
+/* Grafik-Fixes */
+#gym .gz-top .eyebrow{white-space:nowrap;flex:none}#gym .gz-top .gdots{flex-wrap:nowrap!important;display:flex}#gym .gz-top .gdots button{flex:none}
+.whero .thero{line-height:1.02!important;margin-bottom:8px!important}.whero .tsub{margin-top:0}
+.pdh{min-width:0}.pdh>div{min-width:0;flex:1}.pdh .eyebrow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
 /* 1 Check-in-Schritte */
 .ck-step{display:none}.ck-step.on{display:block;animation:auf .3s var(--ease,ease) both}
 .ck-prog{display:grid;gap:6px;padding:4px 16px 10px}.ck-pb{display:flex;gap:4px}.ck-pb i{flex:1;height:5px;border-radius:3px;background:var(--line2)}.ck-pb i.d{background:#43c08a}.ck-pb i.c{background:var(--brand);box-shadow:0 0 8px var(--brand)}
@@ -3220,7 +3225,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1515-590047f</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.19-1546-9a4f86c</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4015,7 +4020,7 @@ function ringSVG(f,col,size=64,sw=7){const r=(size-sw)/2,C=2*Math.PI*r;return `<
 /* ===================== Satz-Moment, PR, Konfetti ===================== */
 function showDone(t,sub){const f=$('#fx');f.className='fx done';f.innerHTML=`<div class="fx-in"><svg class="fx-ck" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" pathLength="1"/><path d="M37 62l15 15 31-33" pathLength="1"/></svg><b>${esc(t)}</b><small>${esc(sub||'')}</small></div>`;
  f.hidden=false;sfx('done');hap([12,40,18]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},1050)}
-function showPR(o){window._lastPR=o;const f=$('#fx');f.className='fx pr';f.innerHTML=`<div class="fx-in"><p class="eyebrow">Neuer Bestwert</p><b class="disp">${esc(o.ex)}</b>
+function showPR(o){window._lastPR=o;try{hideUndo()}catch(e){}const f=$('#fx');f.className='fx pr';f.innerHTML=`<div class="fx-in"><p class="eyebrow">Neuer Bestwert</p><b class="disp">${esc(o.ex)}</b>
  <div class="prv"><b class="zahl">${nf(o.e1,0)}<small>kg e1RM</small></b><span class="chip ok">+${nf(o.e1-o.prev,1)} kg</span></div>
  <small>${nf(o.kg,2)} kg × ${o.r}${o.rpe!=null?' @ RPE '+nf(o.rpe):''} · bisher ${nf(o.prev,0)} kg</small><div class="fx-bt"><button type="button" class="btn" data-sharepr>Als Bild teilen</button><button type="button" class="btn primary">Weiter</button></div></div>`;
  f.hidden=false;sfx('pr');hap([20,60,20,60,40]);confetti();clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},6000)}
@@ -5844,7 +5849,7 @@ function foldWu(h){if(!h)return '';const m=h.match(/<em class="wcnt">([^<]*)<\/e
 function gymPost(){const row=document.querySelector('#gym .rpe1');if(row){const t=row.querySelector('[aria-pressed="true"]')||row.querySelector('.soll');if(t)row.scrollLeft=t.offsetLeft-row.clientWidth/2+t.offsetWidth/2}}
 document.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.fold&&d.closest('#gym'))G.fold[d.dataset.fold]=d.open},true);
 /* ===================== Session-Timer ===================== */
-const fmtHMS=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`:`${m}:${String(x).padStart(2,'0')}`};
+const fmtHMS=ms=>{if(!(ms>=0))ms=0;const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`:`${m}:${String(x).padStart(2,'0')}`};
 const fmtHM=ms=>{const m=Math.round(ms/60000);return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,'0')} h`:`${m} min`};
 function lastAct(L){return Math.max(L.start||0,L.pausedAt||0,...(L.b||[]).flat().map(s=>s.t||0))}
 const isLive=L=>!!(L&&L.start&&!L.done&&Date.now()-lastAct(L)<4*3600e3);
@@ -5856,9 +5861,9 @@ function toggleSessPause(w,d){const L=log(w,d,true);if(!L.start||L.done)return;c
 function finishSession(w,d){const L=log(w,d,true);const now=Date.now();delete L.reopened;if(L.pausedAt){L.pauseMs=(L.pauseMs||0)+(now-L.pausedAt);delete L.pausedAt}
  if(!L.start)L.start=now;L.end=now;L.dur=Math.max(0,now-L.start-(L.pauseMs||0));L.done=true;if(!L.date)L.date=new Date().toISOString();saveLog(key(w,d));queueOutbox(w,d,true);stopRest();showSummary(w,d)}
 function reopenSession(w,d){const L=log(w,d,true);const now=Date.now();if(L.end)L.pauseMs=(L.pauseMs||0)+(now-L.end);delete L.end;delete L.dur;L.done=false;L.reopened=now;saveLog(key(w,d))}
-function showSummary(w,d){const L=log(w,d);const sets=L.b.flat().filter(s=>s.ok);const ton=sets.reduce((a,s)=>a+(pnum(s.kg)||0)*(pnum(s.r)||0),0);try{const a=dayAdh(w,d);window._lastSum={k:'W'+(w+1)+' '+DAYS[d].tag,f:P[w][d].f,ton,sets:sets.length,dur:fmtHMS(L.dur),adh:a.ev?Math.round(a.hit/a.ev*100):null}}catch(e){}
- const f=$('#fx');f.className='fx pr sum';f.innerHTML=`<div class="fx-in"><svg class="medal" viewBox="0 0 84 84" aria-hidden="true"><defs><linearGradient id="mdG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".5" stop-color="#e2b04a"/><stop offset="1" stop-color="#9c6d1c"/></linearGradient></defs><path d="M28 4h10l6 20-9 4zM56 4H46l-6 20 9 4z" fill="#3d63f5" opacity=".9"/><circle cx="42" cy="52" r="27" fill="url(#mdG)"/><circle cx="42" cy="52" r="21" fill="none" stroke="#fff4cf" stroke-opacity=".55" stroke-width="1.5"/><path d="M32 52.5l6.5 6.5L53 45" fill="none" stroke="#3a2606" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="eyebrow">Training beendet · W${w+1} ${DAYS[d].tag}</p><b class="disp">${esc(P[w][d].f)}</b>
-  <div class="prv"><b class="zahl" style="color:var(--ok)">${fmtHMS(L.dur)}</b></div>
+function showSummary(w,d){const L=log(w,d);const sets=L.b.flat().filter(s=>s.ok);const ton=sets.reduce((a,s)=>a+(pnum(s.kg)||0)*(pnum(s.r)||0),0);try{const a=dayAdh(w,d);window._lastSum={k:'W'+(w+1)+' '+DAYS[d].tag,f:P[w][d].f,ton,sets:sets.length,dur:L.dur>0?fmtHMS(L.dur):'–',adh:a.ev?Math.round(a.hit/a.ev*100):null}}catch(e){}
+ try{hideUndo()}catch(e){}const f=$('#fx');f.className='fx pr sum';f.innerHTML=`<div class="fx-in"><svg class="medal" viewBox="0 0 84 84" aria-hidden="true"><defs><linearGradient id="mdG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".5" stop-color="#e2b04a"/><stop offset="1" stop-color="#9c6d1c"/></linearGradient></defs><path d="M28 4h10l6 20-9 4zM56 4H46l-6 20 9 4z" fill="#3d63f5" opacity=".9"/><circle cx="42" cy="52" r="27" fill="url(#mdG)"/><circle cx="42" cy="52" r="21" fill="none" stroke="#fff4cf" stroke-opacity=".55" stroke-width="1.5"/><path d="M32 52.5l6.5 6.5L53 45" fill="none" stroke="#3a2606" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="eyebrow">Training beendet · W${w+1} ${DAYS[d].tag}</p><b class="disp">${esc(P[w][d].f)}</b>
+  <div class="prv"><b class="zahl" style="color:var(--ok)">${L.dur>0?fmtHMS(L.dur):L.start?fmtHMS(Date.now()-L.start):'–'}</b></div>
   <div class="sumg"><span><small>Sätze</small><b>${sets.length}</b></span><span><small>Tonnage</small><b>${nf(ton/1000,2)} t</b></span><span><small>Pausen gesamt</small><b>${fmtHM(L.pauseMs||0)}</b></span>${(()=>{const a=dayAdh(w,d);return a.ev?`<span><small>Plan-Treue</small><b style="color:${a.hit/a.ev>=.8?'var(--ok)':'var(--warn)'}">${Math.round(a.hit/a.ev*100)} %</b></span>`:''})()}</div>
   ${PWA?'<button type="button" class="btn sumbk" data-sumbk>☁︎ Jetzt in iCloud sichern</button><p class="note2" style="margin:6px 0 0;font-size:12px">Ein Tipp – dann verlierst du höchstens die nächste Einheit.</p>':''}<div class="fx-bt"><button type="button" class="btn" data-sharesum>Als Bild teilen</button><button type="button" class="btn primary">Stark – weiter</button></div></div>`;f.hidden=false;sfx('pr');hap([20,60,30]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},PWA?25000:9000)}
 function sessTick(){const r=runningSession();const chip=$('#sesschip');{const ps=document.querySelector('.top .psub');if(chip&&ps&&chip.parentElement!==ps)ps.appendChild(chip)}
