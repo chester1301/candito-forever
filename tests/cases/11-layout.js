@@ -21,6 +21,13 @@ module.exports={name:'Layout – iPhone 13 (390×797), 393×759, 430×850, Gym-H
     await p.evaluate(()=>{try{stopRest()}catch(e){}try{closeGym(true)}catch(e){}});
     await p.close();
   }
+  // Mindestschrift 11 px in allen Hauptansichten, Gym und Zusammenfassung (auch skalierte Diagramm-Beschriftungen)
+  {const p=await page({width:390,height:797});await seed(p,4,{pids:['intro']});
+   const scan=()=>p.evaluate(()=>{const bad=[];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let t;while(t=w.nextNode()){if(!t.textContent.trim())continue;const e=t.parentElement;if(!e||e.closest('[hidden],script,style,noscript,canvas,[aria-hidden="true"]'))continue;const r=e.getBoundingClientRect();if(!r.width||!r.height)continue;const cs=getComputedStyle(e);if(cs.visibility==='hidden'||+cs.opacity===0)continue;let fs=parseFloat(cs.fontSize);if(!fs)continue;if(e instanceof SVGElement){const m=e.getScreenCTM();if(m)fs*=Math.hypot(m.a,m.b)}if(fs<10.9)bad.push(`${(e.getAttribute('class')||e.tagName).slice(0,30)} ${fs.toFixed(1)}px „${t.textContent.trim().slice(0,16)}“`)}return [...new Set(bad)].slice(0,6)});
+   const views={home:()=>{S.ui.tab='home';render()},train:()=>{S.ui.tab='train';render()},prog:()=>{S.ui.tab='prog';S.ui.pd=null;render()},kraft:()=>{S.ui.pd='kraft';render()},volumen:()=>{S.ui.pd='volumen';render()},setup:()=>{S.ui.pd=null;S.ui.tab='setup';render()},
+     summary:()=>svOpen(PROG,0,1,false),gym:()=>{svClose();S.ui.w=0;S.ui.d=2;const L=log(0,2,true);L.done=false;L.start=Date.now();L.flow=1;L.ck=1;openGym();G.b=0;G.i=0;renderGym()}};
+   for(const [n,f] of Object.entries(views)){await p.evaluate(`(${f})()`);await p.waitForTimeout(400);const b=await scan();t.eq(b,[],`Mindestschrift 11 px: ${n}`)}
+   await p.evaluate(()=>{try{closeGym(true)}catch(e){}});await p.close()}
   const p=await page();
   // Akku: keine endlosen CSS-Animationen auf der Startseite, Rand-Timer deaktiviert
   const anim=await p.evaluate(()=>[...document.querySelectorAll('main *')].filter(e=>{const a=getComputedStyle(e);return a.animationIterationCount==='infinite'&&a.animationName!=='none'}).map(e=>e.className).slice(0,5));

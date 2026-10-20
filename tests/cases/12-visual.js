@@ -51,7 +51,9 @@ module.exports={name:'Optik – Screenshots gegen Referenzbilder',async run({pag
     await p.addStyleTag({content:STILL});
     await seed(p,4,{pids:['intro'],kg:100});
     await p.evaluate(()=>{switchProg('intro');const L=log(0,1);if(L){L.diff=4;L.diffs=6;saveLog(key(0,1))}});
-    for(const v of VIEWS){
+    for(const [vi,v] of VIEWS.entries()){
+      // Uhr je Ansicht 1 min weiter: neue Eingaben müssen jünger sein als die Beispieldaten (Zusammenführung nach Zeitstempel)
+      await p.clock.setFixedTime(new Date(+new Date(FIXED)+(vi+1)*60e3));
       await p.evaluate(`(${v.go})()`);await p.waitForTimeout(700);
       await p.evaluate(()=>document.fonts&&document.fonts.ready);
       if(v.full)await p.evaluate(()=>document.documentElement.classList.add('vis-full'));
