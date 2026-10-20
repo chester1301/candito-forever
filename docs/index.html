@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-0927-99f7023";
+<script>window.CF_VERSION="2026.10.20-0946-c8ea63d";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2429,6 +2429,15 @@ body.svopen{overflow:hidden}
 .sv-b{height:58px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);background:#0b0b0d;color:#fff;font:800 18px var(--f);display:flex;align-items:center;justify-content:center;gap:10px}
 .sv-b.go svg{width:20px;height:20px;fill:none;stroke:#3cc46a;stroke-width:2.4;stroke-linejoin:round}
 @media (max-width:370px){.sv-t b{font-size:21px}.sv-h{font-size:30px}}
+
+/* Licht-Effekt am linken Rand */
+#eglow{display:none}
+html[data-theme=blue] #eglow{display:block;position:fixed;left:0;top:0;bottom:0;width:62vw;max-width:420px;z-index:25;pointer-events:none;overflow:hidden;contain:strict;opacity:.55;transition:opacity .4s}
+html[data-theme=blue] #eglow i{position:absolute;left:0;top:-200px;width:100%;height:calc(100vh + 2100px);will-change:transform;
+ background:radial-gradient(closest-side,rgba(64,105,245,.38),rgba(64,105,245,0)) -48% 120px/100% 560px repeat-y,radial-gradient(closest-side,rgba(111,140,255,.16),rgba(111,140,255,0)) -70% 560px/90% 420px repeat-y;background-size:100% 900px,90% 900px;background-repeat:repeat-y}
+html[data-theme=blue] #eglow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,transparent,rgba(111,140,255,.35) 30%,rgba(111,140,255,.12) 70%,transparent)}
+body.gymopen #eglow,body.ckopen #eglow,body.svopen #eglow{display:none!important}
+@media (prefers-reduced-motion:reduce){html[data-theme=blue] #eglow i{transform:none!important}}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -2528,7 +2537,7 @@ body.hdc .top .progsw{max-height:0;opacity:0;margin-top:-10px;pointer-events:non
 .cwk-n svg{width:20px;height:20px;flex:none;fill:none;stroke:#7f98ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 button.cwk-n{cursor:pointer}button.cwk-n b{color:#9fb3ff}
 </style>
-<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div><div id="eglow" aria-hidden="true"><i></i></div>
 <header class="top"><div class="top-in">
   <div class="marke"><span class="logo lg2" aria-hidden="true"><svg class="logosvg" viewBox="0 0 100 100" aria-hidden="true"><defs>
 <radialGradient id="pfR" cx="40%" cy="34%" r="72%"><stop offset="0" stop-color="#ff5562"/><stop offset=".45" stop-color="#d7121f"/><stop offset=".85" stop-color="#8e0611"/><stop offset="1" stop-color="#5a020a"/></radialGradient>
@@ -3765,7 +3774,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0927-99f7023</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0946-c8ea63d</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4321,6 +4330,11 @@ document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closes
 try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hidden)slMount(g)}).observe(document.getElementById('gym'),{childList:true,subtree:true})}catch(e){}
 
 
+
+/* ---------- Licht-Effekt links beim Scrollen (wie Juggernaut) ---------- */
+(function(){const el=document.getElementById('eglow');if(!el)return;const i=el.firstElementChild;let raf=0,lastY=-1;const SP=900;
+ const upd=()=>{raf=0;const y=window.scrollY||0;if(y===lastY)return;lastY=y;const o=(y*0.42)%SP;i.style.transform=`translate3d(0,${-o}px,0)`;el.style.opacity=Math.min(1,.55+Math.min(y,400)/900)};
+ addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});upd()})();
 /* ---------- Rückwirkend: liegengebliebene Einheiten abschließen (nur echte Daten) ---------- */
 function autoClosePast(){let n=0;const now=Date.now();Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||L.done)continue;const ok=L.b.flat().filter(z=>z&&z.ok);if(!ok.length)continue;
  const ts=ok.map(z=>+z.t).filter(t=>t>0);const last=Math.max(L.pausedAt||0,...ts,L.start||0);if(!last||now-last<12*3600e3)continue;
