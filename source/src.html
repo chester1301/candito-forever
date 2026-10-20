@@ -2644,6 +2644,19 @@ svg.chart .base,.hs-ch .base{stroke:var(--ch-base)}
 svg.chart{overflow:visible}
 </style>
 <style id="cf-errlog">.errlog .hinw small{display:block;margin-top:2px}.errlog .hinw b{word-break:break-word}</style>
+<style id="cf-kraftplan">
+.kp .ct{align-items:flex-start}.kp-sw{display:flex;gap:2px;padding:3px;border-radius:12px;background:var(--raise);border:1px solid var(--line2);flex:none}
+.kp-sw button{min-height:30px;padding:0 10px;border:0;border-radius:9px;background:none;color:var(--ink2);font:800 12px var(--f);cursor:pointer}
+.kp-sw button[aria-pressed="true"]{background:var(--brand,#3d63f5);color:#fff}
+.kp .leg b{font-family:var(--mono);color:var(--ink);margin-left:2px}
+.kp-ch{width:100%;height:auto;display:block;margin-top:8px}
+svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
+.kp-key{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12px;font-weight:700;color:var(--ink2)}
+.kp-key span{display:inline-flex;align-items:center;gap:6px}.kp-key i{display:inline-block;flex:none}
+.kp-key i.pr{width:10px;height:10px;border-radius:50%;background:var(--ink2);box-shadow:0 0 0 2px #fff}
+.kp-key i.ts{width:0;height:12px;border-left:1.5px dashed #e8484f}
+.kp-key i.ph{width:14px;height:10px;border-radius:3px;background:color-mix(in srgb,var(--c) 35%,transparent);border-top:2px solid var(--c)}
+</style>
 <style id="cf-tap">
 /* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
 .jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
@@ -3897,6 +3910,45 @@ function fairTrend(){const comp={sq:'csq',bp:'pbb',dl:'cdl'};const pts={sq:[],bp
   A.forEach(x=>{const g=Object.keys(comp).find(k=>comp[k]===x.e);if(!g||!x.ok||!x.e1||x.rpe==null||x.rpe<8||x.r<1||x.r>6)return;const k=g+'|'+x.w+'|'+x.d;if(!by[k]||x.e1>by[k].e1)by[k]={g,e1:x.e1,kg:x.kg,r:x.r,rpe:x.rpe,w:x.w,d:x.d}});
   Object.values(by).forEach(o=>{const L=log(o.w,o.d);const dt=L&&L.date?new Date(L.date):dayDate(o.w,o.d);pts[o.g].push(Object.assign(o,{dt,pid}))})})});
  Object.values(pts).forEach(a=>a.sort((x,y)=>(x.dt||0)-(y.dt||0)));return pts}
+/* Kraft über den Jahresplan: e1RM je Einheit (SQ/BP/DL), Phasen als Bänder, Testtage, neue Bestwerte */
+const PHCOL=id=>id==='intro'?'#5aaaf0':/^p10w/.test(id)?'#f0a066':/^p10/.test(id)?'#3cc4d6':/^p3/.test(id)?'#b48cff':'#4069f5';
+function krPlanData(){const comp={sq:'csq',bp:'pbb',dl:'cdl'};const pts={sq:[],bp:[],dl:[]};
+ ORD().concat(Object.keys(PROGS).filter(id=>isSQ(id))).forEach(pid=>{if(!PROGS[pid])return;withProg(pid,()=>{const by={};
+  allSets().forEach(x=>{const g=Object.keys(comp).find(k=>comp[k]===x.e);if(!g||!x.ok||!x.e1)return;const k=g+'|'+x.w+'|'+x.d;if(!by[k]||x.e1>by[k].e1)by[k]={g,e1:x.e1,kg:x.kg,r:x.r,rpe:x.rpe,w:x.w,d:x.d}});
+  Object.values(by).forEach(o=>{const L=log(o.w,o.d);const dt=L&&L.date?new Date(L.date):dayDate(o.w,o.d);if(dt)pts[o.g].push(Object.assign(o,{dt,pid}))})})});
+ Object.values(pts).forEach(a=>{a.sort((x,y)=>x.dt-y.dt);let mx=-1;a.forEach((x,i)=>{x.pr=i>0&&x.e1>mx+.4;if(x.e1>mx)mx=x.e1})});
+ const ph=ORD().map(id=>{const r=phaseRange(id);return {id,n:PROGS[id].short||PROGS[id].name,a:r.a,b:r.b,t:withProg(id,()=>dayDate(TW(),TD())),c:PHCOL(id)}}).filter(x=>x.a&&x.b);
+ return {pts,ph}}
+function krPlanHTML(){const {pts,ph}=krPlanData();if(!ph.length)return '';const all=!!S.ui.krAll;const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};
+ const today=new Date();const P=[...pts.sq,...pts.bp,...pts.dl];const nPR=P.filter(x=>x.pr).length;
+ const cur=ph.find(x=>x.a<=today&&today<=new Date(+x.b+864e5))||ph.find(x=>x.a>today)||ph[ph.length-1];
+ const t0=Math.min(+ph[0].a,P.length?Math.min(...P.map(x=>+x.dt))-864e5:Infinity),t1=all?+ph[ph.length-1].b+864e5:Math.max(+cur.b+864e5,P.length?+P[P.length-1].dt:0);
+ const W=420,H=230,pl=38,pr=12,pt=26,pb=26;const X=t=>pl+((+t-t0)/(t1-t0||1))*(W-pl-pr);
+ const vs=P.map(x=>x.e1);let lo=vs.length?Math.min(...vs):100,hi=vs.length?Math.max(...vs):200;const pad=Math.max(5,(hi-lo)*.15);lo-=pad;hi+=pad;
+ const step=[5,10,20,25,50].find(s=>(hi-lo)/s<=4)||50;lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;const Y=v=>pt+(1-(v-lo)/(hi-lo))*(H-pt-pb);
+ let g='';const vis=ph.filter(x=>+x.b+864e5>t0&&+x.a<t1);
+ vis.forEach((x,i)=>{const xa=Math.max(pl,X(x.a)),xb=Math.min(W-pr,X(+x.b+864e5));if(xb-xa<1)return;
+  g+=`<rect x="${xa.toFixed(1)}" y="${pt-14}" width="${(xb-xa).toFixed(1)}" height="${H-pb-pt+14}" fill="${x.c}" fill-opacity="${x.id===cur.id?.16:.08}" rx="3"/>`;
+  g+=`<rect x="${xa.toFixed(1)}" y="${pt-14}" width="${(xb-xa).toFixed(1)}" height="3" fill="${x.c}" fill-opacity=".85"/>`;
+  if(xb-xa>34)g+=`<text class="kp-ph" x="${(xa+4).toFixed(1)}" y="${pt-1}" style="fill:${x.c}">${esc(x.n)}</text>`;
+  const tx=X(x.t);if(tx>=pl&&tx<=W-pr)g+=`<line class="kp-test" x1="${tx.toFixed(1)}" x2="${tx.toFixed(1)}" y1="${pt}" y2="${H-pb}" stroke="#e8484f" stroke-width="1.2" stroke-dasharray="3 3"/>`});
+ for(let v=lo;v<=hi+.01;v+=step)g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text x="${pl-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${v}</text>`;
+ const tx=X(today),nowIn=tx>pl&&tx<W-pr;if(nowIn)g+=`<line x1="${tx.toFixed(1)}" x2="${tx.toFixed(1)}" y1="${pt}" y2="${H-pb}" stroke="var(--ink2)" stroke-width="1" stroke-opacity=".6"/><text class="kp-now" x="${Math.max(pl+16,Math.min(W-pr-16,tx)).toFixed(1)}" y="${H-pb+14}" text-anchor="middle" style="fill:var(--ink)">heute</text>`;
+ const mf=dt=>dt.toLocaleDateString('de-DE',{month:'short',year:'numeric'}).replace('.','');
+ // Achsenbeschriftung unten: Anfang/Ende, ausgelassen, wenn „heute“ zu nah dran steht
+ if(!nowIn||tx-pl>78)g+=`<text x="${pl}" y="${H-6}">${mf(new Date(t0))}</text>`;if(!nowIn||W-pr-tx>78)g+=`<text x="${W-pr}" y="${H-6}" text-anchor="end">${mf(new Date(t1-864e5))}</text>`;
+ ['sq','bp','dl'].forEach(k=>{const a=pts[k].filter(x=>+x.dt>=t0&&+x.dt<=t1);if(!a.length)return;
+  if(a.length>1)g+=`<polyline fill="none" stroke="${GC[k]}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="${a.map(x=>X(x.dt).toFixed(1)+','+Y(x.e1).toFixed(1)).join(' ')}"/>`;
+  g+=a.map(x=>x.pr?`<circle class="kp-pr" cx="${X(x.dt).toFixed(1)}" cy="${Y(x.e1).toFixed(1)}" r="5.2" fill="${GC[k]}" stroke="#fff" stroke-width="2"/>`:`<circle cx="${X(x.dt).toFixed(1)}" cy="${Y(x.e1).toFixed(1)}" r="3" fill="${GC[k]}"/>`).join('');
+  const l=a[a.length-1];g+=`<text class="val" x="${Math.min(W-pr-2,X(l.dt)+7).toFixed(1)}" y="${(Y(l.e1)+4).toFixed(1)}" text-anchor="${X(l.dt)>W-60?'end':'start'}">${nf(l.e1,0)}</text>`});
+ const best=k=>{const a=pts[k];return a.length?Math.max(...a.map(x=>x.e1)):null};
+ return `<section class="card kp"><div class="ct"><div><p class="eyebrow">Jahresplan · alle Programme</p><h2 class="h2">Kraft über die Phasen</h2></div><div class="kp-sw" role="group" aria-label="Zeitraum"><button type="button" data-kr="cur" aria-pressed="${!all}">Bis jetzt</button><button type="button" data-kr="all" aria-pressed="${all}">Ganzer Plan</button></div></div>
+  <div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${N[k]}${best(k)?` <b>${nf(best(k),0)}</b>`:''}</span>`).join('')}</div>
+  <svg class="chart kp-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="e1RM von Kniebeuge, Bankdrücken und Kreuzheben über alle Phasen des Jahresplans">${g}</svg>
+  <div class="kp-key"><span><i class="pr"></i>neuer Bestwert${nPR?` · ${nPR}`:''}</span><span><i class="ts"></i>Testtag</span><span><i class="ph" style="--c:${cur.c}"></i>laufende Phase: ${esc(cur.n)}</span></div>
+  ${P.length?'':'<p class="note2">Sobald du Wettkampf-Kniebeuge, -Bank oder -Kreuzheben einträgst, erscheint hier dein e1RM je Einheit – über alle Phasen hinweg.</p>'}
+  <p class="note2">Bester e1RM je Einheit aus deinen Wettkampf-Sätzen (gleiche Rechnung wie im Performance Lab). Reine Auswertung – Canditos Vorgaben bleiben unverändert.</p></section>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-kr]');if(!b)return;S.ui.krAll=b.dataset.kr==='all';const c=b.closest('.kp');if(c){c.outerHTML=krPlanHTML()}else render()});
 function fairTrendHTML(){const pts=fairTrend();const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};const tot=Object.values(pts).reduce((a,v)=>a+v.length,0);
  const head=`<div class="ct"><div><p class="eyebrow">Alle Programme</p><h2 class="h2">Vergleichbarer Kraft-Trend</h2></div>${evid(tot,'ses')}</div>`;
  if(!tot)return `<section class="card">${head}<div class="leer">Dein Total oben stammt aus allen Wettkampf-Sätzen. Dieser Trend nutzt bewusst nur schwere, gut vergleichbare Sätze: Comp Squat, Comp Bench und Comp Deadlift mit 1–6 Wiederholungen ab RPE 8. Die kommen im Intro-Zyklus ab Woche 2 – dann erscheint hier der faire Verlauf.</div></section>`;
@@ -5538,7 +5590,7 @@ function progData(){const A=allSets();
  const ttl=k=>`W${k}`;
  const sec={
   year:()=>planChartHTML(false)+yearHTML(),
-  kraft:()=>forecastHTML()+fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
+  kraft:()=>forecastHTML()+krPlanHTML()+fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
    <div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${names[k]}</span>`).join('')}</div>
    ${lineChart(series,[...Array(NW()).keys()].map(w=>'W'+(w+1)),{mark:(nextSession()||{w:NW()-1}).w,label:'e1RM-Verlauf'})||'<div class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</div>'}</section>`:'<section class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</section>'}`,
   treue:()=>adhHTML()+reportCardHTML(),
