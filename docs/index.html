@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1630-0cc8e6d";
+<script>window.CF_VERSION="2026.10.20-1634-e68c18b";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2234,6 +2234,16 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 body.gymopen #cfbar{display:none!important}
 </style>
 <style id="cf-hype">html[data-theme=blue] .hype.h{background:linear-gradient(135deg,#6f8cff 0%,#3157e8 55%,#1d3fc4 100%)!important;box-shadow:0 0 0 1px rgba(160,180,255,.55) inset,0 6px 18px -6px rgba(49,87,232,.8)!important;color:#fff!important}html[data-theme=blue] .hype.h .hic{background:rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)!important}</style>
+<style id="cf-charts">
+/* Einheitliches Diagramm-Thema: Raster, Achsenschrift, Hervorhebungen */
+:root{--ch-grid:rgba(255,255,255,.08);--ch-base:rgba(255,255,255,.16);--ch-ax:#9aa3b2;--ch-axf:700 11px var(--f);--ch-val:#e6ebff}
+svg.chart text,.hs-ch text,.jr-ch text,.fcst svg text,.plc svg text,.rdp svg text{font:var(--ch-axf)!important;fill:var(--ch-ax);font-family:var(--f)!important}
+svg.chart text[style*="font-weight:700"],.hs-ch .hs-bv,svg.chart .val{fill:var(--ch-val)!important}
+.hs-ax{font:var(--ch-axf)!important;fill:var(--ch-ax)!important}.hs-bv{font:700 10.5px var(--f)!important}.hs-avg{font:800 10.5px var(--f)!important}
+svg.chart .grid,.hs-ch .grid,.jr-ch .grid{stroke:var(--ch-grid);stroke-dasharray:2 4}
+svg.chart .base,.hs-ch .base{stroke:var(--ch-base)}
+svg.chart{overflow:visible}
+</style>
 <style id="cf-gymcard">
 /* Gym-Satzkarte: alle Angaben bleiben, kompakter angeordnet */
 #gym .gex h2{font-size:clamp(30px,9.5vw,46px)!important;line-height:1.02}
@@ -3881,7 +3891,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1630-0cc8e6d</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1634-e68c18b</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -4555,7 +4565,7 @@ const HS_IC={bar:'<svg viewBox="0 0 24 24"><path d="M2 12h20M5 8v8M8 6v12M16 6v1
 function histChart(sel,from,now){const L=sel.slice().sort((a,b)=>a.dt-b.dt);if(!L.length)return `<div class="hs-ce">Keine Einheit in diesem Zeitraum</div>`;
  const W=340,H=176,pl=6,pr=36,pt=24,pb=30;const n=L.length;const mx=Math.max(1000,...L.map(s=>s.ton));const step=mx>16000?5000:mx>8000?2000:mx>4000?1000:500;const top=Math.ceil(mx*1.08/step)*step;
  const cw=(W-pl-pr)/Math.max(n,1);const bw=Math.max(6,Math.min(34,cw*.62));const span=n<6?n*Math.min(cw,56):W-pl-pr;const x0=pl+((W-pl-pr)-span)/2;const cx=i=>x0+(i+.5)*(span/n);
- const y=v=>pt+(1-v/top)*(H-pt-pb);let g='';for(let v=step;v<=top;v+=step)g+=`<line x1="${pl}" x2="${W-pr+6}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,.06)" stroke-dasharray="2 4"/><text x="${W-2}" y="${y(v)+4}" text-anchor="end" class="hs-ax">${v>=1000?nf(v/1000,v%1000?1:0)+'K':v}</text>`;
+ const y=v=>pt+(1-v/top)*(H-pt-pb);let g='';for(let v=step;v<=top;v+=step)g+=`<line class="grid" x1="${pl}" x2="${W-pr+6}" y1="${y(v)}" y2="${y(v)}"/><text x="${W-2}" y="${y(v)+4}" text-anchor="end" class="hs-ax">${v>=1000?nf(v/1000,v%1000?1:0)+'K':v}</text>`;
  const lbEvery=Math.ceil(n/7);const mean=L.reduce((a,s)=>a+s.ton,0)/n;
  const bars=L.map((s,i)=>{const h=Math.max(4,y(0)-y(s.ton));const last=i===n-1;const X=cx(i)-bw/2;
   return `<g class="hs-b${last?' last':''}"><rect x="${X.toFixed(1)}" y="${(y(0)-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(9,bw/2.4)}" fill="url(#hsg-${s.pid})"/>${last?`<rect x="${X.toFixed(1)}" y="${(y(0)-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(9,bw/2.4)}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>`:''}
@@ -4563,7 +4573,7 @@ function histChart(sel,from,now){const L=sel.slice().sort((a,b)=>a.dt-b.dt);if(!
    ${((i%lbEvery===0&&n-1-i>=Math.max(1,lbEvery))||last)?`<text x="${cx(i)}" y="${H-10}" text-anchor="middle" class="hs-ax${last?' l':''}">${s.dt.getDate()}.${s.dt.getMonth()+1}.</text>`:''}</g>`}).join('');
  const pids=[...new Set(L.map(s=>s.pid))];const defs=pids.map(pid=>{const c=HPC[pid]||'#5aaaf0';return `<linearGradient id="hsg-${pid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".35"/></linearGradient>`}).join('');
  const avg=n>1?`<line x1="${pl}" x2="${W-pr+6}" y1="${y(mean)}" y2="${y(mean)}" stroke="#4fc3d9" stroke-opacity=".7" stroke-dasharray="5 4"/><text x="${pl+2}" y="${y(mean)-5}" class="hs-avg">Ø ${nf(mean/1000,1)}t</text>`:'';
- return `<div class="hs-cw"><svg class="hs-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Volumen je Einheit"><defs>${defs}</defs>${g}<line x1="${pl}" x2="${W-pr+6}" y1="${y(0)}" y2="${y(0)}" stroke="rgba(255,255,255,.14)"/>${avg}${bars}</svg></div>`}
+ return `<div class="hs-cw"><svg class="hs-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Volumen je Einheit"><defs>${defs}</defs>${g}<line class="base" x1="${pl}" x2="${W-pr+6}" y1="${y(0)}" y2="${y(0)}"/>${avg}${bars}</svg></div>`}
 function histCal(all){const ref=S.ui.hm?new Date(S.ui.hm+'-15T12:00:00'):new Date();const y0=ref.getFullYear(),m0=ref.getMonth();const first=new Date(y0,m0,1,12);const off=(first.getDay()+6)%7;const dim=new Date(y0,m0+1,0).getDate();
  const by={};all.forEach(s=>{by[isoD(s.dt)]=s});const td=isoD(new Date());let c='';for(let i=0;i<off;i++)c+='<span></span>';
  for(let d=1;d<=dim;d++){const k=isoD(new Date(y0,m0,d,12));const s=by[k];const z=s&&s.rd!=null?jrZone(s.rd).c:null;c+=s?`<button type="button" data-hday="${k}" class="on ${S.ui.hday===k?'sel':''}" style="--hc:${s.col}">${d}${z?`<i style="background:${z}"></i>`:''}</button>`:`<span class="${k===td?'td':''}">${d}</span>`}
@@ -4596,7 +4606,7 @@ function jrChart(m,cur,zone){const W=320,H=120,pad=10,days=[];const t0=new Date(
  const Y0=20,Y1=100,y=v=>pad+(1-(Math.max(Y0,v)-Y0)/(Y1-Y0))*(H-2*pad),x=i=>14+i*(W-28)/6;
  const pts=days.map((d,i)=>{const e=m[isoD(d)];return e?{i,v:e.v}:null}).filter(Boolean);
  const band=`<rect x="0" y="${y(zone.hi+1)}" width="${W}" height="${y(zone.lo)-y(zone.hi+1)}" fill="${zone.c}" opacity=".13"/><line x1="0" x2="${W}" y1="${y(zone.hi+1)}" y2="${y(zone.hi+1)}" stroke="${zone.c}" stroke-opacity=".5" stroke-dasharray="3 4"/><line x1="0" x2="${W}" y1="${y(zone.lo)}" y2="${y(zone.lo)}" stroke="${zone.c}" stroke-opacity=".5" stroke-dasharray="3 4"/>`;
- const grid=[40,60,80].map(v=>`<line x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,.05)"/>`).join('');
+ const grid=[40,60,80].map(v=>`<line class="grid" x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}"/>`).join('');
  let line='',area='',dots='';if(pts.length){const d=pts.map((p,j)=>(j?'L':'M')+x(p.i).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');line=`<path d="${d}" fill="none" stroke="${zone.c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;area=`<path d="${d} L${x(pts[pts.length-1].i)} ${H} L${x(pts[0].i)} ${H} Z" fill="url(#jrg)"/>`;
   const last=pts[pts.length-1],prev=pts[pts.length-2];if(prev)dots+=`<circle cx="${x(prev.i)}" cy="${y(prev.v)}" r="6" fill="#0b0d12" stroke="#fff" stroke-width="2" stroke-dasharray="2.2 2.6"/>`;dots+=`<circle cx="${x(last.i)}" cy="${y(last.v)}" r="9" fill="#fff" stroke="${zone.c}" stroke-width="3.5"/>`}
  const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -4857,7 +4867,7 @@ function lineChart(series,labels,opts={}){
  if(!vals.length)return '';let lo=Math.min(...vals),hi=Math.max(...vals);const pad=Math.max(5,(hi-lo)*.15);lo-=pad;hi+=pad;
  const step=[5,10,20,25,50,100].find(s=>(hi-lo)/s<=5)||100;lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
  const n=labels.length,x=i=>n===1?(pl+W-pr)/2:pl+(W-pl-pr)*(i/(n-1)),y=v=>pt+(H-pt-pb)*(1-(v-lo)/(hi-lo));const id='lc'+(++CHID);
- let defs='',g='';for(let t=lo;t<=hi+1e-9;t+=step)g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end">${nf(t,0)}</text>`;
+ let defs='',g='';for(let t=lo;t<=hi+1e-9;t+=step)g+=`<line class="${Math.abs(t-lo)<1e-9?'base':'grid'}" x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end">${nf(t,0)}</text>`;
  if(opts.mark!=null&&opts.mark<n)g+=`<line x1="${x(opts.mark)}" x2="${x(opts.mark)}" y1="${pt-6}" y2="${H-pb}" stroke="var(--day)" stroke-dasharray="3 4" opacity=".7"/><text x="${x(opts.mark)}" y="${pt-8}" text-anchor="middle" style="fill:var(--day);font-size:11px">jetzt</text>`;
  {const sp=n>1?(W-pl-pr)/(n-1):999;const mxL=Math.max(...labels.map(l=>String(l).length));const need=mxL*6.6+6;const st=Math.max(1,Math.ceil(need/sp));labels.forEach((l,i)=>{if(i%st&&i!==n-1)return;if(i!==n-1&&n-1-i<st&&i%st===0&&i>0)return;g+=`<text x="${x(i)}" y="${H-8}" text-anchor="${n>1&&i===0?'start':n>1&&i===n-1?'end':'middle'}">${l}</text>`})}
  let hits='';const usedY=[];
@@ -4867,17 +4877,17 @@ function lineChart(series,labels,opts={}){
    g+=`<polyline class="draw" pathLength="1" points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="${s.c}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`}
   pts.forEach((p,j)=>{g+=`<circle class="pt" cx="${p[0]}" cy="${p[1]}" r="${j===pts.length-1?5.5:3.5}" fill="${s.c}" stroke="var(--card)" stroke-width="2"/>`;
    hits+=`<circle cx="${p[0]}" cy="${p[1]}" r="14" fill="transparent" style="cursor:pointer" data-tip="${esc(labels[p[3]]+' · '+(s.n||'')+': '+nf(p[2],opts.dec??0)+' '+(opts.unit||'kg'))}"/>`});
-  const lp=pts[pts.length-1];let ty=lp[1]-10;for(let q=0;q<6&&usedY.some(u=>Math.abs(u-ty)<13);q++)ty+=13;usedY.push(ty);g+=`<text x="${lp[0]>W-60?lp[0]-9:lp[0]+9}" y="${ty}" text-anchor="${lp[0]>W-60?'end':'start'}" style="fill:var(--ink);font-weight:700">${nf(lp[2],opts.dec??0)}</text>`});
+  const lp=pts[pts.length-1];let ty=lp[1]-10;for(let q=0;q<6&&usedY.some(u=>Math.abs(u-ty)<13);q++)ty+=13;usedY.push(ty);g+=`<text class="val" x="${lp[0]>W-60?lp[0]-9:lp[0]+9}" y="${ty}" text-anchor="${lp[0]>W-60?'end':'start'}">${nf(lp[2],opts.dec??0)}</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||'Verlauf')}"><defs>${defs}</defs>${g}${hits}</svg>`}
 function barChart(rows,keys){
  const W=420,H=220,pl=44,pr=8,pt=18,pb=28;const tot=rows.map(r=>keys.reduce((a,k)=>a+(r.vals[k]||0),0));const mx=Math.max(...tot,1);
  const step=[1000,2000,2500,5000,10000,20000,25000,50000].find(s=>mx/s<=5)||100000;const hi=Math.ceil(mx/step)*step;
  const KN={sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben',acc:'Zubehör'};
  const y=v=>pt+(H-pt-pb)*(1-v/hi),bw=(W-pl-pr)/rows.length;let g='';
- for(let t=0;t<=hi;t+=step)g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end">${nf(t/1000,1)}t</text>`;
+ for(let t=0;t<=hi;t+=step)g+=`<line class="${t===0?'base':'grid'}" x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end">${nf(t/1000,1)}t</text>`;
  rows.forEach((r,i)=>{let acc=0;const x0=pl+bw*i+bw*.22,w=bw*.56;g+=`<g class="bars" style="animation-delay:${i*70}ms">`;
   keys.forEach(k=>{const v=r.vals[k]||0;if(!v)return;g+=`<rect x="${x0}" y="${y(acc+v)}" width="${w}" height="${Math.max(0,y(acc)-y(acc+v)-1)}" rx="3" fill="${GC[k]}" style="cursor:pointer" data-tip="${r.label} · ${KN[k]}: ${nf(v/1000,2)} t"/>`;acc+=v});
-  g+=`</g><text x="${x0+w/2}" y="${H-8}" text-anchor="middle">${r.label}</text>`;if(acc)g+=`<text x="${x0+w/2}" y="${y(acc)-6}" text-anchor="middle" style="fill:var(--ink);font-weight:700">${nf(acc/1000,1)}t</text>`});
+  g+=`</g><text x="${x0+w/2}" y="${H-8}" text-anchor="middle">${r.label}</text>`;if(acc)g+=`<text class="val" x="${x0+w/2}" y="${y(acc)-6}" text-anchor="middle">${nf(acc/1000,1)}t</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tonnage pro Woche">${g}</svg>`}
 function sparkArea(v,c){const pts=v.map((x,i)=>x==null?null:[i,x]).filter(Boolean);if(pts.length<1)return '<svg class="spk" viewBox="0 0 120 34"></svg>';
  const lo=Math.min(...pts.map(p=>p[1]))-2,hi=Math.max(...pts.map(p=>p[1]))+2,X=i=>4+112*i/Math.max(1,v.length-1),Y=v=>30-24*(v-lo)/((hi-lo)||1),id='sp'+(++CHID);
