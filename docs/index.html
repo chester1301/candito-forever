@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1639-1ecedd8";
+<script>window.CF_VERSION="2026.10.20-1643-d48f7dd";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2076,7 +2076,7 @@ html[data-theme=blue] body:not(.nomo) .amb::before{width:80vw;height:60vh;left:-
 .hp{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%)}
 .hp::-webkit-scrollbar{display:none}
 .hp button{flex:0 0 auto;min-width:48px;height:48px;padding:0 10px;border-radius:14px;border:1px solid rgba(130,155,255,.14);background:rgba(255,255,255,.025);color:#aab4d4;scroll-snap-align:center;display:grid;place-items:center;align-content:center;gap:0;transition:background .15s,border-color .15s,transform .15s}
-.hp button b{font:800 17px/1 var(--f);font-variant-numeric:tabular-nums}.hp button small{font-size:9.5px;font-weight:700;color:#6a759a;margin-top:2px;white-space:nowrap}
+.hp button b{font:800 17px/1 var(--f);font-variant-numeric:tabular-nums}.hp button small{font-size:9.5px;font-weight:700;color:#8fa2d8;margin-top:2px;white-space:nowrap}
 .hp[data-hp="rpe"] button,.hp[data-hp="trpe"] button{min-width:58px;height:54px}
 .hp button.pl{border-color:rgba(243,201,105,.45)}
 .hp button.on{color:#fff;border-color:transparent;background:linear-gradient(180deg,#5a7dff,#3157e8);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 18px -8px rgba(61,99,245,.95);transform:translateY(-1px)}
@@ -2244,6 +2244,12 @@ svg.chart .grid,.hs-ch .grid,.jr-ch .grid{stroke:var(--ch-grid);stroke-dasharray
 svg.chart .base,.hs-ch .base{stroke:var(--ch-base)}
 svg.chart{overflow:visible}
 </style>
+<style id="cf-tap">
+/* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
+.jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,.sheet-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
+.jr-i::after,.plc-go::after,[data-rt]::after,[data-step]::after,.gnva::after,.gsets button::after,.sv-i::after,.sv-sh::after,[data-hv]::after,[data-hp]::after,.lockhint-x::after,.xm-add::after,.fl-skip::after,.sesschip::after,.tog::after,.rt-sw::after,[data-rts]::after,#sheet [data-t]::after,.sv-nb::after,.sv-x::after,.jrs-x::after,.iconbtn::after,.xe-x::after,.sheet-x::after,[data-undo]::after,[data-svclose]::after,.gpbtn::after,.sessbtn::after,.hs-ct::after,.exlink::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%);border-radius:inherit}
+.gnva::after{width:max(100%,40px)}
+</style>
 <style id="cf-gymcard">
 /* Gym-Satzkarte: alle Angaben bleiben, kompakter angeordnet */
 #gym .gex h2{font-size:clamp(30px,9.5vw,46px)!important;line-height:1.02}
@@ -2364,7 +2370,7 @@ html b.mtred .mt2{color:#4a6df5!important;-webkit-text-fill-color:#4a6df5!import
 .jr-lg{display:flex;align-items:center;gap:6px;white-space:nowrap}.jr-lg i{width:10px;height:10px;border-radius:50%;margin-left:6px}.jr-lg i.a{background:#fff;box-shadow:0 0 0 2.5px var(--zc)}.jr-lg i.b{border:1.6px dashed #fff}
 .jr-ch{width:100%;height:120px;display:block;overflow:visible}
 .jr-wd{display:flex;justify-content:space-between;padding:4px 4px 0;font:700 12.5px var(--f);color:#8a919c}.jr-wd span.on{color:#fff;font-weight:800}
-.jr-src{position:relative;margin:10px 0 0;font-size:11.5px;color:#6f7782;font-weight:600}
+.jr-src{position:relative;margin:10px 0 0;font-size:11.5px;color:#8a8f99;font-weight:600}
 .jr-e{position:relative;margin:10px 0 12px;font-size:14px;color:var(--ink2);line-height:1.45}
 /* Bereiche-Sheet */
 #jrsheet{position:fixed;inset:0;z-index:2147483000}#jrsheet .jrs-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .2s}
@@ -3891,7 +3897,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1639-1ecedd8</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1643-d48f7dd</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -4452,7 +4458,7 @@ function slMount(root){(root||document).querySelectorAll('#gym .bigbtn.hb2:not([
  k.addEventListener('pointerdown',e=>{if(el.classList.contains('dis'))return;e.preventDefault();e.stopPropagation();pid=e.pointerId;try{k.setPointerCapture(pid)}catch(_){}x0=e.clientX;dx=0;max=el.clientWidth-k.offsetLeft*2-k.offsetWidth;el.classList.add('sliding')});
  k.addEventListener('pointermove',e=>{if(x0==null||e.pointerId!==pid)return;e.preventDefault();dx=Math.max(0,Math.min(max,e.clientX-x0));set(dx,false)});
  const end=e=>{if(x0==null)return;x0=null;el.classList.remove('sliding');el._sup=Date.now();
-  if(dx>=max*.82){set(max,true);try{navigator.vibrate&&navigator.vibrate(18)}catch(_){}setTimeout(()=>{el._ok=true;el.click();setTimeout(()=>{if(el.isConnected)set(0,true)},250)},120)}else set(0,true)};
+  if(dx>=max*.82){set(max,true);try{vib(18)}catch(_){}setTimeout(()=>{el._ok=true;el.click();setTimeout(()=>{if(el.isConnected)set(0,true)},250)},120)}else set(0,true)};
  k.addEventListener('pointerup',end);k.addEventListener('pointercancel',end);requestAnimationFrame(()=>{max=el.clientWidth-k.offsetLeft*2-k.offsetWidth;set(0,false)});
  ['touchstart','touchmove'].forEach(t=>el.addEventListener(t,e=>e.stopPropagation(),{passive:true}))})}
 document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.slide');if(!el)return;if(el._ok){el._ok=false;return}
@@ -6597,7 +6603,11 @@ function unlockAudio(){try{if(!actx)actx=new (window.AudioContext||window.webkit
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
 function beep(f=880,ms=140,delay=0,vol=.22){if(!actx||!S.meta.sound)return;try{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';
  o.connect(g);g.connect(actx.destination);const t0=actx.currentTime+delay;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+ms/1000);o.start(t0);o.stop(t0+ms/1000+.03)}catch(e){}}
-const vib=p=>{if(!S.meta.vibe)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+/* Haptik: Android über navigator.vibrate; iOS (17.4+) kennt kein vibrate – dort löst das Umschalten eines
+   <input type="checkbox" switch> innerhalb einer Berührung das System-Tippen aus. */
+let _hsw=null;function iosTap(){try{if(!_hsw){const l=document.createElement('label');l.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';l.innerHTML='<input type="checkbox" switch aria-hidden="true" tabindex="-1">';document.body.appendChild(l);_hsw=l}_hsw.click()}catch(e){}}
+const HAP_IOS=/iP(hone|ad|od)/.test(navigator.userAgent||'')&&!navigator.vibrate;
+const vib=p=>{if(!S.meta.vibe)return;try{if(navigator.vibrate){navigator.vibrate(p);return}if(!HAP_IOS)return;const n=Array.isArray(p)?Math.min(3,Math.ceil(p.length/2)):1;iosTap();for(let i=1;i<n;i++)setTimeout(iosTap,i*90)}catch(e){}};
 const tLeft=()=>T.paused?T.left:(T.end-Date.now())/1000;
 function startRest(sec,ctx){if((S.meta.lockHint||0)<3){S.meta.lockHint=(S.meta.lockHint||0)+1;saveMeta()}T.src='';T.on=true;T.gmin=false;T.total=sec;T.end=Date.now()+sec*1000;T.paused=false;T.left=sec;T.ctx=ctx||T.ctx;T.beeped=Math.ceil(sec)+1;saveT();
  if(S.meta.autoSheet&&$('#gym').hidden)openSheet();gymRefresh();tick()}
