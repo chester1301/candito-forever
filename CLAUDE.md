@@ -7,6 +7,8 @@ Dieses Repository ist Marcels Candito-Forever-App (PWA für das iPhone) – eine
 - Quelltext der App: `source/src.html` (+ `source/data.js`, `source/data_sq.js`). Die PWA-Schicht liegt in `src/`.
 - Nach jeder Änderung: `python3 build.py`, dann `node tests/run.js` (komplette Suite, startet den Server selbst; `tests/README.md`).
   Scheitert `Plan-Daten – Snapshot`, wurde der Plan geändert: nur nach Abgleich mit Canditos Original `--update-golden`.
+  Scheitert `Optik – Screenshots`, Differenzbilder in `tests/visual/_out/` ansehen; nur gewollte Änderungen mit
+  `node tests/run.js visual --update-visual` übernehmen.
 - `docs/` ist die veröffentlichte App (GitHub Pages, Branch `main`, Ordner `/docs`). Nie von Hand bearbeiten.
 - Commit + Push auf `main` veröffentlicht. Auf dem iPhone erscheint dann „Neue Version verfügbar“.
 - Soll das Artifact auf claude.ai gleich bleiben: `build/claude-artifact.html` (entsteht beim Bauen) dort veröffentlichen.

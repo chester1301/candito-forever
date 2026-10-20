@@ -12,8 +12,9 @@ class T{
 const IGN=/ERR_TUNNEL_CONNECTION_FAILED|ERR_FAILED|ERR_NAME_NOT_RESOLVED|fonts\.g|net::ERR_/;
 
 // Seite mit Fehlersammlung öffnen. App ist nach ~3 s komplett (autoProg läuft bei 2,6 s).
-async function openPage(browser,port,{width=390,height=844,scale=2,wait=3000}={}){
-  const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:scale});
+async function openPage(browser,port,{width=390,height=844,scale=2,wait=3000,fixedTime=null}={}){
+  const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:scale,locale:'de-DE',timezoneId:'Europe/Berlin',...(fixedTime?{reducedMotion:'reduce'}:{})});
+  if(fixedTime)await page.clock.setFixedTime(new Date(fixedTime));
   page.errors=[];
   page.on('pageerror',e=>page.errors.push('pageerror: '+e.message));
   page.on('console',m=>{if(m.type()==='error'&&!IGN.test(m.text()))page.errors.push('console: '+m.text())});

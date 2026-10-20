@@ -4,3 +4,4 @@ node_modules/
 # Zwischenprodukte des Side-Quest-Generators (aus Canditos Excel-Dateien erzeugt, nicht einchecken)
 source/generator/parsed*.json
 source/generator/data_sq.js
+tests/visual/_out/

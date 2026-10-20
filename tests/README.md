@@ -11,6 +11,12 @@ eine Prüfung scheitert.
 - `node tests/run.js --update-golden` – Plan-Snapshot (`tests/plan.golden.json`) neu schreiben.
   **Nur nach einer bewussten, mit Canditos Original abgeglichenen Plan-Änderung.** Der Snapshot schützt
   die Vorgaben (Übung, Sätze, Wiederholungen, RPE, Prozente, Deckel, Hype, Alternativen) vor versehentlichen Änderungen.
+- `node tests/run.js visual` – Optik-Test (`12-visual.js`): Heute, Training, Progress, Einstellungen, Gym-Satz,
+  Pause und Zusammenfassung auf 390×797 und 430×850 werden pixelweise mit `tests/visual/*.png` verglichen
+  (feste Uhrzeit 22.10.2026 17:00, Animationen aus, nur Beispieldaten). Bei Abweichung liegen Ist- und
+  Differenzbild (rot = geändert) in `tests/visual/_out/`.
+- `node tests/run.js visual --update-visual` – Referenzbilder neu schreiben. **Nur nach einer bewussten
+  Optik-Änderung**, vorher die Differenzbilder ansehen.
 
 Voraussetzung: `playwright` muss für Node auffindbar sein (global installiert oder `npm i -D playwright`),
 Chromium wird von Playwright mitgebracht. `tests/smoke.js` bleibt als schneller Einzeltest erhalten.

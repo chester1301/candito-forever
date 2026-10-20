@@ -3,6 +3,7 @@
 //   node tests/run.js            – alle Fälle
 //   node tests/run.js gym swap   – nur Fälle, deren Dateiname eines der Wörter enthält
 //   node tests/run.js --update-golden  – Plan-Snapshot neu schreiben (nur nach bewusster Plan-Änderung!)
+//   node tests/run.js visual --update-visual – Referenz-Screenshots neu schreiben (nur nach bewusster Optik-Änderung)
 const {spawn}=require('child_process');
 const net=require('net');
 const path=require('path');
@@ -13,6 +14,7 @@ const ROOT=path.resolve(__dirname,'..');
 const DOCS=path.join(ROOT,'docs');
 const args=process.argv.slice(2);
 const UPDATE=args.includes('--update-golden');
+const UPDATE_VIS=args.includes('--update-visual');
 const filters=args.filter(a=>!a.startsWith('--'));
 
 function freePort(){return new Promise(res=>{const s=net.createServer();s.listen(0,()=>{const p=s.address().port;s.close(()=>res(p))})})}
@@ -30,7 +32,7 @@ function waitPort(port,ms=8000){return new Promise((res,rej)=>{const t0=Date.now
   const results=[];const t0=Date.now();
   for(const f of files){
     const mod=require(path.join(dir,f));const t=new T();const pages=[];
-    const ctx={browser,port,t,update:UPDATE,root:ROOT,page:async(o)=>{const p=await openPage(browser,port,o);pages.push(p);return p}};
+    const ctx={browser,port,t,update:UPDATE,updateVisual:UPDATE_VIS,root:ROOT,page:async(o)=>{const p=await openPage(browser,port,o);pages.push(p);return p}};
     const s=Date.now();let crash=null;
     try{await mod.run(ctx)}catch(e){crash=e}
     for(const p of pages){for(const e of p.errors)t.fail(e);try{await p.close()}catch(e){}}
