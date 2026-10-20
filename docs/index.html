@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1553-be967d0";
+<script>window.CF_VERSION="2026.10.20-1618-5115153";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3750,9 +3750,10 @@ let INFO={
 const LS='intro-zyklus-v1', LST='intro-zyklus-timer';
 const S={logs:{},meta:{start:'2026-10-17',restMain:300,restAcc:120,bar:20,round:2.5,sound:true,vibe:true,autoSheet:true,restEx:{}},ui:{w:0,d:0,tab:'home'},out:{},ana:{}};
 var SAVED={};
-// Gerätespeicher laden. Reihenfolge wichtig: erst Einstellungen und Position, dann die Satz-Signaturen (remember) – ein Fehler dort darf die Einstellungen nicht verwerfen.
-try{const c=JSON.parse(localStorage.getItem(LS)||'null');if(c){Object.assign(S.logs,c.logs||{});Object.assign(S.meta,c.meta||{});if(c.ui){S.ui.w=c.ui.w||0;S.ui.d=c.ui.d||0}try{Object.keys(S.logs).forEach(k=>remember(k,S.logs[k]))}catch(e){}}}catch(e){}
-if(!S.meta.restEx)S.meta.restEx={};
+// Gerätespeicher laden – wird erst im Start-Block ganz unten aufgerufen (boot()), wenn alle Funktionen und Variablen stehen.
+// Reihenfolge: erst Einstellungen und Position, dann die Satz-Signaturen (remember) – ein Fehler dort darf die Einstellungen nicht verwerfen.
+function loadState(){try{const c=JSON.parse(localStorage.getItem(LS)||'null');if(c){Object.assign(S.logs,c.logs||{});Object.assign(S.meta,c.meta||{});if(c.ui){S.ui.w=c.ui.w||0;S.ui.d=c.ui.d||0}try{Object.keys(S.logs).forEach(k=>remember(k,S.logs[k]))}catch(e){}}}catch(e){}
+ if(!S.meta.restEx)S.meta.restEx={}}
 function cache(){try{localStorage.setItem(LS,JSON.stringify({logs:S.logs,meta:S.meta,ui:{w:S.ui.w,d:S.ui.d}}))}catch(e){}}
 const PROGS={intro:{P,WEEKS,REFS,DAYS,INFO,ORIG,name:'Intro-Zyklus',short:'Intro',sub:'4 Wochen',pre:'',test:[3,2]},p8:{P:P8,WEEKS:WEEKS8,REFS:{},DAYS:DAYS8,INFO:INFO8,ORIG:ORIG8,name:'Candito 8 Week',short:'8 Week',sub:'8 Wochen · V2',pre:'p8',test:[7,3]},p10:{P:P10,WEEKS:WEEKS10,REFS:{},DAYS:DAYS10,INFO:INFO10,ORIG:ORIG10,name:'Candito 10RM-Phase',short:'10RM',sub:'5 Wochen · V5',pre:'p10',test:[4,3]},p8b:{P:P8,WEEKS:WEEKS8,REFS:{},DAYS:DAYS8,INFO:INFO8,ORIG:ORIG8,name:'Candito 8 Week · Zyklus 2',short:'8 Week 2',sub:'8 Wochen · V2',pre:'p8b',test:[7,3]},p10b:{P:P10,WEEKS:WEEKS10,REFS:{},DAYS:DAYS10,INFO:INFO10,ORIG:ORIG10,name:'Candito 10RM-Phase · Zyklus 2',short:'10RM 2',sub:'5 Wochen · V5',pre:'p10b',test:[4,3]},p8c:{P:P8,WEEKS:WEEKS8,REFS:{},DAYS:DAYS8,INFO:INFO8,ORIG:ORIG8,name:'Candito 8 Week · Zyklus 3',short:'8 Week 3',sub:'8 Wochen · V2',pre:'p8c',test:[7,3]},p10c:{P:P10,WEEKS:WEEKS10,REFS:{},DAYS:DAYS10,INFO:INFO10,ORIG:ORIG10,name:'Candito 10RM-Phase · Zyklus 3',short:'10RM 3',sub:'5 Wochen · V5',pre:'p10c',test:[4,3]},p3:{P:P3,WEEKS:WEEKS3,REFS:{},DAYS:DAYS3,INFO:INFO3,ORIG:ORIG3,name:'Candito 3RM-Phase',short:'3RM',sub:'5 Wochen · V2.1',pre:'p3',test:[4,3]},p10w:{P:P10W,WEEKS:WEEKS10W,REFS:{},DAYS:DAYS10W,INFO:INFO10W,ORIG:ORIG10W,name:'Candito 10-Wochen-Programm',short:'10 Week',sub:'10 Wochen · V2',pre:'p10w',test:[9,3]},p10d:{P:P10,WEEKS:WEEKS10,REFS:{},DAYS:DAYS10,INFO:INFO10,ORIG:ORIG10,name:'Candito 10RM-Phase · Zyklus 4',short:'10RM 4',sub:'5 Wochen · V5',pre:'p10d',test:[4,3]}};
 const BASEORD=['intro','p8','p10','p8b','p10b','p8c','p10c','p3','p10w','p10d'];
@@ -3844,7 +3845,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1553-be967d0</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1618-5115153</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -7084,8 +7085,19 @@ let tt;function toast(m,ms){const t=$('#toast');t.textContent=m;t.hidden=false;c
 function pickToday(){const now=new Date();now.setHours(0,0,0,0);let best=null;
  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(!dt)continue;dt.setHours(0,0,0,0);if(dt>=now&&dayStatus(w,d)!=='done'){if(!best||dt<best.dt)best={w,d,dt}}}
  if(best){S.ui.w=best.w;S.ui.d=best.d}}
-setProg(S.meta.prog||'intro');try{autoClosePast()}catch(e){}pickToday();edgeLayout();render();tick();initDb();setTimeout(()=>{try{if(autoClosePast())render()}catch(e){}},4000);setInterval(()=>{try{if(autoClosePast())render()}catch(e){}},30*60e3);
-setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.meta.prog=a;setProg(a);S.ui.openB={};renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render()}}catch(e){}},2600);
+/* ===================== Start ===================== */
+// Die einzige Stelle, an der die App hochfährt. Alles davor sind Definitionen; Reihenfolge hier ist verbindlich.
+function boot(){
+ loadState();                                   // 1. Gerätespeicher (localStorage) → S.logs, S.meta, S.ui
+ setProg(S.meta.prog||'intro');                 // 2. aktives Programm (Side Quests sind oben bereits in PROGS registriert)
+ try{autoClosePast()}catch(e){}                 // 3. liegen gebliebene Einheiten (>12 h) abschließen
+ pickToday();edgeLayout();                      // 4. heutige/nächste Einheit wählen
+ render();tick();                               // 5. erste Anzeige
+ initDb();                                      // 6. Abgleich mit IndexedDB (asynchron; nur neuere Stände überschreiben)
+ setTimeout(()=>{try{if(autoClosePast())render()}catch(e){}},4000);setInterval(()=>{try{if(autoClosePast())render()}catch(e){}},30*60e3);
+ // 7. Programm laut Kalender – nur, wenn der Nutzer nicht selbst umgeschaltet hat
+ setTimeout(()=>{try{const a=autoProg();if(a&&a!==PROG&&!switchProg.manual){S.meta.prog=a;setProg(a);S.ui.openB={};renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render()}}catch(e){}},2600)}
+boot();
 </script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;let f=parseFloat(getComputedStyle(b).fontSize),n=0;while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<20){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
