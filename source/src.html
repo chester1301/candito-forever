@@ -2131,6 +2131,23 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 #cfbar.bk{display:none!important}
 body.gymopen #cfbar{display:none!important}
 </style>
+<style id="cf-akku">
+/* Akku: keine Dauer-Animationen, kein Rand-Timer, keine Blur-Ebenen im Gym-Modus */
+html body .amb::before,html body .amb::after{animation:none!important}
+.sesschip i,.sessbtn i,.wbc.run .fl,html .nav .ni::after,.bigbtn.hb2::after,.we2-arc,.savest.busy i{animation:none!important}
+.hb-m i.miss em{animation-iteration-count:3!important}
+#edge,.edge{display:none!important}
+#gym,#gym *,.grest,.grest *,#endq *,#ckin *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* Pausen-Timer: Farbe wechselt mit der Restzeit */
+html .grest .grr [data-tring]{transition:stroke .6s ease}
+html .grest{transition:background-color .6s ease}
+html[data-theme=blue] .grest[data-ph="g"] .grr [data-tring]{stroke:url(#grrG)!important}
+html[data-theme=blue] .grest[data-ph="y"]{--gph:rgba(243,201,105,.24)!important}html[data-theme=blue] .grest[data-ph="y"] .grr [data-tring]{stroke:#f3c969!important}
+html[data-theme=blue] .grest[data-ph="r"]{--gph:rgba(255,90,79,.30)!important}html[data-theme=blue] .grest[data-ph="r"] .grr [data-tring]{stroke:#ff5a4f!important}
+html[data-theme=blue] .grest[data-ph="p"]{--gph:rgba(150,160,190,.16)!important}html[data-theme=blue] .grest[data-ph="p"] .grr [data-tring]{stroke:#9aa3bf!important}
+html[data-theme=blue] .grest[data-ph="o"]{--gph:rgba(67,192,138,.32)!important}html[data-theme=blue] .grest[data-ph="o"] .grr [data-tring]{stroke:#43c08a!important}
+html .grest[data-ph="r"] .grm b,html .grest[data-ph="r"] [data-tt]{color:#ffd9d6}
+</style>
 <style id="cf-wordmark">
 /* Schriftzug im Stil von Bild 1: geometrische Grotesk, flach Weiß + Blau, ohne Leerraum */
 html .marke b.mtred,html b.mtred{font-family:'Montserrat',var(--f),system-ui,sans-serif!important;font-weight:800!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.005em!important;text-transform:uppercase!important;filter:none!important;text-shadow:none!important;line-height:1!important}
@@ -3464,7 +3481,7 @@ function prevBestE1(w,d,b,i){const ex=P[w][d].b[b].e;let m=null;
 /* ===================== Rand-Timer ===================== */
 function edgeLayout(){const e=$('#edge');if(!e)return;const w=innerWidth,h=innerHeight;e.setAttribute('viewBox',`0 0 ${w} ${h}`);const r=$('#edgeR');r.setAttribute('x',3);r.setAttribute('y',3);r.setAttribute('width',Math.max(0,w-6));r.setAttribute('height',Math.max(0,h-6));r.setAttribute('rx',Math.min(38,w*.09))}
 addEventListener('resize',edgeLayout);
-function edgeTick(left,over){const e=$('#edge');if(!e)return;if(!T.on||document.querySelector('#gym:not([hidden]) .grest')){e.setAttribute('hidden','');return}e.removeAttribute('hidden');const f=T.total?Math.max(0,Math.min(1,left/T.total)):0;const r=$('#edgeR');
+function edgeTick(left,over){const e=$('#edge');if(!e)return;e.setAttribute('hidden','');return;if(!T.on||document.querySelector('#gym:not([hidden]) .grest')){e.setAttribute('hidden','');return}e.removeAttribute('hidden');const f=T.total?Math.max(0,Math.min(1,left/T.total)):0;const r=$('#edgeR');
  r.style.strokeDasharray=`${over?1:f} 1`;const col=T.paused?'var(--warn)':over?'var(--brand)':left<=10?'var(--warn)':'var(--ok)';r.style.stroke=col;e.style.color=col;e.classList.toggle('over',over)}
 
 /* ===================== Übungs-Details ===================== */
@@ -5046,7 +5063,7 @@ function tick(){const bar=$('#tbar');document.body.classList.toggle('tmr',T.on);
   if(sec<=10&&sec>=1&&sec<T.beeped){T.beeped=sec;sfx(sec<=3?'tick':'tick2');if(sec<=3)vib(60);document.querySelectorAll('.grest,.rest').forEach(e=>e.dataset.cd=sec)}
   if(sec<=0&&T.beeped>0){T.beeped=0;sfx('end');vib([280,100,280]);flashEnd();saveT();if(!S.meta.overtime){stopRest();toast('Pause vorbei – auf zum nächsten Satz');return}renderSheet();gymRefresh()}
   else if(sec<=0&&!S.meta.overtime){stopRest();return}}}
-let tickN=0;setInterval(()=>{tickN++;if(T.on||tickN%4===0)tick();if(tickN%4===0||!$('#gym').hidden)sessTick();const el=$('#gEl');if(el){const L=log(S.ui.w,S.ui.d);if(L&&L.start)el.textContent=mmss((Date.now()-L.start)/1000)}},200);
+let tickN=0;function loopT(){clearTimeout(loopT.t);if(!document.hidden){tickN=4;try{tick()}catch(e){}try{sessTick()}catch(e){}const el=$('#gEl');if(el){const L=log(S.ui.w,S.ui.d);if(L&&L.start)el.textContent=mmss((Date.now()-L.start)/1000)}}loopT.t=setTimeout(loopT,document.hidden?5000:T.on?250:1000)}loopT();document.addEventListener('visibilitychange',()=>{if(!document.hidden)loopT()});
 
 function openSheet(){$('#sheet').hidden=false;renderSheet();tick()}
 function closeSheet(){$('#sheet').hidden=true;tick()}
