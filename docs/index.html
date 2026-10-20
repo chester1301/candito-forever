@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-0840-7bf0eb0";
+<script>window.CF_VERSION="2026.10.20-0920-72b084a";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2384,6 +2384,48 @@ html #gym .grest[data-ph="o"] .grgo.slide .sl-fill{background:linear-gradient(90
 .gym-in.tight3 .gprog{margin-bottom:0!important}
 /* Tabellen: Hinweis auf seitliches Scrollen */
 .tw.ovx:not(.end){-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+
+/* Einheit-Zusammenfassung */
+#svw{position:fixed;inset:0;z-index:65;background:#000}
+body.svopen{overflow:hidden}
+.sv-in{position:absolute;inset:0;display:flex;flex-direction:column;background:#000}
+.sv-hero{flex:none;padding:calc(env(safe-area-inset-top,0px) + 10px) 18px 14px;background:radial-gradient(120% 120% at 0% 0%,rgba(38,140,70,.85) 0%,rgba(20,70,36,.55) 38%,rgba(0,0,0,0) 72%),#000;border-bottom:1px solid rgba(255,255,255,.06)}
+.sv-top{display:flex;align-items:center;gap:10px}
+.sv-x{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.25);display:grid;place-items:center;flex:none}.sv-x svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sv-prog{flex:1;text-align:center;font:800 11.5px var(--f);letter-spacing:.14em;text-transform:uppercase}
+.sv-sh{display:flex;align-items:center;gap:6px;border:0;background:none;color:#4a6df5;font:700 15px var(--f);padding:8px 2px}.sv-sh svg{width:20px;height:20px;fill:none;stroke:#4a6df5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sv-h{margin:14px 2px 10px;font:800 36px/1.05 'Montserrat',var(--f);letter-spacing:-.02em;color:#fff;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sv-h i svg{width:30px;height:30px;fill:none;stroke:#3cc46a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.sv-wd{display:flex;align-items:center;justify-content:center;gap:22px}.sv-wd>div{text-align:center;display:grid;line-height:1.2}.sv-wd small{font-size:13px;font-weight:700;color:#8a8f99}.sv-wd b{font-size:18px;font-weight:800;color:#fff}
+.sv-nb{width:40px;height:40px;border-radius:50%;border:0;background:rgba(74,109,245,.14);display:grid;place-items:center}.sv-nb svg{width:22px;height:22px;fill:none;stroke:#4a6df5;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.sv-nb.off{opacity:.25;background:none}
+.sv-sc{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:6px 16px calc(110px + env(safe-area-inset-bottom,0px))}
+.sv-sec{margin:22px 4px 12px;font:600 26px/1 'Montserrat',var(--f);color:#fff;letter-spacing:-.01em}
+.sv-g{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sv-t{position:relative;overflow:hidden;background:linear-gradient(160deg,#141518,#0d0e10);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:16px;display:grid;gap:2px;min-width:0}
+.sv-t>svg{width:30px;height:30px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px}
+.sv-t::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:var(--tc);opacity:.10;filter:blur(8px)}
+.sv-t.c1{--tc:#4fc3d9}.sv-t.c1>svg{stroke:#4fc3d9}.sv-t.c2{--tc:#a679ff}.sv-t.c2>svg{stroke:#a679ff}
+.sv-t.c3{--tc:var(--zc,#3cc46a)}.sv-t.c3>svg{stroke:var(--zc,#3cc46a)}.sv-t.c3>svg .f{fill:var(--zc,#3cc46a);stroke:none}
+.sv-t.c4{--tc:#f08a3c}.sv-t.c4>svg{stroke:#f08a3c}
+.sv-t span{font-size:14.5px;font-weight:700;color:#a3a7b0}.sv-t b{font:800 25px/1.15 'Montserrat',var(--f);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sv-t small{font-size:12px;font-weight:600;color:#6f747e;line-height:1.35}
+.sv-t.c3 b{color:var(--zc,#fff)}
+.sv-ph{margin-top:12px;background:#0f1012;border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:16px 18px}
+.sv-phh{display:flex;justify-content:space-between;align-items:center;gap:10px}.sv-phh b{font-size:17px;color:#fff}
+.sv-add{display:flex;align-items:center;gap:8px;color:#4a6df5;font:700 15.5px var(--f);cursor:pointer}.sv-add svg{width:24px;height:24px;fill:none;stroke:#4a6df5;stroke-width:2;stroke-linecap:round}
+.sv-phg{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.sv-ph.has .sv-phg{display:grid}.sv-pt{padding:0;border:0;border-radius:14px;overflow:hidden;aspect-ratio:1}.sv-pt img{width:100%;height:100%;object-fit:cover;display:block}
+.sv-ph>small{display:block;margin-top:8px;font-size:11.5px;color:#5c616b}
+.sv-nt{margin-top:12px;background:#0f1012;border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:14px 18px;display:grid;gap:10px}.sv-nt p{margin:0;font-size:14.5px;line-height:1.45;color:#d6d9df}.sv-nt b{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#4a6df5;margin-bottom:2px}
+.sv-ex{background:#0f1012;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:16px 16px 12px;margin-bottom:12px}
+.sv-eh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.sv-eh b{font:800 18px 'Montserrat',var(--f);color:#fff;min-width:0}.sv-eh em{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#f3c969;margin-left:6px;vertical-align:middle}
+.sv-i{flex:none;width:36px;height:36px;border:0;background:none;display:grid;place-items:center}.sv-i svg{width:26px;height:26px;fill:none;stroke:#4a6df5;stroke-width:1.9;stroke-linecap:round}
+.sv-s{display:flex;align-items:center;gap:8px;padding:5px 0;min-width:0}.sv-sn{width:56px;flex:none;font-size:15px;font-weight:600;color:#7d828c}
+.sv-c{background:#1c1d21;border-radius:11px;padding:6px 11px;font:800 15.5px 'Montserrat',var(--f);color:#fff;white-space:nowrap}.sv-c em{font-style:normal;color:#9fb3ff;font-weight:700}
+.sv-s>i{font-style:normal;font-weight:900;color:#e4e6ea;font-size:13px}
+.sv-bk{width:100%;margin-top:6px;height:52px;border-radius:16px;border:1px solid rgba(243,201,105,.4);background:rgba(243,201,105,.1);color:#f3c969;font:800 15px var(--f)}
+.sv-ft{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.92) 32%,#000)}
+.sv-b{height:58px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);background:#0b0b0d;color:#fff;font:800 18px var(--f);display:flex;align-items:center;justify-content:center;gap:10px}
+.sv-b.go svg{width:20px;height:20px;fill:none;stroke:#3cc46a;stroke-width:2.4;stroke-linejoin:round}
+@media (max-width:370px){.sv-t b{font-size:21px}.sv-h{font-size:30px}}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -3720,7 +3762,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0840-7bf0eb0</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0920-72b084a</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4274,6 +4316,50 @@ function slMount(root){(root||document).querySelectorAll('#gym .bigbtn.hb2:not([
 document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.slide');if(!el)return;if(el._ok){el._ok=false;return}
  e.preventDefault();e.stopImmediatePropagation();if(Date.now()-(el._sup||0)<700)return;const k=el.querySelector('.sl-knob');if(k){k.classList.remove('nudge');void k.offsetWidth;k.classList.add('nudge')}toast('Zum Bestätigen nach rechts schieben')},true);
 try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hidden)slMount(g)}).observe(document.getElementById('gym'),{childList:true,subtree:true})}catch(e){}
+
+/* ===================== Einheit-Zusammenfassung (wie Juggernaut, eigenes Design) ===================== */
+let SV=null;
+const SVI={cal:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M7.5 14h.01M12 14h.01M16.5 14h.01M7.5 17.5h.01M12 17.5h.01"/></svg>',clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',bat:'<svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 10.5v3"/><rect class="f" x="4.5" y="9" width="13" height="6" rx="1.2"/></svg>',flame:'<svg viewBox="0 0 24 24"><path d="M12 3c.5 3 4.5 5 4.5 10a4.5 4.5 0 0 1-9 0c0-2 1-3.4 2-4.4.2 1.4 1 2.4 2 2.4 0-3-.6-5.2.5-8z"/></svg>',share:'<svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',plus:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>',info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',play:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',back:'<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',ok:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>'};
+function svList(){return histSessions().slice().sort((a,b)=>a.dt-b.dt)}
+function svData(pid,w,d){return withProg(pid,()=>{const L=log(w,d);if(!L)return null;const day=P[w][d];const ex=[];
+ day.b.forEach((bl,b)=>{const ok=(L.b[b]||[]).map((z,i)=>({z,i})).filter(o=>o.z&&o.z.ok);if(!ok.length)return;const e=(L.sw&&L.sw[b])||bl.e;const st=ok.map(o=>({kg:pnum(o.z.kg),r:pnum(o.z.r),rpe:pnum(o.z.rpe)}));const last=ex[ex.length-1];if(last&&last.e===e)last.sets.push(...st);else ex.push({e,b,name:(EX[e]||{}).n||e,sw:e!==bl.e,sets:st})});ex.forEach(x=>x.sets.forEach((q,j)=>q.i=j));
+ const rp=ex.flatMap(x=>x.sets.map(s=>s.rpe)).filter(v=>v!=null);const TK=[...CKG,...CKS].map(q=>q[0]);const ra=jrAvg(L.feel,TK);
+ const ton=ex.reduce((a,x)=>a+x.sets.reduce((q,s)=>q+(s.kg||0)*(s.r||0),0),0);const nSets=ex.reduce((a,x)=>a+x.sets.length,0);
+ return {pid,w,d,L,day,ex,ton,nSets,rpe:rp.length?rp.reduce((a,b)=>a+b,0)/rp.length:null,rd:ra?jrMap(ra.avg):null,dt:L.date?new Date(L.date):dayDate(w,d),nd:day&&DAYS.length,prog:PROGS[pid].name,col:HPC[pid]||'#5aaaf0'}})}
+function svHTML(){const D=svData(SV.pid,SV.w,SV.d);if(!D)return '';const list=svList();const ix=list.findIndex(s=>s.pid===SV.pid&&s.w===SV.w&&s.d===SV.d);const prv=ix>0?list[ix-1]:null,nxt=ix>=0&&ix<list.length-1?list[ix+1]:null;
+ const z=D.rd!=null?jrZone(D.rd):null;const df=D.L.diff?(D.L.diffs===6?DIFF6[D.L.diff-1][0]:CKW.diff[D.L.diff-1]):null;const dfn=D.L.diff?(D.L.diffs===6?D.L.diff+'/6':D.L.diff+'/5'):'';
+ const dur=D.L.dur>0?fmtLen(D.L.dur):'–';const dtS=D.dt?D.dt.toLocaleDateString('de-DE',{day:'numeric',month:'short'}):'–';const dtY=D.dt?D.dt.toLocaleDateString('de-DE',{weekday:'long'})+', '+D.dt.getFullYear():'';
+ const nav=(o,dir)=>o?`<button type="button" class="sv-nb" data-svgo="${o.pid}|${o.w}|${o.d}" aria-label="${dir<0?'Vorherige':'Nächste'} Einheit">${dir<0?SVI.back:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>'}</button>`:`<span class="sv-nb off">${dir<0?SVI.back:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>'}</span>`;
+ return `<div class="sv-in"><div class="sv-hero"><div class="sv-top"><button type="button" class="sv-x" data-svclose aria-label="Schließen">${SVI.back}</button><span class="sv-prog" style="color:${D.col}">${esc(D.prog)}</span><button type="button" class="sv-sh" data-svshare>${SVI.share}<span>Teilen</span></button></div>
+  <h1 class="sv-h">${esc(D.day.f)} <i>${SVI.ok}</i></h1>
+  <div class="sv-wd">${nav(prv,-1)}<div><small>Woche ${D.w+1}</small><b>Tag ${D.d+1} von ${DAYS.length}</b></div>${nav(nxt,1)}</div></div>
+ <div class="sv-sc">
+  <p class="sv-sec">Übersicht</p>
+  <div class="sv-g">
+   <div class="sv-t c1">${SVI.cal}<span>Abgeschlossen</span><b>${dtS}</b><small>${dtY}</small></div>
+   <div class="sv-t c2">${SVI.clock}<span>Trainingsdauer</span><b>${dur}</b><small>${D.nSets} Sätze · ${Math.round(D.ton).toLocaleString('de-DE')} kg</small></div>
+   <div class="sv-t c3" style="${z?'--zc:'+z.c:''}">${SVI.bat}<span>Readiness</span><b>${D.rd!=null?D.rd:'–'}</b><small>${z?z.n:'kein Check-in'}</small></div>
+   <div class="sv-t c4">${SVI.flame}<span>Belastung</span><b>${df||'–'}</b><small>${df?'Schwierigkeit '+dfn:'nicht bewertet'}${D.rpe!=null?' · Ø RPE '+nf(Math.round(D.rpe*2)/2,1):''}</small></div>
+  </div>
+  <div class="sv-ph" data-svph="${D.pid}|${D.w}|${D.d}"><div class="sv-phh"><b>Trainingsfoto</b><label class="sv-add">${SVI.plus}<span>Foto hinzufügen</span><input type="file" accept="image/*" data-svphadd hidden></label></div><div class="sv-phg"></div><small>Nur auf diesem iPhone · nicht in der iCloud-Sicherung</small></div>
+  ${D.L.ach||D.L.imp?`<div class="sv-nt">${D.L.ach?`<p><b>Erreicht</b>${esc(D.L.ach)}</p>`:''}${D.L.imp?`<p><b>Besser machen</b>${esc(D.L.imp)}</p>`:''}</div>`:''}
+  <p class="sv-sec">Leistung</p>
+  ${D.ex.map(x=>`<section class="sv-ex"><div class="sv-eh"><b>${esc(x.name)}${x.sw?' <em>getauscht</em>':''}</b><button type="button" class="sv-i" data-ex="${x.e}" aria-label="Info zu ${esc(x.name)}">${SVI.info}</button></div>
+   ${x.sets.map(st=>`<div class="sv-s"><span class="sv-sn">Satz ${st.i+1}</span><span class="sv-c">${st.kg!=null?nf(st.kg,2)+' kg':'ohne kg'}</span><i>×</i><span class="sv-c">${st.r!=null?st.r+' Wdh':'–'}${st.rpe!=null?` <em>@ RPE ${nf(st.rpe,1)}</em>`:''}</span></div>`).join('')}</section>`).join('')||'<p class="hs-e">Keine abgehakten Sätze.</p>'}
+  ${D.L.note?`<div class="sv-nt"><p><b>Notiz</b>${esc(D.L.note)}</p></div>`:''}
+  ${SV.fresh&&PWA?'<button type="button" class="sv-bk" data-sumbk2>☁︎ Jetzt in iCloud sichern</button>':''}
+ </div>
+ <div class="sv-ft"><button type="button" class="sv-b" data-svclose>${SV.fresh?'Fertig':'Zurück'}</button><button type="button" class="sv-b go" data-svresume>${SVI.play}<span>Fortsetzen</span></button></div></div>`}
+function svOpen(pid,w,d,fresh){SV={pid,w,d,fresh:!!fresh};let el=document.getElementById('svw');if(!el){el=document.createElement('div');el.id='svw';document.body.appendChild(el)}el.innerHTML=svHTML();el.hidden=false;document.body.classList.add('svopen');svPh()}
+function svClose(){const el=document.getElementById('svw');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('svopen');SV=null}
+async function svPh(){const box=document.querySelector('#svw .sv-ph');if(!box||!SV)return;const g=box.querySelector('.sv-phg');try{const L=await phList('sess:'+SV.pid+':'+SV.w+'-'+SV.d);g.innerHTML=L.sort((a,b)=>b.at-a.at).map(o=>{const u=URL.createObjectURL(o.blob);return `<button type="button" class="ph-t sv-pt" data-phview="${o.id}" data-u="${u}"><img src="${u}" alt="Trainingsfoto"></button>`}).join('');box.classList.toggle('has',L.length>0)}catch(e){}}
+document.addEventListener('change',async e=>{const i=e.target;if(!i.matches||!i.matches('[data-svphadd]')||!SV)return;const f=i.files&&i.files[0];if(!f)return;try{const b=await phShrink(f);await phPut({ex:'sess:'+SV.pid+':'+SV.w+'-'+SV.d,at:Date.now(),blob:b});toast('Foto gespeichert');svPh()}catch(err){toast('Foto konnte nicht gespeichert werden')}});
+document.addEventListener('click',e=>{if(!SV)return;const t=e.target.closest('#svw button');if(!t)return;
+ if(t.dataset.svclose!=null){svClose();render();return}
+ if(t.dataset.svgo){const [pid,w,d]=t.dataset.svgo.split('|');svOpen(pid,+w,+d,false);return}
+ if(t.dataset.sumbk2!=null){try{downloadBackup()}catch(err){}return}
+ if(t.dataset.svshare!=null){const D=svData(SV.pid,SV.w,SV.d);if(!D)return;window._lastSum={k:'W'+(D.w+1)+' '+(DAYS[D.d]||{}).tag,f:D.day.f,ton:D.ton,sets:D.nSets,dur:D.L.dur>0?fmtHMS(D.L.dur):'–',adh:null};const fake=document.createElement('button');fake.dataset.sharesum='1';fake.hidden=true;document.body.appendChild(fake);fake.click();fake.remove();return}
+ if(t.dataset.svresume!=null){const {pid,w,d}=SV;svClose();if(pid!==PROG){S.meta.prog=pid;saveMeta();setProg(pid);renderTL.done=false}S.ui.w=w;S.ui.d=d;reopenSession(w,d);toast('Einheit wieder geöffnet – Sätze nachtragen, dann erneut abschließen');openGym();return}});
 /* ===================== Verlauf: abgeschlossene Einheiten (alle Programme) ===================== */
 const HPC={intro:'#5aaaf0',p8:'#4069f5',p8b:'#7d9bff',p10:'#3cc4d6'};
 function histSessions(){const TK=[...CKG,...CKS].map(q=>q[0]);const out=[];
@@ -4316,14 +4402,14 @@ function histCal(all){const ref=S.ui.hm?new Date(S.ui.hm+'-15T12:00:00'):new Dat
  const mk=(dy)=>{const n=new Date(y0,m0+dy,15);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')};
  return `<div class="hs-cal"><div class="hs-cm"><button type="button" data-hm="${mk(-1)}" aria-label="Vormonat">‹</button><b>${first.toLocaleDateString('de-DE',{month:'long',year:'numeric'})}</b><button type="button" data-hm="${mk(1)}" aria-label="Nächster Monat">›</button></div><div class="hs-wd">${['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<span>${x}</span>`).join('')}</div><div class="hs-g">${c}</div></div>`}
 function histCard(s){const z=s.rd!=null?jrZone(s.rd):null;const dur=s.L.dur>0?fmtLen(s.L.dur):null;const df=s.L.diff?(s.L.diffs===6?DIFF6[s.L.diff-1][0]:CKW.diff[s.L.diff-1]):null;
- return `<article class="hs-c"><button type="button" class="hs-ct" data-hgo="${s.pid}|${s.w}|${s.d}"><span style="color:${s.col}">${esc(s.prog)}</span><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+ return `<article class="hs-c" data-hgo="${s.pid}|${s.w}|${s.d}"><button type="button" class="hs-ct" data-hgo="${s.pid}|${s.w}|${s.d}"><span style="color:${s.col}">${esc(s.prog)}</span><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
   <h3>${s.dt.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})} <small>· ${esc(s.day.f)}</small></h3>
   <div class="hs-m">${z?`<span style="color:${z.c}">${HS_IC.bolt}${s.rd} · ${z.n}</span>`:''}<span>${HS_IC.bar}${Math.round(s.ton).toLocaleString('de-DE')} kg</span><span>${HS_IC.wk}Woche ${s.w+1} | Tag ${s.d+1}</span>${dur?`<span>${HS_IC.clock}${dur}</span>`:''}${df?`<span class="df">Schwierigkeit: ${df}</span>`:''}</div>
   <div class="hs-x">${s.ex.map(e=>`<div><span class="n">${e.n}</span><i>×</i><span class="e">${esc(e.name)}</span><span class="sp"></span><span class="n">${pnum(e.r)!=null?nf(pnum(e.r),0):'–'}</span><i>×</i><span class="n">${pnum(e.kg)!=null?nf(pnum(e.kg),1)+' kg':'ohne kg'}</span></div>`).join('')}</div>
   ${s.L.ach?`<p class="hs-n"><b>Erreicht:</b> ${esc(s.L.ach)}</p>`:''}${s.L.imp?`<p class="hs-n"><b>Besser machen:</b> ${esc(s.L.imp)}</p>`:''}</article>`}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-hp],[data-hv],[data-hm],[data-hday],[data-hgo]');if(!t)return;
+document.addEventListener('click',e=>{const t=e.target.closest('[data-hp],[data-hv],[data-hm],[data-hday],[data-hgo]');if(!t||t.closest('#svw'))return;
  if(t.dataset.hp){S.ui.hp=t.dataset.hp}else if(t.dataset.hv){S.ui.hv=t.dataset.hv}else if(t.dataset.hm){S.ui.hm=t.dataset.hm}else if(t.dataset.hday){S.ui.hday=S.ui.hday===t.dataset.hday?null:t.dataset.hday}
- else if(t.dataset.hgo){const [pid,w,d]=t.dataset.hgo.split('|');if(pid!==PROG){S.meta.prog=pid;saveMeta();setProg(pid);S.ui.openB={};renderTL.done=false}S.ui.w=+w;S.ui.d=+d;S.ui.tab='train';render();window.scrollTo(0,0);return}
+ else if(t.dataset.hgo){const [pid,w,d]=t.dataset.hgo.split('|');svOpen(pid,+w,+d,false);return;if(pid!==PROG){S.meta.prog=pid;saveMeta();setProg(pid);S.ui.openB={};renderTL.done=false}S.ui.w=+w;S.ui.d=+d;S.ui.tab='train';render();window.scrollTo(0,0);return}
  const y=window.scrollY;render();window.scrollTo(0,y)});
 /* ===== Readiness-Skala (Bereiche wie Juggernaut, Wert nur aus dem Check-in) ===== */
 const JRZ=[{k:'dz',lo:0,hi:49,c:'#ef4f4f',n:'Gefahrenzone',s:'Heute hat Erholung Vorrang.',t:'Die Erholung ist niedrig. Schlaf, Ernährung und Regeneration haben jetzt Vorrang. Trainiere exakt nach Plan, ohne Extras, und trage das RPE ehrlich ein.',a:'Ø unter 3,0'},
@@ -6310,6 +6396,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden
 /* ===================== Gym-Modus ===================== */
 const G={b:0,i:0};let wake=null;
 async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
+ if(typeof SV!=='undefined'&&SV)svClose();
  if(L.start&&!L.flow&&needCk(w,d)&&!CK)setTimeout(()=>{if(!CK&&!$('#gym').hidden)ckOpen(PROG,w,d,()=>{gymRefresh()})},350);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
@@ -6746,10 +6833,7 @@ function finishSession(w,d){const L=log(w,d,true);const now=Date.now();delete L.
  if(!L.start)L.start=now;L.end=now;L.dur=Math.max(0,now-L.start-(L.pauseMs||0));L.done=true;if(!L.date)L.date=new Date().toISOString();saveLog(key(w,d));queueOutbox(w,d,true);stopRest();showSummary(w,d)}
 function reopenSession(w,d){const L=log(w,d,true);const now=Date.now();if(L.end)L.pauseMs=(L.pauseMs||0)+(now-L.end);delete L.end;delete L.dur;L.done=false;L.reopened=now;saveLog(key(w,d))}
 function showSummary(w,d){const L=log(w,d);const sets=L.b.flat().filter(s=>s.ok);const ton=sets.reduce((a,s)=>a+(pnum(s.kg)||0)*(pnum(s.r)||0),0);try{const a=dayAdh(w,d);window._lastSum={k:'W'+(w+1)+' '+DAYS[d].tag,f:P[w][d].f,ton,sets:sets.length,dur:L.dur>0?fmtHMS(L.dur):'–',adh:a.ev?Math.round(a.hit/a.ev*100):null}}catch(e){}
- try{hideUndo()}catch(e){}const f=$('#fx');f.className='fx pr sum';f.innerHTML=`<div class="fx-in"><svg class="medal" viewBox="0 0 84 84" aria-hidden="true"><defs><linearGradient id="mdG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".5" stop-color="#e2b04a"/><stop offset="1" stop-color="#9c6d1c"/></linearGradient></defs><path d="M28 4h10l6 20-9 4zM56 4H46l-6 20 9 4z" fill="#3d63f5" opacity=".9"/><circle cx="42" cy="52" r="27" fill="url(#mdG)"/><circle cx="42" cy="52" r="21" fill="none" stroke="#fff4cf" stroke-opacity=".55" stroke-width="1.5"/><path d="M32 52.5l6.5 6.5L53 45" fill="none" stroke="#3a2606" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="eyebrow">Training beendet · W${w+1} ${DAYS[d].tag}</p><b class="disp">${esc(P[w][d].f)}</b>
-  <div class="prv"><b class="zahl" style="color:var(--ok)">${L.dur>0?fmtHMS(L.dur):L.start?fmtHMS(Date.now()-L.start):'–'}</b></div>
-  <div class="sumg"><span><small>Sätze</small><b>${sets.length}</b></span><span><small>Tonnage</small><b>${nf(ton/1000,2)} t</b></span><span><small>Pausen gesamt</small><b>${fmtHM(L.pauseMs||0)}</b></span>${(()=>{const a=dayAdh(w,d);return a.ev?`<span><small>Plan-Treue</small><b style="color:${a.hit/a.ev>=.8?'var(--ok)':'var(--warn)'}">${Math.round(a.hit/a.ev*100)} %</b></span>`:''})()}</div>
-  ${PWA?'<button type="button" class="btn sumbk" data-sumbk>☁︎ Jetzt in iCloud sichern</button><p class="note2" style="margin:6px 0 0;font-size:12px">Ein Tipp – dann verlierst du höchstens die nächste Einheit.</p>':''}<div class="fx-bt"><button type="button" class="btn" data-sharesum>Als Bild teilen</button><button type="button" class="btn primary">Stark – weiter</button></div></div>`;f.hidden=false;sfx('pr');hap([20,60,30]);clearTimeout(f._t);f._t=setTimeout(()=>{f.hidden=true},PWA?25000:9000)}
+ try{hideUndo()}catch(e){}try{sfx('pr');hap([20,60,30])}catch(e){}svOpen(PROG,w,d,true)}
 function sessTick(){const r=runningSession();const chip=$('#sesschip');{const ps=document.querySelector('.top .psub');if(chip&&ps&&chip.parentElement!==ps)ps.appendChild(chip)}
  if(chip){if(!r)chip.hidden=true;else{chip.hidden=false;chip.querySelector('b').textContent=fmtHMS(sessEl(r.L));chip.classList.toggle('paused',!!r.L.pausedAt);chip.dataset.w=r.w;chip.dataset.d=r.d}}
  document.querySelectorAll('[data-sesst]').forEach(e=>{const [w,d]=e.dataset.sesst.split('-').map(Number);e.textContent=fmtHMS(sessEl(log(w,d)))});
