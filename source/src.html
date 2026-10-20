@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#090a0e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..104,500..900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..104,500..900&family=Montserrat:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
 /* Gestaltung angelehnt an das Powerlifting Coach Cockpit: ein dunkles Erscheinungsbild, Karten mit 20px Radius,
    Archivo (kondensiert) für Leistungszahlen, Manrope für Text, JetBrains Mono für Technik.
@@ -2131,6 +2131,13 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 #cfbar.bk{display:none!important}
 body.gymopen #cfbar{display:none!important}
 </style>
+<style id="cf-wordmark">
+/* Schriftzug im Stil von Bild 1: geometrische Grotesk, flach Weiß + Blau, ohne Leerraum */
+html .marke b.mtred,html b.mtred{font-family:'Montserrat',var(--f),system-ui,sans-serif!important;font-weight:800!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.005em!important;text-transform:uppercase!important;filter:none!important;text-shadow:none!important;line-height:1!important}
+html b.mtred .mt1,html b.mtred .mt2{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;font-family:inherit!important;letter-spacing:inherit!important}
+html b.mtred .mt1{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html b.mtred .mt2{color:#4a6df5!important;-webkit-text-fill-color:#4a6df5!important}
+</style>
 <style id="cf-flow">
 /* ===== Ablauf: Aufwärmen · Readiness · Trainingsende ===== */
 .ck-in.fl{background:radial-gradient(120% 40% at 50% -6%,rgba(61,99,245,.42),transparent 60%),#05060b!important;border:0!important;border-radius:0!important;width:100%!important;height:100%!important;max-width:none!important}
@@ -2252,7 +2259,7 @@ button.cwk-n{cursor:pointer}button.cwk-n b{color:#9fb3ff}
 <path d="M14 40 A37 37 0 0 1 64 13" fill="none" stroke="url(#pfGl)" stroke-width="5" stroke-linecap="round" opacity=".55"/>
 <ellipse cx="34" cy="24" rx="15" ry="7" transform="rotate(-32 34 24)" fill="#fff" fill-opacity=".12"/>
 </svg></span>
-    <div class="mt"><b class="mtred"><span class="mt1">Candito</span> <span class="mt2">Forever</span></b><span class="psub"><i class="t2">Programm</i><span id="progsub">Powerlifting · 4 Wochen · Sa / So / Di / Do</span></span></div>
+    <div class="mt"><b class="mtred"><span class="mt1">Candito</span><span class="mt2">Forever</span></b><span class="psub"><i class="t2">Programm</i><span id="progsub">Powerlifting · 4 Wochen · Sa / So / Di / Do</span></span></div>
     <button type="button" class="sesschip" id="sesschip" hidden aria-label="Laufendes Training öffnen"><i></i><b>0:00</b></button>
     <div class="sync" id="sync"><i></i><span>lädt…</span></div>
     <button type="button" class="iconbtn gear dots" id="gear" aria-label="Menü und Einstellungen"><svg class="cog" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
@@ -4385,7 +4392,7 @@ function shareCard(o){const c=document.createElement('canvas');c.width=1080;c.he
  const g=x.createLinearGradient(0,0,0,1920);g.addColorStop(0,'#1a2a8a');g.addColorStop(.45,'#0a1030');g.addColorStop(1,'#04050b');x.fillStyle=g;x.fillRect(0,0,1080,1920);
  const rg=x.createRadialGradient(200,150,20,200,150,900);rg.addColorStop(0,'rgba(80,120,255,.55)');rg.addColorStop(1,'rgba(80,120,255,0)');x.fillStyle=rg;x.fillRect(0,0,1080,1920);
  const F='"Archivo","Manrope",system-ui,sans-serif';x.textAlign='left';
- x.fillStyle='#ffffff';x.font=`900 64px ${F}`;x.fillText('CANDITO',90,170);const w1=x.measureText('CANDITO ').width;x.fillStyle='#8fa8ff';x.fillText('FOREVER',90+w1,170);
+ x.fillStyle='#ffffff';x.font=`800 64px Montserrat, ${F}`;x.fillText('CANDITO',90,170);const w1=x.measureText('CANDITO').width;x.fillStyle='#4a6df5';x.fillText('FOREVER',90+w1,170);
  x.fillStyle='rgba(200,215,255,.75)';x.font=`800 40px ${F}`;x.fillText((o.kicker||'').toUpperCase(),90,420);
  x.fillStyle='#fff';x.font=`900 92px ${F}`;wrapT(x,o.title||'',90,540,900,100);
  x.font=`900 300px ${F}`;x.fillStyle='#ffffff';x.fillText(o.big||'',80,980);const bw=x.measureText(o.big||'').width;x.font=`800 90px ${F}`;x.fillStyle='#8fa8ff';x.fillText(o.unit||'',100+bw,980);
