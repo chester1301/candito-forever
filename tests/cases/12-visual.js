@@ -64,6 +64,9 @@ module.exports={name:'Optik – Screenshots gegen Referenzbilder',async run({pag
       await p.clock.setFixedTime(new Date(+new Date(FIXED)+(vi+1)*60e3));
       await p.evaluate(`(${v.go})()`);await p.waitForTimeout(700);
       await p.evaluate(()=>document.fonts&&document.fonts.ready);
+      // Speicheranzeige („Wird gespeichert …“) muss abgeschlossen sein, sonst hängt das Bild vom Timing ab
+      await p.waitForFunction(()=>typeof SAVEST==='undefined'||!Object.values(SAVEST).includes('pending'),null,{timeout:5000}).catch(()=>{});
+      await p.evaluate(()=>{try{if(!document.getElementById('gym').hidden)renderGym()}catch(e){}});await p.waitForTimeout(250);
       if(v.full)await p.evaluate(()=>document.documentElement.classList.add('vis-full'));
       const buf=await p.screenshot({fullPage:!!v.full,animations:'disabled',caret:'hide'});
       await p.evaluate(()=>document.documentElement.classList.remove('vis-full'));
