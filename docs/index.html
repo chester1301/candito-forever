@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-0946-c8ea63d";
+<script>window.CF_VERSION="2026.10.20-0955-d54a6ab";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2438,6 +2438,38 @@ html[data-theme=blue] #eglow i{position:absolute;left:0;top:-200px;width:100%;he
 html[data-theme=blue] #eglow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,transparent,rgba(111,140,255,.35) 30%,rgba(111,140,255,.12) 70%,transparent)}
 body.gymopen #eglow,body.ckopen #eglow,body.svopen #eglow{display:none!important}
 @media (prefers-reduced-motion:reduce){html[data-theme=blue] #eglow i{transform:none!important}}
+
+/* Übungs-Info im Juggernaut-Stil */
+html #xsheet .sheet-in.xs{background:linear-gradient(180deg,#0d1020,#07080d 40%)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.xm-desc{margin:4px 2px 14px}.xm-desc p{margin:0;font-size:15px;line-height:1.5;color:#c9ccd4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.xm-desc.open p{-webkit-line-clamp:unset;display:block}
+.xm-more{border:0;background:none;padding:6px 0 0;color:#4a6df5;font:900 13px var(--f);letter-spacing:.1em;text-transform:uppercase}.xm-more .b{display:none}.xm-desc.open .xm-more .a{display:none}.xm-desc.open .xm-more .b{display:inline}
+.xm{display:grid;gap:12px;margin-bottom:12px}
+.xm-c{background:linear-gradient(180deg,#121420,#0c0e16);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:16px 16px 14px}
+.xm-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.xm-h b{font-size:17px;color:#e4e6ea;display:block}.xm-h small{font-size:13px;color:#8a8f99}
+.xm-big{background:#1a1c24;border-radius:16px;padding:10px 14px;display:grid;justify-items:start;min-width:120px}.xm-big b{font:800 34px/1 'Montserrat',var(--f);color:#fff}.xm-big b em{font-style:normal;font-size:14px;color:#a3a7b0;margin-left:4px}.xm-big span{font-size:12px;font-weight:800;color:#fff;margin-top:4px}.xm-big small{font-size:10.5px;color:#7d828c}
+.xm-ch{width:100%;height:auto;display:block;margin-top:8px;overflow:visible}.xm-ax{font:600 10px var(--f);fill:#70747c}.xm-lv{font:800 11px var(--f);fill:#fff}
+.xm-lg{display:flex;gap:14px;font-size:11.5px;color:#8a8f99;margin-top:6px}.xm-lg span{display:flex;align-items:center;gap:6px}.xm-lg i{width:8px;height:8px;border-radius:50%}
+.xm-e{margin:14px 0 4px;font-size:13.5px;color:#70747c}
+.xm-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.xm-row>b{font-size:17px;color:#e4e6ea}
+.xm-add{display:flex;align-items:center;gap:8px;border:0;background:none;color:#4a6df5;font:700 15.5px var(--f)}.xm-add svg{width:22px;height:22px;fill:none;stroke:#4a6df5;stroke-width:2;stroke-linecap:round}
+.xm-note{width:100%;text-align:left;border:0;background:#1a1c24;border-radius:14px;padding:12px 14px;color:#e4e6ea;font:500 14.5px/1.45 var(--f);white-space:pre-wrap}.xm-note small{display:block;margin-top:6px;font-size:11px;color:#70747c}
+.xm-st{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;background:none;padding:0;text-align:left;color:inherit}.xm-st b{display:block;font-size:17px;color:#e4e6ea}.xm-st small{font-size:13px;color:#8a8f99}.xm-st svg{width:22px;height:22px;fill:none;stroke:#4a6df5;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;flex:none}
+.xm-sl{display:grid;margin-top:8px}.xm-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border:0;border-top:1px solid rgba(255,255,255,.05);background:none;text-align:left;color:inherit;width:100%}
+.xm-r b{display:block;font-size:15.5px;color:#fff}.xm-r small{font-size:12.5px;color:#7d828c}.xm-r em{font-style:normal;font-weight:800;font-size:15.5px;color:#fff;white-space:nowrap}button.xm-r em{color:#9fb3ff}
+.xm-n{margin:6px 0 0;font-size:11.5px;color:#70747c;line-height:1.4}
+.xm-lm{display:flex;align-items:center;gap:6px;margin:10px 0 6px;font-size:14px;color:#a3a7b0;flex-wrap:wrap}.xm-lm svg{width:16px;height:16px;fill:none;stroke:#a3a7b0;stroke-width:2}.xm-dot{color:#4c5160}
+#xedit{position:fixed;inset:0;z-index:2147483000}#xedit .jrs-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .2s}
+.xe-in{position:absolute;left:0;right:0;bottom:0;max-width:680px;margin:0 auto;background:#0e0f12;border-radius:26px 26px 0 0;padding:6px 20px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .24s cubic-bezier(.2,.8,.2,1);max-height:88vh;overflow:auto}
+#xedit.on .jrs-bg{opacity:1}#xedit.on .xe-in{transform:none}
+.xe-in h2{margin:14px 0 6px;font:800 26px 'Montserrat',var(--f);color:#fff}.xe-in>p{margin:0 0 16px;font-size:14.5px;color:#a3a7b0;line-height:1.45}
+.xe-x{position:absolute;right:16px;top:14px;width:40px;height:40px;border:0;background:none;display:grid;place-items:center}.xe-x svg{width:26px;height:26px;fill:none;stroke:#4a6df5;stroke-width:2.4;stroke-linecap:round}
+.xe-v{display:grid;grid-template-columns:62px 1fr 62px;align-items:center;margin:8px 0 18px}.xe-v>button{width:62px;height:62px;border-radius:50%;border:0;background:#1f2026;color:#fff;font:400 32px var(--f)}
+.xe-v>div{display:flex;align-items:baseline;justify-content:center;gap:6px}.xe-v input{width:150px;text-align:right;border:0;background:none;color:#fff;font:800 52px 'Montserrat',var(--f);outline:none;padding:0}.xe-v em{font-style:normal;font-size:30px;color:#70747c}
+.xe-save{width:100%;height:54px;border-radius:999px;border:0;background:linear-gradient(180deg,#25c460,#13994a);color:#fff;font:800 17px var(--f);box-shadow:0 10px 24px -12px rgba(37,196,96,.8)}
+.xe-del{width:100%;margin-top:12px;border:0;background:none;color:#ff4f7a;font:800 16px var(--f);padding:10px}
+.xe-cn{width:100%;margin-top:10px;height:52px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:#17181d;color:#fff;font:700 16px var(--f)}
+.xe-ol{display:grid;gap:10px;margin-bottom:18px}.xe-ol button{height:50px;border-radius:16px;border:0;background:#1f2026;color:#fff;font:800 17px var(--f)}.xe-ol button[aria-pressed="true"]{background:#3a63ff;box-shadow:0 8px 20px -10px rgba(58,99,255,.9)}
+.xe-ta{background:#17181d!important;border-radius:14px!important;text-align:left!important;margin-bottom:14px;min-height:110px}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -3774,7 +3806,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0946-c8ea63d</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0955-d54a6ab</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -3815,6 +3847,7 @@ async function initDb(){
 const nf=(n,d=1)=>n==null||isNaN(n)?'–':Number(n).toLocaleString('de-DE',{maximumFractionDigits:d,useGrouping:false});
 const pnum=v=>{if(v==null||v==='')return null;const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?null:n};
 const rnd=x=>{const s=S.meta.round||2.5;return Math.round(x/s)*s};
+const exInc=ex=>(S.meta.exInc&&S.meta.exInc[ex])||S.meta.round||2.5;
 const RTS=[100,95.5,92.2,89.2,86.3,83.7,81.1,78.6,76.2,73.9,70.7,68.0];
 // e1RM für alle Auswertungen: Modernized Load/RIR Chart (wie RPE-Rechner); außerhalb der Tabelle (> 30 Wdh.) alte Formel
 function e1rm(kg,r,rpe){if(!kg||!r)return null;const p=(typeof LRC_INT!=='undefined')?lrcPct(r,rpe==null?10:rpe):null;return p?kg/(p/100):e1rmRTS(kg,r,rpe)}
@@ -3866,7 +3899,8 @@ function estE1(ex,w,d,b,i){const L=log(w,d);
   P[W][D].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L2.b[B]||[]).forEach(s=>{const e=e1OfL(s,bl);if(e&&(!mx||e>mx.e1))mx={e1:e,src:`W${W+1} ${DAYS[D].tag}`}})});
   if(mx)return mx}
  if(PROG!=='intro'&&!estE1.px){estE1.px=1;try{for(const pid of prevOf(PROG)){const r=withProg(pid,()=>estE1(ex,NW(),0,99,0));if(r)return {e1:r.e1,src:PROGS[pid].short+', '+r.src}}}finally{estE1.px=0}}
- const rel=REL[ex];if(rel&&!estE1.busy){estE1.busy=true;try{for(const [rx,f] of rel){const e=estE1(rx,w,d,99,0);if(e){return {e1:e.e1*f,src:`${EX[rx].n}, ${e.src}`}}}}finally{estE1.busy=false}}
+ const rel=REL[ex];{const mm=exMaxCur(ex);if(mm&&!rel)return {e1:mm.kg,src:'dein eingetragenes 1RM'}}if(rel&&!estE1.busy){estE1.busy=true;try{for(const [rx,f] of rel){const e=estE1(rx,w,d,99,0);if(e){return {e1:e.e1*f,src:`${EX[rx].n}, ${e.src}`}}}}finally{estE1.busy=false}}
+ {const mm=exMaxCur(ex);if(mm)return {e1:mm.kg,src:'dein eingetragenes 1RM'}}
  return null}
 const REL={cgb:[['pbb',.9]],sgdl:[['cdl',.75],['pdl',.75]],rdle:[['cdl',.65]],rdlt:[['cdl',.65]],mach:[['csq',.85]],fub:[['pbb',.85],['pb3',.85]],ecc:[['pbb',.85],['pb3',.85]],hbs:[['csq',.85],['psq',.85]],sgdl:[['cdl',.7],['pdl',.7]],platz:[['csq',.7],['psq',.7]],pbb:[['pb3',1]],csq:[['psq',1]],cdl:[['pdl',1]],psq:[['csq',.95]],pdl:[['cdl',.95]],pb3:[['pbb',.97]]};
 function maxKg(ex,w,d){let m=null;for(let x=w*ND()+d;x>=0;x--){const W=Math.floor(x/ND()),D=x%ND();const L=log(W,D);if(!L)continue;P[W][D].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L.b[B]||[]).forEach(s=>{const k=pnum(s.kg);if(k&&(m==null||k>m))m=k})})}return m}
@@ -4820,6 +4854,73 @@ $('#xsheet').addEventListener('click',e=>{if(e.target.id==='xsheet'||e.target.cl
 document.addEventListener('click',e=>{const x=e.target.closest('[data-ex]');if(x&&!x.closest('#xsheet')){e.preventDefault();openEx(x.dataset.ex)}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#xsheet').hidden)closeEx()});
 
+
+/* ===================== Übungs-Info: Maxima, Notizen, Einstellungen, letzte Einheit ===================== */
+function exMaxCur(ex){const a=(S.meta.exMax||{})[ex];return a&&a.length?a[a.length-1]:null}
+function exHist(ex){const out=[];rfAllLogs().forEach(x=>{withProg(x.pid,()=>{const day=x.day;let best=null;const sets=[];day.b.forEach((bl,b)=>{const e=(x.L.sw&&x.L.sw[b])||bl.e;if(e!==ex)return;(x.L.b[b]||[]).forEach(z=>{if(!z||!z.ok)return;sets.push({kg:pnum(z.kg),r:pnum(z.r),rpe:pnum(z.rpe),x:bl.x});const v=e1OfL(z,bl);if(v&&(!best||v>best))best=v})});
+ if(sets.length)out.push({pid:x.pid,w:x.w,d:x.d,dt:x.dt,L:x.L,best,sets,f:day.f})})});return out.sort((a,b)=>a.dt-b.dt)}
+function exAgo(dt){const h=(Date.now()-dt)/36e5;if(h<1)return 'gerade eben';if(h<24)return 'vor '+Math.round(h)+(Math.round(h)===1?' Stunde':' Stunden');const d=Math.round(h/24);return d===1?'gestern':'vor '+d+' Tagen'}
+function exMaxChart(pts,cur){if(!pts.length)return '<p class="xm-e">Noch keine Werte. Trag Sätze mit RPE ein oder gib unten dein 1RM ein.</p>';const W=330,H=170,pl=36,pr=12,pt=26,pb=26;
+ const vs=pts.map(p=>p.v);let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(2.5,(hi-lo)*.25);lo=Math.floor((lo-pad)/2.5)*2.5;hi=Math.ceil((hi+pad)/2.5)*2.5;
+ const t0=+pts[0].dt,t1=+pts[pts.length-1].dt,sp=Math.max(1,t1-t0);const x=t=>pts.length===1?(pl+W-pr)/2:pl+(t-t0)/sp*(W-pl-pr),y=v=>pt+(1-(v-lo)/(hi-lo))*(H-pt-pb);
+ let g='';[lo,Math.round((lo+hi)/2/2.5)*2.5,hi].forEach(v=>g+=`<text x="2" y="${y(v)+4}" class="xm-ax">${nf(v,1)}</text>`);
+ const d=pts.map((p,i)=>(i?'L':'M')+x(+p.dt).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');const lp=pts[pts.length-1];
+ const area=pts.length>1?`<path d="${d} L${x(t1)} ${H-pb} L${x(t0)} ${H-pb} Z" fill="url(#xmg)"/>`:'';
+ const dots=pts.map((p,i)=>`<circle cx="${x(+p.dt)}" cy="${y(p.v)}" r="${i===pts.length-1?6:3.2}" fill="${i===pts.length-1?'#fff':p.m?'#f3c969':'#4069f5'}" ${i===pts.length-1?'stroke="#4069f5" stroke-width="2.5"':''}/>`).join('');
+ const fd=t=>new Date(t).toLocaleDateString('de-DE',{day:'numeric',month:'short'});
+ return `<svg class="xm-ch" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="xmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3157e8" stop-opacity=".55"/><stop offset="1" stop-color="#3157e8" stop-opacity="0"/></linearGradient></defs>${g}${area}${pts.length>1?`<path d="${d}" fill="none" stroke="#4069f5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`:''}${dots}<text x="${x(+lp.dt)}" y="${y(lp.v)-12}" text-anchor="${x(+lp.dt)>W-40?'end':'middle'}" class="xm-lv">${nf(lp.v,1)}</text><text x="${pl}" y="${H-6}" class="xm-ax">${fd(t0)}</text>${pts.length>1?`<text x="${W-pr}" y="${H-6}" text-anchor="end" class="xm-ax">${fd(t1)}</text>`:''}</svg>`}
+function exExtraHTML(ex){const E=EX[ex];const H=exHist(ex);const man=(S.meta.exMax||{})[ex]||[];const cur=exMaxCur(ex);
+ const pts=H.filter(h=>h.best).map(h=>({dt:h.dt,v:Math.round(h.best*2)/2})).concat(man.map(m=>({dt:new Date(m.at),v:m.kg,m:1}))).sort((a,b)=>a.dt-b.dt);
+ const est=H.slice(-6).reduce((m,h)=>h.best&&h.best>(m||0)?h.best:m,null);
+ const big=cur?{v:cur.kg,l:'Aktuelles 1RM',s:'von dir eingetragen'}:est?{v:Math.round(est*2)/2,l:'Geschätztes 1RM',s:'aus deinen Sätzen (RPE-Tabelle)'}:null;
+ const r10=(S.meta.ex10||{})[ex];const note=(S.meta.exNote||{})[ex];const last=H[H.length-1];const open=S.ui.xset!==false;
+ return `<div class="xm">
+  <section class="xm-c"><div class="xm-h"><div><b>Maxima</b><small>Deine Kraftentwicklung</small></div>${big?`<div class="xm-big"><b>${nf(big.v,1)}<em>kg</em></b><span>${big.l}</span><small>${big.s}</small></div>`:''}</div>${exMaxChart(pts,cur)}
+   <div class="xm-lg"><span><i style="background:#4069f5"></i>e1RM aus Sätzen</span>${man.length?'<span><i style="background:#f3c969"></i>eingetragen</span>':''}</div></section>
+  <section class="xm-c xm-row"><b>Notizen</b>${note?'':`<button type="button" class="xm-add" data-xnote>${SVI.plus}<span>Notiz hinzufügen</span></button>`}${note?`<button type="button" class="xm-note" data-xnote>${esc(note)}<small>Tippen zum Bearbeiten</small></button>`:''}</section>
+  <section class="xm-c"><button type="button" class="xm-st" data-xsettg aria-expanded="${open}"><div><b>Einstellungen</b><small>Übungseinstellungen anpassen</small></div><svg viewBox="0 0 24 24" style="transform:rotate(${open?180:0}deg)"><path d="m6 9 6 6 6-6"/></svg></button>
+   ${open?`<div class="xm-sl">
+    <button type="button" class="xm-r" data-xedit="1rm"><span><b>1RM</b><small>getestet oder geschätzt</small></span><em>${cur?nf(cur.kg,1)+' kg':'Eintragen'}</em></button>
+    <button type="button" class="xm-r" data-xedit="10rm"><span><b>10RM</b><small>für 10RM-Phasen</small></span><em>${r10?nf(r10,1)+' kg':'Eintragen'}</em></button>
+    <div class="xm-r"><span><b>Einheit</b><small>Die App rechnet durchgehend in kg</small></span><em>KG</em></div>
+    <button type="button" class="xm-r" data-xedit="inc"><span><b>Gewichtsschritte</b><small>für − / + im Gym-Modus</small></span><em>${nf(exInc(ex),2)}</em></button>
+   </div><p class="xm-n">Eingetragene Werte sind nur Orientierung für Empfehlungen – Canditos Vorgaben bleiben unverändert.</p>`:''}</section>
+  ${last?`<section class="xm-c"><button type="button" class="xm-st" ${last.L.done?`data-xlast="${last.pid}|${last.w}|${last.d}"`:''}><div><b>Trainingsverlauf</b><small>Letzte Einheit</small></div>${last.L.done?'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>':''}</button>
+   <div class="xm-lm">${SVI.cal}<span>${exAgo(+last.dt)}</span><span class="xm-dot">·</span><span>${esc(last.f)} · W${last.w+1} T${last.d+1}</span></div>
+   ${last.sets.map((st,i)=>`<div class="sv-s"><span class="sv-sn">${i+1}</span><span class="sv-c">${st.kg!=null?nf(st.kg,2)+' kg':'–'}</span><i>×</i><span class="sv-c">${st.r!=null?st.r:'–'}${st.rpe!=null?` <em>@ RPE ${nf(st.rpe,1)}</em>`:''}</span></div>`).join('')}</section>`:''}
+ </div>`}
+function xeditHTML(k){const ex=S.ui.ex;const E=EX[ex];if(k==='inc'){const cur=exInc(ex);const opts=[0.25,0.5,1,1.25,2.5,5,10];const v=XE.v??cur;
+  return `<div class="xe-in"><i class="jrs-h"></i><h2>Gewichtsschritte</h2><p>Schrittweite für − / + bei ${esc(E.n)} im Gym-Modus.</p><div class="xe-ol">${opts.map(o=>`<button type="button" data-xeo="${o}" aria-pressed="${o===v}">${nf(o,2)} kg</button>`).join('')}</div><button type="button" class="xe-save" data-xesave>Speichern</button><button type="button" class="xe-cn" data-xeclose>Abbrechen</button></div>`}
+ const is1=k==='1rm';const cur=is1?(exMaxCur(ex)||{}).kg:(S.meta.ex10||{})[ex];const v=XE.v??cur??null;
+ return `<div class="xe-in"><i class="jrs-h"></i><button type="button" class="xe-x" data-xeclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><h2>${is1?'1RM':'10RM'} aktualisieren</h2><p>${is1?'Trag dein aktuelles getestetes oder geschätztes 1RM ein.':'Trag dein aktuelles 10RM ein (schwerstes Gewicht für 10 saubere Wiederholungen).'}</p>
+  <div class="xe-v"><button type="button" data-xestep="-1" aria-label="weniger">−</button><div><input inputmode="decimal" data-xein value="${v!=null?nf(v,2):''}" placeholder="0"><em>kg</em></div><button type="button" data-xestep="1" aria-label="mehr">+</button></div>
+  <button type="button" class="xe-save" data-xesave>Speichern</button>${cur!=null?`<button type="button" class="xe-del" data-xedel>${is1?'1RM':'10RM'} löschen</button>`:''}</div>`}
+let XE=null;
+function xeOpen(k){XE={k,v:null};let el=document.getElementById('xedit');if(!el){el=document.createElement('div');el.id='xedit';document.body.appendChild(el)}el.innerHTML='<div class="jrs-bg" data-xeclose></div>'+xeditHTML(k);el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));const i=el.querySelector('[data-xein]');if(i)setTimeout(()=>i.focus(),250)}
+function xeClose(){const el=document.getElementById('xedit');if(el){el.classList.remove('on');setTimeout(()=>{el.hidden=true;el.innerHTML=''},200)}XE=null}
+function xeRe(){const el=document.getElementById('xedit');if(el&&XE){el.innerHTML='<div class="jrs-bg" data-xeclose></div>'+xeditHTML(XE.k)}}
+function exRe(){const sc=document.querySelector('#xsheet .sheet-in');const y=sc?sc.scrollTop:0;renderEx();const s2=document.querySelector('#xsheet .sheet-in');if(s2)s2.scrollTop=y}
+document.addEventListener('click',e=>{const t=e.target.closest('#xsheet [data-xnote],#xsheet [data-xsettg],#xsheet [data-xedit],#xsheet [data-xlast],#xsheet [data-xmore]');if(t){e.stopPropagation();const ex=S.ui.ex;
+  if(t.dataset.xmore!=null){t.closest('.xm-desc').classList.toggle('open');return}
+  if(t.dataset.xsettg!=null){S.ui.xset=S.ui.xset===false;exRe();return}
+  if(t.dataset.xedit){xeOpen(t.dataset.xedit);return}
+  if(t.dataset.xlast){const [pid,w,d]=t.dataset.xlast.split('|');closeEx();svOpen(pid,+w,+d,false);return}
+  if(t.dataset.xnote!=null){const cur=(S.meta.exNote||{})[ex]||'';XE={k:'note'};let el=document.getElementById('xedit');if(!el){el=document.createElement('div');el.id='xedit';document.body.appendChild(el)}
+   el.innerHTML=`<div class="jrs-bg" data-xeclose></div><div class="xe-in"><i class="jrs-h"></i><h2>Notiz · ${esc(EX[ex].n)}</h2><p>z. B. Griffbreite, Stand, Technik-Cues – nur auf diesem iPhone.</p><textarea class="end-ta xe-ta" data-xenote rows="4" placeholder="Notiz schreiben">${esc(cur)}</textarea><button type="button" class="xe-save" data-xesave>Speichern</button><button type="button" class="xe-cn" data-xeclose>Abbrechen</button></div>`;el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));return}}
+ const x=e.target.closest('#xedit [data-xeclose],#xedit [data-xeo],#xedit [data-xestep],#xedit [data-xesave],#xedit [data-xedel]');if(!x||!XE)return;const ex=S.ui.ex;
+ if(x.dataset.xeclose!=null){xeClose();return}
+ if(x.dataset.xeo){XE.v=+x.dataset.xeo;xeRe();return}
+ if(x.dataset.xestep){const i=document.querySelector('#xedit [data-xein]');const v=(pnum(i.value)||0)+ +x.dataset.xestep*exInc(ex);XE.v=Math.max(0,v);i.value=nf(XE.v,2);return}
+ if(x.dataset.xedel!=null){if(XE.k==='1rm'){if(S.meta.exMax)delete S.meta.exMax[ex]}else if(S.meta.ex10)delete S.meta.ex10[ex];saveMeta();SG.clear();xeClose();exRe();toast('Gelöscht');return}
+ if(x.dataset.xesave!=null){if(XE.k==='inc'){const v=XE.v??exInc(ex);if(!S.meta.exInc)S.meta.exInc={};if(v===(S.meta.round||2.5))delete S.meta.exInc[ex];else S.meta.exInc[ex]=v}
+  else if(XE.k==='note'){const v=document.querySelector('#xedit [data-xenote]').value.trim();if(!S.meta.exNote)S.meta.exNote={};if(v)S.meta.exNote[ex]=v;else delete S.meta.exNote[ex]}
+  else{const v=pnum(document.querySelector('#xedit [data-xein]').value);if(!v){toast('Bitte einen Wert eintragen');return}if(XE.k==='1rm'){if(!S.meta.exMax)S.meta.exMax={};const a=S.meta.exMax[ex]||(S.meta.exMax[ex]=[]);const today=isoD(new Date());const l=a[a.length-1];if(l&&isoD(new Date(l.at))===today)l.kg=v;else a.push({kg:v,at:Date.now()})}else{if(!S.meta.ex10)S.meta.ex10={};S.meta.ex10[ex]=v}}
+  saveMeta();SG.clear();xeClose();exRe();toast('Gespeichert');return}},true);
+(function(){const _r=renderEx;renderEx=function(){_r.apply(this,arguments);const ex=S.ui.ex;const sh=document.querySelector('#xsheet .sheet-in');if(!sh||!ex)return;
+ const hd=sh.querySelector('.sh-k');const xch=sh.querySelector('.xch');if(xch)xch.remove();const emp=sh.querySelector('.xemp');if(emp)emp.remove();
+ const tech=[...sh.querySelectorAll('.card')].find(c=>/^Technik/.test((c.querySelector('.eyebrow')||{}).textContent||''));
+ const w=document.createElement('div');w.innerHTML=`<div class="xm-desc"><p>${esc(EX[ex].t||'')}</p><button type="button" class="xm-more" data-xmore><span class="a">Mehr anzeigen</span><span class="b">Weniger</span></button></div>`+exExtraHTML(ex);
+ if(tech)tech.remove();if(hd)hd.after(...w.children);else sh.prepend(...w.children);requestAnimationFrame(()=>{const dp=sh.querySelector('.xm-desc p'),mb=sh.querySelector('.xm-more');if(dp&&mb&&dp.scrollHeight<=dp.clientHeight+2)mb.hidden=true})}})();
 /* ===================== Diagramm-Tooltips ===================== */
 document.addEventListener('click',e=>{const tb=$('#tipbox');const t=e.target.closest('[data-tip]');
  if(!t){tb.hidden=true;return}tb.textContent=t.dataset.tip;tb.hidden=false;const r=t.getBoundingClientRect();
@@ -6579,7 +6680,7 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(t.dataset.sstart!=null){const go=()=>{startSession(w,d);gymRefresh()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(t.dataset.gs!=null){G.i=+t.dataset.gs;renderGym();return}
  if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);const sh=t.closest('.gwus');if(sh){const L=log(w,d,true);const dn=(L.wu&&L.wu[G.b])||[];const bs=[...sh.querySelectorAll('[data-gwu]')];bs.forEach(x=>{const on=!!dn[+x.dataset.gwu];x.classList.toggle('ok',on);x.setAttribute('aria-pressed',on)});const nd=bs.filter(x=>dn[+x.dataset.gwu]).length;const bar=sh.querySelector('.wbar i');if(bar)bar.style.width=(nd/bs.length*100)+'%';const f=sh.querySelector('.gp-f');if(f)f.textContent=f.textContent.replace(/\d+\/\d+ erledigt/,nd+'/'+bs.length+' erledigt');const ic=document.querySelector('#gym [data-gwuopen]');if(ic){const em=ic.querySelector('em');if(em)em.textContent=nd+'/'+bs.length;ic.classList.toggle('done',nd>=bs.length)}}else gymRefresh();return}
- if(t.dataset.step){const f=t.dataset.step,cv=curVals();let v=(f==='kg'?cv.kg:cv.r)||0;v=Math.max(0,v+parseFloat(t.dataset.v));gWrite(f,f==='kg'?rnd(v):v);
+ if(t.dataset.step){const f=t.dataset.step,cv=curVals();let v=(f==='kg'?cv.kg:cv.r)||0;v=Math.max(0,v+parseFloat(t.dataset.v));const inc=Math.abs(parseFloat(t.dataset.v));gWrite(f,f==='kg'?Math.round(Math.round(v/inc)*inc*100)/100:v);
   if(f==='kg'&&cv.r!=null&&pnum(cv.s.r)==null)gWrite('r',cv.r);renderGym();return}
  if(t.dataset.rpe){const cv=curVals();const v=+t.dataset.rpe;gWrite('rpe',cv.rpe===v?null:v);renderGym();return}
  const g=t.dataset.g;const L=log(w,d,true);
@@ -6822,9 +6923,9 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
 
   </div>
   <div class="gdock"><div class="gdock-in">
-  <div class="stp2"><div class="card stp"><button type="button" data-step="kg" data-v="-${S.meta.round||2.5}" aria-label="Gewicht verringern">−</button>
+  <div class="stp2"><div class="card stp"><button type="button" data-step="kg" data-v="-${exInc(P[S.ui.w][S.ui.d].b[G.b].e)}" aria-label="Gewicht verringern">−</button>
     <div class="mid"><small ${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'class="emp"':''}>${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'Empfehlung':'kg'}</small><input id="g-kg" data-gf="kg" inputmode="decimal" value="${kg!=null?nf(kg,2):''}" placeholder="–" aria-label="Gewicht"></div>
-    <button type="button" data-step="kg" data-v="${S.meta.round||2.5}" aria-label="Gewicht erhöhen">+</button></div>
+    <button type="button" data-step="kg" data-v="${exInc(P[S.ui.w][S.ui.d].b[G.b].e)}" aria-label="Gewicht erhöhen">+</button></div>
   <div class="card stp"><button type="button" data-step="r" data-v="-1" aria-label="Wiederholungen verringern">−</button>
     <div class="mid"><small>Wdh.${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</small><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></div>
     <button type="button" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></div>
