@@ -2181,6 +2181,39 @@ html b.mtred .mt2{color:#4a6df5!important;-webkit-text-fill-color:#4a6df5!import
 .dfbars path{transition:fill .18s}.dfbars path.off{fill:#222226}.dfbars path.lo{fill:#26399a}.dfbars path.on{fill:#4069f5;filter:drop-shadow(0 6px 14px rgba(64,105,245,.5))}
 .end-ta{width:100%;min-height:62px;border:0;background:transparent;color:var(--ink);font:500 17px/1.45 var(--f);text-align:center;padding:8px 4px;resize:none;outline:none}
 .end-ta::placeholder{color:#5c5f6b}.end-ta:focus{text-align:left;background:#070709;border-radius:12px}
+
+/* Readiness-Karte */
+.card.jr{position:relative;overflow:hidden;padding:18px 18px 14px!important;border-radius:26px!important;border:1px solid rgba(255,255,255,.08)!important;background:linear-gradient(160deg,color-mix(in srgb,var(--zc) 34%,#0b0f14) 0%,#0a0d12 58%,#07090d 100%)!important;box-shadow:0 20px 40px -24px color-mix(in srgb,var(--zc) 55%,transparent)!important}
+.card.jr::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 53px,rgba(255,255,255,.035) 53px 54px);pointer-events:none}
+.jr-art{position:absolute;right:-48px;top:40px;width:230px;height:230px;pointer-events:none}
+.jr-top{position:relative;display:flex;align-items:center;gap:8px;font:800 11.5px var(--f);letter-spacing:.14em;text-transform:uppercase;color:#aab3c2}
+.jr-top>span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.jr-top>b{color:var(--zc);white-space:nowrap;display:flex;align-items:center;gap:6px}.jr-top>b i{width:7px;height:7px;border-radius:50%;background:var(--zc)}
+.jr-i{flex:none;width:30px;height:30px;border:0;background:none;display:grid;place-items:center;margin-right:-4px}.jr-i svg{width:22px;height:22px;fill:none;stroke:#aab3c2;stroke-width:1.8;stroke-linecap:round}
+.jr-num{position:relative;display:flex;align-items:flex-end;gap:6px;margin:6px 0 2px}
+.jr-num>b{font:900 108px/.9 'Montserrat',var(--f);letter-spacing:-.05em;color:#fff;text-shadow:0 0 28px color-mix(in srgb,var(--zc) 60%,transparent)}
+.jr-num>em{font:500 30px/1 'Montserrat',var(--f);font-style:normal;color:#7d8590;margin-bottom:8px}
+.jr-d{margin:0 0 34px 12px;display:grid;gap:4px;white-space:nowrap}.jr-d b{font:800 22px/1 'Montserrat',var(--f);color:#aab3c2}.jr-d.up b{color:#3cc46a}.jr-d.dn b{color:#ef4f4f}.jr-d small{font-size:13px;font-weight:700;color:#aab3c2;letter-spacing:.03em}
+.jr-z{position:relative;margin:12px 0 2px;font:800 30px/1.1 'Montserrat',var(--f);color:var(--zc);letter-spacing:-.01em}
+.jr-s{position:relative;margin:0 0 16px;font-size:16px;color:#d4d8e0}
+.jr-win{position:relative;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+.jr-wh{display:flex;justify-content:space-between;align-items:center;gap:8px;font:800 11px var(--f);letter-spacing:.14em;text-transform:uppercase;color:#d4d8e0;margin-bottom:8px}
+.jr-lg{display:flex;align-items:center;gap:6px;white-space:nowrap}.jr-lg i{width:10px;height:10px;border-radius:50%;margin-left:6px}.jr-lg i.a{background:#fff;box-shadow:0 0 0 2.5px var(--zc)}.jr-lg i.b{border:1.6px dashed #fff}
+.jr-ch{width:100%;height:120px;display:block;overflow:visible}
+.jr-wd{display:flex;justify-content:space-between;padding:4px 4px 0;font:700 12.5px var(--f);color:#8a919c}.jr-wd span.on{color:#fff;font-weight:800}
+.jr-src{position:relative;margin:10px 0 0;font-size:11.5px;color:#6f7782;font-weight:600}
+.jr-e{position:relative;margin:10px 0 12px;font-size:14px;color:var(--ink2);line-height:1.45}
+/* Bereiche-Sheet */
+#jrsheet{position:fixed;inset:0;z-index:2147483000}#jrsheet .jrs-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .2s}
+#jrsheet .jrs{position:absolute;left:0;right:0;bottom:0;max-height:86vh;display:flex;flex-direction:column;background:#111214;border-radius:26px 26px 0 0;transform:translateY(100%);transition:transform .24s cubic-bezier(.2,.8,.2,1);max-width:680px;margin:0 auto}
+#jrsheet.on .jrs-bg{opacity:1}#jrsheet.on .jrs{transform:none}
+.jrs-h{display:block;width:40px;height:4px;border-radius:3px;background:#55585f;margin:10px auto 4px}
+.jrs-sc{overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 22px 16px}
+.jrs-sc h2{margin:6px 0 12px;font:700 28px/1.15 'Montserrat',var(--f);color:#fff}.jrs-sc>p{margin:0 0 14px;font-size:16px;line-height:1.55;color:#e4e6ea}
+.jrs-k{margin:22px 0 10px!important;font:800 11.5px var(--f)!important;letter-spacing:.14em;text-transform:uppercase;color:#9a9ea6!important}
+.jrs-z{margin-bottom:18px}.jrs-z b{display:flex;align-items:center;gap:10px;font:700 19px 'Montserrat',var(--f);color:#fff}.jrs-z b i{width:10px;height:10px;border-radius:50%;flex:none}.jrs-z b em{font-style:normal;font:800 13px 'Montserrat',var(--f);letter-spacing:.06em}
+.jrs-z p{margin:6px 0 4px;font-size:15.5px;line-height:1.5;color:#e4e6ea}.jrs-z small{font-size:13px;color:#70747c}
+.jrs-n{font-size:13.5px!important;color:#9a9ea6!important;line-height:1.5}
+.jrs-f{padding:10px 22px calc(14px + env(safe-area-inset-bottom,0px))}.jrs-x{width:100%;height:56px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 18px var(--f)}
 .wu-side{margin:0 0 6px}.wu-auto{margin:0 2px 10px;font-size:12.5px;color:#8fa2d8;font-weight:600;line-height:1.4}
 .wuq-t{margin:0;padding:0 18px 16px;font-size:13.5px;line-height:1.5;color:var(--ink2)}
 .wuq.open{border-color:rgba(111,140,255,.45)}
@@ -2983,6 +3016,46 @@ function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());c
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn ${o?'':'primary'}" data-rdopen>${o?'Bearbeiten':'Check-in starten'}</button></div></section>`}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||b.tagName!=='BUTTON')return;try{localStorage.setItem('cf-theme',b.dataset.theme)}catch(err){}location.reload()});
 document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}});
+
+/* ===== Readiness-Skala (Bereiche wie Juggernaut, Wert nur aus dem Check-in) ===== */
+const JRZ=[{k:'dz',lo:0,hi:49,c:'#ef4f4f',n:'Gefahrenzone',s:'Heute hat Erholung Vorrang.',t:'Die Erholung ist niedrig. Schlaf, Ernährung und Regeneration haben jetzt Vorrang. Trainiere exakt nach Plan, ohne Extras, und trage das RPE ehrlich ein.',a:'Ø unter 3,0'},
+ {k:'fr',lo:50,hi:61,c:'#f5a524',n:'Fokus auf Erholung',s:'Qualität vor Tempo.',t:'Etwas Ermüdung ist noch da. Trainiere, halte die Qualität hoch und erzwinge keine PRs.',a:'Ø 3,0–3,7'},
+ {k:'ss',lo:62,hi:73,c:'#3cc46a',n:'Sweet Spot',s:'Genau da, wo du sein willst.',t:'Das ideale Trainingsfenster – erholt genug, um echte Anpassung auszulösen. Die meisten guten Tage landen hier.',a:'Ø 3,7–4,4'},
+ {k:'br',lo:74,hi:84,c:'#4a6df5',n:'Bestens bereit',s:'Bereit für starke Topsätze.',t:'Gut erholt und bereit – ein guter Tag, um die Topsätze konzentriert und sauber anzugehen.',a:'Ø 4,4–4,8'},
+ {k:'ve',lo:85,hi:100,c:'#a679ff',n:'Voll erholt',s:'Voll erholt – der Plan bleibt exakt.',t:'Voll erholt – der Plan bleibt exakt. Nutze die Spielräume, die Candito selbst vorgibt (z. B. AMRAP, RPE-Cap, Top-Single). Bleibt der Wert dauerhaft so hoch, notiere es für die Wochenanalyse.',a:'Ø 4,8–5,0'}];
+const JRA=[[1,0],[3,50],[3.7,62],[4.4,74],[4.8,85],[5,100]];
+function jrMap(avg){if(avg==null)return null;avg=Math.max(1,Math.min(5,avg));for(let i=1;i<JRA.length;i++){const [x0,y0]=JRA[i-1],[x1,y1]=JRA[i];if(avg<=x1)return Math.round(y0+(avg-x0)/(x1-x0)*(y1-y0))}return 100}
+function jrZone(v){return JRZ.find(z=>v<=z.hi)||JRZ[4]}
+function jrAvg(f,keys){const v=keys.map(k=>f&&f[k]).filter(x=>x!=null&&!isNaN(x));return v.length?{avg:v.reduce((a,b)=>a+b,0)/v.length,n:v.length}:null}
+function jrDays(){const m={};const TK=[...CKG,...CKS].map(q=>q[0]);
+ rfAllLogs().forEach(x=>{if(!x.L.feel)return;const r=jrAvg(x.L.feel,TK);if(!r)return;const k=isoD(x.dt);const t=x.L.ckAt||+x.dt;if(!m[k]||t>=m[k].t)m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t,src:'Training',f:x.day.f}});
+ const RK=CKR.map(q=>q[0]);Object.keys(S.meta.rest||{}).forEach(k=>{const o=S.meta.rest[k];if(!o||!o.feel)return;const r=jrAvg(o.feel,RK);if(!r)return;if(!m[k])m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t:o.at||0,src:'Ruhetag'}});return m}
+function jrChart(m,cur,zone){const W=320,H=120,pad=10,days=[];const t0=new Date();t0.setHours(12,0,0,0);for(let i=6;i>=0;i--){const d=new Date(t0);d.setDate(d.getDate()-i);days.push(d)}
+ const Y0=20,Y1=100,y=v=>pad+(1-(Math.max(Y0,v)-Y0)/(Y1-Y0))*(H-2*pad),x=i=>14+i*(W-28)/6;
+ const pts=days.map((d,i)=>{const e=m[isoD(d)];return e?{i,v:e.v}:null}).filter(Boolean);
+ const band=`<rect x="0" y="${y(zone.hi+1)}" width="${W}" height="${y(zone.lo)-y(zone.hi+1)}" fill="${zone.c}" opacity=".13"/><line x1="0" x2="${W}" y1="${y(zone.hi+1)}" y2="${y(zone.hi+1)}" stroke="${zone.c}" stroke-opacity=".5" stroke-dasharray="3 4"/><line x1="0" x2="${W}" y1="${y(zone.lo)}" y2="${y(zone.lo)}" stroke="${zone.c}" stroke-opacity=".5" stroke-dasharray="3 4"/>`;
+ const grid=[40,60,80].map(v=>`<line x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,.05)"/>`).join('');
+ let line='',area='',dots='';if(pts.length){const d=pts.map((p,j)=>(j?'L':'M')+x(p.i).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');line=`<path d="${d}" fill="none" stroke="${zone.c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;area=`<path d="${d} L${x(pts[pts.length-1].i)} ${H} L${x(pts[0].i)} ${H} Z" fill="url(#jrg)"/>`;
+  const last=pts[pts.length-1],prev=pts[pts.length-2];if(prev)dots+=`<circle cx="${x(prev.i)}" cy="${y(prev.v)}" r="6" fill="#0b0d12" stroke="#fff" stroke-width="2" stroke-dasharray="2.2 2.6"/>`;dots+=`<circle cx="${x(last.i)}" cy="${y(last.v)}" r="9" fill="#fff" stroke="${zone.c}" stroke-width="3.5"/>`}
+ const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+ return `<svg class="jr-ch" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="jrg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${zone.c}" stop-opacity=".45"/><stop offset="1" stop-color="${zone.c}" stop-opacity="0"/></linearGradient></defs>${grid}${band}${area}${line}${dots}</svg>
+  <div class="jr-wd">${days.map((d,i)=>`<span class="${i===6?'on':''}">${WD[d.getDay()]}</span>`).join('')}</div>`}
+function jrPlate(c){return `<svg class="jr-art" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" fill="none" stroke="${c}" stroke-opacity=".22" stroke-width="10"/><circle cx="100" cy="100" r="64" fill="none" stroke="${c}" stroke-opacity=".14" stroke-width="22"/><circle cx="100" cy="100" r="22" fill="none" stroke="${c}" stroke-opacity=".25" stroke-width="8"/></svg>`}
+function jrCardHTML(){const m=jrDays();const ks=Object.keys(m).sort();if(!ks.length)return `<section class="card jr jr-empty" style="--zc:#4a6df5"><div class="jr-top"><span>Readiness</span><button type="button" class="jr-i" data-jrinfo aria-label="Bereiche erklären">${jrIc()}</button></div><p class="jr-e">Noch kein Check-in. Dein Readiness-Wert entsteht aus deinen Check-in-Antworten vor dem Training oder am Ruhetag.</p><button type="button" class="btn primary" data-ckopen>Check-in starten</button></section>`;
+ const lk=ks[ks.length-1],cur=m[lk],pv=ks.length>1?m[ks[ks.length-2]]:null,z=jrZone(cur.v),dl=pv?cur.v-pv.v:null;
+ const dt=new Date(lk+'T12:00:00');const ds=isoD(new Date())===lk?'heute':dt.toLocaleDateString('de-DE',{day:'numeric',month:'short'});
+ return `<section class="card jr" style="--zc:${z.c}">${jrPlate(z.c)}<div class="jr-top"><span>Readiness · ${ds}</span><b><i></i>${z.lo}–${z.hi}</b><button type="button" class="jr-i" data-jrinfo aria-label="Bereiche erklären">${jrIc()}</button></div>
+  <div class="jr-num"><b>${cur.v}</b><em>/100</em>${dl!=null?`<div class="jr-d ${dl>0?'up':dl<0?'dn':''}"><b>${dl>0?'↑':dl<0?'↓':'='} ${Math.abs(dl)}</b><small>vs. vorher</small></div>`:''}</div>
+  <h3 class="jr-z">${z.n}</h3><p class="jr-s">${z.s}</p>
+  <div class="jr-win"><div class="jr-wh"><span>Letzte 7 Tage</span><span class="jr-lg"><i class="a"></i>Aktuell${pv?'<i class="b"></i>Vorher':''}</span></div>${jrChart(m,cur,z)}</div>
+  <p class="jr-src">Aus ${cur.n} Check-in-Antworten (${cur.src}${cur.f?' · '+esc(cur.f):''}) · WHOOP fließt nicht ein</p></section>`}
+function jrIc(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>'}
+function jrSheet(){let el=document.getElementById('jrsheet');if(!el){el=document.createElement('div');el.id='jrsheet';document.body.appendChild(el)}
+ el.innerHTML=`<div class="jrs-bg" data-jrclose></div><div class="jrs" role="dialog" aria-label="Readiness-Bereiche"><i class="jrs-h"></i><div class="jrs-sc"><h2>Readiness-Bereiche</h2><p>Dein Readiness-Wert ist keine Note und keine Prozentzahl – er zeigt, wie erholt dein Körper fürs Training ist.</p><p>Ein Wert in den 60ern und frühen 70ern ist der Sweet Spot: genau dort passiert das produktivste Training. Höher ist nicht immer besser, und niedriger ist kein Versagen – jeder Bereich sagt dir nur, wie du an die Arbeit herangehst.</p>
+ <p class="jrs-k">Die Bereiche</p>${JRZ.map(z=>`<div class="jrs-z"><b><i style="background:${z.c}"></i>${z.n}<em style="color:${z.c}">${z.lo}–${z.hi}</em></b><p>${z.t}</p><small>Entspricht Check-in ${z.a}</small></div>`).join('')}
+ <p class="jrs-k">So wird gerechnet</p><p class="jrs-n">Der Durchschnitt deiner Check-in-Antworten (1–5) wird auf die 0–100-Skala umgerechnet: alles „mittel“ (3) ergibt 50, Ø 3,7 ergibt 62, Ø 4,4 ergibt 74. WHOOP und Leistungstrend fließen nicht ein – sie stehen getrennt im Readiness-Center. Der Wert ist reine Anzeige: Programm, Vorgaben und Lasten bleiben exakt nach Candito.</p></div>
+ <div class="jrs-f"><button type="button" class="jrs-x" data-jrclose>Schließen</button></div></div>`;el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'))}
+document.addEventListener('click',e=>{if(e.target.closest('[data-jrinfo]')){e.stopPropagation();jrSheet();return}if(e.target.closest('[data-jrclose]')){const el=document.getElementById('jrsheet');if(el){el.classList.remove('on');setTimeout(()=>{el.hidden=true;el.innerHTML=''},220)}}});
 /* ===================== Readiness & Fatigue Center ===================== */
 // Drei getrennte Signale: Körper (WHOOP) · Gefühl (Check-in) · Leistung (Trainingsergebnisse). Reine Anzeige – ändert keine Vorgaben.
 const FEELQ=[['energy','Energie','leer','voll'],['sleepq','Schlafqualität','schlecht','top'],['sore','Muskelkater','stark','keiner'],['motiv','Motivation','null','hoch'],['stress','Stress','hoch','keiner']];
@@ -4730,7 +4803,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=jrCardHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
