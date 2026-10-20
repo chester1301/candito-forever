@@ -1,0 +1,10 @@
+{
+  "name": "candito-forever",
+  "private": true,
+  "description": "Candito Forever – Trainings-PWA (Quelle in source/, Build nach docs/)",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "node tests/run.js",
+    "smoke": "node tests/smoke.js"
+  }
+}
