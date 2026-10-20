@@ -64,11 +64,23 @@ head=f'''<!doctype html>
 </head>
 <body>
 '''
-out=head+app+'\n<script>\n'+ui+'\n</script>\n</body>\n</html>\n'
 site=os.path.join(ROOT,'docs');os.makedirs(site,exist_ok=True)
+# Große Skript-Blöcke als eigene Dateien an derselben Stelle einbinden (gleiche Reihenfolge, gleiches Verhalten).
+# Vorteil: der HTML-Leser muss nicht über 1 MB Inline-Code scannen, und Safari kann das übersetzte Skript zwischenspeichern.
+adir=os.path.join(site,'assets');shutil.rmtree(adir,ignore_errors=True);os.makedirs(adir)
+ASSETS=[]
+def ext(m):
+    tag,attrs,body=m.group(1),m.group(2),m.group(3)
+    # Styles bleiben eingebettet: das Farbthema „Midnight Blue“ färbt zur Laufzeit den Text des letzten <style> um
+    if tag!='script' or len(body)<15000 or 'src=' in attrs: return m.group(0)
+    n=len(ASSETS);name=f"assets/{'app' if tag=='script' else 'style'}-{n}.{h}.{'js' if tag=='script' else 'css'}"
+    open(os.path.join(site,name),'w',encoding='utf-8').write(body);ASSETS.append(name)
+    return f'<script src="{name}"></script>' if tag=='script' else f'<link rel="stylesheet" href="{name}"{attrs}>'
+app=re.sub(r'<(script|style)([^>]*)>(.*?)</\1>',ext,app,flags=re.S)
+out=head+app+'\n<script>\n'+ui+'\n</script>\n</body>\n</html>\n'
 open(os.path.join(site,'index.html'),'w',encoding='utf-8').write(out)
-open(os.path.join(site,'sw.js'),'w',encoding='utf-8').write(open(os.path.join(ROOT,'src/sw.js'),encoding='utf-8').read().replace('__VERSION__',VERSION))
+open(os.path.join(site,'sw.js'),'w',encoding='utf-8').write(open(os.path.join(ROOT,'src/sw.js'),encoding='utf-8').read().replace('__VERSION__',VERSION).replace("'__ASSETS__'",','.join(json.dumps('./'+a) for a in ASSETS)))
 shutil.copy(os.path.join(ROOT,'src/manifest.webmanifest'),os.path.join(site,'manifest.webmanifest'))
 open(os.path.join(site,'version.json'),'w').write(json.dumps({'version':VERSION}))
 open(os.path.join(site,'.nojekyll'),'w').write('')
-print('PWA gebaut:',VERSION,len(out)//1024,'KB')
+print('PWA gebaut:',VERSION,len(out)//1024,'KB Seite +',len(ASSETS),'Dateien',sum(os.path.getsize(os.path.join(site,a)) for a in ASSETS)//1024,'KB')
