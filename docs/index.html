@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1618-5115153";
+<script>window.CF_VERSION="2026.10.20-1626-025d06b";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2232,6 +2232,40 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 body.gymopen #cfbar{display:none!important}
 </style>
 <style id="cf-hype">html[data-theme=blue] .hype.h{background:linear-gradient(135deg,#6f8cff 0%,#3157e8 55%,#1d3fc4 100%)!important;box-shadow:0 0 0 1px rgba(160,180,255,.55) inset,0 6px 18px -6px rgba(49,87,232,.8)!important;color:#fff!important}html[data-theme=blue] .hype.h .hic{background:rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)!important}</style>
+<style id="cf-gymcard">
+/* Gym-Satzkarte: alle Angaben bleiben, kompakter angeordnet */
+#gym .gex h2{font-size:clamp(30px,9.5vw,46px)!important;line-height:1.02}
+#gym .gex .rx{font-size:13px!important;line-height:1.3}
+#gym .ghy{font-size:12px;line-height:1.4;margin-top:3px!important}
+#gym .gym-in.tight2 .ghy{font-size:0!important}#gym .gym-in.tight2 .ghy .hype{font-size:12px!important}
+#gym .gym-in.tight3 .gex{gap:8px!important}#gym .gym-in.tight3 .gmeta{margin-bottom:0!important}
+#gym .gym-in.tight4 .ghero .bb3d.sm{max-height:78px}#gym .gym-in.tight4 .gz-n .zahl{font-size:40px!important}
+#gym .grule{padding:7px 10px!important;gap:8px!important;align-items:center!important}
+#gym .grule b{font-size:13px!important;line-height:1.2}#gym .grule small{font-size:11.5px!important;line-height:1.3}
+#gym .ghero{padding:11px 12px!important;gap:3px 8px!important;grid-template-columns:minmax(0,1fr) 38%!important}
+#gym .gz-k .eyebrow{font-size:10.5px!important}
+#gym .gz-n .zahl{font-size:clamp(46px,14vw,66px)!important;line-height:.95}
+#gym .gz-r b{font-size:24px!important}#gym .gz-r small{font-size:12px!important}#gym .gz-r{padding-bottom:6px!important}
+#gym .gz-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px 8px;margin:2px 0 0}
+#gym .gz-row .vtag{margin:0!important;padding:2px 7px!important;font-size:10px!important}
+#gym .gz-row .empf{display:inline-flex!important;align-items:baseline;gap:6px;padding:2px 8px!important;margin:0!important;border-radius:999px}
+#gym .gz-row .empf .et{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}#gym .gz-row .empf b{font-size:14px!important}
+#gym .gz-row .gz-pl{display:inline-flex!important;gap:4px!important;margin:0!important;font-size:11.5px!important;justify-content:flex-start!important;grid-column:auto!important}
+#gym .gz-row .gz-pl i{font-size:11.5px!important;padding:1px 6px!important}
+#gym .gz-why{grid-column:1/-1;margin:2px 0 0;font-size:11.5px;line-height:1.35;color:var(--mut);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;cursor:pointer}
+#gym .gym-in.tight2 .gz-why{-webkit-line-clamp:1}#gym .gz-why.open{-webkit-line-clamp:unset!important;display:block}
+#gym .gz-why::after{content:' …mehr';color:#7fa8ff;font-weight:700}#gym .gz-why.open::after{content:' weniger'}#gym .gz-why:not(.cl)::after{content:none}
+#gym .ghero .ldh{grid-column:1/-1;padding:7px 10px!important;gap:9px!important;border-radius:12px!important;margin-top:2px}
+#gym .ghero .ldh .ldi{width:26px!important;height:26px!important;min-width:26px}#gym .ghero .ldh .ldi svg{width:14px;height:14px}
+#gym .ghero .ldt{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;min-width:0}#gym .ghero .ldh small{display:none}#gym .ghero .ldh{margin-top:0}
+#gym .ghero{grid-template-columns:minmax(0,1fr) 34%!important}#gym .gz-n{gap:6px!important}#gym .gz-r{padding-bottom:4px!important}
+#gym .gym-in.tight3 .ghero{gap:2px 8px!important;padding:9px 11px!important}#gym .gym-in.tight3 .grule{padding:6px 10px!important}#gym .gym-in.tight3 .gex .rx{margin-top:1px!important}
+#gym .ghero .ldt b{font-size:12.5px!important;line-height:1.2}#gym .ghero .ldt small{font-size:11px!important}
+#gym .ghero .ldr{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;margin:0!important;font-size:11px}
+#gym .ghero .ldr em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+#gym .ghero .ldr i{font-size:11px!important;padding:1px 6px!important}
+#gym .ghero .gz-miss{grid-column:1/-1}
+</style>
 <style id="cf-akku">
 /* Akku: keine Dauer-Animationen, kein Rand-Timer, keine Blur-Ebenen im Gym-Modus */
 html body .amb::before,html body .amb::after{animation:none!important}
@@ -3845,7 +3879,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1618-5115153</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1626-025d06b</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -5254,7 +5288,7 @@ function loadHTML(w,d,kg){if(!kg)return '';const cur=barNow(w,d);if(!cur||Math.a
  const D=plateDiff(cur.kg,kg),chip=(p,cls)=>`<i class="${cls}" style="--p:${PC[p]?PC[p][0]:'#888'}">${nf(p,2)}</i>`;
  const up=kg>cur.kg;
  return `<div class="ldh"><span class="ldi ${up?'up':'dn'}"><svg viewBox="0 0 24 24">${up?'<path d="M12 19V5M6 11l6-6 6 6"/>':'<path d="M12 5v14M6 13l6 6 6-6"/>'}</svg></span>
-  <span class="ldt"><b>Umbauen: ${up?'+':'−'}${nf(Math.abs(kg-cur.kg)/2,2)} kg pro Seite</b><small>von ${nf(cur.kg,2)} auf ${nf(kg,2)} kg</small>
+  <span class="ldt"><b>Umbauen ${up?'+':'−'}${nf(Math.abs(kg-cur.kg)/2,2)} kg/Seite</b><small>${nf(cur.kg,2)} → ${nf(kg,2)} kg</small>
   <span class="ldr">${D.off.length?`<em>runter</em>${D.off.map(p=>chip(p,'off')).join('')}`:''}${D.on.length?`<em>drauf</em>${D.on.map(p=>chip(p,'on')).join('')}`:''}</span></span></div>`}
 
 // 2) Rückgängig nach dem Abhaken
@@ -6320,7 +6354,7 @@ function swPick(k){const {w,d,b,e0,mode}=SW;const def=P[w][d].b[b].sw;if(mode===
  else{const L=log(w,d,true);if(!L.sw)L.sw={};const perm=(S.meta.swap||{})[e0]||def||e0;P[w][d].b.forEach((x,bb)=>{if((x.e0||x.e)!==e0)return;if((L.b[bb]||[]).some(z=>z&&z.ok)&&bb!==b)return;if(k===perm)delete L.sw[bb];else L.sw[bb]=k});saveLog(key(w,d))}
  applySwaps();SG.clear();toast(k===e0?'Original laut Plan':'Getauscht: '+EX[k].n+(swSrc(e0,k)==='k'?' (Alternative von Claude)':''));swClose();render()}
 function swClose(){const el=document.getElementById('swsh');if(el){el.hidden=true;el.innerHTML=''}SW=null}
-document.addEventListener('click',e=>{const gp=e.target.closest('#gym .gprog');if(gp&&!e.target.closest('[data-gpgo]')){const {w,d}=S.ui;const L=log(w,d)||{b:[]};let el=document.getElementById('gexl');if(el){el.remove();return}el=document.createElement('div');el.id='gexl';el.className='gexl';
+document.addEventListener('click',e=>{const wy=e.target.closest('#gym [data-gzwhy]');if(wy){wy.classList.toggle('open');wy.classList.add('cl');return}const gp=e.target.closest('#gym .gprog');if(gp&&!e.target.closest('[data-gpgo]')){const {w,d}=S.ui;const L=log(w,d)||{b:[]};let el=document.getElementById('gexl');if(el){el.remove();return}el=document.createElement('div');el.id='gexl';el.className='gexl';
   el.innerHTML=`<div class="gexl-in"><p class="eyebrow">Übungen heute · antippen zum Wechseln</p>${P[w][d].b.map((bl,b)=>{const sets=(L.b[b]||[]).slice(0,bl.s);const dn=sets.filter(z=>z&&z.ok).length;return `<button type="button" data-gpgo="${b}" class="${b===G.b?'cur':''} ${dn>=bl.s?'fin':''}"><span class="n">${dn>=bl.s?'✓':b+1}</span><span class="m"><b>${esc(EX[bl.e].n)}</b><small>${bl.s} × ${esc(bl.r)}${bl.rpe!=null?' · RPE '+nf(bl.rpe):''}</small></span><span class="c">${dn}/${bl.s}</span></button>`}).join('')}</div>`;document.getElementById('gym').appendChild(el);return}
  if(e.target.closest('[data-gpgo]')||(!e.target.closest('#gexl')&&document.getElementById('gexl'))){const el=document.getElementById('gexl');if(el)el.remove()}
  const t=e.target.closest('[data-swap]');if(t){e.preventDefault();e.stopPropagation();const [w,d,b]=t.dataset.swap.split('-').map(Number);swSheet(w,d,b);return}
@@ -6748,7 +6782,7 @@ function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)retu
  bb.addEventListener('click',ev=>{ev.preventDefault();ev.stopImmediatePropagation();closeGym(true);finishSession(w,d);render()},true)}
 function fitKg(){const cv=fitKg.c||(fitKg.c=document.createElement('canvas').getContext('2d'));document.querySelectorAll('#gym .gdock .mid input').forEach(i=>{i.style.removeProperty('font-size');const c=getComputedStyle(i);let f=parseFloat(c.fontSize);const avail=i.clientWidth-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight)-2;const meas=sz=>{cv.font=`${c.fontWeight} ${sz}px ${c.fontFamily}`;return cv.measureText(i.value||i.placeholder||'').width};let n=0;while(meas(f)>avail&&f>15&&n++<16)f-=1;if(f<parseFloat(c.fontSize))i.style.setProperty('font-size',f+'px','important')})}
 document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#gym .gdock .mid'))fitKg()});document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#gym [data-step]'))setTimeout(fitKg,0)});
-function fitGym(){setTimeout(fitKg,0);const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
+function fitGym(){setTimeout(fitKg,0);setTimeout(()=>{document.querySelectorAll('#gym .gz-why').forEach(e=>{e.classList.toggle('cl',e.scrollHeight>e.clientHeight+2||e.classList.contains('open'))})},0);const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
  const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3');if(!over())return;gi.classList.add('tight4');if(!over())return;gi.classList.add('tight5')}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
@@ -7008,12 +7042,10 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h||wz?`<p class="ghy hytx ${bl.h||''}">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip wzc" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}${bl.h?HYPETXT[bl.h]:''}</p>`:''}</div></div>
   <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''} ${G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500?'just':''} ${rpeNeed(bl,i)&&!L.b[G.b][i].ok?'rq':''}" aria-label="Satz ${i+1}${rpeNeed(bl,i)?' – RPE eintragen':''}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
     ${(()=>{const em=sg.kg!=null&&sg.t!=='v';return `<div class="gz-n"><b class="zahl ${!em&&sg.kg!=null?'':'nokg'}">${!em&&sg.kg!=null?nf(sg.kg,2):(bl.rpe!=null?(bl.rpeEst?'≈ ':'')+'RPE '+nf(bl.rpe):'frei')}${!em&&sg.kg!=null?'<small>kg</small>':''}</b><span class="gz-r"><b>× ${esc(sg.rdisp)}</b>${!em&&sg.kg!=null&&bl.rpe!=null?`<small>${bl.rpeEst?'≈ ':''}RPE ${nf(bl.rpe)}</small>`:em||sg.kg==null?'<small>Last frei</small>':''}</span></div>
-    ${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}
-    ${em?`<div class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b><small>${typeof PWA!=='undefined'?'nur Orientierung – Plan gibt keine Last vor':'nur Orientierung – der Plan gibt hier keine Last vor'}</small></div>`:''}
-    <span class="mut" style="font-size:12.5px">${em?'Berechnung: ':''}${esc(sg.why)}</span>`})()}${lt?`<span class="mut" style="font-size:12.5px">Zuletzt W${lt.W+1} ${DAYS[lt.D].tag}: ${nf(lt.kg,2)} kg × ${nf(lt.r)}${lt.rpe!=null?' @'+nf(lt.rpe):''}</span>`:''}</div>
-   ${eqType(bl.e)==='bb'?`<div class="bb3d sm" data-kg="${kg||0}" role="img" aria-label="Langhantel mit Wettkampfscheiben"></div>
-   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(kg,pl)}`:eqType(bl.e)==='db'?`<div class="bb3d sm db" data-kg="${kg||0}" role="img" aria-label="Kurzhanteln"><span class="dbkg">${kg?nf(kg,2):'–'} kg <small>je Hand</small></span></div>`:`<div class="geq" role="img" aria-label="${EQN[eqType(bl.e)]}">${eqSVG(eqType(bl.e),kg)}<span class="geqn">${EQN[eqType(bl.e)]}</span></div>`}</div>
-  ${!s.ok&&eqType(bl.e)==='bb'?loadHTML(w,d,kg):''}
+    <div class="gz-row">${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}${em?`<span class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b></span>`:''}${eqType(bl.e)==='bb'&&pl.length?`<span class="gz-pl">je Seite ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</span>`:''}</div>
+    <p class="gz-why" data-gzwhy>${em?'Empfehlung = nur Orientierung, der Plan gibt keine Last vor · Berechnung: ':''}${esc(sg.why)}${lt?` · Zuletzt W${lt.W+1} ${DAYS[lt.D].tag}: ${nf(lt.kg,2)} kg × ${nf(lt.r)}${lt.rpe!=null?' @'+nf(lt.rpe):''}`:''}</p>`})()}</div>
+   ${eqType(bl.e)==='bb'?`<div class="bb3d sm" data-kg="${kg||0}" role="img" aria-label="Langhantel mit Wettkampfscheiben"></div>${plMissHTML(kg,pl)}`:eqType(bl.e)==='db'?`<div class="bb3d sm db" data-kg="${kg||0}" role="img" aria-label="Kurzhanteln"><span class="dbkg">${kg?nf(kg,2):'–'} kg <small>je Hand</small></span></div>`:`<div class="geq" role="img" aria-label="${EQN[eqType(bl.e)]}">${eqSVG(eqType(bl.e),kg)}<span class="geqn">${EQN[eqType(bl.e)]}</span></div>`}
+   ${!s.ok&&eqType(bl.e)==='bb'?loadHTML(w,d,kg):''}</div>
   ${testHTML(w,d,G.b)}
   ${calibHint(ex.g,bl.rpe!=null&&!bl.rpeEst?bl.rpe:null)}
   ${s.ok?adhLine(setAdh(w,d,G.b,G.i)):''}
