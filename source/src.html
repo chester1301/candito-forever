@@ -2232,6 +2232,21 @@ html b.mtred .mt2{color:#4a6df5!important;-webkit-text-fill-color:#4a6df5!import
 .jrs-n{font-size:13.5px!important;color:#9a9ea6!important;line-height:1.5}
 .jrs-f{padding:10px 22px calc(14px + env(safe-area-inset-bottom,0px))}.jrs-x{width:100%;height:56px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 18px var(--f)}
 
+
+/* Schieberegler */
+#gym .slide{touch-action:pan-y;-webkit-user-select:none;user-select:none}
+#gym .slide .sl-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,rgba(255,255,255,.10),rgba(255,255,255,.22));pointer-events:none;z-index:0}
+#gym .slide>*:not(.sl-fill){position:relative;z-index:1}
+#gym .slide .sl-knob{touch-action:none;cursor:grab;will-change:transform;z-index:3!important}
+#gym .slide.sliding .sl-knob{cursor:grabbing}
+#gym .slide .sl-ch{position:absolute!important;right:16px;top:50%;transform:translateY(-50%);font:900 18px var(--f);letter-spacing:-2px;opacity:.45;pointer-events:none}
+#gym .slide.sliding .sl-ch,#gym .slide.sliding .hb-tx{opacity:calc(1 - var(--slp,0))}
+#gym .slide .sl-knob.nudge{animation:slnudge .6s ease}
+@keyframes slnudge{0%,100%{transform:translateX(0)}25%{transform:translateX(18px)}50%{transform:translateX(0)}75%{transform:translateX(9px)}}
+#gym .grgo.slide{display:flex!important;align-items:center;justify-content:center;padding-left:72px!important;padding-right:44px!important}
+#gym .grgo.slide>svg{display:none!important}
+#gym .grgo .sl-k{position:absolute!important;left:8px;top:50%;margin-top:-24px;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 14px -6px rgba(0,0,0,.5)}
+#gym .grgo .sl-k svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;display:block!important;padding:0!important;background:none!important;box-shadow:none!important}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -3074,6 +3089,23 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');i
 document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}});
 
 
+
+/* ===== Schieberegler statt Tippen (Gym: Satz abhaken / Pause beenden) ===== */
+const SL_AR='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+function slMount(root){(root||document).querySelectorAll('#gym .bigbtn.hb2:not([data-sl]),#gym .grgo:not([data-sl])').forEach(el=>{el.dataset.sl='1';el.classList.add('slide');
+ let k=el.querySelector('.hb-ic');if(!k){k=document.createElement('span');k.className='sl-k';k.innerHTML=SL_AR;el.prepend(k)}k.classList.add('sl-knob');
+ const fill=document.createElement('i');fill.className='sl-fill';el.prepend(fill);const ch=document.createElement('span');ch.className='sl-ch';ch.textContent='›››';el.appendChild(ch);
+ let x0=null,dx=0,max=0,pid=null;
+ const set=(v,anim)=>{k.style.transition=anim?'transform .28s cubic-bezier(.2,.9,.3,1.2)':'none';fill.style.transition=anim?'width .28s ease':'none';k.style.transform=`translateX(${v}px)`;fill.style.width=(k.offsetLeft+k.offsetWidth+v)+'px';el.style.setProperty('--slp',max?v/max:0)};
+ k.addEventListener('pointerdown',e=>{if(el.classList.contains('dis'))return;e.preventDefault();e.stopPropagation();pid=e.pointerId;try{k.setPointerCapture(pid)}catch(_){}x0=e.clientX;dx=0;max=el.clientWidth-k.offsetLeft*2-k.offsetWidth;el.classList.add('sliding')});
+ k.addEventListener('pointermove',e=>{if(x0==null||e.pointerId!==pid)return;e.preventDefault();dx=Math.max(0,Math.min(max,e.clientX-x0));set(dx,false)});
+ const end=e=>{if(x0==null)return;x0=null;el.classList.remove('sliding');el._sup=Date.now();
+  if(dx>=max*.82){set(max,true);try{navigator.vibrate&&navigator.vibrate(18)}catch(_){}setTimeout(()=>{el._ok=true;el.click();setTimeout(()=>{if(el.isConnected)set(0,true)},250)},120)}else set(0,true)};
+ k.addEventListener('pointerup',end);k.addEventListener('pointercancel',end);
+ ['touchstart','touchmove'].forEach(t=>el.addEventListener(t,e=>e.stopPropagation(),{passive:true}))})}
+document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.slide');if(!el)return;if(el._ok){el._ok=false;return}
+ e.preventDefault();e.stopImmediatePropagation();if(Date.now()-(el._sup||0)<700)return;const k=el.querySelector('.sl-knob');if(k){k.classList.remove('nudge');void k.offsetWidth;k.classList.add('nudge')}toast('Zum Bestätigen nach rechts schieben')},true);
+try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hidden)slMount(g)}).observe(document.getElementById('gym'),{childList:true,subtree:true})}catch(e){}
 /* ===================== Verlauf: abgeschlossene Einheiten (alle Programme) ===================== */
 const HPC={intro:'#5aaaf0',p8:'#4069f5',p8b:'#7d9bff',p10:'#3cc4d6'};
 function histSessions(){const TK=[...CKG,...CKS].map(q=>q[0]);const out=[];
@@ -3539,7 +3571,7 @@ function slideIn(dir){const el=document.querySelector('#gym .gsw');if(!el||RM())
   if(T){const go=Math.abs(dx)>W*.24;if(go!==armed){armed=go;if(go)hap(8)}const k=dir+'|'+go+'|'+T.t;if(k!==hk){hk=k;hh.querySelector('b').textContent=T.t;hh.querySelector('small').textContent=T.s;hh.className='swhint '+(dir>0?'r':'l')+(go?' go':'')}
    const q=Math.min(1,p*2.2);hh.style.opacity=q;hh.style.transform=`translate3d(${((dir>0?1:-1)*(1-q)*20).toFixed(1)}px,0,0) scale(${(.9+q*.1).toFixed(3)})`}else hh.style.opacity=0};
  const hideHint=()=>{if(h){h.style.transition='opacity .16s,transform .16s';h.style.opacity=0;setTimeout(()=>{if(h)h.style.transition='none'},170)}};
- g.addEventListener('touchstart',e=>{if(lock||e.target.closest('input,.gt-pre,.rpechips,.gdock,.grest')){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY;lt=performance.now();lx=sx;vx=0;drag=false;dx=0;armed=false},{passive:true});
+ g.addEventListener('touchstart',e=>{if(lock||e.target.closest('input,.gt-pre,.rpechips,.gdock,.grest,.slide')){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY;lt=performance.now();lx=sx;vx=0;drag=false;dx=0;armed=false},{passive:true});
  g.addEventListener('touchmove',e=>{if(sx==null)return;const t=e.touches[0];const ddx=t.clientX-sx,ddy=t.clientY-sy;const now=performance.now();vx=vx*.5+((t.clientX-lx)/Math.max(1,now-lt))*.5;lx=t.clientX;lt=now;
   if(!drag){if(Math.abs(ddx)>10&&Math.abs(ddx)>Math.abs(ddy)*1.2){drag=true;sx=t.clientX;tg={'1':swTarget(1),'-1':swTarget(-1)};W=Math.min(g.clientWidth||390,innerWidth||390);el=g.querySelector('.gsw');if(el){el.style.transition='none';el.style.willChange='transform'}hint().style.transition='none'}else if(Math.abs(ddy)>14){sx=null;return}else return}
   const raw=t.clientX-sx,dir=raw<0?1:-1;dx=tg[dir]?raw:Math.sign(raw)*Math.pow(Math.abs(raw),.7)*1.7;
@@ -4886,7 +4918,7 @@ const RT0=[240,240,300,360];
 function rtTiers(side){const m=S.meta.restTiers||{};return (m[side]&&m[side].length===4)?m[side]:RT0.slice()}
 function restAuto(w,d,b,rp){const bl=P[w][d].b[b];if(!bl)return {s:S.meta.restMain||240,src:''};const e=bl.e,ex=EX[e]||{};
  if(S.meta.restEx&&S.meta.restEx[e]!=null)return {s:S.meta.restEx[e],src:'deine Zeit für diese Übung'};
- const txt=[bl.x,ex.t,P[w][d].d,...((INFO&&INFO[w+'-'+d])||[])].join(' ');
+ const txt=[bl.x,ex.t].join(' ');
  if(ex.m&&/8\s*[–-]\s*10\+?\s*(Minuten|min)/.test(txt))return {s:480,src:'Candito: 8–10+ min laut Plan'};
  if(!ex.m)return {s:S.meta.restAcc||120,src:'Zubehör'};
  if(S.meta.autoT===false)return {s:S.meta.restMain||240,src:'Grundübung'};
@@ -5093,9 +5125,9 @@ function timerClick(e){const t=e.target.closest('[data-t]');if(!t)return;const a
  if(a==='min')closeSheet();
  if(a==='gmin'){T.gmin=true;saveT();gymRefresh();return}
  if(a==='gmax'){T.gmin=false;saveT();gymRefresh();return}
- if(a==='add')addTime(+t.dataset.v);
+ if(a==='add'){addTime(+t.dataset.v);if(T.src&&!/angepasst/.test(T.src)){T.src=T.src+' · angepasst';saveT()}}
  if(a==='pause')togglePause();
- if(a==='preset')setPreset(+t.dataset.v);
+ if(a==='preset'){setPreset(+t.dataset.v);T.src='von dir gewählt';saveT();tick.k=null}
  if(a==='merk'){const ex=T.ctx&&T.ctx.from;if(!ex)return;if(t.checked)S.meta.restEx[ex]=T.total;else delete S.meta.restEx[ex];saveMeta();return}
  if(a==='snd'){S.meta.sound=!S.meta.sound;saveMeta();renderSheet()}
  if(a==='vib'){S.meta.vibe=!S.meta.vibe;saveMeta();renderSheet()}
@@ -5228,7 +5260,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
 function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)return;const {w,d}=S.ui;const L=log(w,d);const bb=g.querySelector('.bigbtn');if(!bb||!L||L.done||nextOpen(w,d,0,-1)){return}
- if(bb.dataset.fin)return;bb.dataset.fin='1';bb.classList.add('finb');bb.removeAttribute('data-g');bb.removeAttribute('data-act');bb.innerHTML='<span class="hb-ic">✓</span><span class="hb-tx"><b>Training abschließen</b><span class="hb-m"><i>Alle Sätze erledigt</i></span></span>';
+ if(bb.dataset.fin)return;bb.dataset.fin='1';delete bb.dataset.sl;bb.classList.remove('slide');bb.classList.add('finb');bb.removeAttribute('data-g');bb.removeAttribute('data-act');bb.innerHTML='<span class="hb-ic">✓</span><span class="hb-tx"><b>Training abschließen</b><span class="hb-m"><i>Alle Sätze erledigt</i></span></span>';
  bb.addEventListener('click',ev=>{ev.preventDefault();ev.stopImmediatePropagation();closeGym(true);finishSession(w,d);render()},true)}
 function fitGym(){const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
  const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight')}
