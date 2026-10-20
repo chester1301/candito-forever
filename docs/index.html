@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1031-2844fc9";
+<script>window.CF_VERSION="2026.10.20-1045-ba5bc07";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2470,6 +2470,35 @@ html #xsheet .sheet-in.xs{background:linear-gradient(180deg,#0d1020,#07080d 40%)
 .xe-cn{width:100%;margin-top:10px;height:52px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:#17181d;color:#fff;font:700 16px var(--f)}
 .xe-ol{display:grid;gap:10px;margin-bottom:18px}.xe-ol button{height:50px;border-radius:16px;border:0;background:#1f2026;color:#fff;font:800 17px var(--f)}.xe-ol button[aria-pressed="true"]{background:#3a63ff;box-shadow:0 8px 20px -10px rgba(58,99,255,.9)}
 .xe-ta{background:#17181d!important;border-radius:14px!important;text-align:left!important;margin-bottom:14px;min-height:110px}
+
+/* Gym: weitere Verdichtung kleiner iPhones */
+.gym-in.tight4 .ghy{display:none!important}
+.gym-in.tight4 .gex{gap:10px!important}.gym-in.tight4 .gex .rx{margin-top:0!important}
+.gym-in.tight4 .grule{padding-top:8px!important;padding-bottom:8px!important}
+.gym-in.tight4 .gicons .gico{width:42px!important;height:42px!important}
+.gym-in.tight4 .bb3d.sm{max-height:92px}
+.gym-in.tight5 .gex h2.disp{font-size:30px!important}.gym-in.tight5 .gex .lico{width:46px!important;height:46px!important}
+.gym-in.tight5 .gdock .stp{min-height:64px!important}
+.gym-in.tight5 .gtop{padding-top:6px!important}
+.gym-in.tight5{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important;row-gap:6px!important}.gym-in.tight5 .gdock{margin-bottom:-6px!important}.gym-in.tight5 .gdk-b .savest,.gym-in.tight5 .gdk-b>p,.gym-in.tight5 .gdk-b>small{display:none!important}.gym-in.tight5 .gdock .grpe{margin-top:2px!important;margin-bottom:2px!important}
+/* Scheiben */
+.gz-miss{grid-column:1/-1;margin:6px 0 0;font-size:12px;font-weight:700;color:#f3c969;line-height:1.35}
+.inv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.inv-r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:#0b0d14;border:1px solid rgba(255,255,255,.07)}
+.inv-r>i{font-style:normal;font:800 14px var(--f);min-width:44px;text-align:center;padding:4px 6px;border-radius:8px;background:color-mix(in srgb,var(--p) 30%,#111);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--p) 70%,transparent)}
+.inv-r>span{font-size:11px;color:var(--mut)}
+.inv-s{margin-left:auto;display:flex;align-items:center;gap:6px}.inv-s button{width:30px;height:30px;border-radius:9px;border:1px solid rgba(130,155,255,.22);background:#151b33;color:#c9d5ff;font:700 17px var(--f)}.inv-s b{min-width:18px;text-align:center;font-variant-numeric:tabular-nums}
+.sv-bkt{margin:6px 0 0;text-align:center;font-size:12px;color:#8a8f99}
+
+.hs-ws{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1px solid rgba(79,195,217,.35);background:linear-gradient(135deg,rgba(79,195,217,.14),#0e1018 70%);color:#fff;text-align:left}
+.hs-ws svg{width:26px;height:26px;fill:none;stroke:#4fc3d9;stroke-width:2;stroke-linecap:round;flex:none}.hs-ws span{display:grid}.hs-ws b{font-size:15.5px}.hs-ws small{font-size:12.5px;color:#8a8f99}
+.hs-rp{background:#101012;border-radius:22px;padding:16px;border:1px solid rgba(255,255,255,.05)}
+.hs-rph b{display:block;font-size:16px;color:#fff}.hs-rph small{font-size:12.5px;color:#8a8f99}
+.hs-rpt{display:grid;grid-template-columns:minmax(0,1.5fr) .8fr 1fr 1fr;gap:8px 8px;margin-top:12px;align-items:center;font-variant-numeric:tabular-nums}
+.hs-rpt>span{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#70747c;text-align:right}.hs-rpt>span:first-child{text-align:left}
+.hs-rpt>i{font-style:normal;font-size:13px;font-weight:700;color:#e4e6ea;display:flex;align-items:center;gap:7px;min-width:0}.hs-rpt>i em{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.hs-rpt>b{text-align:right;font-size:14.5px;color:#fff}.hs-rpt>b.hi{color:#f3c969}.hs-rpt>b.lo{color:#4fc3d9}
+.hs-rpn{margin:10px 0 0;font-size:11.5px;color:#70747c;line-height:1.4}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -3806,7 +3835,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1031-2844fc9</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1045-ba5bc07</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4372,6 +4401,20 @@ try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hi
   vis.forEach(([c,g])=>{const r=c.getBoundingClientRect();const p=Math.max(0,Math.min(1,r.top/H));g.style.setProperty('--x',(12+p*76).toFixed(1)+'%');g.style.opacity=e.toFixed(3)});
   if(e>.01)raf=requestAnimationFrame(frame);else{vis.forEach(([c,g])=>g.style.opacity=0);vis=[]}};
  addEventListener('scroll',()=>{if(!raf){if(!vis.length)mount();lt=performance.now();raf=requestAnimationFrame(frame)}else if(Math.random()<.08)mount()},{passive:true})})();
+
+/* ---------- Readiness gegen Leistung & Wochenbericht ---------- */
+function rdPerfData(){const ss=histSessions();const out=[];ss.forEach(s=>{if(s.rd==null)return;withProg(s.pid,()=>{const a=dayAdh(s.w,s.d);let dv=[];P[s.w][s.d].b.forEach((bl,b)=>{const t=bl.rpe!=null?bl.rpe:null;if(t==null)return;(s.L.b[b]||[]).forEach(z=>{const r=pnum(z&&z.rpe);if(z&&z.ok&&r!=null)dv.push(r-t)})});
+ out.push({z:jrZone(s.rd),rd:s.rd,adh:a.ev?a.hit/a.ev*100:null,dev:dv.length?dv.reduce((x,y)=>x+y,0)/dv.length:null})})});
+ return JRZ.map(z=>{const g=out.filter(o=>o.z.k===z.k);const m=f=>{const v=g.map(f).filter(x=>x!=null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};return {z,n:g.length,adh:m(o=>o.adh),dev:m(o=>o.dev)}}).filter(r=>r.n)}
+function rdPerfHTML(){const R=rdPerfData();const tot=R.reduce((a,r)=>a+r.n,0);
+ return `<section class="hs-rp"><div class="hs-rph"><b>Readiness & Leistung</b><small>Wie lief das Training in den einzelnen Readiness-Bereichen?</small></div>
+ ${tot<3?`<p class="hs-e" style="text-align:left;margin:6px 0 0">Ab 3 Einheiten mit Check-in erscheint hier der Vergleich (${tot}/3).</p>`:`<div class="hs-rpt"><span></span><span>Einheiten</span><span>Vorgaben getroffen</span><span>RPE Ist − Soll</span>${R.map(r=>`<i style="--c:${r.z.c}"><em></em>${r.z.n}</i><b>${r.n}</b><b>${r.adh!=null?Math.round(r.adh)+' %':'–'}</b><b class="${r.dev!=null&&r.dev>0.25?'hi':r.dev!=null&&r.dev<-0.25?'lo':''}">${r.dev!=null?(r.dev>0?'+':'')+nf(Math.round(r.dev*10)/10,1):'–'}</b>`).join('')}</div>
+ <p class="hs-rpn">Positiver RPE-Wert = Sätze fühlten sich schwerer an als geplant. Reine Auswertung – Canditos Vorgaben bleiben unverändert.</p>`}</section>`}
+function weekShare(){const ss=histSessions();const now=Date.now();const wk=ss.filter(s=>now-s.dt<7*864e5);if(!wk.length){toast('In den letzten 7 Tagen keine abgeschlossene Einheit');return}
+ const ton=wk.reduce((a,s)=>a+s.ton,0),sets=wk.reduce((a,s)=>a+s.sets,0);const rds=wk.map(s=>s.rd).filter(v=>v!=null);const rd=rds.length?Math.round(rds.reduce((a,b)=>a+b,0)/rds.length):null;
+ let ev=0,hit=0;wk.forEach(s=>withProg(s.pid,()=>{const a=dayAdh(s.w,s.d);ev+=a.ev;hit+=a.hit}));const f=d=>new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+ shareCard({file:'woche',kicker:'Wochenbericht · '+f(now-6*864e5)+'–'+f(now),title:wk.length+(wk.length===1?' Einheit':' Einheiten')+' · '+sets+' Sätze',big:nf(ton/1000,1),unit:'t',chip:rd!=null?'Ø Readiness '+rd+' · '+jrZone(rd).n:null,lines:[ev?'Vorgaben getroffen: '+Math.round(hit/ev*100)+' %':'',...wk.slice(0,4).map(s=>'• '+s.day.f+' · '+s.dt.toLocaleDateString('de-DE',{weekday:'short'}))].filter(Boolean)})}
+document.addEventListener('click',e=>{if(e.target.closest('[data-wkshare]')){e.stopPropagation();weekShare()}});
 /* ---------- Rückwirkend: liegengebliebene Einheiten abschließen (nur echte Daten) ---------- */
 function autoClosePast(){let n=0;const now=Date.now();Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||L.done)continue;const ok=L.b.flat().filter(z=>z&&z.ok);if(!ok.length)continue;
  const ts=ok.map(z=>+z.t).filter(t=>t>0);const last=Math.max(L.pausedAt||0,...ts,L.start||0);if(!last||now-last<12*3600e3)continue;
@@ -4409,7 +4452,7 @@ function svHTML(){const D=svData(SV.pid,SV.w,SV.d);if(!D)return '';const list=sv
   ${D.ex.map(x=>`<section class="sv-ex"><div class="sv-eh"><b>${esc(x.name)}${x.sw?' <em>getauscht</em>':''}</b><button type="button" class="sv-i" data-ex="${x.e}" aria-label="Info zu ${esc(x.name)}">${SVI.info}</button></div>
    ${x.sets.map(st=>`<div class="sv-s"><span class="sv-sn">Satz ${st.i+1}</span><span class="sv-c">${st.kg!=null?nf(st.kg,2)+' kg':'ohne kg'}</span><i>×</i><span class="sv-c">${st.r!=null?st.r+' Wdh':'–'}${st.rpe!=null?` <em>@ RPE ${nf(st.rpe,1)}</em>`:''}</span></div>`).join('')}</section>`).join('')||'<p class="hs-e">Keine abgehakten Sätze.</p>'}
   ${D.L.note?`<div class="sv-nt"><p><b>Notiz</b>${esc(D.L.note)}</p></div>`:''}
-  ${SV.fresh&&PWA?'<button type="button" class="sv-bk" data-sumbk2>☁︎ Jetzt in iCloud sichern</button>':''}
+  ${SV.fresh&&PWA?`<button type="button" class="sv-bk" data-sumbk2>☁︎ Jetzt in iCloud sichern</button><p class="sv-bkt">${bkText()}${bkSince()!=null?' · '+bkSince()+' '+(bkSince()===1?'Einheit':'Einheiten')+' seitdem':''}</p>`:''}
  </div>
  <div class="sv-ft"><button type="button" class="sv-b" data-svclose>${SV.fresh?'Fertig':'Zurück'}</button><button type="button" class="sv-b go" data-svresume>${SVI.play}<span>Fortsetzen</span></button></div></div>`}
 function svOpen(pid,w,d,fresh){SV={pid,w,d,fresh:!!fresh};let el=document.getElementById('svw');if(!el){el=document.createElement('div');el.id='svw';document.body.appendChild(el)}el.innerHTML=svHTML();el.hidden=false;document.body.classList.add('svopen');svPh()}
@@ -4444,6 +4487,8 @@ function histHTML(){const all=histSessions();const per=S.ui.hp||'6M',view=S.ui.h
  <div class="hs-seg">${['1W','1M','6M','1J','Alle'].map(k=>`<button type="button" data-hp="${k}" aria-pressed="${k===per}">${k}</button>`).join('')}</div>
  ${histChart(sel,from,now)}
  <div class="hs-lg">${progs.map(pid=>`<span><i style="background:${HPC[pid]||'#5aaaf0'}"></i>${esc(PROGS[pid].name)}</span>`).join('')}<span class="hs-lv">Balken = Volumen je Einheit · <b style="color:#4fc3d9">– – Ø</b></span></div>
+ <button type="button" class="hs-ws" data-wkshare>${HS_IC.bar}<span><b>Wochenbericht teilen</b><small>Letzte 7 Tage als Bild</small></span></button>
+ ${rdPerfHTML()}
  <div class="hs-h"><b>${all.length} ${all.length===1?'Einheit':'Einheiten'} abgeschlossen (gesamt)</b><div class="hs-v"><button type="button" data-hv="cal" aria-pressed="${view==='cal'}" aria-label="Kalender">${HS_IC.cal}</button><button type="button" data-hv="list" aria-pressed="${view==='list'}" aria-label="Liste">${HS_IC.list}</button></div></div>
  ${view==='cal'?histCal(all):''}
  ${(view==='cal'?all.filter(s=>S.ui.hday?isoD(s.dt)===S.ui.hday:false):all).map(histCard).join('')||(view==='cal'?'<p class="hs-e">Tippe auf einen markierten Tag.</p>':'<p class="hs-e">Noch keine abgeschlossene Einheit. Nach „Training abschließen“ erscheint sie hier.</p>')}
@@ -5828,7 +5873,7 @@ function progData(){const A=allSets();
    <div class="leg"><span style="--c:var(--sq)"><i></i>Kniebeuge</span><span style="--c:var(--bp)"><i></i>Bank</span><span style="--c:var(--dl)"><i></i>Kreuzheben</span><span style="--c:var(--acc)"><i></i>Zubehör</span></div>
    ${barChart(tw,['sq','bp','dl','acc'])}</section>`:'<section class="leer">Noch keine Daten. Trag im Training-Tab Gewicht, Wiederholungen und RPE ein.</section>'}`,
   rpe:()=>rpeLiftHTML(A)+`<section class="kpis"><div><span>RPE Ist − Soll</span>${dev==null?emp('RPE eintragen'):`<b class="zahl">${(dev>0?'+':'')+nf(dev,2)}</b>`}</div><div><span>Sätze mit RPE</span><b class="zahl">${rpeD.length}</b></div></section>${calibHTML()}`,
-  whoop:()=>whoopProgHTML(A),
+  whoop:()=>rdPerfHTML().replace('class="hs-rp"','class="hs-rp card"')+whoopProgHTML(A),
   backoff:()=>backoffHTML(),
   punkte:()=>pointsHTML(A),
   rekorde:()=>recordsHTML(A),
@@ -5937,7 +5982,11 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
  <section class="card"><div class="ct"><h2 class="h2">Hantel & Rundung</h2></div>
   <div class="fgrid"><label class="fld">Stangengewicht<span class="in"><input id="set-bar" inputmode="decimal" data-meta="bar" value="${nf(m.bar,2)}"><i>kg</i></span></label>
   <label class="fld">Zielgewichte runden auf<span class="in"><input id="set-rd" inputmode="decimal" data-meta="round" value="${nf(m.round,2)}"><i>kg</i></span></label>
-  <label class="fld">Kleinste Laststufe Kabel (Trizeps)<span class="in"><input id="set-inc" inputmode="decimal" data-meta="inc" value="${nf(m.inc||2.5,2)}"><i>kg</i></span></label></div></section>
+  <label class="fld">Kleinste Laststufe Kabel (Trizeps)<span class="in"><input id="set-inc" inputmode="decimal" data-meta="inc" value="${nf(m.inc||2.5,2)}"><i>kg</i></span></label></div>
+  <p class="sec" style="margin-top:14px">Meine Scheiben (Home-Gym)</p>
+  <p class="note2" style="margin-top:0">Anzahl Scheiben insgesamt (ein Paar = 2). Die App zeigt dann pro Seite nur, was du wirklich stecken kannst, und warnt, wenn ein Gewicht nicht geht. Leer lassen = unbegrenzt.</p>
+  <div class="inv">${PLS.map(p=>{const n=(m.inv||{})[p]||0;return `<div class="inv-r" style="--p:${(PC[p]||['#888'])[0]}"><i>${nf(p,2)}</i><span>kg</span><div class="inv-s"><button type="button" data-inv="${p}|-2" aria-label="2 weniger">−</button><b>${n}</b><button type="button" data-inv="${p}|2" aria-label="2 mehr">+</button></div></div>`}).join('')}</div>
+  ${m.inv&&Object.keys(m.inv).length?'<button type="button" class="fl-skip" data-invreset>Scheiben zurücksetzen (unbegrenzt)</button>':''}</section>
  <section class="card"><div class="ct"><h2 class="h2">So rechnet die App</h2></div><ol class="hinw">
   <li><span><b>%-Vorgaben</b> rechnen mit deinen W1-Singles (Paused Squat, Paused Deadlift, 3 s Pause Bench). Bei Wahl-Optionen (z. B. 87,5 oder 90 %) nimmt die App die Option, die laut deinem e1RM am besten zum Ziel-RPE passt.</span></li>
   <li><span><b>RPE-Vorgaben</b> rechnen aus deinem geschätzten 1RM der Übung – zuerst aus Sätzen von heute, sonst aus der letzten Einheit mit dieser Übung.</span></li>
@@ -6074,8 +6123,11 @@ function gymRingRow(){const {w,d}=S.ui,day=P[w][d],L=log(w,d);if(!day||!day.b.le
 
 /* ===================== Runde 5 ===================== */
 // 2 Sicherungs-Status
+function doneN(){let n=0;try{Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(L&&L.done)n++}}))}catch(e){}return n}
+function bkSince(){let b=null;try{const v=localStorage.getItem('cf-lastexport-n');b=v==null?null:+v}catch(e){}return b==null?null:Math.max(0,doneN()-b)}
+addEventListener('cf-exported',()=>{try{localStorage.setItem('cf-lastexport-n',String(doneN()))}catch(e){}try{render()}catch(e){}});
 function bkAge(){try{const t=+localStorage.getItem('cf-lastexport')||0;return t?Math.floor((Date.now()-t)/864e5):null}catch(e){return null}}
-function bkLevel(){const a=bkAge();return a==null?'r':a<=7?'g':a<=14?'y':'r'}
+function bkLevel(){const a=bkAge();const ns=bkSince();if(a==null)return 'r';if(ns!=null&&ns>=5)return 'r';if(ns!=null&&ns>=3)return 'y';return a<=7?'g':a<=14?'y':'r'}
 function bkText(){const a=bkAge();return a==null?'Noch keine iCloud-Sicherung':a===0?'Letzte Sicherung heute':a===1?'Letzte Sicherung gestern':`Letzte Sicherung vor ${a} Tagen`}
 function bkDot(){if(!window.CF_PWA)return;const g=document.getElementById('gear');if(!g)return;let d=g.querySelector('.bkdot');if(!d){d=document.createElement('i');d.className='bkdot';g.appendChild(d)}d.className='bkdot '+bkLevel();g.setAttribute('aria-label','Menü und Einstellungen · '+bkText())}
 window.addEventListener('cf-exported',()=>{bkDot();render()});setInterval(bkDot,60000);
@@ -6104,8 +6156,8 @@ function rpeLiftHTML(A){const G3=['sq','bp','dl'];const R=G3.map(g=>{const v=A.f
   <div class="rpl-sc"><span>leichter als geplant</span><span>Vorgabe</span><span>schwerer</span></div>
   <p class="note2" style="margin:6px 0 0">Vergleicht dein eingetragenes RPE mit Canditos Vorgabe-RPE. Die App ändert dadurch keine Lasten.</p></section>`}
 // 10 Analyse-Erinnerung
-function bkDueHTML(){if(!window.CF_PWA)return '';let tot=0;try{tot=totalOk()}catch(e){}if(!tot)return '';const a=bkAge();if(a!=null&&a<=7)return '';let sn=0;try{sn=+localStorage.getItem('cf-bksnooze')||0}catch(e){}if(Date.now()<sn)return '';
- return `<section class="card bkd"><span class="bkd-i"><svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5z"/><path d="M12 11v6M9.5 14.5 12 17l2.5-2.5"/></svg></span><div><b>${a==null?'Noch keine iCloud-Sicherung':'Sicherung fällig'}</b><small>${a==null?'Einmal sichern – dann sind deine Trainingsdaten auch bei einem neuen iPhone sicher.':'Letzte iCloud-Sicherung vor '+a+' Tagen.'}</small></div><div class="bkd-b"><button type="button" class="pri" data-bkdo>Jetzt sichern</button><button type="button" data-bklater>Später</button></div></section>`}
+function bkDueHTML(){if(!window.CF_PWA)return '';let tot=0;try{tot=totalOk()}catch(e){}if(!tot)return '';const a=bkAge();const ns=bkSince();const due=a==null||a>7||(ns!=null&&ns>=3);if(!due)return '';let sn=0;try{sn=+localStorage.getItem('cf-bksnooze')||0}catch(e){}if(Date.now()<sn)return '';
+ return `<section class="card bkd"><span class="bkd-i"><svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5z"/><path d="M12 11v6M9.5 14.5 12 17l2.5-2.5"/></svg></span><div><b>${a==null?'Noch keine iCloud-Sicherung':'Sicherung fällig'}</b><small>${a==null?'Einmal sichern – dann sind deine Trainingsdaten auch bei einem neuen iPhone sicher.':(ns!=null&&ns>=3?ns+' Einheiten seit der letzten Sicherung':'Letzte iCloud-Sicherung vor '+a+' Tagen')+' – iOS kann Web-App-Daten löschen, wenn der Speicher knapp wird.'}</small></div><div class="bkd-b"><button type="button" class="pri" data-bkdo>Jetzt sichern</button><button type="button" data-bklater>Später</button></div></section>`}
 document.addEventListener('click',e=>{if(e.target.closest('[data-bkdo]')){try{downloadBackup()}catch(x){}return}if(e.target.closest('[data-bklater]')){try{localStorage.setItem('cf-bksnooze',String(Date.now()+2*864e5))}catch(x){}render()}});
 function anaDueHTML(){if((S.ui.tdet||{}).home)return '';let due=null;for(let w=0;w<NW();w++){let all=true;for(let d=0;d<ND();d++)if(P[w][d].b.length&&dayStatus(w,d)!=='done')all=false;if(all&&!S.ana[AK(w)]&&!((S.meta.anaSkip||{})[AK(w)]))due=w}
  if(due==null)return '';return `<section class="card anad"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg><div><b>W${due+1} ist fertig</b><small>Jetzt an Claude senden und Fazit & Tipps für die nächste Woche holen?</small></div><div class="anad-b"><button type="button" class="pri" data-anago="${due}">Senden</button><button type="button" data-anaskip="${AK(due)}" aria-label="Später">Später</button></div></section>`}
@@ -6327,6 +6379,8 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-rtauto]');
  const r=e.target.closest('[data-rt]');if(r){const [side,i,dv]=r.dataset.rt.split('|');const T=rtTiers(side);T[+i]=Math.max(60,Math.min(900,T[+i]+ +dv));if(!S.meta.restTiers)S.meta.restTiers={};S.meta.restTiers[side]=T;saveMeta();render();return}
  if(e.target.closest('[data-rtreset]')){S.meta.restTiers={};saveMeta();render()}});
 function twHint(root){(root||document).querySelectorAll('.tw').forEach(t=>{const o=t.scrollWidth>t.clientWidth+4;t.classList.toggle('ovx',o);if(o&&!t._sh){t._sh=1;t.addEventListener('scroll',()=>t.classList.toggle('end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4),{passive:true})}})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-inv]');if(b){const [p,d]=b.dataset.inv.split('|');if(!S.meta.inv)S.meta.inv={};const n=Math.max(0,(S.meta.inv[p]||0)+ +d);if(n)S.meta.inv[p]=n;else delete S.meta.inv[p];saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y);return}
+ if(e.target.closest('[data-invreset]')){S.meta.inv={};saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y)}});
 let renderPending=false;
 setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}
  if(!document.querySelector('#gym .grule')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const gz=document.querySelector('#gym .gziel');if(bl&&gz)gz.insertAdjacentHTML('beforebegin',gymRuleHTML(bl))}
@@ -6539,8 +6593,13 @@ async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
 function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&!$('#gym').hidden&&navigator.wakeLock){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
-function plates(kg){const bar=S.meta.bar||20;let side=(kg-bar)/2;if(!(side>0))return [];const PL=[25,20,15,10,5,2.5,1.25],out=[];for(const p of PL){while(side>=p-1e-6){out.push(p);side-=p}}return out}
-const PC={25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28]};
+const PLS=[25,20,15,10,5,2.5,1.25,0.5,0.25];
+function invOf(){const v=S.meta.inv;return v&&Object.keys(v).length?v:null}
+function plates(kg){const bar=S.meta.bar||20;let side=(kg-bar)/2;if(!(side>0))return [];const inv=invOf();const out=[];for(const p of PLS){if(!inv&&p<1.25)continue;let n=inv?Math.floor((inv[p]||0)/2):99;while(n>0&&side>=p-1e-6){out.push(p);side-=p;n--}}if(side>1e-6)out.miss=Math.round(side*2*100)/100;return out}
+function loadable(kg){const pl=plates(kg);return !pl.miss}
+function nearLoad(kg){const st=0.25;let lo=null,hi=null;for(let d=st;d<=12.5;d+=st){if(lo==null&&kg-d>=(S.meta.bar||20)&&loadable(Math.round((kg-d)*100)/100))lo=Math.round((kg-d)*100)/100;if(hi==null&&loadable(Math.round((kg+d)*100)/100))hi=Math.round((kg+d)*100)/100;if(lo!=null&&hi!=null)break}return {lo,hi}}
+function plMissHTML(kg,pl){if(!pl||!pl.miss)return '';const n=nearLoad(kg);return `<p class="gz-miss">Mit deinen Scheiben nicht steckbar (es fehlen ${nf(pl.miss,2)} kg)${n.lo!=null||n.hi!=null?` · steckbar: ${[n.lo,n.hi].filter(x=>x!=null).map(x=>nf(x,2)+' kg').join(' oder ')}`:''}</p>`}
+const PC={25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28],0.5:['#9aa0a8',24],0.25:['#7d838c',22]};
 function curVals(){const {w,d}=S.ui;const L=log(w,d,true);const s=L.b[G.b][G.i];const bl=P[w][d].b[G.b];const lt=lastTime(w,d,G.b);
  const sg=sugg(w,d,G.b,G.i);const kg=pnum(s.kg)??sg.kg??(lt?lt.kg:null);
  const r=pnum(s.r)??sg.r??(G.i>0?pnum(L.b[G.b][G.i-1].r):null);
@@ -6659,7 +6718,7 @@ function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)retu
 function fitKg(){const cv=fitKg.c||(fitKg.c=document.createElement('canvas').getContext('2d'));document.querySelectorAll('#gym .gdock .mid input').forEach(i=>{i.style.removeProperty('font-size');const c=getComputedStyle(i);let f=parseFloat(c.fontSize);const avail=i.clientWidth-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight)-2;const meas=sz=>{cv.font=`${c.fontWeight} ${sz}px ${c.fontFamily}`;return cv.measureText(i.value||i.placeholder||'').width};let n=0;while(meas(f)>avail&&f>15&&n++<16)f-=1;if(f<parseFloat(c.fontSize))i.style.setProperty('font-size',f+'px','important')})}
 document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#gym .gdock .mid'))fitKg()});document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#gym [data-step]'))setTimeout(fitKg,0)});
 function fitGym(){setTimeout(fitKg,0);const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
- const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3')}
+ const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3');if(!over())return;gi.classList.add('tight4');if(!over())return;gi.classList.add('tight5')}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
@@ -6843,7 +6902,7 @@ function gymRestHTML(){if(!T.on||T.gmin)return '';const C=2*Math.PI*104,left=tLe
   const cur=bb?barNow(ni.c.w,ni.c.d):null;let um='';if(bb&&cur&&ni.kg&&Math.abs(cur.kg-ni.kg)>1e-6){const dk=(ni.kg-cur.kg)/2;um=`<span class="grum ${dk>0?'up':'dn'}">${dk>0?'+':'−'}${nf(Math.abs(dk),2)} kg pro Seite</span>`}else if(bb&&cur&&ni.kg)um='<span class="grum same">Stange bleibt so</span>';
   nxt=`<div class="grn"><p class="eyebrow">Als Nächstes · Satz ${ni.c.i+1} von ${ni.bl.s}</p><b class="grx">${esc(ni.ex.n)}</b>
    <div class="grv"><span class="${em?'emp':''}">${ni.kg?(em?'≈ ':'')+nf(ni.kg,2)+' kg':'Last frei'}</span><span>× ${esc(ni.sg?ni.sg.rdisp:ni.bl.r)}</span>${ni.bl.rpe!=null?`<span>RPE ${nf(ni.bl.rpe)}</span>`:''}</div>
-   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${um}</div>`}
+   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(kg,pl)}${um}</div>`}
  const def=from?restFor(from):T.total;const sug=T.lastRpe!=null&&T.lastRpe>=9&&T.total<def+60&&!over;
  return `<div class="grest" data-ph="${over?'o':T.paused?'p':f>.5?'g':f>.2?'y':'r'}" role="dialog" aria-label="Satzpause">
   <div class="grt"><p class="eyebrow">Satzpause${from?' · nach '+esc(EX[from].n):''}</p><button type="button" class="iconbtn" data-t="gmin" aria-label="Timer verkleinern"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>
@@ -6922,7 +6981,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
     ${em?`<div class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b><small>${typeof PWA!=='undefined'?'nur Orientierung – Plan gibt keine Last vor':'nur Orientierung – der Plan gibt hier keine Last vor'}</small></div>`:''}
     <span class="mut" style="font-size:12.5px">${em?'Berechnung: ':''}${esc(sg.why)}</span>`})()}${lt?`<span class="mut" style="font-size:12.5px">Zuletzt W${lt.W+1} ${DAYS[lt.D].tag}: ${nf(lt.kg,2)} kg × ${nf(lt.r)}${lt.rpe!=null?' @'+nf(lt.rpe):''}</span>`:''}</div>
    ${eqType(bl.e)==='bb'?`<div class="bb3d sm" data-kg="${kg||0}" role="img" aria-label="Langhantel mit Wettkampfscheiben"></div>
-   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${PC[p][0]}">${nf(p,2)}</i>`).join('')}</p>`:''}`:eqType(bl.e)==='db'?`<div class="bb3d sm db" data-kg="${kg||0}" role="img" aria-label="Kurzhanteln"><span class="dbkg">${kg?nf(kg,2):'–'} kg <small>je Hand</small></span></div>`:`<div class="geq" role="img" aria-label="${EQN[eqType(bl.e)]}">${eqSVG(eqType(bl.e),kg)}<span class="geqn">${EQN[eqType(bl.e)]}</span></div>`}</div>
+   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(kg,pl)}`:eqType(bl.e)==='db'?`<div class="bb3d sm db" data-kg="${kg||0}" role="img" aria-label="Kurzhanteln"><span class="dbkg">${kg?nf(kg,2):'–'} kg <small>je Hand</small></span></div>`:`<div class="geq" role="img" aria-label="${EQN[eqType(bl.e)]}">${eqSVG(eqType(bl.e),kg)}<span class="geqn">${EQN[eqType(bl.e)]}</span></div>`}</div>
   ${!s.ok&&eqType(bl.e)==='bb'?loadHTML(w,d,kg):''}
   ${testHTML(w,d,G.b)}
   ${calibHint(ex.g,bl.rpe!=null&&!bl.rpeEst?bl.rpe:null)}
