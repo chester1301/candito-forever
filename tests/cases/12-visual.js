@@ -71,7 +71,9 @@ module.exports={name:'Optik – Screenshots gegen Referenzbilder',async run({pag
       const buf=await p.screenshot({fullPage:!!v.full,animations:'disabled',caret:'hide'});
       await p.evaluate(()=>document.documentElement.classList.remove('vis-full'));
       const name=`${v.n}-${W}x${H}.png`,ref=path.join(dir,name);
-      if(updateVisual||!fs.existsSync(ref)){fs.writeFileSync(ref,buf);t.ok(true,name+' neu geschrieben')}
+      if(!fs.existsSync(ref)){fs.writeFileSync(ref,buf);t.ok(true,name+' neu geschrieben')}
+      else if(updateVisual){const r=await compare(p,'data:image/png;base64,'+fs.readFileSync(ref).toString('base64'),'data:image/png;base64,'+buf.toString('base64'));
+        if(r.size||r.n>TOL_PX){fs.writeFileSync(ref,buf);console.log('    ↻ '+name+' erneuert')}t.ok(true,name)}  // nur echte Änderungen schreiben, kein Rauschen
       else{
         const r=await compare(p,'data:image/png;base64,'+fs.readFileSync(ref).toString('base64'),'data:image/png;base64,'+buf.toString('base64'));
         const ok=!r.size&&r.n<=TOL_PX;
