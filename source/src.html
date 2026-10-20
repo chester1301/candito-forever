@@ -2131,6 +2131,7 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 #cfbar.bk{display:none!important}
 body.gymopen #cfbar{display:none!important}
 </style>
+<style id="cf-hype">html[data-theme=blue] .hype.h{background:linear-gradient(135deg,#6f8cff 0%,#3157e8 55%,#1d3fc4 100%)!important;box-shadow:0 0 0 1px rgba(160,180,255,.55) inset,0 6px 18px -6px rgba(49,87,232,.8)!important;color:#fff!important}html[data-theme=blue] .hype.h .hic{background:rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)!important}</style>
 <style id="cf-akku">
 /* Akku: keine Dauer-Animationen, kein Rand-Timer, keine Blur-Ebenen im Gym-Modus */
 html body .amb::before,html body .amb::after{animation:none!important}
@@ -2267,8 +2268,23 @@ html #gym .bigbtn.okb.slide .sl-fill,html #gym .bigbtn.finb.slide .sl-fill{backg
 html #gym .bigbtn.okb.slide .sl-knob,html #gym .bigbtn.finb.slide .sl-knob{color:#1f8f5c!important;background:radial-gradient(120% 120% at 30% 20%,#fff,#dcf6ea 60%,#a6e6c8)!important}
 html #gym .bigbtn.okb.slide .sl-knob svg,html #gym .bigbtn.finb.slide .sl-knob svg{stroke:#1f8f5c!important}
 html #gym .bigbtn.okb.slide .sl-ch svg,html #gym .bigbtn.finb.slide .sl-ch svg{stroke:#6fdcaa}html #gym .bigbtn.okb.slide .sl-hint,html #gym .bigbtn.finb.slide .sl-hint{color:#4fb889}
-html #gym .bigbtn.okb.slide .hb-tx>b{color:#e6fff3!important}html #gym .bigbtn.okb.slide .hb-m,html #gym .bigbtn.okb.slide .hb-m i{color:#9ee6c4!important}
+html #gym .bigbtn.okb.slide .hb-tx>b{color:#e6fff3!important}html #gym .bigbtn.finb.slide .hb-tx>b{font-size:16.5px!important}html #gym .bigbtn.finb.slide .hb-tx{padding-right:50px}html #gym .bigbtn.finb.slide .hb-m{font-size:12.5px!important}html #gym .bigbtn.okb.slide .hb-m,html #gym .bigbtn.okb.slide .hb-m i{color:#9ee6c4!important}
 html #gym .grest[data-ph="o"] .grgo.slide .sl-fill{background:linear-gradient(90deg,#1f8f5c,#43c08a)!important}
+
+/* Gym kompakt: alles ohne Scrollen sichtbar */
+.gym-in.tight2 .ghy{font-size:0!important;margin-top:4px}.gym-in.tight2 .ghy .hype{font-size:12.5px}
+.gym-in.tight2 .ghero .gz-k>.mut{display:none}
+.gym-in.tight2 .ghero .empf small{display:none}
+.gym-in.tight2 .ghero .empf{padding:6px 12px!important;margin-top:6px!important}
+.gym-in.tight2 .adh{display:flex!important;align-items:center;gap:10px;padding:8px 14px!important;flex-wrap:wrap}
+.gym-in.tight2 .adh>b{margin:0!important;font-size:12px!important}
+.gym-in.tight2 .adh>div{display:flex;gap:6px;margin:0!important;flex-wrap:wrap}
+.gym-in.tight2 .adh>div>span{padding:4px 10px!important;font-size:14px!important;display:inline-flex!important;align-items:baseline;gap:6px;flex-direction:row!important}
+.gym-in.tight2 .adh>div>span small{display:inline!important;font-size:11.5px!important;margin:0!important}
+.gym-in.tight3 .ghero{padding-top:10px!important;padding-bottom:10px!important}
+.gym-in.tight3 .gz-n .zahl{font-size:44px!important}
+.gym-in.tight3 .gdock .rpechips button,.gym-in.tight3 .gdock .hp button{min-height:40px!important;height:40px!important}
+.gym-in.tight3 .gprog{margin-bottom:0!important}
 /* Verlauf */
 .hs-go{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin:0 0 14px;border-radius:22px;border:1px solid rgba(64,105,245,.45);background:linear-gradient(135deg,rgba(64,105,245,.28),#0e1020 70%);text-align:left;color:#fff}
 .hs-gi{width:48px;height:48px;border-radius:15px;background:#4069f5;display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px rgba(64,105,245,.9)}.hs-gi svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -5285,7 +5301,7 @@ function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)retu
  if(bb.dataset.fin)return;bb.dataset.fin='1';delete bb.dataset.sl;bb.classList.remove('slide');bb.classList.add('finb');bb.removeAttribute('data-g');bb.removeAttribute('data-act');bb.innerHTML='<span class="hb-ic">✓</span><span class="hb-tx"><b>Training abschließen</b><span class="hb-m"><i>Alle Sätze erledigt</i></span></span>';
  bb.addEventListener('click',ev=>{ev.preventDefault();ev.stopImmediatePropagation();closeGym(true);finishSession(w,d);render()},true)}
 function fitGym(){const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
- const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight')}
+ const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3')}
 {const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
