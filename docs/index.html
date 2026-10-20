@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1532-b917e03";
+<script>window.CF_VERSION="2026.10.20-1542-e9ca2a7";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3844,7 +3844,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1532-b917e03</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1542-e9ca2a7</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
@@ -5015,12 +5015,12 @@ function swTarget(dir){const {w,d}=S.ui,day=P[w][d];let b=G.b,i=G.i;
  else{if(i>0)i--;else if(b>0){b--;i=day.b[b].s-1}else return null}
  const bl=day.b[b];return {same:b===G.b,t:b===G.b?`Satz ${i+1} von ${bl.s}`:EX[bl.e].n,s:b===G.b?EX[bl.e].n:`Übung ${b+1}/${day.b.length} · Satz ${i+1}`}}
 const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-function gswTf(x,W){const r=Math.max(-1,Math.min(1,x/W));return `perspective(1200px) translate3d(${x.toFixed(1)}px,0,0) rotateY(${(r*-10).toFixed(2)}deg) scale(${(1-Math.abs(r)*.05).toFixed(4)})`}
+function gswTf(x,W){return `translate3d(${x.toFixed(1)}px,0,0)`}
 function slideIn(dir){const el=document.querySelector('#gym .gsw');if(!el||RM()){bbMount();return}
  const W=Math.min(document.getElementById('gym').clientWidth||390,innerWidth||390);
- el.style.transition='none';el.style.willChange='transform,opacity';el.style.transform=gswTf(dir*W*.38,W);el.style.opacity='0';
- requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.transition='transform .42s cubic-bezier(.16,1,.3,1),opacity .28s ease-out';el.style.transform='none';el.style.opacity='1';
-  setTimeout(()=>{el.style.willChange='';el.style.transition='';bbMount()},440)}))}
+ el.style.transition='none';el.style.willChange='transform';el.style.transform=gswTf(dir*W*.22,W);el.style.opacity='1';
+ requestAnimationFrame(()=>{el.style.transition='transform .2s cubic-bezier(.2,.8,.3,1)';el.style.transform='none';
+  setTimeout(()=>{el.style.willChange='';el.style.transition='';bbMount()},220)})}
 (function(){let sx=null,sy=0,drag=false,dx=0,tg=null,lock=false,armed=false,lx=0,lt=0,vx=0,raf=0,W=390,el=null,h=null,hk='';const g=document.getElementById('gym');
  const hint=()=>{if(!h||!h.isConnected){h=document.createElement('div');h.className='swhint';h.innerHTML='<i></i><span><b></b><small></small></span>';g.appendChild(h)}return h};
  const paint=()=>{raf=0;if(!el)return;el.style.transform=gswTf(dx,W);
@@ -5035,8 +5035,8 @@ function slideIn(dir){const el=document.querySelector('#gym .gsw');if(!el||RM())
   if(!raf)raf=requestAnimationFrame(paint)},{passive:true});
  const fin=()=>{if(sx==null)return;sx=null;if(!drag)return;drag=false;if(raf){cancelAnimationFrame(raf);raf=0}if(!el)return;
   const dir=dx<0?1:-1,fast=Math.abs(vx)>.45&&Math.sign(vx)===-dir;
-  if(tg[dir]&&(Math.abs(dx)>W*.24||(fast&&Math.abs(dx)>30))){lock=true;const dur=Math.round(Math.max(130,Math.min(230,(W-Math.abs(dx))/Math.max(1,Math.abs(vx)))));
-   el.style.transition=`transform ${dur}ms cubic-bezier(.3,.7,.4,1),opacity ${dur}ms ease-in`;el.style.transform=gswTf(-dir*W*1.02,W);el.style.opacity='0';hideHint();if(!armed)hap(8);
+  if(tg[dir]&&(Math.abs(dx)>W*.24||(fast&&Math.abs(dx)>30))){lock=true;const dur=Math.round(Math.max(110,Math.min(180,(W-Math.abs(dx))/Math.max(1,Math.abs(vx)))));
+   el.style.transition=`transform ${dur}ms cubic-bezier(.3,.7,.4,1)`;el.style.transform=gswTf(-dir*W*1.02,W);hideHint();if(!armed)hap(8);
    setTimeout(()=>{gymSwipe(dir);lock=false;el=null},dur)}
   else{el.style.transition='transform .45s cubic-bezier(.34,1.45,.64,1)';el.style.transform='none';hideHint();const e2=el;setTimeout(()=>{e2.style.willChange='';e2.style.transition=''},460);el=null}};
  g.addEventListener('touchend',fin,{passive:true});g.addEventListener('touchcancel',fin,{passive:true})})();
@@ -6398,10 +6398,11 @@ function rtHTML(){const side=S.ui.rts||'lower';const T=rtTiers(side);const on=S.
   <p class="note2" style="margin:10px 0 0">Candito gibt keine feste Pausenzeit vor, sondern <b>volle Erholung</b>: meist rund <b>4 Minuten</b>, in manchen Fällen 5–10 Minuten. Die Standardwerte folgen dem – bei harten Sätzen mehr. Ausdrückliche Plan-Vorgaben (z. B. 8–10+ min) haben immer Vorrang.</p>
   <div class="rt-l">${T.map((v,i)=>`<div class="rt-r"><div><b>${L[i][0]}</b><small>${L[i][1]}</small></div><div class="rt-st"><button type="button" data-rt="${side}|${i}|-30" aria-label="weniger">−</button><span>${mmss(v)}<em>min</em></span><button type="button" data-rt="${side}|${i}|30" aria-label="mehr">+</button></div></div>`).join('')}</div>
   <button type="button" class="fl-skip" data-rtreset style="margin-top:6px">Auf Candito-Standard zurücksetzen</button>`:'<p class="note2" style="margin:8px 0 0">Aus: Grundübungen nutzen die feste Zeit unten.</p>'}</section>`}
-document.addEventListener('click',e=>{const a=e.target.closest('[data-rtauto]');if(a){S.meta.autoT=S.meta.autoT===false;saveMeta();render();return}
- const sd=e.target.closest('[data-rts]');if(sd){S.ui.rts=sd.dataset.rts;render();return}
- const r=e.target.closest('[data-rt]');if(r){const [side,i,dv]=r.dataset.rt.split('|');const T=rtTiers(side);T[+i]=Math.max(60,Math.min(900,T[+i]+ +dv));if(!S.meta.restTiers)S.meta.restTiers={};S.meta.restTiers[side]=T;saveMeta();render();return}
- if(e.target.closest('[data-rtreset]')){S.meta.restTiers={};saveMeta();render()}});
+function rtRe(){const old=document.querySelector('section.card.rt');if(!old){render();return}const t=document.createElement('template');t.innerHTML=rtHTML().trim();const nu=t.content.firstElementChild;if(nu)old.replaceWith(nu);else render()}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-rtauto]');if(a){S.meta.autoT=S.meta.autoT===false;saveMeta();rtRe();return}
+ const sd=e.target.closest('[data-rts]');if(sd){S.ui.rts=sd.dataset.rts;rtRe();return}
+ const r=e.target.closest('[data-rt]');if(r){const [side,i,dv]=r.dataset.rt.split('|');const T=rtTiers(side);T[+i]=Math.max(60,Math.min(900,T[+i]+ +dv));if(!S.meta.restTiers)S.meta.restTiers={};S.meta.restTiers[side]=T;saveMeta();rtRe();return}
+ if(e.target.closest('[data-rtreset]')){S.meta.restTiers={};saveMeta();rtRe()}});
 function twHint(root){(root||document).querySelectorAll('.tw').forEach(t=>{const o=t.scrollWidth>t.clientWidth+4;t.classList.toggle('ovx',o);if(o&&!t._sh){t._sh=1;t.addEventListener('scroll',()=>t.classList.toggle('end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4),{passive:true})}})}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-inv]');if(b){const [p,d]=b.dataset.inv.split('|');if(!S.meta.inv)S.meta.inv={};const n=Math.max(0,(S.meta.inv[p]||0)+ +d);if(n)S.meta.inv[p]=n;else delete S.meta.inv[p];saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y);return}
  if(e.target.closest('[data-invreset]')){S.meta.inv={};saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y)}});
