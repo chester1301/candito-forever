@@ -25,6 +25,14 @@ const VIEWS=[
   {n:'gym-pause',go:()=>{S.ui.w=0;S.ui.d=2;openGym();G.b=0;G.i=1;renderGym();startRest(240,{w:0,d:2,b:0,i:1});openSheet()},
    after:()=>{try{stopRest()}catch(e){}try{closeSheet()}catch(e){}try{closeGym(true)}catch(e){}}},
   {n:'zusammenfassung',go:()=>{svOpen(PROG,0,1,false)},after:()=>{try{svClose()}catch(e){}}},
+  {n:'verlauf',full:true,go:()=>{S.ui.tab='prog';S.ui.pd='verlauf';render();scrollTo(0,0)},after:()=>{S.ui.pd=null}},
+  {n:'progress-kraft',full:true,go:()=>{S.ui.tab='prog';S.ui.pd='kraft';render();scrollTo(0,0)},after:()=>{S.ui.pd=null}},
+  {n:'checkin',go:()=>{S.ui.tab='home';render();ckOpen(PROG,0,3,false)},after:()=>{const e=document.getElementById('ckin');if(e)e.hidden=true;CK=null}},
+  {n:'readiness-info',go:()=>{S.ui.tab='home';render();jrSheet()},after:()=>{const e=document.getElementById('jrsheet');if(e)e.hidden=true}},
+  {n:'gym-aufwaermen',go:()=>{S.ui.w=0;S.ui.d=2;openGym();G.b=0;G.i=0;G.wu=true;renderGym()},after:()=>{G.wu=false;try{closeGym(true)}catch(e){}}},
+  {n:'gym-rpe-planer',go:()=>{S.ui.w=0;S.ui.d=2;openGym();G.b=0;G.i=0;rpOpenGym();renderGym()},after:()=>{G.rpo=false;try{closeGym(true)}catch(e){}}},
+  {n:'uebungs-info',go:()=>{openEx('pbb')},after:()=>{try{closeEx()}catch(e){}}},
+  {n:'abschluss',go:()=>{endOpen(0,3)},after:()=>{try{endClose()}catch(e){}}},
 ];
 
 // Zwei PNGs im Browser vergleichen (ohne Zusatzpakete): Anteil abweichender Pixel + Differenzbild
