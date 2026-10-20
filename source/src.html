@@ -1297,6 +1297,8 @@ html.boot #view.enter>*{animation:none!important}
 .ck-wg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.ck-wf{display:flex;flex-direction:column;gap:6px;background:#25282f;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px;min-height:96px;justify-content:space-between}.ck-wf:focus-within{border-color:#5ad1e6;box-shadow:0 0 0 3px rgba(90,209,230,.15)}.ck-wf small{font-size:13px;color:var(--ink2)}
 .ck-wf input{background:none;border:0;color:var(--ink);font:800 32px var(--mono);width:100%;padding:0;height:40px}.ck-wf input:focus{outline:none;color:#5ad1e6}
 .ck-note{margin:8px 0 0;font-size:11.5px;color:var(--mut);line-height:1.4}
+.ck-opt{margin:0 0 10px}.ck-opt summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px dashed var(--line);border-radius:16px;color:#c7cbd6}.ck-opt summary::-webkit-details-marker{display:none}.ck-opt summary::before{content:'';width:8px;height:8px;border-right:2px solid #7fa8ff;border-bottom:2px solid #7fa8ff;transform:rotate(-45deg);margin:0 4px 0 2px;transition:transform .2s}.ck-opt[open] summary::before{transform:rotate(45deg)}.ck-opt summary b{font-size:14px;font-weight:800;color:#fff;white-space:nowrap}.ck-opt summary small{font-size:11.5px;color:var(--mut);flex:1;min-width:0}.ck-opt[open] summary{margin-bottom:8px;border-style:solid}
+.ck-yn{margin-top:8px}.ck-yn button{background:rgba(255,255,255,.04)}.ck-sub{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .ck-mind{display:flex;gap:10px;align-items:flex-start}.ck-mind svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--ink2);stroke-width:1.8;stroke-linejoin:round;margin-top:4px}.ck-mind textarea{flex:1;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;resize:none}.ck-mind textarea:focus{outline:none}
 .ck-foot{display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:#0c0d11}.ck-foot .btn{height:50px;font-size:15px;font-weight:800}
 .ck-in.rest .ck-h{color:#7fa8ff}
@@ -3146,14 +3148,17 @@ function testsAllHTML(){const N={sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben'};
 
 /* ===================== Check-in vor dem Training ===================== */
 // [key, Titel, Untertitel, links, rechts, negativ (Balken fallend)]
-const CKG=[['sleepq','Schlaf','Qualität & Dauer','schlecht','ausgezeichnet',0],['energy','Energie & Motivation','Antrieb fürs Training','niedrig','hoch',0],['mood','Stimmung','Mentaler Zustand','gedrückt','bestens',0],['strength','Kraftgefühl','Wie stark fühlst du dich?','schwach','stark',0],['stress','Stress','Belastung & Ablenkung','extrem','entspannt',1],['food','Ernährung','Letzte 24 h · Menge & Qualität','zu wenig','optimal',0],['hydra','Flüssigkeit','Urinfarbe','dunkel','klar',0]];
+// Kern-Check-in (4 Fragen, bilden den Readiness-Wert). Frühere Schlüssel (sleepq, mood, stress, hydra) zählen für alte Einträge weiter.
+const CKG=[['sleeph','Schlaf','Dauer letzte Nacht','5 Std','9+ Std',0],['energy','Motivation','Antrieb fürs Training','ausgelaugt','voll geladen',0],['food','Kalorien','Letzte 24 Stunden','sehr wenig','sehr viel',0],['strength','Kraft & Erholung','Wie bereit fühlst du dich?','platt','voll da',0]];
+const JR_CORE=CKG.map(q=>q[0]);const JR_LEGACY=['sleepq','energy','mood','strength','stress','food','hydra','push','pull','lback','post','quad'];
+const jrKeys=f=>f&&f.sleeph!=null?JR_CORE:JR_LEGACY;
 const CKS=[['push','Druckmuskulatur','Brust, Schultern, Trizeps'],['pull','Zugmuskulatur','Lat, Trapez, Bizeps'],['lback','Unterer Rücken',''],['post','Gesäß & Beinbeuger',''],['quad','Quadrizeps','']];
 const CKL=[['rsq','Kniebeuge','sq'],['rbp','Bankdrücken','bp'],['rdl','Kreuzheben','dl']];
 const CKLV=['Verletzt','Nur Aufwärmen','Eher leicht','Normal','Topform'];
 const CKC={1:'#e8484f',2:'#f0a066',3:'#f3c969',4:'#7dd09a',5:'#43c08a'};
 let CK=null;
-const CKW={sleepq:['Sehr schlecht','Schlecht','Okay','Gut','Ausgezeichnet'],energy:['Ausgelaugt','Niedrig','Motiviert','Hoch','Voll geladen'],mood:['Gedrückt','Gereizt','Ausgeglichen','Gut','Bestens'],strength:['Schwach','Müde','Solide','Stark','Topform'],stress:['Extrem','Hoch','Mittel','Gering','Entspannt'],food:['Viel zu wenig','Zu wenig','Moderat','Gut','Optimal'],hydra:['Dunkel','Eher dunkel','Hellgelb','Hell','Klar'],sore:['Stark','Deutlich','Leicht','Kaum','Keiner'],diff:['Sehr leicht','Leicht','Moderat','Schwer','Sehr schwer']};
-const CKD={energy:['Kaum Antrieb heute','Eher wenig Lust','Fühle mich gut und bereit','Richtig Lust aufs Training','Kann es kaum erwarten'],strength:['Fühle mich schwach','Müde, aber trainierbar','Fühle mich gut und bereit','Kräftig und erholt','Alles fühlt sich leicht an'],sleepq:['Kaum geschlafen','Unruhig, zu kurz','Ausreichend','Erholsam','Tief und lang'],diff:['Lief locker durch','Gut machbar','Fordernd, aber kontrolliert','Richtig hart','Am Limit']};
+const CKW={sleeph:['5 Stunden oder weniger','6 Stunden','7 Stunden','8 Stunden','9+ Stunden'],sleepq:['Sehr schlecht','Schlecht','Okay','Gut','Ausgezeichnet'],energy:['Ausgelaugt','Niedrig','Motiviert','Hoch','Voll geladen'],mood:['Gedrückt','Gereizt','Ausgeglichen','Gut','Bestens'],strength:['Schwach','Müde','Solide','Stark','Topform'],stress:['Extrem','Hoch','Mittel','Gering','Entspannt'],food:['Sehr wenig','Wenig','Moderat','Viel','Sehr viel'],hydra:['Dunkel','Eher dunkel','Hellgelb','Hell','Klar'],sore:['Stark','Deutlich','Leicht','Kaum','Keiner'],diff:['Sehr leicht','Leicht','Moderat','Schwer','Sehr schwer']};
+const CKD={energy:['Kaum Antrieb heute','Eher wenig Lust','Fühle mich gut und bereit loszulegen','Richtig Lust aufs Training','Kann es kaum erwarten'],strength:['Fühle mich schwach und platt','Müde, aber trainierbar','Fühle mich gut und bereit für die Einheit','Kräftig und erholt','Alles fühlt sich leicht an'],food:['Deutlich zu wenig gegessen','Eher wenig','Normal gegessen','Reichlich','Sehr reichlich'],sleepq:['Kaum geschlafen','Unruhig, zu kurz','Ausreichend','Erholsam','Tief und lang'],diff:['Lief locker durch','Gut machbar','Fordernd, aber kontrolliert','Richtig hart','Am Limit']};
 function ckBar(i,st){const W=56,H=[34,42,50,58,66][i-1],hr=H+10,y0=(80-H)/2,y1=(80-hr)/2,r=9;
  const path=`M${r} ${y0+2} Q2 ${y0+2.5} 2 ${y0+r} L2 ${80-y0-r} Q2 ${80-y0-2.5} ${r} ${80-y0-2} L${W-r} ${80-y1-1} Q${W-2} ${80-y1-1.5} ${W-2} ${80-y1-r} L${W-2} ${y1+r} Q${W-2} ${y1+1.5} ${W-r} ${y1+1} Z`;
  return `<svg viewBox="0 0 ${W} 80" preserveAspectRatio="none"><path d="${path}" class="${st}"/></svg>`}
@@ -3168,7 +3173,8 @@ const GWU_LO=[['b90','90/90-Atmung','1 × 10–15 Atemzüge','Rückenlage, Füß
  ['tkg','Kniender Glute-Aktivator','1 × 10–20','Aufrecht knien (Tall Kneeling). Hüfte nach hinten schieben, dann über das Gesäß wieder kraftvoll nach vorn strecken – optional mit Band um die Hüfte.'],
  ['gsq','Goblet Squat','1 × 10–20','Kurzhantel vor der Brust, tief und aufrecht beugen, Knie über den Zehen. Öffnet Hüfte und Sprunggelenke für die Kniebeuge.'],
  ['cub','KH Cuban Press','1 × 10–15 · leichtes Gewicht','Leichte Kurzhanteln: Ellbogen auf Schulterhöhe heben, Unterarme nach oben rotieren, dann über Kopf drücken. Wärmt die Rotatorenmanschette fürs Bankdrücken und Low-Bar-Halten.']];
-const CKQ={sleepq:'Wie hast du geschlafen?',energy:'Wie motiviert bist du fürs Training?',mood:'Wie ist deine Stimmung?',strength:'Wie stark und erholt fühlst du dich?',stress:'Wie gestresst bist du?',food:'Wie war deine Ernährung in den letzten 24 h?',hydra:'Wie ist deine Urinfarbe?'};
+const CKQ={sleeph:'Wie lange hast du letzte Nacht geschlafen?',sleepq:'Wie hast du geschlafen?',energy:'Wie motiviert bist du fürs Training?',mood:'Wie ist deine Stimmung?',strength:'Wie stark und erholt fühlst du dich?',stress:'Wie gestresst bist du?',food:'Kalorienaufnahme in den letzten 24 Stunden?',hydra:'Wie ist deine Urinfarbe?'};
+CKQ.strength='Wie ist dein Kraft- & Erholungslevel?';
 const GWU_UP=[['ubcc','Upper Back Cat/Cow','1 × 10 in beide Richtungen','Vierfüßlerstand. Oberen Rücken langsam rund machen (Kinn zur Brust, Schulterblätter auseinander), dann Brustbein nach vorn schieben und den oberen Rücken strecken. Mobilisiert die Brustwirbelsäule für eine stabile Bankposition.'],
  ['bear','Bear Crawl Shoulder Touches','1 × 5–10 je Hand','Bärenstand, Knie knapp über dem Boden. Abwechselnd die gegenüberliegende Schulter antippen, ohne dass die Hüfte schaukelt. Schultern und Rumpf werden warm.'],
  ['isop','Iso Hold Pushups','1 × 3–5','Liegestütz langsam absenken und kurz über dem Boden 2–3 s halten, Ellbogen wie beim Bankdrücken angelegt, Rumpf fest. Dann kontrolliert hochdrücken.'],
@@ -3188,17 +3194,18 @@ document.addEventListener('click',e=>{if(!CK)return;const i=e.target.closest('[d
  const c=e.target.closest('[data-wuck]');if(c){e.stopPropagation();ckSave(L=>{if(!L.gwu)L.gwu={};if(L.gwu[c.dataset.wuck])delete L.gwu[c.dataset.wuck];else L.gwu[c.dataset.wuck]=1});ckRefresh()}},true);
 function ckHTML(){if(CK.rest)return ckRestHTML();if(CK.go&&!CK.step)return wuHTML();const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
  const card=(k,t,sub,lo,hi,neg)=>`<div class="ck-c ckqc"><p class="ckq">${CKQ[k]||t}</p>${sub&&!CKQ[k]?`<small class="ckqs">${sub}</small>`:''}${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`;
- const nA=[...CKG,...CKS].filter(q=>f[q[0]]!=null).length,nT=CKG.length+CKS.length;
+ const nA=CKG.filter(q=>f[q[0]]!=null).length,nT=CKG.length;const inj=!!L.inj;const op=CK.opt||(CK.opt={});
  const ws=WF.map(([k,l,u,mn,mx])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
  return `<div class="ck-in fl rd"><div class="fl-top"><button type="button" class="fl-bk" ${CK.go?'data-ckstep="-1"':'data-ckclose'} aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${nA}/${nT}</span></div>
  <div class="ck-sc"><h1 class="fl-h">Readiness-Check-in</h1>
   <div class="ck-c ck-bwq"><p class="ckq">Wie viel wiegst du heute?</p><div class="ck-bw"><button type="button" data-ckbw="-0.5" aria-label="weniger">−</button><div><b>${bw!=null?nf(bw,1):'–'}</b><small>kg</small></div><button type="button" data-ckbw="0.5" aria-label="mehr">+</button></div></div>
-  <p class="ck-h">WHOOP · heute</p><div class="ck-c"><div class="ck-wg">${ws}</div><p class="ck-note">Werte aus der WHOOP-App abtippen – werden bei dieser Einheit gespeichert.</p></div>
-  <p class="ck-h">Gesamtbereitschaft</p>${CKG.map(q=>card(...q)).join('')}
-  <p class="ck-h">Muskelkater</p>${CKS.map(([k,t,sub])=>card(k,t,sub,'stark','keiner',1)).join('')}
-  <p class="ck-h">Bereitschaft je Lift</p>${CKL.map(([k,t,g])=>`<div class="ck-c"><div class="ck-t"><b>${t}</b>${f[k]!=null&&f[k]<=2?'<span class="ck-flag">⚑</span>':''}<small>Wie bereit fühlst du dich?</small></div>${ckBlocks(k,f[k],0,CKLV)}</div>`).join('')}
-  <p class="ck-h">Mindset</p><div class="ck-c"><label class="ck-mind"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><textarea data-ckmind rows="2" placeholder="Heute werde ich …">${esc(L.mind||'')}</textarea></label></div>
-  <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung für dein Readiness-Center. Programm, Vorgaben und Lasten bleiben unverändert.</p>
+  ${CKG.map(q=>card(...q)).join('')}
+  <div class="ck-c"><p class="ckq">Was ist dein Mindset fürs Training?</p><label class="ck-mind"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><textarea data-ckmind rows="2" placeholder="Heute werde ich …">${esc(L.mind||'')}</textarea></label></div>
+  <div class="ck-c"><p class="ckq">Verletzung / Reha</p><div class="end-yn ck-yn"><button type="button" data-ckinj="0" aria-pressed="${!inj}">Nein</button><button type="button" data-ckinj="1" aria-pressed="${inj}">Ja</button></div>
+   ${inj?`<p class="ck-note" style="margin-top:10px">Wie bereit fühlst du dich je Lift? Eine Markierung ⚑ erscheint im Readiness-Center – die Vorgaben bleiben unverändert.</p>${CKL.map(([k,t,g])=>`<div class="ck-sub"><div class="ck-t"><b>${t}</b>${f[k]!=null&&f[k]<=2?'<span class="ck-flag">⚑</span>':''}</div>${ckBlocks(k,f[k],0,CKLV)}</div>`).join('')}`:''}</div>
+  <details class="ck-opt" data-ckopt="whoop" ${op.whoop?'open':''}><summary><b>WHOOP-Werte</b><small>optional · ${WF.filter(([k])=>wv[k]!=null).length?WF.filter(([k])=>wv[k]!=null).length+' eingetragen':'aus der WHOOP-App abtippen'}</small></summary><div class="ck-c"><div class="ck-wg">${ws}</div><p class="ck-note">Werden bei dieser Einheit gespeichert und fließen getrennt (Recovery) ins Readiness-Center ein.</p></div></details>
+  <details class="ck-opt" data-ckopt="sore" ${op.sore?'open':''}><summary><b>Muskelkater</b><small>optional · ${CKS.filter(q=>f[q[0]]!=null).length?CKS.filter(q=>f[q[0]]!=null).length+'/'+CKS.length+' beantwortet':'5 Muskelgruppen'}</small></summary>${CKS.map(([k,t,sub])=>card(k,t,sub,'stark','keiner',1)).join('')}</details>
+  <p class="ck-note" style="margin:10px 2px 0">Dein Readiness-Wert entsteht aus den vier Kernfragen. Reine Selbsteinschätzung – Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
  <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckgo><span><b>${CK.go?'Training starten':'Speichern'}</b><small>${nA}/${nT} beantwortet${CK.go?' · weiter in den Gym-Modus':''}</small></span><svg viewBox="0 0 24 24"><path d="${CK.go?'M8 5v14l11-7z':'M5 12.5l4.5 4.5L19 7'}"/></svg></button>${CK.go?'<button type="button" class="fl-skip" data-ckskip>Check-in überspringen</button>':''}</div></div>`})}
 function ckOpen(pid,w,d,go){CK={pid,w,d,go,step:0};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}
@@ -3218,16 +3225,19 @@ function needCk(w,d){const L=log(w,d);if(!L)return true;if(L.done)return false;r
 document.addEventListener('click',e=>{if(!CK)return;const t=e.target.closest('#ckin button');if(!t)return;
  if(t.dataset.ck){const [k,v]=t.dataset.ck.split('|');ckSave(L=>{if(!L.feel)L.feel={};if(L.feel[k]===+v)delete L.feel[k];else L.feel[k]=+v});ckRefresh();return}
  if(t.dataset.ckbw){ckSave(L=>{const b=pnum(L.bw)??curBw()??pnum(S.meta.bw)??80;L.bw=nf(Math.max(30,b+ +t.dataset.ckbw),1)});ckRefresh();return}
+ if(t.dataset.ckinj!=null){ckSave(L=>{if(+t.dataset.ckinj)L.inj=1;else delete L.inj});ckRefresh();return}
  if(t.dataset.ckgo!=null){ckClose(true);return}
  if(t.dataset.ckskip!=null||t.dataset.ckclose!=null){ckClose(t.dataset.ckskip!=null);return}});
+document.addEventListener('toggle',e=>{if(!CK)return;const d=e.target;if(d&&d.matches&&d.matches('details[data-ckopt]')){if(!CK.opt)CK.opt={};CK.opt[d.dataset.ckopt]=d.open}},true);
 document.addEventListener('change',e=>{if(!CK)return;const t=e.target;
  if(t.dataset&&t.dataset.ckw){const k=t.dataset.ckw;const v=pnum(t.value);ckSave(L=>{const W=Object.assign({},L.whoop||{});if(v==null)delete W[k];else W[k]=v;const has=WF.some(([f])=>W[f]!=null);if(has){W.src=W.src||'manuell';L.whoop=W}else delete L.whoop})}
  if(t.dataset&&t.dataset.ckmind!=null){const v=t.value.trim();ckSave(L=>{if(v)L.mind=v;else delete L.mind})}});
 
 /* ---------- Ruhetag-Check-in ---------- */
-const CKR=[['sleepq','Schlaf','Qualität & Dauer','schlecht','ausgezeichnet',0],['energy','Energie','Antrieb & Motivation','niedrig','hoch',0],['mood','Stimmung','Mentaler Zustand','gedrückt','bestens',0],['sore','Muskelkater','Muskuläre Erholung','stark','keiner',1],['stress','Stress','Belastung & Ablenkung','extrem','entspannt',1],['food','Ernährung','Kalorien & Qualität','zu wenig','optimal',0],['hydra','Flüssigkeit','Urinfarbe','dunkel','klar',0]];
+const CKR=[['sleeph','Schlaf','Dauer letzte Nacht','5 Std','9+ Std',0],['food','Kalorien','Letzte 24 Stunden','sehr wenig','sehr viel',0],['strength','Kraft & Erholung','Wie erholt fühlst du dich?','platt','voll da',0],['sore','Muskelkater','Muskuläre Erholung','stark','keiner',1]];
+const CKR_LEGACY=['sleepq','energy','mood','sore','stress','food','hydra'];
 function todayTraining(){const td=isoD(new Date());for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(dt&&isoD(dt)===td&&P[w][d].b.length)return {w,d}}return null}
-function restScore(o){const v=CKR.map(q=>o&&o.feel?o.feel[q[0]]:null).filter(x=>x!=null);return v.length?Math.round((v.reduce((a,b)=>a+b,0)/v.length-1)/4*100):null}
+function restScore(o){const f=o&&o.feel;if(!f)return null;const ks=f.sleeph!=null?CKR.map(q=>q[0]):CKR_LEGACY;const v=ks.map(k=>f[k]).filter(x=>x!=null);return v.length?Math.round(jrMap(v.reduce((a,b)=>a+b,0)/v.length)):null}
 function ckRestHTML(){const o=(S.meta.rest||{})[CK.rest]||{};const f=o.feel||{};const wv=o.whoop||{};const bw=pnum(o.bw)??curBw()??pnum(S.meta.bw);const dt=new Date(CK.rest+'T12:00:00');
  const nA=CKR.filter(q=>f[q[0]]!=null).length;
  const ws=WF.map(([k,l,u])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
@@ -3407,9 +3417,9 @@ const JRA=[[1,0],[3,50],[3.7,62],[4.4,74],[4.8,85],[5,100]];
 function jrMap(avg){if(avg==null)return null;avg=Math.max(1,Math.min(5,avg));for(let i=1;i<JRA.length;i++){const [x0,y0]=JRA[i-1],[x1,y1]=JRA[i];if(avg<=x1)return Math.round(y0+(avg-x0)/(x1-x0)*(y1-y0))}return 100}
 function jrZone(v){return JRZ.find(z=>v<=z.hi)||JRZ[4]}
 function jrAvg(f,keys){const v=keys.map(k=>f&&f[k]).filter(x=>x!=null&&!isNaN(x));return v.length?{avg:v.reduce((a,b)=>a+b,0)/v.length,n:v.length}:null}
-function jrDays(){const m={};const TK=[...CKG,...CKS].map(q=>q[0]);
- rfAllLogs().forEach(x=>{if(!x.L.feel)return;const r=jrAvg(x.L.feel,TK);if(!r)return;const k=isoD(x.dt);const t=x.L.ckAt||+x.dt;if(!m[k]||t>=m[k].t)m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t,src:'Training',f:x.day.f}});
- const RK=CKR.map(q=>q[0]);Object.keys(S.meta.rest||{}).forEach(k=>{const o=S.meta.rest[k];if(!o||!o.feel)return;const r=jrAvg(o.feel,RK);if(!r)return;if(!m[k])m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t:o.at||0,src:'Ruhetag'}});return m}
+function jrDays(){const m={};
+ rfAllLogs().forEach(x=>{if(!x.L.feel)return;const r=jrAvg(x.L.feel,jrKeys(x.L.feel));if(!r)return;const k=isoD(x.dt);const t=x.L.ckAt||+x.dt;if(!m[k]||t>=m[k].t)m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t,src:'Training',f:x.day.f}});
+ Object.keys(S.meta.rest||{}).forEach(k=>{const o=S.meta.rest[k];if(!o||!o.feel)return;const r=jrAvg(o.feel,o.feel.sleeph!=null?CKR.map(q=>q[0]):CKR_LEGACY);if(!r)return;if(!m[k])m[k]={v:jrMap(r.avg),avg:r.avg,n:r.n,t:o.at||0,src:'Ruhetag'}});return m}
 function jrChart(m,cur,zone){const W=320,H=120,pad=10,days=[];const t0=new Date();t0.setHours(12,0,0,0);for(let i=6;i>=0;i--){const d=new Date(t0);d.setDate(d.getDate()-i);days.push(d)}
  const Y0=20,Y1=100,y=v=>pad+(1-(Math.max(Y0,v)-Y0)/(Y1-Y0))*(H-2*pad),x=i=>14+i*(W-28)/6;
  const pts=days.map((d,i)=>{const e=m[isoD(d)];return e?{i,v:e.v}:null}).filter(Boolean);
@@ -3433,7 +3443,7 @@ function jrIc(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>
 function jrSheet(){let el=document.getElementById('jrsheet');if(!el){el=document.createElement('div');el.id='jrsheet';document.body.appendChild(el)}
  el.innerHTML=`<div class="jrs-bg" data-jrclose></div><div class="jrs" role="dialog" aria-label="Readiness-Bereiche"><i class="jrs-h"></i><div class="jrs-sc"><h2>Readiness-Bereiche</h2><p>Dein Readiness-Wert ist keine Note und keine Prozentzahl – er zeigt, wie erholt dein Körper fürs Training ist.</p><p>Ein Wert in den 60ern und frühen 70ern ist der Sweet Spot: genau dort passiert das produktivste Training. Höher ist nicht immer besser, und niedriger ist kein Versagen – jeder Bereich sagt dir nur, wie du an die Arbeit herangehst.</p>
  <p class="jrs-k">Die Bereiche</p>${JRZ.map(z=>`<div class="jrs-z"><b><i style="background:${z.c}"></i>${z.n}<em style="color:${z.c}">${z.lo}–${z.hi}</em></b><p>${z.t}</p><small>Entspricht Check-in ${z.a}</small></div>`).join('')}
- <p class="jrs-k">So wird gerechnet</p><p class="jrs-n">Der Durchschnitt deiner Check-in-Antworten (1–5) wird auf die 0–100-Skala umgerechnet: alles „mittel“ (3) ergibt 50, Ø 3,7 ergibt 62, Ø 4,4 ergibt 74. WHOOP und Leistungstrend fließen nicht ein – sie stehen getrennt im Readiness-Center. Der Wert ist reine Anzeige: Programm, Vorgaben und Lasten bleiben exakt nach Candito.</p></div>
+ <p class="jrs-k">So wird gerechnet</p><p class="jrs-n">Der Durchschnitt deiner vier Kern-Antworten (Schlaf, Motivation, Kalorien, Kraft & Erholung; je 1–5) wird auf die 0–100-Skala umgerechnet: alles „mittel“ (3) ergibt 50, Ø 3,7 ergibt 62, Ø 4,4 ergibt 74. WHOOP und Leistungstrend fließen nicht ein – sie stehen getrennt im Readiness-Center. Der Wert ist reine Anzeige: Programm, Vorgaben und Lasten bleiben exakt nach Candito.</p></div>
  <div class="jrs-f"><button type="button" class="jrs-x" data-jrclose>Schließen</button></div></div>`;el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'))}
 document.addEventListener('click',e=>{if(e.target.closest('[data-jrinfo]')){e.stopPropagation();jrSheet();return}if(e.target.closest('[data-jrclose]')){const el=document.getElementById('jrsheet');if(el){el.classList.remove('on');setTimeout(()=>{el.hidden=true;el.innerHTML=''},220)}}});
 /* ===================== Readiness & Fatigue Center ===================== */
@@ -3448,7 +3458,7 @@ function readiness(){const n=nextSession();if(!n)return null;const L=log(n.w,n.d
  const bH=prev.length>=3?mean(prev.map(v=>v.hrv)):null,bR=prev.length>=3?mean(prev.map(v=>v.rhr)):null,bS=prev.length>=3?mean(prev.map(v=>v.sleepH)):null;
  const body=wv&&wv.rec!=null?{score:wv.rec,v:wv,bH,bR,bS,n:prev.length}:null;
  // Gefühl
- const f=L.feel||{};const fk=[...CKG,...CKS].map(q=>q[0]).concat(['sore','motiv'].filter(k=>f[k]!=null));const fv=fk.map(k=>f[k]).filter(v=>v!=null);const feel=fv.length?{score:Math.round(jrMap(mean(fv))),n:fv.length,tot:CKG.length+CKS.length,f}:null;
+ const f=L.feel||{};const fk=jrKeys(f);const fv=fk.map(k=>f[k]).filter(v=>v!=null);const feel=fv.length?{score:Math.round(jrMap(mean(fv))),n:fv.length,tot:fk.length,f}:null;
  // Leistung: abgeschlossene Einheiten mit Hauptlift-Sätzen
  const ses=[];all.forEach(x=>{if(x.pid===PROG&&x.w===n.w&&x.d===n.d)return;const sets=[];withProg(x.pid,()=>{x.day.b.forEach((bl,b)=>{if(!(EX[bl.e]&&EX[bl.e].m&&GN[EX[bl.e].g]))return;const R0=repsFor(x.w,x.d,b);(x.L.b[b]||[]).forEach(z=>{if(!z||!z.ok)return;const kg=pnum(z.kg),r=pnum(z.r),rp=pnum(z.rpe);if(!kg||!r)return;sets.push({e:bl.e,g:EX[bl.e].g,kg,r,rp,trpe:bl.rpe,rs:R0&&R0.r!=null&&!R0.amrap?R0.r:null,e1:rp!=null&&r<=6&&rp>=8&&['csq','pbb','cdl'].includes(bl.e)?e1rm(kg,r,rp):null})})})});if(sets.length)ses.push({dt:x.dt,sets})});
  let perf=null;if(ses.length>=3){const rec=ses.slice(-3),base=ses.slice(-9,-3);
@@ -3492,8 +3502,8 @@ function rfcHTML(){const R=readiness();if(!R)return '';const {n,body,feel,perf,t
   ${perf.e1d.map(x=>`<li><span>e1RM ${esc(EX[x.e].n)} <small>vs. Bestwert davor</small></span><b class="${x.pct<-2?'dn':'up'}">${sg(x.pct,1,' %')}</b></li>`).join('')}</ul><p class="note2" style="margin:4px 0 0">Positives RPE Ist − Soll = Sätze fühlten sich schwerer an als geplant. Nur Hauptlifts, nur abgehakte Sätze.</p></div>`);
  const f=R.L.feel||{};
  const lowS=CKS.filter(([k])=>f[k]!=null&&f[k]<=2).map(x=>x[1]),lowL=CKL.filter(([k])=>f[k]!=null&&f[k]<=2).map(x=>`${x[1]}: ${CKLV[f[k]-1]}`);
- const ansN=[...CKG,...CKS,...CKL].filter(q=>f[q[0]]!=null).length;
- const chk=`<div class="rf-ck"><div class="rf-ckh"><div><p class="eyebrow">Check-in · ${DAYS[n.d].wdl}${dayDate(n.w,n.d)?' '+fmtD(dayDate(n.w,n.d)):''}</p><b>${ansN?ansN+' von '+(CKG.length+CKS.length+CKL.length)+' beantwortet':'Noch nicht ausgefüllt'}</b></div><button type="button" class="btn ${ansN?'':'primary'}" data-ckopen>${ansN?'Bearbeiten':'Check-in starten'}</button></div>
+ const ansN=jrKeys(f).filter(k=>f[k]!=null).length,ansT=jrKeys(f).length;
+ const chk=`<div class="rf-ck"><div class="rf-ckh"><div><p class="eyebrow">Check-in · ${DAYS[n.d].wdl}${dayDate(n.w,n.d)?' '+fmtD(dayDate(n.w,n.d)):''}</p><b>${ansN?ansN+' von '+ansT+' beantwortet':'Noch nicht ausgefüllt'}</b></div><button type="button" class="btn ${ansN?'':'primary'}" data-ckopen>${ansN?'Bearbeiten':'Check-in starten'}</button></div>
   ${CKG.filter(([k])=>f[k]!=null).length?`<div class="rf-cks">${CKG.filter(([k])=>f[k]!=null).map(([k,t])=>`<span style="--c:${CKC[f[k]]}"><i></i>${t}</span>`).join('')}</div>`:''}
   ${lowS.length?`<p class="rf-w">Muskelkater: ${lowS.join(', ')}</p>`:''}${lowL.length?`<p class="rf-w">⚑ ${lowL.join(' · ')}</p>`:''}${R.L.mind?`<p class="rf-m">„${esc(R.L.mind)}“</p>`:''}</div>`;
  return `<section class="card rfc"><div class="ct"><div><p class="eyebrow">Readiness & Fatigue</p><h2 class="h2">Tagesbereitschaft</h2></div>${total!=null?`<span class="chip" style="color:${rfCol(total)};border-color:currentColor">${rfLbl(total)}</span>`:''}</div>
