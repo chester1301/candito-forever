@@ -17,6 +17,11 @@ module.exports={name:'Verlauf & Zusammenfassung',async run({page,t}){
   const sv=await p.evaluate(()=>({tiles:document.querySelectorAll('#svw .sv-t').length,dur:[...document.querySelectorAll('#svw .sv-t')].map(x=>x.textContent).find(x=>/Trainingsdauer/.test(x))||'',ex:document.querySelectorAll('#svw .sv-x, #svw .sv-ex').length}));
   t.ok(sv.tiles>=4,'Übersicht-Kacheln');
   t.ok(/1:10 h/.test(sv.dur),'Dauer kompakt („1:10 h“)');
+  // Teilen erzeugt eine Bildkarte mit Top-Sätzen, Dauer, Readiness, Belastung
+  const card=await p.evaluate(()=>{const L=log(0,2);L.diff=4;L.diffs=6;L.feel={sleeph:4,energy:5,food:4,strength:4};saveLog(key(0,2));const o=svCard(svData(PROG,0,2));let n=0;const oc=document.createElement.bind(document);document.createElement=t=>{const el=oc(t);if(t==='canvas'){el.toBlob=()=>{n++}}return el};try{document.querySelector('[data-svshare]').click()}finally{document.createElement=oc}return {o,n}});
+  t.eq(card.n,1,'„Teilen“ rendert die Einheit als Bild');
+  t.ok(card.o.lines.length>=1&&card.o.lines.every(l=>/kg × \d+/.test(l[1])),'Bildkarte: Top-Satz je Übung (kg × Wdh @ RPE)');
+  t.ok(/Dauer 1:10 h/.test(card.o.meta)&&/Belastung/.test(card.o.meta)&&/Sweet Spot/.test(card.o.chip),'Bildkarte: Dauer, Belastung, Readiness-Zone');
   // Blättern
   await p.click('[data-svgo]');await p.waitForTimeout(300);
   t.ok(await p.evaluate(()=>SV&&(SV.d!==2||SV.w!==0)),'Blättern zur nächsten Einheit');

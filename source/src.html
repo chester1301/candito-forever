@@ -3369,6 +3369,12 @@ function svData(pid,w,d){return withProg(pid,()=>{const L=log(w,d);if(!L)return 
  const rp=ex.flatMap(x=>x.sets.map(s=>s.rpe)).filter(v=>v!=null);const TK=[...CKG,...CKS].map(q=>q[0]);const ra=jrAvg(L.feel,TK);
  const ton=ex.reduce((a,x)=>a+x.sets.reduce((q,s)=>q+(s.kg||0)*(s.r||0),0),0);const nSets=ex.reduce((a,x)=>a+x.sets.length,0);
  return {pid,w,d,L,day,ex,ton,nSets,rpe:rp.length?rp.reduce((a,b)=>a+b,0)/rp.length:null,rd:ra?jrMap(ra.avg):null,dt:L.date?new Date(L.date):dayDate(w,d),nd:day&&DAYS.length,prog:PROGS[pid].name,col:HPC[pid]||'#5aaaf0'}})}
+function svCard(D){const z=D.rd!=null?jrZone(D.rd):null;const df=D.L.diff?(D.L.diffs===6?DIFF6[D.L.diff-1][0]:CKW.diff[D.L.diff-1]):null;
+ const dt=D.dt?D.dt.toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short'}):'';
+ const top=D.ex.map(x=>{const best=x.sets.slice().sort((a,b)=>(b.kg||0)*(1+(b.r||0)/30)-(a.kg||0)*(1+(a.r||0)/30))[0];return {x,best,main:!!(EX[x.e]||{}).m}}).filter(o=>o.best&&o.best.kg).sort((a,b)=>(b.main-a.main)||(b.best.kg-a.best.kg)).slice(0,4)
+  .map(o=>[o.x.name.replace(/\s*\(.*$/,''),nf(o.best.kg)+' kg × '+(o.best.r||'–')+(o.best.rpe!=null?' @ '+nf(o.best.rpe,1):'')]);
+ const meta=[D.L.dur>0?'Dauer '+fmtLenS(D.L.dur):null,D.nSets+' Sätze',D.rpe!=null?'Ø RPE '+nf(D.rpe,1):null,df?'Belastung '+df:null].filter(Boolean).join(' · ');
+ return {file:'einheit',date:D.dt||null,kicker:D.prog+' · Woche '+(D.w+1)+' · Tag '+(D.d+1)+(dt?' · '+dt:''),title:D.day.f,big:nf(D.ton/1000,D.ton>=10000?1:2),unit:'t',chip:z?'Readiness '+Math.round(D.rd)+' · '+z.n:null,meta,lines:top}}
 function svHTML(){const D=svData(SV.pid,SV.w,SV.d);if(!D)return '';const list=svList();const ix=list.findIndex(s=>s.pid===SV.pid&&s.w===SV.w&&s.d===SV.d);const prv=ix>0?list[ix-1]:null,nxt=ix>=0&&ix<list.length-1?list[ix+1]:null;
  const z=D.rd!=null?jrZone(D.rd):null;const df=D.L.diff?(D.L.diffs===6?DIFF6[D.L.diff-1][0]:CKW.diff[D.L.diff-1]):null;const dfn=D.L.diff?(D.L.diffs===6?D.L.diff+'/6':D.L.diff+'/5'):'';
  const dur=D.L.dur>0?fmtLenS(D.L.dur):'–';const dtS=D.dt?D.dt.toLocaleDateString('de-DE',{day:'numeric',month:'short'}):'–';const dtY=D.dt?D.dt.toLocaleDateString('de-DE',{weekday:'long'})+', '+D.dt.getFullYear():'';
@@ -3406,7 +3412,7 @@ document.addEventListener('click',e=>{if(!SV)return;const rc=e.target.closest('#
  if(t.dataset.svclose!=null){svClose();render();return}
  if(t.dataset.svgo){const [pid,w,d]=t.dataset.svgo.split('|');svOpen(pid,+w,+d,false);return}
  if(t.dataset.sumbk2!=null){try{downloadBackup()}catch(err){}return}
- if(t.dataset.svshare!=null){const D=svData(SV.pid,SV.w,SV.d);if(!D)return;window._lastSum={k:'W'+(D.w+1)+' '+(DAYS[D.d]||{}).tag,f:D.day.f,ton:D.ton,sets:D.nSets,dur:D.L.dur>0?fmtHMS(D.L.dur):'–',adh:null};const fake=document.createElement('button');fake.dataset.sharesum='1';fake.hidden=true;document.body.appendChild(fake);fake.click();fake.remove();return}
+ if(t.dataset.svshare!=null){const D=svData(SV.pid,SV.w,SV.d);if(!D)return;shareCard(svCard(D));return}
  if(t.dataset.svresume!=null){const {pid,w,d}=SV;svClose();if(pid!==PROG){S.meta.prog=pid;saveMeta();setProg(pid);renderTL.done=false}S.ui.w=w;S.ui.d=d;reopenSession(w,d);toast('Einheit wieder geöffnet – Sätze nachtragen, dann erneut abschließen');openGym();return}});
 /* ===================== Verlauf: abgeschlossene Einheiten (alle Programme) ===================== */
 const HPC={intro:'#5aaaf0',p8:'#4069f5',p8b:'#7d9bff',p10:'#3cc4d6'};
@@ -5023,12 +5029,13 @@ function shareCard(o){const c=document.createElement('canvas');c.width=1080;c.he
  const rg=x.createRadialGradient(200,150,20,200,150,900);rg.addColorStop(0,'rgba(80,120,255,.55)');rg.addColorStop(1,'rgba(80,120,255,0)');x.fillStyle=rg;x.fillRect(0,0,1080,1920);
  const F='"Archivo","Manrope",system-ui,sans-serif';x.textAlign='left';
  x.fillStyle='#ffffff';x.font=`800 64px Montserrat, ${F}`;x.fillText('CANDITO',90,170);const w1=x.measureText('CANDITO').width;x.fillStyle='#4a6df5';x.fillText('FOREVER',90+w1,170);
- x.fillStyle='rgba(200,215,255,.75)';x.font=`800 40px ${F}`;x.fillText((o.kicker||'').toUpperCase(),90,420);
+ x.fillStyle='rgba(200,215,255,.75)';x.font=`800 40px ${F}`;{const k=(o.kicker||'').toUpperCase();if(x.measureText(k).width>900)x.font=`800 34px ${F}`;x.fillText(k,90,420)}
  x.fillStyle='#fff';x.font=`900 92px ${F}`;wrapT(x,o.title||'',90,540,900,100);
  x.font=`900 300px ${F}`;x.fillStyle='#ffffff';x.fillText(o.big||'',80,980);const bw=x.measureText(o.big||'').width;x.font=`800 90px ${F}`;x.fillStyle='#8fa8ff';x.fillText(o.unit||'',100+bw,980);
  if(o.chip){x.font=`800 54px ${F}`;const cw=x.measureText(o.chip).width+70;x.fillStyle='rgba(67,192,138,.2)';rr(x,90,1050,cw,96,48);x.fill();x.fillStyle='#6fe3ae';x.fillText(o.chip,125,1116)}
- x.font=`700 46px ${F}`;x.fillStyle='rgba(220,228,255,.9)';(o.lines||[]).forEach((l,i)=>x.fillText(l,90,1300+i*78));
- x.fillStyle='rgba(255,255,255,.12)';x.fillRect(90,1720,900,2);x.font=`700 36px ${F}`;x.fillStyle='rgba(200,210,240,.7)';x.fillText(new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'}),90,1790);x.textAlign='right';x.fillText('Candito Programme · 1:1',990,1790);
+ let y0=1300;if(o.meta){x.font=`700 38px ${F}`;x.fillStyle='rgba(200,210,240,.7)';const ms=o.meta.split(' · ');let ln='',rows=[];ms.forEach(m=>{const t=ln?ln+' · '+m:m;if(x.measureText(t).width>900&&ln){rows.push(ln);ln=m}else ln=t});rows.push(ln);rows.forEach((r,i)=>x.fillText(r,90,1210+i*52));y0=1210+rows.length*52+70}
+ x.font=`700 46px ${F}`;x.fillStyle='rgba(220,228,255,.9)';(o.lines||[]).slice(0,5).forEach((l,i)=>{const y=y0+i*78;if(typeof l==='string'){x.fillText(l,90,y);return}x.fillStyle='rgba(200,210,240,.7)';x.textAlign='right';x.fillStyle='#fff';x.fillText(l[1],990,y);const vw=x.measureText(l[1]).width;x.textAlign='left';x.fillStyle='rgba(200,210,240,.7)';let n=l[0];while(x.measureText(n).width>880-vw&&n.length>4)n=n.slice(0,-2).trim()+'…';x.fillText(n,90,y);x.fillStyle='rgba(220,228,255,.9)'});
+ x.fillStyle='rgba(255,255,255,.12)';x.fillRect(90,1720,900,2);x.font=`700 36px ${F}`;x.fillStyle='rgba(200,210,240,.7)';x.fillText((o.date||new Date()).toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'}),90,1790);x.textAlign='right';x.fillText('Candito Programme · 1:1',990,1790);
  c.toBlob(async b=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Teilen hier nicht verfügbar');return}await dl.save({filename:`candito-${(o.file||'karte')}-${isoD(new Date())}.png`,data:b,mimeType:'image/png'});}catch(e){if(!(e&&e.name==='AbortError'))toast('Teilen abgebrochen')}},'image/png')}
 function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
 function wrapT(x,t,a,b,mw,lh){const ws=t.split(' ');let l='',y=b;ws.forEach(w=>{const tt=l?l+' '+w:w;if(x.measureText(tt).width>mw&&l){x.fillText(l,a,y);l=w;y+=lh}else l=tt});x.fillText(l,a,y)}
