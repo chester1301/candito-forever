@@ -2662,6 +2662,131 @@ svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
 @media (prefers-reduced-motion:no-preference){#svw.mo-in>.sv-in{animation:hoch var(--mo-3) var(--mo-ease)}}
 @media (prefers-reduced-motion:reduce){:root{--mo-1:1ms;--mo-2:1ms;--mo-3:1ms}}
 </style>
+<style id="cf-gym2">
+/* ===== Gym-Modus Redesign: Liquid Glass, reduzierte Hauptansicht, Übungs-Info-Sheet ===== */
+:root{--glass-b:rgba(205,218,255,.30);--glass-hi:rgba(255,255,255,.42);--glow:rgba(64,110,255,.55)}
+/* Spalten nie breiter als der Bildschirm (320 px) */
+#gym .gym-in,#gym .gsw{grid-template-columns:minmax(0,1fr)}
+#gym .gtop{min-width:0}#gym .gtop .lbl{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Kopf: Fortschritt + Übungsnavigation in einer Zeile */
+#gym .g2row{display:flex;align-items:center;gap:10px;min-width:0}
+#gym .g2row .gprog{flex:1;min-width:0;margin:0!important}
+#gym .g2row .gprog .gps{display:none}
+#gym .g2row .gpt{min-width:0}#gym .g2row .gpt b,#gym .g2row .gpt small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+#gym .g2row .gnv2{flex:none}
+/* Schnellzugriffe: fünf gläserne Kacheln mit Beschriftung */
+#gym .gq{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin:2px 0 0}
+#gym .gq-b{display:grid;justify-items:center;gap:5px;padding:0;border:0;background:none;color:var(--ink2);font:inherit;cursor:pointer;min-width:0;-webkit-tap-highlight-color:transparent}
+#gym .gq-b small{font-size:11.5px;font-weight:700;letter-spacing:.01em;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#gym .gq .gq-i{width:52px!important;height:52px!important;border-radius:16px!important;display:grid;place-items:center;
+ border:1px solid var(--glass-b)!important;box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -12px 18px -10px color-mix(in srgb,var(--gc) 55%,transparent),0 10px 22px -14px color-mix(in srgb,var(--gc) 85%,#000)!important}
+#gym .gq-b:active .gq-i{transform:scale(.94)}
+#gym .gq-b.in .gq-i{--gc:#6f8cff}
+#gym .gq .gq-i .gis{width:24px;height:24px}
+#gym .gq .gq-i em{right:-7px!important;top:-7px!important}
+.gi-i{stroke:#fff!important;stroke-width:2.1!important}.gi-i .dt{fill:#fff;stroke:none}
+/* Gläsernes Info-Icon (wiederverwendbar) */
+.ginfo{position:relative;flex:none;width:58px;height:58px;border-radius:18px;display:grid;place-items:center;padding:0;cursor:pointer;color:#fff;
+ background:radial-gradient(120% 95% at 28% 8%,rgba(150,178,255,.42),rgba(52,82,190,.18) 46%,rgba(8,12,28,.88) 78%),linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.02));
+ border:1px solid rgba(214,224,255,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -14px 20px -10px rgba(52,100,255,.55),0 10px 24px -10px var(--glow),0 0 0 1px rgba(0,0,0,.35);-webkit-tap-highlight-color:transparent}
+.ginfo::before{content:"";position:absolute;inset:2px 2px 52% 2px;border-radius:15px 15px 40% 40%;background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0));pointer-events:none}
+.ginfo .gis{width:30px;height:30px;position:relative;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.ginfo:active{transform:scale(.95)}
+.ginfo.sm{width:46px;height:46px;border-radius:15px}.ginfo.sm .gis{width:24px;height:24px}
+/* Übungskopf */
+#gym .g2ex{display:grid!important;grid-template-columns:auto minmax(0,1fr);gap:12px!important;align-items:center}
+#gym .g2ex{align-items:start!important}
+#gym .g2ex h2.disp{font-size:clamp(26px,7.6vw,34px)!important;line-height:1.04!important;margin:0!important;font-variation-settings:"wdth" 78;letter-spacing:-.01em}
+#gym .g2ex .exlink{all:unset;position:relative;cursor:pointer;display:block;overflow-wrap:anywhere}#gym .g2ex .exlink::after{display:none}
+#gym .g2ex .ginfo{margin-top:2px}
+#gym .g2ex .rx{font-size:14px!important;line-height:1.35;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#gym .g2b{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0 0}
+#gym .g2b .hype{margin:0!important;padding:2px 10px 2px 3px!important;gap:6px!important}#gym .g2b .hype .hic{width:22px!important;height:22px!important}#gym .g2b .hype .htx b{font-size:13px!important}#gym .g2b .hype .htx small,#gym .g2b .hype .hmt{display:none}
+#gym .g2b .wzc{padding:2px 8px;font-size:11.5px}
+#gym .g2sw{display:contents}#gym .g2sw .swtag{flex-basis:100%;margin:0!important}#gym .g2sw .swbtn{min-height:30px;padding:0 10px;margin:0!important}
+#gym .g2note{min-height:28px;padding:0 10px;border-radius:999px;border:1px solid rgba(240,196,106,.45);background:rgba(240,196,106,.10);color:#f3c969;font:800 12px var(--f);cursor:pointer}
+/* Regelzeile mit Schloss bei fester Last */
+#gym .grule.m-none .gr-i{font-size:0!important}
+#gym .grule.m-none .gr-i::after{content:"";width:16px;height:16px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='5' y='10.5' width='14' height='9.5' rx='2.4'/%3E%3Cpath d='M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='5' y='10.5' width='14' height='9.5' rx='2.4'/%3E%3Cpath d='M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5'/%3E%3C/svg%3E") center/contain no-repeat}
+#gym .grule{border-radius:16px!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important;border:1px solid var(--glass-b)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+/* Satzkarte & Eingaben: Glas */
+#gym .ghero{border:1px solid rgba(120,150,255,.32)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(0,0,0,.3),0 18px 40px -24px var(--glow)!important}
+#gym .gdock .stp{border:1px solid var(--glass-b)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important}
+#gym .gdock .stp button{border-radius:14px}
+#gym .g2opt .rpeopen{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:46px;text-align:left}
+#gym .g2opt .rpeopen span{font-size:13px;font-weight:700;color:var(--ink2);min-width:0}
+#gym .g2opt .rpeopen b{flex:none;font-size:13.5px;color:#9fb2ff}
+#gym .gq .gq-i{width:48px!important;height:48px!important;border-radius:15px!important}
+/* Satzkarte: Satz-Chips immer über der Hantel-/Geräte-Grafik; Grafiken nie über den Kartenrand */
+#gym .ghero{overflow:hidden}#gym .ghero .geqn{left:auto!important;right:2px!important;text-align:right!important;white-space:nowrap;overflow:visible!important}#gym .ghero .gz-top,#gym .ghero .gsets{position:relative;z-index:3}
+/* Verdichtung: zuerst Beschriftungen der Schnellzugriffe, dann Kachelgröße */
+#gym .gym-in.tight2 .gq{gap:6px}#gym .gym-in.tight3 .gq .gq-i{width:44px!important;height:44px!important;border-radius:14px!important}
+#gym .gym-in.tight3 .gq-b{gap:3px}#gym .gym-in.tight3 .gq{margin-top:0}#gym .gym-in.tight4 .gsw{row-gap:7px!important}#gym .gym-in.tight5 .gsw{row-gap:6px!important}#gym .gym-in.tight5 .gq .gq-i{width:42px!important;height:42px!important}
+#gym .gym-in.tight4 .ginfo{width:50px;height:50px;border-radius:16px}#gym .gym-in.tight4 .ginfo .gis{width:26px;height:26px}
+@media (max-width:359px){#gym .gpbtn{padding:0!important;width:44px;justify-content:center}#gym .gpbtn b{display:none}#gym .sessbtn.start{padding:0 12px!important}
+ #gym .bigbtn.hb2 .hb-ic{width:52px!important;height:52px!important}#gym .bigbtn.hb2 .hb-tx b{font-size:15.5px!important;white-space:nowrap}#gym .slide .sl-ch{display:none!important}#gym .bigbtn.hb2 .hb-tx{padding:0 4px!important}#gym .gtop .lbl{font-size:14px!important}#gym .gtop{gap:6px!important}#gym .gdk-b .gtq,#gym .gdk-b .gtimer{transform:scale(.92);transform-origin:left center}
+ #gym .gq{gap:5px}#gym .gq .gq-i{width:46px!important;height:46px!important}#gym .ginfo{width:50px;height:50px}#gym .g2row .gnv2 .chip{display:none}#gym .g2row .gpt small{font-size:11px}}
+
+/* ===== Gym-Fenster (Aufwärmen, Verlauf, RPE-Planer, Tagesplan): gleiche Glasfläche wie das Info-Sheet ===== */
+#gym .gplan .gp-in{background:radial-gradient(120% 45% at 20% 0%,rgba(60,96,230,.26),rgba(60,96,230,0) 60%),linear-gradient(180deg,#121a38,#070a17 72%)!important;border:1px solid rgba(150,172,255,.26)!important;border-bottom:0!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 -24px 60px -20px rgba(30,60,200,.5)!important;border-radius:28px 28px 0 0!important}
+#gym .gp-top.g2top{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+#gym .gp-top .gp-gi{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;border:1px solid var(--glass-b);box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -10px 16px -8px color-mix(in srgb,var(--gc) 55%,transparent)}
+#gym .gp-top .gp-gi.in{--gc:#6f8cff}#gym .gp-top .gp-gi .gis{width:23px;height:23px}
+#gym .gp-top h2{font-size:clamp(22px,6.6vw,28px)!important;line-height:1.08}
+#gym .gp-top .iconbtn{width:44px;height:44px;border-radius:50%}
+#gym .g2wu{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;min-height:64px!important;padding:10px 14px!important;border-radius:18px!important;text-align:left;
+ background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02))!important;border:1px solid rgba(255,255,255,.12)!important}
+#gym .g2wu .wn{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font:800 15px var(--f);color:#c9d4ff;background:rgba(91,124,255,.16);border:1px solid rgba(130,155,255,.3)}
+#gym .g2wu .wt{display:grid;gap:3px;min-width:0}#gym .g2wu .num{font:800 20px var(--f)!important;color:#fff}#gym .g2wu small{font-size:13.5px!important;color:var(--ink2)!important;text-align:left!important;margin:0!important}
+#gym .g2wu .wc{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid rgba(160,180,255,.45)}#gym .g2wu .wc svg{width:16px!important;height:16px!important;color:rgba(160,180,255,.6)!important;margin:0!important}
+#gym .g2wu.ok{border-color:rgba(67,192,138,.45)!important;background:linear-gradient(180deg,rgba(67,192,138,.14),rgba(67,192,138,.04))!important}#gym .g2wu.ok .wn{background:rgba(67,192,138,.18);border-color:rgba(67,192,138,.45);color:#7fe0b4}
+#gym .g2wu.ok .wc{background:#43c08a;border-color:#43c08a}#gym .g2wu.ok .wc svg{color:#06281a!important}
+#gym .wul{gap:10px!important}
+#gym .g2hint{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;margin-top:14px;padding:14px;border-radius:18px;background:rgba(91,124,255,.08);border:1px solid rgba(130,155,255,.3)}
+#gym .g2hint .gi .gis{width:22px;height:22px;stroke:#9fb2ff!important}#gym .g2hint .gi .dt{fill:#9fb2ff}
+#gym .g2hint p{margin:0;font-size:14px;line-height:1.45;color:#cfd6e6}#gym .g2hint b{display:block;color:#fff;font-size:14.5px;margin-bottom:2px}
+#gym .his .card,#gym .his .hi-c,#gym .rcs .card{border-radius:18px}
+/* ===== Übungs-Info-Sheet ===== */
+.gxi{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.gxi[hidden]{display:none}
+.gxi-bg{position:absolute;inset:0;background:rgba(2,4,12,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:gpf var(--mo-1) ease-out;transition:opacity .2s ease}
+.gxi-p0{position:relative;width:100%;max-width:560px;height:min(89dvh,calc(100dvh - env(safe-area-inset-top,0px) - 20px));display:flex;flex-direction:column;
+ border-radius:28px 28px 0 0;background:radial-gradient(120% 50% at 20% 0%,rgba(60,96,230,.30),rgba(60,96,230,0) 60%),linear-gradient(180deg,#121a38,#070a17 70%);
+ border:1px solid rgba(150,172,255,.28);border-bottom:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 -24px 60px -20px rgba(30,60,200,.55);animation:hoch var(--mo-2) var(--mo-ease);transition:transform var(--mo-2) var(--mo-ease);will-change:transform}
+.gxi.out .gxi-p0{transform:translate3d(0,100%,0)}.gxi.out .gxi-bg{opacity:0}
+.gxi-hd{flex:none;padding:8px 18px 12px;touch-action:none}
+.gxi-hd .grip{display:block;width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.28);margin:2px auto 12px}
+.gxi-t{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+.gxi-t .eyebrow{color:#8fa8ff}
+.gxi-t h2{margin:2px 0 0;font:900 clamp(24px,7vw,30px)/1.05 var(--d,var(--f));letter-spacing:-.01em;color:#fff;overflow-wrap:anywhere}
+.gxi-x{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--glass-b);background:rgba(255,255,255,.07);color:#fff;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.gxi-x svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.gxi-tabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;margin-top:14px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}
+.gxi-tabs button{min-height:40px;border:0;border-radius:10px;background:none;color:var(--ink2);font:800 14px var(--f);cursor:pointer}
+.gxi-tabs button[aria-selected="true"]{background:linear-gradient(180deg,#4a6df5,#3157e8);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 16px -8px rgba(49,87,232,.9)}
+.gxi-sc{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.gxi-c{margin:0 0 12px;padding:16px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.gxi-c h3{margin:0 0 10px;font:800 13px var(--f);letter-spacing:.07em;text-transform:uppercase;color:#9fb2ff}
+.gxi-big{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.gxi-big b{font:900 44px/1 var(--d,var(--f));color:#fff;letter-spacing:-.02em}
+.gxi-tx{margin:10px 0 0;font-size:17px;line-height:1.45;color:#eef1f8;font-weight:600}
+.gxi-m{margin:8px 0 0;font-size:13px;color:var(--ink2);font-weight:700}
+.gxi-p{margin:8px 0 0;font-size:15.5px;line-height:1.55;color:#dfe4ef}
+.gxi-p b{color:#fff}
+.gxi-note{margin:10px 0 0;font-size:14px;line-height:1.45;color:#b9c6ff}
+.gxi-l{margin:0;padding:0;list-style:none;display:grid;gap:10px}.gxi-l li{position:relative;padding-left:18px;font-size:15.5px;line-height:1.5;color:#dfe4ef}.gxi-l li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:#6f8cff;box-shadow:0 0 8px rgba(111,140,255,.8)}
+.gxi-load{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px}.gxi-kg{font:900 36px/1 var(--d,var(--f));color:#fff}.gxi-r{font:800 20px var(--f);color:#fff}
+.gxi-load .vtag{align-self:center}
+.gxi-hy{display:flex;align-items:center;gap:10px}.gxi-hy b{font-size:16px}
+.gxi-rule{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.gxi-rule .gr-i{min-width:40px;height:30px;padding:0 8px;border-radius:9px;display:grid;place-items:center;font:800 12px var(--f);background:rgba(91,124,255,.18);color:#9fb2ff}
+.gxi-rule.m-none .gr-i{background:rgba(255,255,255,.08);color:#dfe4ef}.gxi-rule .gr-i svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.gxi-rule.m-cap,.gxi-rule.m-amrap{border-color:rgba(243,201,105,.4)}.gxi-rule.m-cap .gr-i,.gxi-rule.m-amrap .gr-i{background:rgba(243,201,105,.2);color:#f3c969}
+.gxi-rule b{display:block;font-size:16px;line-height:1.3;color:#fff}.gxi-rule small{display:block;margin-top:5px;font-size:14.5px;line-height:1.5;color:#cfd6e6}
+.gxi-sw{margin-top:10px}.gxi-sw .swbtn{min-height:44px}
+.gxi-foot{margin:6px 4px 0;font-size:12.5px;line-height:1.45;color:var(--ink2);text-align:center}
+@media (prefers-reduced-motion:reduce){.gxi-p0,.gxi-bg{animation:none}}
+</style>
 <style id="cf-tap">
 /* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
 .jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
@@ -6008,6 +6133,7 @@ function setRule(bl){const x=bl.x||'',s=bl.s,k=kindOf(bl);const T=nf;const pn=v=
  else if(mode==='avg'){title=`RPE im Schnitt ${T(rpe)} · jeden Satz eintragen`;detail=`Gleiche Last in allen ${s} Sätzen. Trag das RPE jedes Satzes ein – der Durchschnitt soll ${T(rpe)} sein (frühe Sätze leichter, späte schwerer).`}
  return {mode,need,title,detail,rpe,cap:mode==='cap'||mode==='amrap'?rpe:null,given,sameLoad}}
 const rpeNeed=(bl,i)=>setRule(bl).need(i);
+function gpIcons(){document.querySelectorAll('#gym .gplan .gp-top').forEach(t=>{if(t.querySelector('.gp-gi'))return;const o=t.closest('.gplan');const k=o.classList.contains('gwus')?['wu',GI_WU]:o.classList.contains('his')?['hi',GI_HI]:o.classList.contains('rcs')?['rc',GI_RC]:['in',GI_INFO];t.insertAdjacentHTML('afterbegin',`<span class="gico gp-gi ${k[0]}" aria-hidden="true">${k[1]}</span>`);t.classList.add('g2top')})}
 function gymRuleHTML(bl){const R=setRule(bl);const M={none:'n',fail:'f',est:'e',amrap:'a',cap:'c',each:'e',first:'f',last:'l',avg:'v'};return `<div class="grule m-${R.mode}"><span class="gr-i">${R.mode==='none'?'–':'RPE'}</span><div><b>${R.title}</b><small>${R.detail}</small></div></div>`}
 function gymSetFlags(bl,L){return Array.from({length:bl.s},(_,i)=>rpeNeed(bl,i)&&!(L.b[G.b][i]&&L.b[G.b][i].ok))}
 
@@ -6166,7 +6292,7 @@ function twHint(root){(root||document).querySelectorAll('.tw').forEach(t=>{const
 document.addEventListener('click',e=>{const b=e.target.closest('[data-inv]');if(b){const [p,d]=b.dataset.inv.split('|');if(!S.meta.inv)S.meta.inv={};const n=Math.max(0,(S.meta.inv[p]||0)+ +d);if(n)S.meta.inv[p]=n;else delete S.meta.inv[p];saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y);return}
  if(e.target.closest('[data-invreset]')){S.meta.inv={};saveMeta();SG.clear();const y=scrollY;render();scrollTo(0,y)}});
 let renderPending=false;
-setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h)gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}
+setTimeout(()=>{const _rg2=renderGym;renderGym=function(){_rg2.apply(this,arguments);try{const gx=document.querySelector('#gym .gex .rx');if(gx&&!document.querySelector('#gym .swg')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const h=swTag(bl)+swBtn(w,d,G.b);if(h){const gb=document.querySelector('#gym .g2ex .g2b');if(gb)gb.insertAdjacentHTML('afterbegin',`<span class="swg g2sw">${h}</span>`);else gx.insertAdjacentHTML('afterend',`<div class="swg">${h}</div>`)}}
  if(!document.querySelector('#gym .grule')){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const gz=document.querySelector('#gym .gziel');if(bl&&gz)gz.insertAdjacentHTML('beforebegin',gymRuleHTML(bl))}
  if(!document.querySelector('#gym .gprev')){const {w,d}=S.ui;const L=log(w,d);const pv=G.i>0&&L&&L.b[G.b]&&L.b[G.b][G.i-1];const cur=L&&L.b[G.b]&&L.b[G.b][G.i];let cv=null;try{cv=curVals()}catch(e){}if(pv&&pv.ok&&cur&&!cur.ok&&cv&&(cv.kg!==pnum(pv.kg)||cv.r!==pnum(pv.r))){const st=document.querySelector('#gym .gdock .stp2');if(st)st.insertAdjacentHTML('beforebegin',`<div class="gprev"><button type="button" data-gsame><svg viewBox="0 0 24 24"><path d="M4 7h11a4 4 0 0 1 0 8H9M12 12l-3 3 3 3"/></svg>Wie Satz ${G.i}: ${pnum(pv.kg)!=null?nf(pnum(pv.kg),2)+' kg':'–'} × ${pnum(pv.r)!=null?nf(pnum(pv.r)):'–'}</button></div>`)}}const st=document.querySelector('#gym .strip');if(st&&!document.querySelector('#gym .gprog'))st.insertAdjacentHTML('afterend',gymRingRow());if(G.plan){const pi=document.querySelector('#gym .gplan .gp-in');const h=testPlanHTML(S.ui.w,S.ui.d);if(pi&&h&&!pi.querySelector('.tpl')){const f=pi.firstElementChild;f?f.insertAdjacentHTML('afterend',h):pi.insertAdjacentHTML('afterbegin',h)}}gymFinBtn();fitGym()}catch(e){}}},0);
 (function(){let tm=null,on=false;addEventListener('scroll',()=>{if(!on){on=true;document.body.classList.add('scrl')}clearTimeout(tm);tm=setTimeout(()=>{on=false;document.body.classList.remove('scrl')},180)},{passive:true})})();
@@ -6383,7 +6509,7 @@ async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  if(L.start&&!L.flow&&needCk(w,d)&&!CK)setTimeout(()=>{if(!CK&&!$('#gym').hidden)ckOpen(PROG,w,d,()=>{gymRefresh()})},350);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
-function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
+function closeGym(silent){try{const xi=document.getElementById('gxi');if(xi&&!xi.hidden){xi.hidden=true;document.body.classList.remove('gxiopen')}}catch(e){}if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&!$('#gym').hidden&&navigator.wakeLock){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
 const PLS=[25,20,15,10,5,2.5,1.25,0.5,0.25];
 function invOf(){const v=S.meta.inv;return v&&Object.keys(v).length?v:null}
@@ -6418,6 +6544,7 @@ const TVICO='data:image/webp;base64,UklGRuoPAABXRUJQVlA4WAoAAAAQAAAAdwAAdwAAQUxQ
 const LRC_INT=[100,97.6,95.2,92.8,90.6,88.4,86.2,84.1,82.0,80.0,78.1,76.2,74.3,72.5,70.7,69.0,67.3,65.6,64.0,62.5,60.9,59.5,58.0,56.6,55.2,53.8,52.5,51.2,50.0,48.8,47.6,46.4,45.3,44.2,43.1,42.0,41.0,40.0,39.0,38.1];
 const LRC_HALF=[98.8,96.4,94.0,91.7,89.5,87.3,85.1,83.1,81.0,79.0,77.1,75.2,73.4,71.6,69.8,68.1,66.5,64.8,63.3,61.7,60.2,58.7,57.3,55.9,54.5,53.2,51.9,50.6,49.4,48.2,47.0,45.8,44.7,43.6,42.6,41.5,40.5,39.5,38.5];
 function lrcPct(reps,rpe){const n=Math.round((reps+(10-rpe))*2)/2;if(!(n>=1&&n<=40))return null;return Number.isInteger(n)?LRC_INT[n-1]:LRC_HALF[Math.floor(n)-1]}
+const GI_INFO='<svg class="gis gi-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 10.6v6.2"/><circle class="dt" cx="12" cy="7.3" r="1.25"/></svg>';
 const GI_WU='<svg class="gis" viewBox="0 0 24 24"><defs><linearGradient id="giFl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset=".55" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff4d3d"/></linearGradient></defs><path class="f" d="M12.2 1.8c.9 3.6 6.3 5.9 6.3 12a6.5 6.5 0 0 1-13 0c0-3 1.6-5 3-6.2.2 2 1.1 3.3 2.4 3.8-.3-3.7-.1-6.6 1.3-9.6z"/><path class="c" d="M12 22.2a3.6 3.6 0 0 1-3.6-3.6c0-1.9 1.3-3.1 2.3-4 .2 1.3.9 2.1 1.8 2.4.3-1.4.8-2.4 1.7-3.3.8 1.5 1.4 2.7 1.4 4a3.6 3.6 0 0 1-3.6 4.5z"/></svg>';
 const GI_TV='<svg class="gis" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M7 15.5l3.2-3.6 2.8 2.4L17 9"/><path d="M14.4 9H17v2.6"/></svg>';
 const GI_HI='<svg class="gis" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.2 4.2v4h4"/><path d="M12 7.6V12l3 2"/></svg>';
@@ -6481,10 +6608,10 @@ document.addEventListener('input',e=>{if(e.target&&e.target.id==='rcKg'&&G.rc){G
 function gymWuHTML(w,d){const L=log(w,d,true);const bl=P[w][d].b[G.b];const cv=curVals();const kg=cv.kg;const list=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];
  const nd=list?list.filter((_,j)=>dn[j]).length:0;
  const body=!list?'<p class="gp-t">Für diese Übung sind keine Aufwärmsätze vorgesehen.</p>':!list.length?'<p class="gp-t">Stell im Gym-Modus das Arbeitsgewicht ein – dann erscheinen hier deine Aufwärmsätze mit Scheiben pro Seite.</p>':
-  `<div class="wbar"><i style="width:${nd/list.length*100}%"></i></div><div class="wul">${list.map((x,j)=>{const p2=plates(x.kg);return `<button type="button" class="wur ${dn[j]?'ok':''}" data-gwu="${j}" aria-pressed="${!!dn[j]}"><span class="num">${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</span><small>${p2.length?p2.map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small>${CHECK}</button>`}).join('')}</div>`;
+  `<div class="wbar"><i style="width:${nd/list.length*100}%"></i></div><div class="wul">${list.map((x,j)=>{const p2=plates(x.kg);return `<button type="button" class="wur g2wu ${dn[j]?'ok':''}" data-gwu="${j}" aria-pressed="${!!dn[j]}"><span class="wn">${j+1}</span><span class="wt"><span class="num">${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</span><small>${p2.length?p2.map(p=>nf(p,2)).join(' + ')+' pro Seite':'nur Stange'}</small></span><span class="wc">${CHECK}</span></button>`}).join('')}</div>`;
  return `<div class="gplan gwus" role="dialog" aria-modal="true" aria-label="Aufwärmen"><div class="gp-in">
   <div class="gp-top"><div><p class="eyebrow">Aufwärmen · <span style="color:#f0a066">Empfehlung</span></p><h2>${esc(EX[bl.e].n)}</h2><p class="gp-f">${kg?'bis '+nf(kg,2)+' kg Arbeitsgewicht'+(plates(kg).length?' · '+plates(kg).map(p=>nf(p,2)).join(' + ')+' pro Seite':''):'Arbeitsgewicht noch offen'}${list&&list.length?' · '+nd+'/'+list.length+' erledigt':''}</p></div><button type="button" class="iconbtn" data-gwuclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-  ${body}<p class="note2" style="margin-top:10px">Vom Programm nicht vorgegeben – berechnete Empfehlung aus deinem Arbeitsgewicht.</p>
+  ${body}<div class="g2hint"><span class="gi">${GI_INFO}</span><p><b>Hinweis</b>Vom Programm nicht vorgegeben – berechnete Empfehlung aus deinem Arbeitsgewicht.</p></div>
   <button type="button" class="gp-close" data-gwuclose>Fertig</button></div></div>`}
 function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d]||[];
  const done=day.b.reduce((a,bl,b)=>a+(L.b[b]||[]).filter(z=>z&&z.ok).length,0),tot=day.b.reduce((a,bl)=>a+bl.s,0);
@@ -6511,7 +6638,7 @@ function fitKg(){const cv=fitKg.c||(fitKg.c=document.createElement('canvas').get
 document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#gym .gdock .mid'))fitKg()});document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#gym [data-step]'))setTimeout(fitKg,0)});
 function fitGym(){setTimeout(fitKg,0);setTimeout(()=>{document.querySelectorAll('#gym .gz-why').forEach(e=>{e.classList.toggle('cl',e.scrollHeight>e.clientHeight+2||e.classList.contains('open'))})},0);const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
  const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3');if(!over())return;gi.classList.add('tight4');if(!over())return;gi.classList.add('tight5')}
-{const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
+{const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);requestAnimationFrame(gpIcons);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
  if(G.rpo&&!G.plan&&!G.wu){requestAnimationFrame(rpCenter);const gi=$('#gym .gym-in')||$('#gym');const {w,d}=S.ui;gi.insertAdjacentHTML('beforeend',`<div class="gplan rcs rpo" role="dialog" aria-modal="true" aria-label="RPE-Planer"><div class="gp-in"><div class="gp-top"><div><p class="eyebrow" style="color:#5ad1e6">RPE-Planer</p><h2>1RM & Last je RPE</h2><p class="gp-f">${esc(EX[P[w][d].b[G.b].e].n)} · Satz ${G.i+1}</p></div><button type="button" class="iconbtn" data-rpclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>${rpHTML()}</div></div>`)}
@@ -6754,6 +6881,41 @@ function todayWhoop(){const td=isoD(new Date()),y=new Date();y.setDate(y.getDate
 function gSetList(L,bl){const sets=L.b[G.b].slice(0,bl.s);const dn=sets.filter(z=>z.ok).length;
  return `<div class="gsl"><div class="gsl-h"><span>Sätze dieser Übung</span><span>${dn}/${bl.s}</span></div>${sets.map((z,i)=>{const kg=pnum(z.kg),r=pnum(z.r),rp=pnum(z.rpe);const jt=G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500;
   const nd=rpeNeed(bl,i);return `<button type="button" data-gs="${i}" class="${z.ok?'ok':''} ${i===G.i?'cur':''} ${jt?'just':''} ${nd&&!z.ok?'rq':''}"><span class="n">${z.ok?'✓':i+1}</span><span>${z.ok?`${kg!=null?nf(kg,2)+' kg':'–'} × ${r!=null?nf(r):'–'}`:i===G.i?'jetzt':'offen'}</span><small>${z.ok&&rp!=null?'@ '+nf(rp):nd&&!z.ok?'RPE':''}</small></button>`}).join('')}</div>`}
+/* ===== Übungs-Info-Sheet (Gym): Vorgaben · Ausführung · Hinweise – zeigt nur vorhandene Inhalte, ändert keine Trainingswerte ===== */
+const GXI={tab:'v'};
+function exInfoParts(){const {w,d}=S.ui,day=P[w][d];const bl=day.b[G.b];if(!bl)return null;const E=EX[bl.e]||{n:bl.e};let cv=null;try{cv=curVals()}catch(e){}
+ const R=setRule(bl);const sg=cv&&cv.sg;const lt=cv&&cv.lt;const em=sg&&sg.kg!=null&&sg.t!=='v';
+ const card=(t,b,cls)=>`<section class="gxi-c ${cls||''}">${t?`<h3>${t}</h3>`:''}${b}</section>`;
+ // A · Vorgaben
+ const v=[];
+ v.push(card('Programm-Vorgabe',`<div class="gxi-big"><b>${bl.s} × ${esc(bl.r)}</b>${hypeB(bl.h)}</div><p class="gxi-tx">${esc(bl.x)}</p><p class="gxi-m">W${w+1} · ${esc(DAYS[d].tag)} · Übung ${G.b+1} von ${day.b.length}${bl.opt?' · optional':''}</p>`,'pv'));
+ v.push(`<section class="gxi-c gxi-rule m-${R.mode}"><span class="gr-i">${R.mode==='none'?'<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/></svg>':'RPE'}</span><div><b>${R.title}</b><small>${R.detail}</small></div></section>`);
+ if(sg)v.push(card(`Last · Satz ${G.i+1} von ${bl.s}`,`<div class="gxi-load">${em?`<span class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b></span>`:sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span><b class="gxi-kg">${nf(sg.kg,2)} kg</b>`:`<b class="gxi-kg">${bl.rpe!=null?(bl.rpeEst?'≈ ':'')+'RPE '+nf(bl.rpe):'Last frei'}</b>`}<span class="gxi-r">× ${esc(sg.rdisp)}</span></div>
+   ${em?'<p class="gxi-note">Empfehlung = nur Orientierung. Canditos Plan gibt hier keine Last vor – du wählst das Gewicht.</p>':''}${sg.why?`<p class="gxi-p"><b>Berechnung:</b> ${esc(sg.why)}</p>`:''}${lt?`<p class="gxi-p"><b>Zuletzt:</b> W${lt.W+1} ${esc(DAYS[lt.D].tag)} · ${nf(lt.kg,2)} kg × ${nf(lt.r)}${lt.rpe!=null?' @'+nf(lt.rpe):''}</p>`:''}`));
+ if(bl.h)v.push(card('Belastung',`<div class="gxi-hy">${hypeB(bl.h)}<b>${esc(HYPE[bl.h]||'')}</b></div><p class="gxi-p">${esc(HYPETXT[bl.h]||'')}</p>`));
+ // B · Ausführung (nur vorhandene Beschreibungen)
+ const a=[];if(E.t)a.push(card('Technik',`<p class="gxi-p">${esc(E.t)}</p>`));const cu=CUES[bl.e]||[];if(cu.length)a.push(card('Worauf achten',`<ul class="gxi-l">${cu.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`));
+ // C · Hinweise (nur vorhandene Inhalte)
+ const h=[];if(bl.n)h.push(card('Coach-Hinweis',`<p class="gxi-p">${esc(bl.n)}</p>`));
+ const sw=swTag(bl),sb=swBtn(w,d,G.b);if(sw||sb)h.push(card('Übung & Alternativen',`${sw?`<p class="gxi-p">${sw}</p>`:''}${sb?`<div class="gxi-sw">${sb}</div><p class="gxi-m">Tauschen nur mit Canditos Alternativen – eigene Vorschläge sind gekennzeichnet.</p>`:''}`));
+ const inf=INFO[w+'-'+d]||[];if(inf.length)h.push(card('Hinweise zum Tag · Candito',`<ul class="gxi-l">${inf.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`));
+ return {bl,E,tabs:[['v','Vorgaben',v],['a','Ausführung',a],['h','Hinweise',h]].filter(t=>t[2].length)}}
+function exInfoHTML(){const X=exInfoParts();if(!X)return '';const {E,tabs}=X;if(!tabs.some(t=>t[0]===GXI.tab))GXI.tab=tabs[0][0];const cur=tabs.find(t=>t[0]===GXI.tab);
+ return `<div class="gxi-bg" data-gxiclose></div><div class="gxi-p0" role="dialog" aria-modal="true" aria-label="Übungsdetails ${esc(E.n)}"><div class="gxi-hd"><span class="grip" aria-hidden="true"></span>
+  <div class="gxi-t"><span class="ginfo sm" aria-hidden="true">${GI_INFO}</span><div><p class="eyebrow">Übung · Details</p><h2>${esc(E.n)}</h2></div><button type="button" class="gxi-x" data-gxiclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  ${tabs.length>1?`<div class="gxi-tabs" role="tablist">${tabs.map(t=>`<button type="button" role="tab" data-gxitab="${t[0]}" aria-selected="${t[0]===GXI.tab}">${t[1]}</button>`).join('')}</div>`:''}</div>
+  <div class="gxi-sc">${cur[2].join('')}<p class="gxi-foot">Canditos Vorgaben sind maßgeblich. Dieses Fenster zeigt nur an – es ändert keine Trainingswerte.</p></div></div>`}
+function exInfoOpen(tab){GXI.tab=tab||GXI.tab||'v';let el=document.getElementById('gxi');if(!el){el=document.createElement('div');el.id='gxi';el.className='gxi';document.body.appendChild(el)}el.innerHTML=exInfoHTML();el.hidden=false;el.classList.remove('out');document.body.classList.add('gxiopen');gxiDrag(el)}
+function exInfoClose(){const el=document.getElementById('gxi');if(!el||el.hidden)return;el.classList.add('out');setTimeout(()=>{el.hidden=true;el.classList.remove('out');const pn=el.querySelector('.gxi-p0');if(pn)pn.style.transform='';document.body.classList.remove('gxiopen')},200)}
+function exInfoRefresh(){const el=document.getElementById('gxi');if(!el||el.hidden)return;const sc=el.querySelector('.gxi-sc');const y=sc?sc.scrollTop:0;el.innerHTML=exInfoHTML();const s2=el.querySelector('.gxi-sc');if(s2)s2.scrollTop=y;gxiDrag(el)}
+// Nach unten wischen schließt (am Kopf jederzeit, im Inhalt nur ganz oben)
+function gxiDrag(el){const pn=el.querySelector('.gxi-p0'),sc=el.querySelector('.gxi-sc');if(!pn)return;let y0=null,dy=0,t0=0;
+ pn.addEventListener('touchstart',e=>{const inHd=e.target.closest('.gxi-hd');if(!inHd&&sc&&sc.scrollTop>0){y0=null;return}if(e.target.closest('button'))return;y0=e.touches[0].clientY;dy=0;t0=Date.now();pn.style.transition='none'},{passive:true});
+ pn.addEventListener('touchmove',e=>{if(y0==null)return;dy=Math.max(0,e.touches[0].clientY-y0);if(dy>0){pn.style.transform=`translate3d(0,${dy}px,0)`;if(e.cancelable&&dy>6)e.preventDefault()}},{passive:false});
+ pn.addEventListener('touchend',()=>{if(y0==null)return;const v=dy/Math.max(1,Date.now()-t0);pn.style.transition='';y0=null;if(dy>120||(dy>40&&v>.6)){exInfoClose()}else pn.style.transform=''})}
+document.addEventListener('click',e=>{const o=e.target.closest('[data-exinfo]');if(o&&o.closest('#gym')){e.stopPropagation();exInfoOpen(o.dataset.exinfo||'v');return}
+ if(e.target.closest('[data-gxiclose]')){exInfoClose();return}const t=e.target.closest('[data-gxitab]');if(t){GXI.tab=t.dataset.gxitab;exInfoRefresh();const sc=document.querySelector('#gxi .gxi-sc');if(sc)sc.scrollTop=0}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const el=document.getElementById('gxi');if(el&&!el.hidden){e.stopImmediatePropagation();exInfoClose()}}},true);
 function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
  const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e];$('#gym').dataset.hy=bl.h||'';const calm=L.b[G.b].slice(0,bl.s).some(x=>x.ok);
  const strip=day.b.map((x,b)=>{const all=L.b[b].slice(0,x.s).every(z=>z.ok);return `<span class="${b===G.b?'c':all?'d':''}"></span>`}).join('');
@@ -6764,9 +6926,10 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
    <span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span>${!L.start&&!L.done?`<button type="button" class="sessbtn start" data-sstart aria-label="Training starten"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><b>Start</b></button>`:L.done?`<span class="sessbtn done"><b>${fmtHMS(sessEl(L))}</b></span>`:`<button type="button" class="sessbtn ${L.pausedAt?'paused':''}" data-sp aria-label="${L.pausedAt?'Trainings-Timer fortsetzen':'Trainings-Timer pausieren'}"><i></i><b data-sesst="${w}-${d}">${fmtHMS(sessEl(L))}</b><svg viewBox="0 0 24 24">${L.pausedAt?'<path d="M8 5v14l11-7z"/>':'<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>'}</svg></button>`}</div>
   <div class="strip">${strip}</div>
   <div class="gsw">
-  <div class="gmeta"><span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span>${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
-   return `<span class="gicons">${wl?`<button type="button" class="gico wu ${wl.length&&nd>=wl.length?'done':''}" data-gwuopen aria-label="Aufwärmsätze">${GI_WU}${wl.length?`<em>${nd}/${wl.length}</em>`:''}</button>`:''}<button type="button" class="gico tv" data-ex="${bl.e}" aria-label="Technik & Verlauf">${GI_TV}</button><button type="button" class="gico hi" data-hiopen aria-label="Verlauf der Vorwochen">${GI_HI}</button><button type="button" class="gico rc" data-rcopen aria-label="RPE-Rechner">${GI_RC}</button></span>`})()}</div>
-  <div class="gex">${icoX(bl.e,'lg')}<div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-ex="${bl.e}">${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.n?`<details class="bnote"><summary>Coach-Hinweis</summary><p>${esc(bl.n)}</p></details>`:''}${bl.h||wz?`<p class="ghy hytx ${bl.h||''}">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip wzc" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}${bl.h?HYPETXT[bl.h]:''}</p>`:''}</div></div>
+  <div class="g2row">${gymRingRow()}<span class="gnv2"><button type="button" class="gnva" data-g="prev" ${G.b===0?'disabled':''} aria-label="Vorherige Übung"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><span class="chip plain">${G.b+1}/${day.b.length}${bl.opt?' · opt.':''}</span>${G.b<day.b.length-1?`<button type="button" class="gnva" data-g="next" aria-label="Nächste Übung"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<button type="button" class="gnva fin ${allDone?'on':''}" data-g="finish" aria-label="Einheit abschließen"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></button>`}</span></div>
+  ${(()=>{const wl=warmups(w,d,G.b,kg);const dn=(L.wu&&L.wu[G.b])||[];const nd=wl?wl.filter((_,j)=>dn[j]).length:0;
+   return `<nav class="gq" aria-label="Schnellzugriffe"><button type="button" class="gq-b in" data-exinfo aria-label="Übungsdetails und Candito-Vorgaben"><span class="gico gq-i">${GI_INFO}</span><small>Info</small></button>${wl?`<button type="button" class="gq-b" data-gwuopen aria-label="Aufwärmsätze"><span class="gico wu gq-i ${wl.length&&nd>=wl.length?'done':''}">${GI_WU}${wl.length?`<em>${nd}/${wl.length}</em>`:''}</span><small>Warmup</small></button>`:''}<button type="button" class="gq-b" data-ex="${bl.e}" aria-label="Analyse: e1RM, Maxima, Notizen, Einstellungen"><span class="gico tv gq-i">${GI_TV}</span><small>Analyse</small></button><button type="button" class="gq-b" data-hiopen aria-label="Verlauf der Vorwochen"><span class="gico hi gq-i">${GI_HI}</span><small>Verlauf</small></button><button type="button" class="gq-b" data-rcopen aria-label="RPE-Rechner"><span class="gico rc gq-i">${GI_RC}</span><small>RPE</small></button></nav>`})()}
+  <div class="gex g2ex"><button type="button" class="ginfo" data-exinfo aria-label="Info zu ${esc(ex.n)}">${GI_INFO}</button><div style="min-width:0"><h2 class="disp"><button type="button" class="exlink" data-exinfo>${esc(ex.n)}</button></h2><p class="rx">${esc(bl.x)}</p>${bl.h||wz||bl.n||swOpts(bl.e0||bl.e)||(bl.e0&&bl.e!==bl.e0)?`<p class="g2b">${bl.h?hypeB(bl.h):''}${wz?`<span class="chip wzc" style="color:${WZC[wz]};border-color:currentColor">WHOOP ${nf(L.whoop.rec,0)} %</span>`:''}${bl.n?`<button type="button" class="g2note" data-exinfo="h">Coach-Hinweis</button>`:''}</p>`:''}</div></div>
   <div class="card gziel ghero" style="--c:${GC[ex.g]}"><div class="gz-k"><div class="gz-top"><p class="eyebrow" style="color:var(--day)">Satz ${G.i+1} von ${bl.s}</p>${bl.s>1?`<div class="gsets gdots" role="group" aria-label="Sätze">${Array.from({length:bl.s},(_,i)=>`<button type="button" data-gs="${i}" class="${L.b[G.b][i].ok?'ok':''} ${i===G.i?'cur':''} ${G.just&&G.just.b===G.b&&G.just.i===i&&Date.now()-G.just.t<1500?'just':''} ${rpeNeed(bl,i)&&!L.b[G.b][i].ok?'rq':''}" aria-label="Satz ${i+1}${rpeNeed(bl,i)?' – RPE eintragen':''}">${L.b[G.b][i].ok?'✓':i+1}</button>`).join('')}</div>`:''}</div>
     ${(()=>{const em=sg.kg!=null&&sg.t!=='v';return `<div class="gz-n"><b class="zahl ${!em&&sg.kg!=null?'':'nokg'}">${!em&&sg.kg!=null?nf(sg.kg,2):(bl.rpe!=null?(bl.rpeEst?'≈ ':'')+'RPE '+nf(bl.rpe):'frei')}${!em&&sg.kg!=null?'<small>kg</small>':''}</b><span class="gz-r"><b>× ${esc(sg.rdisp)}</b>${!em&&sg.kg!=null&&bl.rpe!=null?`<small>${bl.rpeEst?'≈ ':''}RPE ${nf(bl.rpe)}</small>`:em||sg.kg==null?'<small>Last frei</small>':''}</span></div>
     <div class="gz-row">${!em&&sg.kg!=null?`<span class="vtag">Vorgabe laut Plan</span>`:''}${em?`<span class="empf"><span class="et">Empfehlung</span><b>≈ ${nf(sg.kg,2)} kg</b></span>`:''}${eqType(bl.e)==='bb'&&pl.length?`<span class="gz-pl">je Seite ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</span>`:''}</div>
@@ -6776,7 +6939,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   ${testHTML(w,d,G.b)}
   ${calibHint(ex.g,bl.rpe!=null&&!bl.rpeEst?bl.rpe:null)}
   ${s.ok?adhLine(setAdh(w,d,G.b,G.i)):''}
-  ${bl.s>1?gSetList(L,bl):''}
+  ${bl.s>1&&L.b[G.b].slice(0,bl.s).some(z=>z.ok)?gSetList(L,bl):''}
 
   </div>
   <div class="gdock"><div class="gdock-in">
@@ -6787,6 +6950,7 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
     <div class="mid"><small>Wdh.${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</small><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></div>
     <button type="button" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></div>
   ${(()=>{const RL=setRule(bl);const need=RL.need(G.i);const open=need||rpe!=null||G.rpeOpen===G.b+'-'+G.i;const over=RL.cap!=null&&rpe!=null&&rpe>RL.cap+1e-9;const tgt=bl.rpe!=null?bl.rpe:RL.cap!=null?RL.cap:RL.rpe;
+   if(!open)return `<div class="grpe opt g2opt"><button type="button" class="rpeopen" data-rpeopen><span>RPE · optional – laut Plan ${bl.rpe!=null&&RL.mode==='first'?'nur im 1. Satz':bl.rpe!=null&&RL.mode==='last'?'nur im letzten Satz':'nicht nötig'}</span><b>+ eintragen</b></button></div>`;
    return `<div class="grpe ${need?'req':'opt'} ${over?'over':''}"><div class="grpe-h"><small class="eyebrow">${need?`RPE · Satz ${G.i+1} eintragen${tgt!=null?' · '+(RL.cap!=null?'Deckel ':bl.rpeEst?'≈ ':'Soll ')+nf(tgt):''}`:`RPE · optional – laut Plan ${bl.rpe!=null&&RL.mode==='first'?'nur im 1. Satz':bl.rpe!=null&&RL.mode==='last'?'nur im letzten Satz':'nicht nötig'}`}</small><span class="rpedesc">${over?`<b>über dem Deckel</b> · Last für den nächsten Satz senken`:rpe!=null?`<b>RPE ${nf(rpe)}</b> · ${RPED[rpe]||''}`:need&&bl.rpe!=null?`${RPED[bl.rpe]||''}`:need?'Wie schwer war der Satz?':''}</span></div>
     ${open?`<div class="rpechips rpe1">${RPES.map(v=>`<button type="button" data-rpe="${v}" class="${bl.rpe===v?'soll':''} ${RL.cap!=null&&v>RL.cap?'cap':''}" aria-pressed="${rpe===v}">${nf(v)}</button>`).join('')}</div>`:`<button type="button" class="rpeopen" data-rpeopen>RPE trotzdem eintragen</button>`}</div>`})()}
   <div class="gdk-b">${gymTimerQ()}${(()=>{const show=!s.ok&&kg!=null&&r!=null;const nd=rpeNeed(bl,G.i);const noR=show&&rpe==null&&nd;const ICK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',INX='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';return `<button type="button" class="bigbtn hb2 ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log"><span class="hb-ic">${s.ok?INX:ICK}</span><span class="hb-tx"><b>${s.ok?'Erledigt · weiter':'Satz '+(G.i+1)+' abhaken'}</b>${s.ok?`<span class="hb-m"><i>${pnum(s.kg)!=null?nf(pnum(s.kg),2)+' kg':'–'}</i><i>× ${pnum(s.r)!=null?nf(pnum(s.r)):'–'}</i>${pnum(s.rpe)!=null?`<i>@ ${nf(pnum(s.rpe))}</i>`:''}</span>`:show?`<span class="hb-m"><i>${nf(kg,2)} kg</i><i>× ${nf(r)}</i>${rpe!=null?`<i class="rpv">RPE ${nf(rpe)}</i>`:nd?'<i class="miss"><em></em>RPE fehlt</i>':''}</span>`:`<span class="hb-m"><i class="dim">Gewicht eintragen</i></span>`}</span></button>`})()}${saveHTML(key(w,d))}</div>
