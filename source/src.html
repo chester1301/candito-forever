@@ -2335,12 +2335,14 @@ body.svopen{overflow:hidden}
 
 /* Licht-Effekt am linken Rand */
 #eglow{display:none}
-html[data-theme=blue] #eglow{display:block;position:fixed;left:0;top:0;bottom:0;width:62vw;max-width:420px;z-index:25;pointer-events:none;overflow:hidden;contain:strict;opacity:.55;transition:opacity .4s}
-html[data-theme=blue] #eglow i{position:absolute;left:0;top:-200px;width:100%;height:calc(100vh + 2100px);will-change:transform;
- background:radial-gradient(closest-side,rgba(64,105,245,.38),rgba(64,105,245,0)) -48% 120px/100% 560px repeat-y,radial-gradient(closest-side,rgba(111,140,255,.16),rgba(111,140,255,0)) -70% 560px/90% 420px repeat-y;background-size:100% 900px,90% 900px;background-repeat:repeat-y}
-html[data-theme=blue] #eglow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,transparent,rgba(111,140,255,.35) 30%,rgba(111,140,255,.12) 70%,transparent)}
+html[data-theme=blue] #eglow{display:block;position:fixed;left:0;top:0;bottom:0;width:70vw;max-width:460px;z-index:25;pointer-events:none;overflow:hidden;contain:strict}
+html[data-theme=blue] #eglow .ag{position:absolute;left:-30%;top:-300px;width:90%;height:calc(100vh + 1500px);will-change:transform;background:radial-gradient(closest-side,rgba(64,105,245,.22),rgba(64,105,245,0)) 0 0/100% 600px repeat-y;opacity:.85}
+html[data-theme=blue] #eglow .bm{position:absolute;left:-55%;top:0;width:120%;height:520px;will-change:transform,opacity;opacity:0;
+ background:radial-gradient(50% 50% at 30% 50%,rgba(150,185,255,.55),rgba(64,105,245,.32) 38%,rgba(64,105,245,.10) 62%,rgba(64,105,245,0) 75%)}
+html[data-theme=blue] #eglow .ln{position:absolute;left:0;top:0;width:3px;height:360px;will-change:transform,opacity;opacity:0;border-radius:3px;
+ background:linear-gradient(180deg,rgba(160,195,255,0),#bcd0ff 45%,#6f8cff 60%,rgba(111,140,255,0));box-shadow:0 0 14px 3px rgba(111,140,255,.55),0 0 40px 8px rgba(64,105,245,.35)}
 body.gymopen #eglow,body.ckopen #eglow,body.svopen #eglow{display:none!important}
-@media (prefers-reduced-motion:reduce){html[data-theme=blue] #eglow i{transform:none!important}}
+@media (prefers-reduced-motion:reduce){html[data-theme=blue] #eglow .bm,html[data-theme=blue] #eglow .ln{display:none}}
 
 /* Übungs-Info im Juggernaut-Stil */
 html #xsheet .sheet-in.xs{overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
@@ -2474,7 +2476,7 @@ body.hdc .top .progsw{max-height:0;opacity:0;margin-top:-10px;pointer-events:non
 .cwk-n svg{width:20px;height:20px;flex:none;fill:none;stroke:#7f98ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 button.cwk-n{cursor:pointer}button.cwk-n b{color:#9fb3ff}
 </style>
-<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div><div id="eglow" aria-hidden="true"><i></i></div>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div><div id="eglow" aria-hidden="true"><i class="ag"></i><b class="bm"></b><em class="ln"></em></div>
 <header class="top"><div class="top-in">
   <div class="marke"><span class="logo lg2" aria-hidden="true"><svg class="logosvg" viewBox="0 0 100 100" aria-hidden="true"><defs>
 <radialGradient id="pfR" cx="40%" cy="34%" r="72%"><stop offset="0" stop-color="#ff5562"/><stop offset=".45" stop-color="#d7121f"/><stop offset=".85" stop-color="#8e0611"/><stop offset="1" stop-color="#5a020a"/></radialGradient>
@@ -3239,10 +3241,16 @@ try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hi
 
 
 
-/* ---------- Licht-Effekt links beim Scrollen (wie Juggernaut) ---------- */
-(function(){const el=document.getElementById('eglow');if(!el)return;const i=el.firstElementChild;let raf=0,lastY=-1;const SP=900;
- const upd=()=>{raf=0;const y=window.scrollY||0;if(y===lastY)return;lastY=y;const o=(y*0.42)%SP;i.style.transform=`translate3d(0,${-o}px,0)`;el.style.opacity=Math.min(1,.55+Math.min(y,400)/900)};
- addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});upd()})();
+/* ---------- Licht-Effekt: Lichtstreifen links, reagiert auf Scroll-Tempo ---------- */
+(function(){const el=document.getElementById('eglow');if(!el)return;const bm=el.querySelector('.bm'),ag=el.querySelector('.ag'),ln=el.querySelector('.ln');
+ let raf=0,lastY=scrollY,lastT=performance.now(),e=0,pos=.35,run=false;
+ const frame=t=>{raf=0;const y=scrollY,dt=Math.max(8,t-lastT),v=(y-lastY)/dt;lastY=y;lastT=t;
+  e=Math.max(e*.93,Math.min(1,Math.abs(v)/1.6));const tgt=v>0?.62:v<0?.22:pos;pos+=(tgt-pos)*.08;
+  const H=innerHeight;bm.style.transform=`translate3d(0,${(pos*H-260).toFixed(1)}px,0)`;bm.style.opacity=(e*.95).toFixed(3);
+  ln.style.transform=`translate3d(0,${(pos*H-180).toFixed(1)}px,0) scaleY(${(.6+e*.8).toFixed(3)})`;ln.style.opacity=(e).toFixed(3);
+  ag.style.transform=`translate3d(0,${(-(y*.25)%600).toFixed(1)}px,0)`;
+  if(e>.01||Math.abs(v)>.01)raf=requestAnimationFrame(frame);else run=false};
+ addEventListener('scroll',()=>{if(!raf){lastT=performance.now();raf=requestAnimationFrame(frame)}},{passive:true});frame(performance.now())})();
 /* ---------- Rückwirkend: liegengebliebene Einheiten abschließen (nur echte Daten) ---------- */
 function autoClosePast(){let n=0;const now=Date.now();Object.keys(PROGS).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L||L.done)continue;const ok=L.b.flat().filter(z=>z&&z.ok);if(!ok.length)continue;
  const ts=ok.map(z=>+z.t).filter(t=>t>0);const last=Math.max(L.pausedAt||0,...ts,L.start||0);if(!last||now-last<12*3600e3)continue;
@@ -4935,7 +4943,7 @@ document.addEventListener('change',async e=>{const t=e.target;if(!t.dataset||!t.
 document.addEventListener('click',e=>{const t=e.target.closest('[data-phview]');if(t){const v=document.createElement('div');v.className='phv';v.innerHTML=`<img src="${t.dataset.u}" alt=""><div class="phv-b"><button type="button" data-phclose>Schließen</button><button type="button" class="del" data-phdel="${t.dataset.phview}">Löschen</button></div>`;document.body.appendChild(v);return}
  if(e.target.closest('[data-phclose]')||e.target.classList.contains('phv')){const v=document.querySelector('.phv');v&&v.remove();return}
  const dl=e.target.closest('[data-phdel]');if(dl){if(!confirm('Foto wirklich löschen?'))return;phDel(+dl.dataset.phdel).then(()=>{const v=document.querySelector('.phv');v&&v.remove();document.querySelectorAll('.phx').forEach(phFill);toast('Foto gelöscht')})}});
-{const _re=renderEx;renderEx=function(){_re.apply(this,arguments);const ex=S.ui.ex;const si=document.querySelector('#xsheet .sheet-in');if(!ex||!si||si.querySelector('.phx'))return;si.insertAdjacentHTML('beforeend',phSection(ex));phFill(si.querySelector('.phx'))}}
+{const _re=renderEx;renderEx=function(){_re.apply(this,arguments);const ex=S.ui.ex;const si=document.querySelector('#xsheet .sheet-in');if(!ex||!si||si.querySelector('.phx'))return;/* Technik-Fotos entfernt */}}
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-motion]');if(!b)return;S.meta.motion=b.dataset.motion==='1';saveMeta();document.body.classList.toggle('nomo',S.meta.motion===false);render()});
 setTimeout(()=>document.body.classList.toggle('nomo',S.meta.motion===false),0);
