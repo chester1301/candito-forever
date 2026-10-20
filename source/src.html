@@ -5774,7 +5774,7 @@ function gymRestHTML(){if(!T.on||T.gmin)return '';const C=2*Math.PI*104,left=tLe
   const cur=bb?barNow(ni.c.w,ni.c.d):null;let um='';if(bb&&cur&&ni.kg&&Math.abs(cur.kg-ni.kg)>1e-6){const dk=(ni.kg-cur.kg)/2;um=`<span class="grum ${dk>0?'up':'dn'}">${dk>0?'+':'−'}${nf(Math.abs(dk),2)} kg pro Seite</span>`}else if(bb&&cur&&ni.kg)um='<span class="grum same">Stange bleibt so</span>';
   nxt=`<div class="grn"><p class="eyebrow">Als Nächstes · Satz ${ni.c.i+1} von ${ni.bl.s}</p><b class="grx">${esc(ni.ex.n)}</b>
    <div class="grv"><span class="${em?'emp':''}">${ni.kg?(em?'≈ ':'')+nf(ni.kg,2)+' kg':'Last frei'}</span><span>× ${esc(ni.sg?ni.sg.rdisp:ni.bl.r)}</span>${ni.bl.rpe!=null?`<span>RPE ${nf(ni.bl.rpe)}</span>`:''}</div>
-   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(kg,pl)}${um}</div>`}
+   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(ni.kg,pl)}${um}</div>`}
  const def=from?restFor(from):T.total;const sug=T.lastRpe!=null&&T.lastRpe>=9&&T.total<def+60&&!over;
  return `<div class="grest" data-ph="${over?'o':T.paused?'p':f>.5?'g':f>.2?'y':'r'}" role="dialog" aria-label="Satzpause">
   <div class="grt"><p class="eyebrow">Satzpause${from?' · nach '+esc(EX[from].n):''}</p><button type="button" class="iconbtn" data-t="gmin" aria-label="Timer verkleinern"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>

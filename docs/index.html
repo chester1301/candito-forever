@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1045-ba5bc07";
+<script>window.CF_VERSION="2026.10.20-1050-0e0c96d";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3835,7 +3835,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1045-ba5bc07</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1050-0e0c96d</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -6902,7 +6902,7 @@ function gymRestHTML(){if(!T.on||T.gmin)return '';const C=2*Math.PI*104,left=tLe
   const cur=bb?barNow(ni.c.w,ni.c.d):null;let um='';if(bb&&cur&&ni.kg&&Math.abs(cur.kg-ni.kg)>1e-6){const dk=(ni.kg-cur.kg)/2;um=`<span class="grum ${dk>0?'up':'dn'}">${dk>0?'+':'−'}${nf(Math.abs(dk),2)} kg pro Seite</span>`}else if(bb&&cur&&ni.kg)um='<span class="grum same">Stange bleibt so</span>';
   nxt=`<div class="grn"><p class="eyebrow">Als Nächstes · Satz ${ni.c.i+1} von ${ni.bl.s}</p><b class="grx">${esc(ni.ex.n)}</b>
    <div class="grv"><span class="${em?'emp':''}">${ni.kg?(em?'≈ ':'')+nf(ni.kg,2)+' kg':'Last frei'}</span><span>× ${esc(ni.sg?ni.sg.rdisp:ni.bl.r)}</span>${ni.bl.rpe!=null?`<span>RPE ${nf(ni.bl.rpe)}</span>`:''}</div>
-   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(kg,pl)}${um}</div>`}
+   ${pl.length?`<p class="gz-pl">pro Seite: ${pl.map(p=>`<i style="--p:${(PC[p]||['#888'])[0]}">${nf(p,2)}</i>`).join('')}</p>`:''}${plMissHTML(ni.kg,pl)}${um}</div>`}
  const def=from?restFor(from):T.total;const sug=T.lastRpe!=null&&T.lastRpe>=9&&T.total<def+60&&!over;
  return `<div class="grest" data-ph="${over?'o':T.paused?'p':f>.5?'g':f>.2?'y':'r'}" role="dialog" aria-label="Satzpause">
   <div class="grt"><p class="eyebrow">Satzpause${from?' · nach '+esc(EX[from].n):''}</p><button type="button" class="iconbtn" data-t="gmin" aria-label="Timer verkleinern"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>
