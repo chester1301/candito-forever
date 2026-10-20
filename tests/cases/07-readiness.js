@@ -12,6 +12,8 @@ module.exports={name:'Readiness – Skala, Zonen, Karten, Ruhetag',async run({pa
   const home=await p.evaluate(()=>({jr:document.querySelector('.card.jr .jr-v, .card.jr b')?.textContent,jrTxt:document.querySelector('.card.jr')?.textContent.replace(/\s+/g,' '),erh:[...document.querySelectorAll('.card.jr .erh-ring b')].map(x=>x.textContent),erhL:[...document.querySelectorAll('.card.jr .erh-r small')].map(x=>x.textContent),heads:[...document.querySelectorAll('#view .hsec .sect')].map(x=>x.textContent),zone:document.querySelector('.card.jr .jr-z')?.textContent}));
   t.ok(/71\/100/.test(home.jrTxt),'Readiness-Karte: Ø 4,25 → 71');
   t.eq(home.erhL,['Recovery','Leistung'],'Zustand-Karte: Recovery und Leistung neben dem Readiness-Wert');
+  const rg=await p.evaluate(()=>[...document.querySelectorAll('.card.jr .erh-r>div')].map(d=>{const r=d.querySelector('.erh-ring').getBoundingClientRect(),v=d.querySelector('svg').getBoundingClientRect(),l=d.querySelector('small').getBoundingClientRect();return Math.abs(r.width-v.width)<1&&l.top>=v.bottom}));
+  t.ok(rg.length&&rg.every(Boolean),'Zustand-Karte: Ringe passen in ihren Rahmen, Beschriftung darunter');
   t.eq(home.heads,['Zustand','Woche'],'Heute-Ansicht in Blöcken Heute · Zustand · Woche');
   t.eq(home.zone,'Sweet Spot','Überschrift = Candito-Zone');
   // Alte Einträge (frühere Fragen) werden weiter gerechnet
