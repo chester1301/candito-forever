@@ -9,7 +9,21 @@
 
   /* ---------- Service Worker: offline + Updates ---------- */
   var waiting=null,reloading=false,wantReload=false;
-  function offerUpdate(w){waiting=w||waiting;if(document.body.classList.contains('gymopen')){offerUpdate.later=true;return}show('<div class="cft"><b>Neue Version verfügbar</b><small>Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>','upd')}
+  var tried=0;try{tried=+sessionStorage.getItem('cf-upd-tried')||0}catch(e){}
+  function offerUpdate(w,ver){waiting=w||waiting;if(document.body.classList.contains('gymopen')){offerUpdate.later=true;return}show('<div class="cft"><b>Neue Version verfügbar</b><small>'+(ver?'Version '+ver+' · ':'')+'Deine Daten bleiben erhalten.</small></div><button type="button" data-cf="upd">Aktualisieren</button>'+(tried?'<button type="button" data-cf="force">Erzwingen</button>':''),'upd')}
+  /* Harter Weg, wenn der normale Wechsel hängt: Service Worker abmelden, App-Cache leeren, Seite frisch vom Server laden. Trainingsdaten (localStorage/IndexedDB) bleiben unberührt. */
+  function forceUpdate(){try{sessionStorage.removeItem('cf-upd-tried')}catch(e){}
+    var done=false,go=function(){if(done)return;done=true;location.replace(location.pathname+'?fresh='+Date.now())};
+    setTimeout(go,4000);
+    var p1=('serviceWorker' in navigator)?navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}):Promise.resolve();
+    var p2=('caches' in window)?caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('cf-app-')===0}).map(function(k){return caches.delete(k)}))}).catch(function(){}):Promise.resolve();
+    Promise.all([p1,p2]).then(go,go)}
+  window.CF_FORCE_UPDATE=forceUpdate;
+  try{if(location.search.indexOf('fresh=')>=0)history.replaceState(null,'',location.pathname)}catch(e){}
+  document.addEventListener('click',function(e){if(e.target.closest('[data-cf-force]')){forceUpdate()}});
+  /* Zusätzlich zur Service-Worker-Meldung: version.json direkt prüfen (ohne Cache) – falls der Worker-Wechsel hängt. */
+  function checkVersion(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&j.version&&j.version!==VERSION&&box.hidden)offerUpdate(null,j.version)}).catch(function(){})}catch(e){}}
+  setTimeout(checkVersion,6000);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')setTimeout(checkVersion,800)});
   setInterval(function(){if(offerUpdate.later&&!document.body.classList.contains('gymopen')){offerUpdate.later=false;offerUpdate()}},3000);
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
@@ -38,7 +52,8 @@
   setTimeout(checkBackup,4000);setInterval(checkBackup,60*1000);
 
   box.addEventListener('click',function(e){var b=e.target.closest('[data-cf]');if(!b)return;var a=b.dataset.cf;
-    if(a==='upd'){wantReload=true;b.disabled=true;b.textContent='Lädt …';
+    if(a==='force'){b.disabled=true;b.textContent='Lädt …';forceUpdate();return}
+    if(a==='upd'){wantReload=true;b.disabled=true;b.textContent='Lädt …';try{sessionStorage.setItem('cf-upd-tried',String(tried+1))}catch(err){}
       navigator.serviceWorker.getRegistration().then(function(r){var w=(r&&r.waiting)||(waiting&&waiting.state!=='redundant'?waiting:null);if(w&&w.state!=='activated'){w.postMessage('skip')}else{reloading=true;location.reload()}}).catch(function(){location.reload()});
       setTimeout(function(){if(!reloading){reloading=true;location.reload()}},2500)}
     if(a==='bk'){try{downloadBackup()}catch(err){}}

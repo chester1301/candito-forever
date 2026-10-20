@@ -21,6 +21,10 @@ self.addEventListener('fetch',e=>{
   if(u.origin!==self.location.origin)return;
   // App-Seite: immer die Version dieses Service Workers (Updates kommen über den „Aktualisieren“-Hinweis)
   if(r.mode==='navigate'){
+    if(u.searchParams.has('fresh')){
+      e.respondWith(fetch(new Request('./index.html',{cache:'reload'})).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put('./index.html',res.clone()));return res}).catch(()=>caches.open(CACHE).then(c=>c.match('./index.html'))));
+      return;
+    }
     e.respondWith(caches.open(CACHE).then(c=>c.match('./index.html').then(hit=>hit||fetch(r))));
     return;
   }

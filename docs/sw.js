@@ -1,5 +1,5 @@
 /* Candito Forever – Service Worker. Version wird beim Bauen eingesetzt. */
-const VERSION='2026.10.20-1542-e9ca2a7';
+const VERSION='2026.10.20-1553-be967d0';
 const CACHE='cf-app-'+VERSION, FONTS='cf-fonts';
 const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/favicon-64.png'];
 
@@ -21,6 +21,10 @@ self.addEventListener('fetch',e=>{
   if(u.origin!==self.location.origin)return;
   // App-Seite: immer die Version dieses Service Workers (Updates kommen über den „Aktualisieren“-Hinweis)
   if(r.mode==='navigate'){
+    if(u.searchParams.has('fresh')){
+      e.respondWith(fetch(new Request('./index.html',{cache:'reload'})).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put('./index.html',res.clone()));return res}).catch(()=>caches.open(CACHE).then(c=>c.match('./index.html'))));
+      return;
+    }
     e.respondWith(caches.open(CACHE).then(c=>c.match('./index.html').then(hit=>hit||fetch(r))));
     return;
   }
