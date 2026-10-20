@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-1504-b367428";
+<script>window.CF_VERSION="2026.10.20-1532-b917e03";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -1394,6 +1394,7 @@ html.boot #view.enter>*{animation:none!important}
 .ck-wg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.ck-wf{display:flex;flex-direction:column;gap:6px;background:#25282f;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px;min-height:96px;justify-content:space-between}.ck-wf:focus-within{border-color:#5ad1e6;box-shadow:0 0 0 3px rgba(90,209,230,.15)}.ck-wf small{font-size:13px;color:var(--ink2)}
 .ck-wf input{background:none;border:0;color:var(--ink);font:800 32px var(--mono);width:100%;padding:0;height:40px}.ck-wf input:focus{outline:none;color:#5ad1e6}
 .ck-note{margin:8px 0 0;font-size:11.5px;color:var(--mut);line-height:1.4}
+.lockhint{margin:10px 2px 0;font-size:11.5px;line-height:1.45;color:var(--mut)}.lockhint-x{border:0;background:none;color:#7fa8ff;font:700 11.5px var(--f);padding:0 0 0 4px}
 .ck-opt{margin:0 0 10px}.ck-opt summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px dashed var(--line);border-radius:16px;color:#c7cbd6}.ck-opt summary::-webkit-details-marker{display:none}.ck-opt summary::before{content:'';width:8px;height:8px;border-right:2px solid #7fa8ff;border-bottom:2px solid #7fa8ff;transform:rotate(-45deg);margin:0 4px 0 2px;transition:transform .2s}.ck-opt[open] summary::before{transform:rotate(45deg)}.ck-opt summary b{font-size:14px;font-weight:800;color:#fff;white-space:nowrap}.ck-opt summary small{font-size:11.5px;color:var(--mut);flex:1;min-width:0}.ck-opt[open] summary{margin-bottom:8px;border-style:solid}
 .ck-yn{margin-top:8px}.ck-yn button{background:rgba(255,255,255,.04)}.ck-sub{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .ck-mind{display:flex;gap:10px;align-items:flex-start}.ck-mind svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--ink2);stroke-width:1.8;stroke-linejoin:round;margin-top:4px}.ck-mind textarea{flex:1;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;resize:none}.ck-mind textarea:focus{outline:none}
@@ -2491,6 +2492,8 @@ html #xsheet .sheet-in.xs{background:linear-gradient(180deg,#0d1020,#07080d 40%)
 .inv-r>span{font-size:11px;color:var(--mut)}
 .inv-s{margin-left:auto;display:flex;align-items:center;gap:6px}.inv-s button{width:30px;height:30px;border-radius:9px;border:1px solid rgba(130,155,255,.22);background:#151b33;color:#c9d5ff;font:700 17px var(--f)}.inv-s b{min-width:18px;text-align:center;font-variant-numeric:tabular-nums}
 .sv-bkt{margin:6px 0 0;text-align:center;font-size:12px;color:#8a8f99}
+.sv-bkc{display:flex;align-items:center;gap:12px;margin:10px 0 2px;padding:12px 14px;border-radius:18px;border:1px solid rgba(243,201,105,.35);background:linear-gradient(135deg,rgba(243,201,105,.14),rgba(243,201,105,.05))}.sv-bkm{flex:1;min-width:0;display:grid;gap:2px}.sv-bkm b{font-size:14px;color:#fff}.sv-bkm small{font-size:11.5px;color:#b9bcc6;line-height:1.35}.sv-bk2{flex:none;height:42px;padding:0 14px;border-radius:13px;border:0;background:#f3c969;color:#1a1403;font:800 13.5px var(--f);white-space:nowrap}
+.swrow{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px}.swrow>span{flex:1;display:grid;gap:2px}.swrow b{font-size:13.5px}.swrow small{font-size:11.5px;color:var(--mut)}.swrow input{position:absolute;opacity:0;pointer-events:none}.swrow i{width:46px;height:28px;border-radius:14px;background:rgba(255,255,255,.14);position:relative;flex:none;transition:background .2s}.swrow i::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}.swrow input:checked+i{background:#4a6df5}.swrow input:checked+i::after{transform:translateX(18px)}
 
 .hs-ws{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1px solid rgba(79,195,217,.35);background:linear-gradient(135deg,rgba(79,195,217,.14),#0e1018 70%);color:#fff;text-align:left}
 .hs-ws svg{width:26px;height:26px;fill:none;stroke:#4fc3d9;stroke-width:2;stroke-linecap:round;flex:none}.hs-ws span{display:grid}.hs-ws b{font-size:15.5px}.hs-ws small{font-size:12.5px;color:#8a8f99}
@@ -3841,13 +3844,15 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1504-b367428</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1532-b917e03</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
+  <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Download hier nicht verfügbar');return}const d=new Date().toISOString().slice(0,10);await dl.save({filename:`intro-zyklus-sicherung-${d}.json`,data:body});toast('Sicherung gespeichert')}catch(e){toast('Download abgebrochen')}})()}
 document.addEventListener('change',e=>{const t=e.target;if(t.id!=='bkfile'||!t.files||!t.files[0])return;const f=t.files[0];t.value='';
  f.text().then(tx=>{const j=JSON.parse(tx);if(!j||!j.logs)throw 0;const fresh=totalOk()===0;const n=fillFrom(j.logs);if(fresh&&j.meta){const keep={restEx:S.meta.restEx};Object.assign(S.meta,j.meta);if(!S.meta.restEx)S.meta.restEx=keep.restEx||{};saveMeta();if(S.meta.prog&&PROGS[S.meta.prog]&&S.meta.prog!==PROG)setProg(S.meta.prog);toast(`${n} Sätze und deine Einstellungen übernommen`);render();return}toast(n?`${n} Sätze aus der Sicherung ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()}).catch(()=>toast('Datei ist keine gültige Sicherung'))});
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('[data-bkeach]')){S.meta.bkEach=t.checked;saveMeta();toast(t.checked?'Sicherung wird nach jeder Einheit angeboten':'Sicherung nur noch über „Heute“ und Einstellungen')}});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-bkfill],[data-act="bkdl"],[data-act="bkup"]');if(!t)return;
  if(t.dataset.act==='bkdl'){downloadBackup();return}if(t.dataset.act==='bkup'){document.getElementById('bkfile')?.click();return}
  const x=(BK.list||[]).find(z=>z.id===t.dataset.bkfill);if(!x)return;const n=fillFrom(x.d.logs);toast(n?`${n} Sätze ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()});
@@ -4459,6 +4464,7 @@ function svHTML(){const D=svData(SV.pid,SV.w,SV.d);if(!D)return '';const list=sv
    <div class="sv-t c3" style="${z?'--zc:'+z.c:''}">${SVI.bat}<span>Readiness</span><b>${D.rd!=null?D.rd:'–'}</b><small>${z?z.n:'kein Check-in'}</small></div>
    <div class="sv-t c4${df?'':' rate'}" ${df?'':'data-svrate'} role="${df?'':'button'}">${SVI.flame}<span>Belastung</span><b>${df||'Bewerten'}</b><small>${df?'Schwierigkeit '+dfn:'Antippen und nachtragen'}${D.rpe!=null?' · Ø RPE '+nf(Math.round(D.rpe*2)/2,1):''}</small></div>
   </div>
+  ${SV.fresh&&PWA&&S.meta.bkEach!==false?`<div class="sv-bkc"><div class="sv-bkm"><b>Einheit sichern</b><small>${bkText()}${bkSince()?' · '+bkSince()+' '+(bkSince()===1?'Einheit':'Einheiten')+' seitdem':''} · landet per Teilen in iCloud Drive</small></div><button type="button" class="sv-bk2" data-sumbk2>☁︎ Jetzt sichern</button></div>`:''}
   ${SV.rate?`<div class="sv-rt"><p class="end-q">Wie schwer war dieses Training?</p><div class="ckv"><b class="${SV.rv?'':'na'}">${SV.rv?DIFF6[SV.rv-1][0]:'Antippen'}</b>${SV.rv?`<small>${DIFF6[SV.rv-1][1]}</small>`:''}</div>${diffBars(SV.rv||null).replace(/data-endv=/g,'data-svdv=')}<div class="ckends"><span>Sehr leicht</span><span>Sehr schwer</span></div><button type="button" class="sv-rs ${SV.rv?'':'dis'}" data-svrsave>Speichern</button></div>`:''}
   <div class="sv-ph" data-svph="${D.pid}|${D.w}|${D.d}"><div class="sv-phh"><b>Trainingsfoto</b><label class="sv-add">${SVI.plus}<span>Foto hinzufügen</span><input type="file" accept="image/*" data-svphadd hidden></label></div><div class="sv-phg"></div><small>Nur auf diesem iPhone · nicht in der iCloud-Sicherung</small></div>
   ${D.L.ach||D.L.imp?`<div class="sv-nt">${D.L.ach?`<p><b>Erreicht</b>${esc(D.L.ach)}</p>`:''}${D.L.imp?`<p><b>Besser machen</b>${esc(D.L.imp)}</p>`:''}</div>`:''}
@@ -4466,7 +4472,7 @@ function svHTML(){const D=svData(SV.pid,SV.w,SV.d);if(!D)return '';const list=sv
   ${D.ex.map(x=>`<section class="sv-ex"><div class="sv-eh"><b>${esc(x.name)}${x.sw?' <em>getauscht</em>':''}</b><button type="button" class="sv-i" data-ex="${x.e}" aria-label="Info zu ${esc(x.name)}">${SVI.info}</button></div>
    ${x.sets.map(st=>`<div class="sv-s"><span class="sv-sn">Satz ${st.i+1}</span><span class="sv-c">${st.kg!=null?nf(st.kg,2)+' kg':'ohne kg'}</span><i>×</i><span class="sv-c">${st.r!=null?st.r+' Wdh':'–'}${st.rpe!=null?` <em>@ RPE ${nf(st.rpe,1)}</em>`:''}</span></div>`).join('')}</section>`).join('')||'<p class="hs-e">Keine abgehakten Sätze.</p>'}
   ${D.L.note?`<div class="sv-nt"><p><b>Notiz</b>${esc(D.L.note)}</p></div>`:''}
-  ${SV.fresh&&PWA?`<button type="button" class="sv-bk" data-sumbk2>☁︎ Jetzt in iCloud sichern</button><p class="sv-bkt">${bkText()}${bkSince()!=null?' · '+bkSince()+' '+(bkSince()===1?'Einheit':'Einheiten')+' seitdem':''}</p>`:''}
+  ${SV.fresh&&PWA&&S.meta.bkEach===false?`<button type="button" class="sv-bk" data-sumbk2>☁︎ Jetzt in iCloud sichern</button><p class="sv-bkt">${bkText()}${bkSince()!=null?' · '+bkSince()+' '+(bkSince()===1?'Einheit':'Einheiten')+' seitdem':''}</p>`:''}
  </div>
  <div class="sv-ft"><button type="button" class="sv-b" data-svclose>${SV.fresh?'Fertig':'Zurück'}</button><button type="button" class="sv-b go" data-svresume>${SVI.play}<span>Fortsetzen</span></button></div></div>`}
 function svOpen(pid,w,d,fresh){SV={pid,w,d,fresh:!!fresh};let el=document.getElementById('svw');if(!el){el=document.createElement('div');el.id='svw';document.body.appendChild(el)}el.innerHTML=svHTML();el.hidden=false;document.body.classList.add('svopen');svPh()}
@@ -5046,7 +5052,8 @@ function applyDay(){const r=document.documentElement.style;r.setProperty('--day'
 
 function progDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')n++;return n})}
 function renderHead(){const ps=$('#progsw');if(ps)ps.innerHTML=[...ORD(),...(sqActive()?[sqActive()]:[])].map(id=>{const g=PROGS[id],n=progDone(id),t=g.P.length*g.DAYS.length;return `<button type="button" data-prog="${id}" aria-pressed="${PROG===id}"><b>${g.short}</b><small>${n}/${t}</small><i style="--v:${Math.round(n/t*100)}%"></i></button>`}).join('');const ab=ps&&ps.querySelector('[aria-pressed="true"]');if(ab&&ps.scrollWidth>ps.clientWidth)ps.scrollLeft=ab.offsetLeft-ps.clientWidth/2+ab.offsetWidth/2;renderTL()}
-function switchProg(id){switchProg.manual=1;if(!PROGS[id]||id===PROG)return;S.meta.prog=id;saveMeta();setProg(id);S.ui.openB={};S.ui.w=0;S.ui.d=0;renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render();window.scrollTo({top:0});toast(PROGS[id].name+' aktiv')}
+function switchProg(id){switchProg.manual=1;if(!PROGS[id]||id===PROG)return;let hint=null;try{const cur=autoProg();if(cur&&cur!==id&&PROGS[cur]){const a=phaseRange(id).a;const td=new Date();td.setHours(0,0,0,0);const st=a?new Date(a):null;if(st&&st>td)hint=`${PROGS[id].name} beginnt planmäßig am ${st.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})} – zum Ansehen geöffnet. Aktuell dran: ${PROGS[cur].short}.`}}catch(e){}
+ S.meta.prog=id;saveMeta();setProg(id);S.ui.openB={};S.ui.w=0;S.ui.d=0;renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render();window.scrollTo({top:0});toast(hint||PROGS[id].name+' aktiv',hint?5200:undefined)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-prog]');if(b){switchProg(b.dataset.prog)}});
 
 function blockHTMLFull(w,d,b){const bl=P[w][d].b[b],ex=EX[bl.e],L=log(w,d),sets=L?L.b[b]:[];
@@ -6534,7 +6541,7 @@ function beep(f=880,ms=140,delay=0,vol=.22){if(!actx||!S.meta.sound)return;try{c
  o.connect(g);g.connect(actx.destination);const t0=actx.currentTime+delay;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+ms/1000);o.start(t0);o.stop(t0+ms/1000+.03)}catch(e){}}
 const vib=p=>{if(!S.meta.vibe)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
 const tLeft=()=>T.paused?T.left:(T.end-Date.now())/1000;
-function startRest(sec,ctx){T.src='';T.on=true;T.gmin=false;T.total=sec;T.end=Date.now()+sec*1000;T.paused=false;T.left=sec;T.ctx=ctx||T.ctx;T.beeped=Math.ceil(sec)+1;saveT();
+function startRest(sec,ctx){if((S.meta.lockHint||0)<3){S.meta.lockHint=(S.meta.lockHint||0)+1;saveMeta()}T.src='';T.on=true;T.gmin=false;T.total=sec;T.end=Date.now()+sec*1000;T.paused=false;T.left=sec;T.ctx=ctx||T.ctx;T.beeped=Math.ceil(sec)+1;saveT();
  if(S.meta.autoSheet&&$('#gym').hidden)openSheet();gymRefresh();tick()}
 function stopRest(){T.on=false;saveT();closeSheet();gymRefresh();tick()}
 function gymRefresh(){if(!$('#gym').hidden){const y=$('#gym').scrollTop;renderGym();$('#gym').scrollTop=y}}
@@ -6557,7 +6564,7 @@ function tick(){const bar=$('#tbar');document.body.classList.toggle('tmr',T.on);
  const ni=nextInfo();document.querySelectorAll('[data-tnext]').forEach(e=>e.textContent=ni?`Nächster: ${ni.ex.n} · Satz ${ni.c.i+1}`:'Pause');}
  if(!T.paused){const sec=Math.ceil(left);
   if(sec<=10&&sec>=1&&sec<T.beeped){T.beeped=sec;sfx(sec<=3?'tick':'tick2');if(sec<=3)vib(60);document.querySelectorAll('.grest,.rest').forEach(e=>e.dataset.cd=sec)}
-  if(sec<=0&&T.beeped>0){T.beeped=0;sfx('end');vib([280,100,280]);flashEnd();saveT();if(!S.meta.overtime){stopRest();toast('Pause vorbei – auf zum nächsten Satz');return}renderSheet();gymRefresh()}
+  if(sec<=0&&T.beeped>0){T.beeped=0;const late=-left;try{unlockAudio()}catch(e){}sfx('end');vib([280,100,280]);flashEnd();saveT();const msg=late>8?`Pause ist seit ${mmss(late)} vorbei – auf zum nächsten Satz`:'Pause vorbei – auf zum nächsten Satz';if(!S.meta.overtime){stopRest();toast(msg);return}toast(msg);renderSheet();gymRefresh()}
   else if(sec<=0&&!S.meta.overtime){stopRest();return}}}
 let tickN=0;function loopT(){clearTimeout(loopT.t);if(!document.hidden){tickN=4;try{tick()}catch(e){}try{sessTick()}catch(e){}const el=$('#gEl');if(el){const L=log(S.ui.w,S.ui.d);if(L&&L.start)el.textContent=mmss((Date.now()-L.start)/1000)}}loopT.t=setTimeout(loopT,document.hidden?5000:T.on?250:1000)}loopT();document.addEventListener('visibilitychange',()=>{if(!document.hidden)loopT()});
 
@@ -6583,8 +6590,12 @@ function renderSheet(){tick.k="";const sh=$('#sheet');if(sh.hidden)return;const 
    ${pl.length?`<span class="psum">pro Seite: ${pl.map(p=>nf(p,2)).join(' + ')}</span>`:''}<span class="psum">${esc(ni.bl.x)}</span></div>`:''}
   <button type="button" class="skip" data-t="skip">${over?'Los geht’s – nächster Satz':'Pause beenden'}</button>
   <div class="toggles"><button type="button" class="tog" data-t="snd" aria-pressed="${!!S.meta.sound}">Ton ${S.meta.sound?'an':'aus'}</button><button type="button" class="tog" data-t="vib" aria-pressed="${!!S.meta.vibe}">Vibration ${S.meta.vibe?'an':'aus'}</button></div>
+  ${lockHint()}
  </div>`;tick()}
+// iOS lässt Web-Apps im Hintergrund weder Ton noch Vibration zu. Der Bildschirm wird im Gym wach gehalten; wird das iPhone trotzdem gesperrt, holt die App das Signal beim Zurückkommen nach.
+function lockHint(){const n=S.meta.lockHint||0;const noWake=!('wakeLock' in navigator);if(n>=3&&!noWake)return '';return `<p class="lockhint">${noWake?'Dieses Gerät kann den Bildschirm nicht wach halten – bitte während der Pause nicht sperren.':'Der Bildschirm bleibt während des Trainings an. Sperrst du das iPhone, kann die App kein Signal geben – das Pausenende wird dann nachgeholt, sobald du zurück bist.'}${n<3?' <button type="button" class="lockhint-x" data-t="lockok">Verstanden</button>':''}</p>`}
 function timerClick(e){const t=e.target.closest('[data-t]');if(!t)return;const a=t.dataset.t;
+ if(a==='lockok'){S.meta.lockHint=3;saveMeta();renderSheet();return}
  if(a==='open')openSheet();
  if(a==='min')closeSheet();
  if(a==='gmin'){T.gmin=true;saveT();gymRefresh();return}
@@ -7067,7 +7078,7 @@ function weekTimeHTML(){const n=nextSession()||{w:NW()-1};const w=Math.max(0,Mat
   <p class="note2">Balken = gemessene Zeit, heller Rahmen = geplante Dauer laut Pausen. Tippe auf einen Tag für Details.</p></section>`}
 
 /* ===================== Diverses ===================== */
-let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2200)}
+let tt;function toast(m,ms){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,ms||2200)}
 function pickToday(){const now=new Date();now.setHours(0,0,0,0);let best=null;
  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(!dt)continue;dt.setHours(0,0,0,0);if(dt>=now&&dayStatus(w,d)!=='done'){if(!best||dt<best.dt)best={w,d,dt}}}
  if(best){S.ui.w=best.w;S.ui.d=best.d}}

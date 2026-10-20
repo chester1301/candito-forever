@@ -30,6 +30,7 @@ module.exports={name:'Gym – Sätze, Pause, Abschluss, Zusammenfassung',async r
   t.eq(await p.evaluate(()=>{const L=log(0,0);return [L.done,L.diff,L.diffs,L.dur>0]}),[true,4,6,true],'Einheit abgeschlossen (done, Schwierigkeit, Dauer)');
   t.ok(await p.evaluate(()=>!!SV),'Zusammenfassung geöffnet');
   t.ok(await p.evaluate(()=>/Übersicht/.test(document.getElementById('svw')?.textContent||'')),'Zusammenfassung zeigt Übersicht');
+  t.ok(await p.evaluate(()=>!!document.querySelector('#svw .sv-bkc [data-sumbk2]')),'Sicherung wird direkt nach der Einheit angeboten');
   await p.evaluate(()=>{try{svClose()}catch(e){}try{endClose()}catch(e){}try{closeGym(true)}catch(e){}});await p.waitForTimeout(300);
   // Zweite Einheit: Pause nach abgehaktem Satz – Auto-Timer nach RPE-Stufe (Unterkörper, RPE 9 → 6:00)
   const exp=await p.evaluate(()=>{S.ui.w=0;S.ui.d=2;const d=P[0][2];const b=d.b.findIndex(x=>EX[x.e].m&&EX[x.e].g!=='bp'&&x.s>1&&!/8\s*[–-]\s*10/.test(x.x+(EX[x.e].t||'')));const L2=log(0,2,true);L2.start=Date.now()-600e3;L2.flow=1;L2.ck=1;d.b.forEach((bl,i)=>(L2.b[i]||[]).forEach(z=>{if(i<b){z.ok=true;z.kg='80';z.r='5';z.rpe='7'}}));L2.b[b][0]={kg:'100',r:'5',rpe:'9'};saveLog(key(0,2));openGym();G.b=b;G.i=0;renderGym();window.__b=b;return {b,sec:rtTiers('lower')[3]}});
@@ -40,6 +41,11 @@ module.exports={name:'Gym – Sätze, Pause, Abschluss, Zusammenfassung',async r
   t.ok(rest.on,'Pause läuft nach dem Abhaken');
   t.ok(Math.abs(rest.sec-exp.sec)<=3,`Auto-Timer Unterkörper RPE 9 → ${exp.sec} s (${rest.sec} s)`);
   t.ok(/Auto · Unterkörper · RPE 9/.test(rest.src||''),'Pausen-Quelle „Auto · Unterkörper · RPE 9“');
+  await p.evaluate(()=>openSheet());await p.waitForTimeout(300);
+  t.ok(await p.evaluate(()=>!!document.querySelector('#sheet .lockhint')),'Hinweis zum Sperren im Pausen-Screen (erste Pausen)');
+  await p.evaluate(()=>{const b=document.querySelector('#sheet [data-t="lockok"]');if(b)b.click()});await p.waitForTimeout(200);
+  t.eq(await p.evaluate(()=>[S.meta.lockHint,!!document.querySelector('#sheet .lockhint')]),[3,false],'„Verstanden“ blendet den Hinweis dauerhaft aus');
+  await p.evaluate(()=>closeSheet());
   // Rückgängig
   const undo=await p.evaluate(()=>{const u=document.querySelector('[data-undo]');if(!u)return null;const r=u.getBoundingClientRect();const v=getComputedStyle(u.closest('.undo,.toast')||u).visibility;u.click();return {h:r.height,v}});
   t.ok(undo&&undo.h>0,'Rückgängig-Hinweis erscheint '+JSON.stringify(undo));await p.waitForTimeout(300);t.ok(await p.evaluate(b=>!log(0,2).b[b][0].ok,exp.b),'Rückgängig nimmt das Abhaken zurück');
