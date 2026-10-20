@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-0745-7b90caf";
+<script>window.CF_VERSION="2026.10.20-0749-8de5400";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3665,7 +3665,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0745-7b90caf</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0749-8de5400</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -6387,7 +6387,7 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(t.dataset.sp!=null){toggleSessPause(w,d);return}
  if(t.dataset.sstart!=null){const go=()=>{startSession(w,d);gymRefresh()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(t.dataset.gs!=null){G.i=+t.dataset.gs;renderGym();return}
- if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);gymRefresh();return}
+ if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);const sh=t.closest('.gwus');if(sh){const L=log(w,d,true);const dn=(L.wu&&L.wu[G.b])||[];const bs=[...sh.querySelectorAll('[data-gwu]')];bs.forEach(x=>{const on=!!dn[+x.dataset.gwu];x.classList.toggle('ok',on);x.setAttribute('aria-pressed',on)});const nd=bs.filter(x=>dn[+x.dataset.gwu]).length;const bar=sh.querySelector('.wbar i');if(bar)bar.style.width=(nd/bs.length*100)+'%';const f=sh.querySelector('.gp-f');if(f)f.textContent=f.textContent.replace(/\d+\/\d+ erledigt/,nd+'/'+bs.length+' erledigt');const ic=document.querySelector('#gym [data-gwuopen]');if(ic){const em=ic.querySelector('em');if(em)em.textContent=nd+'/'+bs.length;ic.classList.toggle('done',nd>=bs.length)}}else gymRefresh();return}
  if(t.dataset.step){const f=t.dataset.step,cv=curVals();let v=(f==='kg'?cv.kg:cv.r)||0;v=Math.max(0,v+parseFloat(t.dataset.v));gWrite(f,f==='kg'?rnd(v):v);
   if(f==='kg'&&cv.r!=null&&pnum(cv.s.r)==null)gWrite('r',cv.r);renderGym();return}
  if(t.dataset.rpe){const cv=curVals();const v=+t.dataset.rpe;gWrite('rpe',cv.rpe===v?null:v);renderGym();return}

@@ -1,5 +1,5 @@
 /* Candito Forever – Service Worker. Version wird beim Bauen eingesetzt. */
-const VERSION='2026.10.20-0745-7b90caf';
+const VERSION='2026.10.20-0749-8de5400';
 const CACHE='cf-app-'+VERSION, FONTS='cf-fonts';
 const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/favicon-64.png'];
 

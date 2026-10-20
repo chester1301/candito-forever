@@ -5259,7 +5259,7 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(t.dataset.sp!=null){toggleSessPause(w,d);return}
  if(t.dataset.sstart!=null){const go=()=>{startSession(w,d);gymRefresh()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(t.dataset.gs!=null){G.i=+t.dataset.gs;renderGym();return}
- if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);gymRefresh();return}
+ if(t.dataset.gwu!=null){toggleWu(w,d,G.b,+t.dataset.gwu);const sh=t.closest('.gwus');if(sh){const L=log(w,d,true);const dn=(L.wu&&L.wu[G.b])||[];const bs=[...sh.querySelectorAll('[data-gwu]')];bs.forEach(x=>{const on=!!dn[+x.dataset.gwu];x.classList.toggle('ok',on);x.setAttribute('aria-pressed',on)});const nd=bs.filter(x=>dn[+x.dataset.gwu]).length;const bar=sh.querySelector('.wbar i');if(bar)bar.style.width=(nd/bs.length*100)+'%';const f=sh.querySelector('.gp-f');if(f)f.textContent=f.textContent.replace(/\d+\/\d+ erledigt/,nd+'/'+bs.length+' erledigt');const ic=document.querySelector('#gym [data-gwuopen]');if(ic){const em=ic.querySelector('em');if(em)em.textContent=nd+'/'+bs.length;ic.classList.toggle('done',nd>=bs.length)}}else gymRefresh();return}
  if(t.dataset.step){const f=t.dataset.step,cv=curVals();let v=(f==='kg'?cv.kg:cv.r)||0;v=Math.max(0,v+parseFloat(t.dataset.v));gWrite(f,f==='kg'?rnd(v):v);
   if(f==='kg'&&cv.r!=null&&pnum(cv.s.r)==null)gWrite('r',cv.r);renderGym();return}
  if(t.dataset.rpe){const cv=curVals();const v=+t.dataset.rpe;gWrite('rpe',cv.rpe===v?null:v);renderGym();return}
