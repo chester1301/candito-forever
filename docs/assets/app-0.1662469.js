@@ -1157,12 +1157,26 @@ function fillFrom(logs){let n=0;Object.keys(logs||{}).forEach(k=>{const src=logs
  ['whoop','note','date','bw'].forEach(f=>{if((L[f]==null||L[f]==='')&&src[f]!=null&&src[f]!==''){L[f]=src[f];ch=true}});
  if(!L.done&&src.done){['done','start','end','dur','pauseMs'].forEach(f=>{if(src[f]!=null)L[f]=src[f]});ch=true}
  if(ch)saveLog(k)})});return n}
+const ERRV={home:'Heute',train:'Training',gym:'Gym',prog:'Progress',coach:'Coach',sq:'Quests',setup:'Einstellungen',wissen:'Wissen'};
+function errlogHTML(){const l=(window.cfErr&&cfErr.list())||[];const n=l.reduce((a,x)=>a+(x.n||1),0);
+ const rows=l.slice(0,5).map(x=>`<li><span><b>${esc(x.m.slice(0,90))}</b><small>${new Date(x.t).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${x.v?' · '+esc(ERRV[x.v]||x.v):''}${x.n>1?' · '+x.n+'×':''}</small></span></li>`).join('');
+ return `<section class="card errlog"><div class="ct"><h2 class="h2">Fehlerprotokoll</h2><span class="chip ${n?'warn':'ok'}">${n?n+' '+(n===1?'Eintrag':'Einträge'):'keine Fehler'}</span></div>
+  <p class="note2">Unerwartete Fehler werden nur hier auf dem iPhone mitgeschrieben – mit Zeit, Ansicht und App-Version, ohne Trainingsdaten. Schick den Bericht an Claude, wenn etwas hakt.</p>
+  ${rows?`<ul class="hinw" style="margin-top:8px">${rows}</ul>`:''}
+  <div class="aktionen" style="margin-top:12px"><button type="button" class="btn ${n?'primary':''}" data-errcopy>Fehlerbericht kopieren</button>${n?'<button type="button" class="btn" data-errclear>Leeren</button>':''}</div></section>`}
+function errReport(){const l=(window.cfErr&&cfErr.list())||[];const sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+ return ['Candito Forever – Fehlerbericht',`App-Version: ${window.CF_VERSION||'Claude-Version'}`,`Gerät: ${navigator.userAgent}`,`Bildschirm: ${screen.width}×${screen.height} · Fenster ${innerWidth}×${innerHeight} · ${sa?'installierte App':'Browser'}`,`Programm: ${PROG} · Ansicht: ${S.ui.tab}`,`Erstellt: ${new Date().toLocaleString('de-DE')}`,'',
+  l.length?l.map((x,i)=>`${i+1}. ${x.m}${x.n>1?` (${x.n}×)`:''}\n   ${new Date(x.t).toLocaleString('de-DE')} · Ansicht ${ERRV[x.v]||x.v||'–'} · Version ${x.ver||'–'}${x.s?`\n   Ort: ${x.s}`:''}${x.st?`\n   ${x.st.split('\n').slice(0,3).join('\n   ')}`:''}`).join('\n\n'):'Keine Fehler protokolliert.'].join('\n')}
+async function copyPlain(t){try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);return true}}catch(e){}
+ try{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}}
+document.addEventListener('click',e=>{if(e.target.closest('[data-errcopy]')){const t=errReport();window.__lastErrReport=t;copyPlain(t).then(ok=>toast(ok?'Fehlerbericht kopiert – einfach in den Chat einfügen':'Kopieren nicht möglich'));return}
+ if(e.target.closest('[data-errclear]')){cfErr.clear();toast('Fehlerprotokoll geleert');render()}});
 function backupHTML(){watchBackups();const L=BK.list;
  const rows=L?L.slice(0,12).map(x=>{const dt=new Date(x.d.at||0);return `<li><span><b>${dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})} · ${dt.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</b><small>${x.d.ok||0} erledigte Sätze</small></span><button type="button" class="btn sm" data-bkfill="${esc(x.id)}">Ergänzen</button></li>`}).join(''):'';
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1753-7ca31e5</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-1802-1662469</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -3344,6 +3358,7 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
   <li><span><b>Plan-Regeln</b>: Top-Satz/Back-off (−5 %, 96 %, −5 kg), „Last der Vorwoche“, +1 Inkrement, +2,5 kg pro KH, 3×9 oder 3×13 nach dem AMRAP, konservatives 10RM und „schwerste Last des Zyklus“ werden automatisch gesetzt.</span></li>
   <li><span>Die Werte erscheinen grau in den Feldern. Beim Abhaken werden sie übernommen; was du selbst einträgst, hat immer Vorrang.</span></li></ol></section>
  ${backupHTML()}
+ ${errlogHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Export</h2></div><div class="aktionen"><button type="button" class="btn" data-act="csv">Als CSV exportieren</button></div></section>
  <section class="card gsync"><div class="ct"><div><p class="eyebrow">Google Sheet</p><h2 class="h2">Abgleich App ↔ Sheet</h2></div></div>
   <p class="note2">Alle Sätze aller Phasen (kg, Wdh, RPE, erledigt) per Kopieren & Einfügen austauschen. Gleiche Schlüssel wie im Sheet „Candito Forever Programm“.</p>
