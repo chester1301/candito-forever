@@ -9,11 +9,11 @@ module.exports={name:'Readiness – Skala, Zonen, Karten, Ruhetag',async run({pa
   t.eq(await seed(p,3,{pids:['intro']}),3,'3 Einheiten angelegt');
   await p.evaluate(()=>{switchProg('intro');const n=nextSession();const L=log(n.w,n.d,true);L.feel={sleeph:4,energy:5,food:4,strength:4};L.ckAt=Date.now();saveLog(key(n.w,n.d));S.ui.tab='home';render()});
   await p.waitForTimeout(400);
-  const home=await p.evaluate(()=>({jr:document.querySelector('.card.jr .jr-v, .card.jr b')?.textContent,jrTxt:document.querySelector('.card.jr')?.textContent.replace(/\s+/g,' '),erh:[...document.querySelectorAll('.card.erh .erh-ring b')].map(x=>x.textContent),erhL:[...document.querySelectorAll('.card.erh .erh-r small')].map(x=>x.textContent),erhV:document.querySelector('.card.erh .erh-v')?.textContent}));
+  const home=await p.evaluate(()=>({jr:document.querySelector('.card.jr .jr-v, .card.jr b')?.textContent,jrTxt:document.querySelector('.card.jr')?.textContent.replace(/\s+/g,' '),erh:[...document.querySelectorAll('.card.jr .erh-ring b')].map(x=>x.textContent),erhL:[...document.querySelectorAll('.card.jr .erh-r small')].map(x=>x.textContent),heads:[...document.querySelectorAll('#view .hsec .sect')].map(x=>x.textContent),zone:document.querySelector('.card.jr .jr-z')?.textContent}));
   t.ok(/71\/100/.test(home.jrTxt),'Readiness-Karte: Ø 4,25 → 71');
-  t.eq(home.erh[0],'71','Erholung-Karte zeigt denselben Readiness-Wert');
-  t.eq(home.erhL,['Readiness','Recovery','Leistung'],'Erholung-Karte: Readiness · Recovery · Leistung');
-  t.eq(home.erhV,'Sweet Spot','Überschrift = Candito-Zone');
+  t.eq(home.erhL,['Recovery','Leistung'],'Zustand-Karte: Recovery und Leistung neben dem Readiness-Wert');
+  t.eq(home.heads,['Zustand','Woche'],'Heute-Ansicht in Blöcken Heute · Zustand · Woche');
+  t.eq(home.zone,'Sweet Spot','Überschrift = Candito-Zone');
   // Alte Einträge (frühere Fragen) werden weiter gerechnet
   const old=await p.evaluate(()=>{const L=log(0,0);L.feel={sleepq:3,energy:3,mood:3,strength:3,stress:3,food:3,hydra:3,push:3,pull:3,lback:3,post:3,quad:3};saveLog(key(0,0));const m=jrDays();const k=Object.keys(m).sort()[0];return m[k].v});
   t.eq(old,50,'Alter Check-in (12 Fragen, alles „mittel“) → 50');
