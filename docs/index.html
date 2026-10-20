@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.20-0324-139bea4";
+<script>window.CF_VERSION="2026.10.20-0334-152bad5";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2311,6 +2311,38 @@ html b.mtred .mt2{color:#4a6df5!important;-webkit-text-fill-color:#4a6df5!import
 .jrs-z p{margin:6px 0 4px;font-size:15.5px;line-height:1.5;color:#e4e6ea}.jrs-z small{font-size:13px;color:#70747c}
 .jrs-n{font-size:13.5px!important;color:#9a9ea6!important;line-height:1.5}
 .jrs-f{padding:10px 22px calc(14px + env(safe-area-inset-bottom,0px))}.jrs-x{width:100%;height:56px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 18px var(--f)}
+
+/* Verlauf */
+.hs{display:grid;gap:14px}html .pdbody>.hs{background:none!important;border:0!important;padding:0!important;box-shadow:none!important;border-radius:0!important}
+.hs-k{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hs-t{background:#101012;border-radius:22px;padding:16px 16px 14px;display:grid;gap:2px;border:1px solid rgba(255,255,255,.05);min-width:0}
+.hs-t i svg{width:28px;height:28px;fill:none;stroke:#4fc3d9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.hs-t i{margin-bottom:18px;display:block}
+.hs-t span{font-size:15px;font-weight:700;color:#a9acb6}.hs-t b{font:800 26px/1.15 'Montserrat',var(--f);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hs-t small{font-size:13px;color:#70747c;font-weight:600}
+.hs-seg{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:#141518;border-radius:16px;padding:4px;margin:0 6px}
+.hs-seg button{height:36px;border:0;border-radius:12px;background:none;color:#e4e6ea;font:600 15px var(--f)}.hs-seg button[aria-pressed="true"]{background:#4069f5;color:#fff;font-weight:800;box-shadow:0 6px 16px -8px rgba(64,105,245,.9)}
+.hs-ch{width:100%;height:auto;display:block}.hs-ax{font:600 10.5px var(--f);fill:#70747c}
+.hs-lg{display:flex;flex-wrap:wrap;gap:8px}.hs-lg span{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:#141518;font-size:13.5px;font-weight:600;color:#e4e6ea}
+.hs-lg i{width:11px;height:11px;border-radius:50%}.hs-lg .hs-lv{background:none;color:#70747c;font-size:12.5px;padding:7px 4px}.hs-lg i.ln{width:14px;height:3px;border-radius:2px;background:#3cc46a}
+.hs-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px}.hs-h b{font-size:15.5px;color:#a9acb6;font-weight:700}
+.hs-v{display:flex;gap:4px;background:#141518;border-radius:14px;padding:4px}.hs-v button{width:46px;height:36px;border:0;border-radius:11px;background:none;display:grid;place-items:center}
+.hs-v svg{width:20px;height:20px;fill:none;stroke:#a9acb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.hs-v button[aria-pressed="true"]{background:#4069f5}.hs-v button[aria-pressed="true"] svg{stroke:#fff}
+.hs-c{background:#101012;border-radius:24px;padding:16px 16px 14px;border:1px solid rgba(255,255,255,.05)}
+.hs-ct{width:100%;display:flex;justify-content:space-between;align-items:center;border:0;background:none;padding:0;font:800 19px 'Montserrat',var(--f);text-align:left}
+.hs-ct svg{width:22px;height:22px;fill:none;stroke:#4069f5;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.hs-c h3{margin:10px 0 6px;font:700 16px var(--f);color:#fff}.hs-c h3 small{font-weight:600;color:#70747c;font-size:13.5px}
+.hs-m{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:#a9acb6;font-weight:600}.hs-m span{display:flex;align-items:center;gap:5px}
+.hs-m svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.hs-m .df{color:#c9d5ff}
+.hs-x{display:grid;gap:7px;margin-top:14px}.hs-x>div{display:flex;align-items:center;gap:6px;min-width:0}
+.hs-x span{background:#1c1d21;border-radius:10px;padding:5px 9px;font:700 14.5px var(--f);color:#fff;white-space:nowrap}.hs-x .e{white-space:normal;line-height:1.25;min-width:0;flex:0 1 auto}.hs-x>div{align-items:center}.hs-x .sp{flex:1;background:none;padding:0}.hs-x .n{font-variant-numeric:tabular-nums;flex:none}
+.hs-x i{font-style:normal;font-weight:800;color:#e4e6ea;font-size:13px;flex:none}
+.hs-n{margin:10px 0 0;font-size:13.5px;color:#a9acb6;line-height:1.45}.hs-n b{color:#e4e6ea}
+.hs-e{text-align:center;color:#70747c;font-size:14px;margin:8px 0}
+.hs-cal{background:#101012;border-radius:22px;padding:12px 12px 14px;border:1px solid rgba(255,255,255,.05)}
+.hs-cm{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.hs-cm b{font-size:16px}.hs-cm button{width:38px;height:38px;border-radius:12px;border:0;background:#1c1d21;color:#fff;font:700 22px var(--f)}
+.hs-wd,.hs-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.hs-wd span{font-size:11.5px;font-weight:800;color:#70747c;padding:4px 0}
+.hs-g>*{height:40px;display:grid;place-items:center;border-radius:12px;font:600 14px var(--f);color:#a9acb6;position:relative}.hs-g span.td{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.hs-g button{border:0;background:color-mix(in srgb,var(--hc) 26%,#111);color:#fff;font-weight:800}.hs-g button.sel{background:var(--hc);box-shadow:0 6px 16px -8px var(--hc)}
+.hs-g button i{position:absolute;bottom:4px;width:6px;height:6px;border-radius:50%}
 .wu-side{margin:0 0 6px}.wu-auto{margin:0 2px 10px;font-size:12.5px;color:#8fa2d8;font-weight:600;line-height:1.4}
 .wuq-t{margin:0;padding:0 18px 16px;font-size:13.5px;line-height:1.5;color:var(--ink2)}
 .wuq.open{border-color:rgba(111,140,255,.45)}
@@ -3609,7 +3641,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0324-139bea4</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.20-0334-152bad5</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
 function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
@@ -4145,6 +4177,56 @@ function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());c
 document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||b.tagName!=='BUTTON')return;try{localStorage.setItem('cf-theme',b.dataset.theme)}catch(err){}location.reload()});
 document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}});
 
+
+/* ===================== Verlauf: abgeschlossene Einheiten (alle Programme) ===================== */
+const HPC={intro:'#5aaaf0',p8:'#4069f5',p8b:'#7d9bff',p10:'#3cc4d6'};
+function histSessions(){const TK=[...CKG,...CKS].map(q=>q[0]);const out=[];
+ rfAllLogs().forEach(x=>{if(!x.L.done)return;withProg(x.pid,()=>{const day=P[x.w][x.d];let ton=0,sets=0;const ex=[];
+  day.b.forEach((bl,b)=>{const ok=(x.L.b[b]||[]).filter(z=>z&&z.ok);if(!ok.length)return;let top=null;ok.forEach(z=>{const kg=pnum(z.kg),r=pnum(z.r);if(kg&&r)ton+=kg*r;sets++;if(!top||(kg||0)>(pnum(top.kg)||0)||((kg||0)===(pnum(top.kg)||0)&&(r||0)>(pnum(top.r)||0)))top=z});
+   const e=(x.L.sw&&x.L.sw[b])||bl.e;const prev=ex.find(q=>q.e===e);if(prev){prev.n+=ok.length;if((pnum(top.kg)||0)>(pnum(prev.kg)||0)){prev.kg=top.kg;prev.r=top.r}}else ex.push({e,name:(EX[e]||{}).n||e,n:ok.length,kg:top.kg,r:top.r})});
+  const ra=jrAvg(x.L.feel,TK);out.push({pid:x.pid,w:x.w,d:x.d,dt:x.dt,day,L:x.L,ton,sets,ex,rd:ra?jrMap(ra.avg):null,prog:PROGS[x.pid].name,col:HPC[x.pid]||'#5aaaf0'})})});
+ return out.sort((a,b)=>b.dt-a.dt)}
+function histHTML(){const all=histSessions();const per=S.ui.hp||'6M',view=S.ui.hv||'list';const now=new Date();const DD={'1W':7,'1M':31,'6M':183,'1J':366};
+ const from=per==='Alle'?(all.length?new Date(Math.min(...all.map(s=>+s.dt))):now):new Date(+now-DD[per]*864e5);const sel=all.filter(s=>s.dt>=from);
+ const tot=sel.reduce((a,s)=>a+s.ton,0);const kg=v=>Math.round(v).toLocaleString('de-DE')+' kg';const fd=d=>d.toLocaleDateString('de-DE',{month:'short',year:'2-digit'});
+ const progs=[...new Set(all.map(s=>s.pid))];
+ return `<div class="hs">
+ <div class="hs-k"><div class="hs-t"><i>${HS_IC.bar}</i><span>Gesamtvolumen</span><b>${kg(tot)}</b><small>${sel.length?fd(from)+' – '+fd(now):'Zeitraum ohne Einheit'}</small></div>
+  <div class="hs-t"><i>${HS_IC.scale}</i><span>Ø pro Einheit</span><b>${sel.length?kg(tot/sel.length):'–'}</b><small>${sel.length} ${sel.length===1?'Einheit':'Einheiten'}</small></div></div>
+ <div class="hs-seg">${['1W','1M','6M','1J','Alle'].map(k=>`<button type="button" data-hp="${k}" aria-pressed="${k===per}">${k}</button>`).join('')}</div>
+ ${histChart(sel,from,now)}
+ <div class="hs-lg">${progs.map(pid=>`<span><i style="background:${HPC[pid]||'#5aaaf0'}"></i>${esc(PROGS[pid].name)}</span>`).join('')}<span class="hs-lv">Balken = Volumen je Einheit</span></div>
+ <div class="hs-h"><b>${all.length} ${all.length===1?'Einheit':'Einheiten'} abgeschlossen (gesamt)</b><div class="hs-v"><button type="button" data-hv="cal" aria-pressed="${view==='cal'}" aria-label="Kalender">${HS_IC.cal}</button><button type="button" data-hv="list" aria-pressed="${view==='list'}" aria-label="Liste">${HS_IC.list}</button></div></div>
+ ${view==='cal'?histCal(all):''}
+ ${(view==='cal'?all.filter(s=>S.ui.hday?isoD(s.dt)===S.ui.hday:false):all).map(histCard).join('')||(view==='cal'?'<p class="hs-e">Tippe auf einen markierten Tag.</p>':'<p class="hs-e">Noch keine abgeschlossene Einheit. Nach „Training abschließen“ erscheint sie hier.</p>')}
+ </div>`}
+const HS_IC={bar:'<svg viewBox="0 0 24 24"><path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/></svg>',scale:'<svg viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M4 7h16M4 7l-3 7a3 3 0 0 0 6 0zM20 7l-3 7a3 3 0 0 0 6 0z"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M7.5 14h.01M12 14h.01M16.5 14h.01M7.5 17.5h.01M12 17.5h.01"/></svg>',list:'<svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>',bolt:'<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',wk:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'};
+function histChart(sel,from,now){const W=340,H=150,pl=4,pr=34,pt=10,pb=22;const t0=+from,t1=+now,sp=Math.max(1,t1-t0);const mx=Math.max(1000,...sel.map(s=>s.ton));const step=mx>12000?5000:mx>6000?2000:mx>3000?1000:500;const top=Math.ceil(mx/step)*step;
+ const x=t=>pl+(t-t0)/sp*(W-pl-pr),y=v=>pt+(1-v/top)*(H-pt-pb);const bw=Math.max(3,Math.min(14,(W-pl-pr)/Math.max(8,sel.length*2.2)));
+ let g='';for(let v=step;v<=top;v+=step)g+=`<line x1="0" x2="${W-pr+4}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,.07)"/><text x="${W-2}" y="${y(v)+4}" text-anchor="end" class="hs-ax">${v>=1000?nf(v/1000,v%1000?1:0)+'K':v}</text>`;
+ g+=`<line x1="0" x2="${W-pr+4}" y1="${y(0)}" y2="${y(0)}" stroke="rgba(255,255,255,.12)"/>`;
+ const ml=[];const dd=new Date(from);dd.setDate(1);dd.setHours(12);const sw=sp/864e5;const mstep=sw>200?2:1;let mi=0;while(+dd<=t1){if(+dd>=t0&&mi%mstep===0)ml.push(`<text x="${x(+dd)}" y="${H-5}" text-anchor="middle" class="hs-ax">${dd.toLocaleDateString('de-DE',{month:'short'}).replace('.','')}</text>`);dd.setMonth(dd.getMonth()+1);mi++}
+ if(sw<=31){ml.length=0;const d2=new Date(from);d2.setHours(12);const st=sw<=8?1:7;for(;+d2<=t1;d2.setDate(d2.getDate()+st))ml.push(`<text x="${x(+d2)}" y="${H-5}" text-anchor="middle" class="hs-ax">${sw<=8?d2.toLocaleDateString('de-DE',{weekday:'short'}).replace('.',''):d2.getDate()+'.'+(d2.getMonth()+1)+'.'}</text>`)}
+ const bars=sel.map(s=>`<rect x="${(x(+s.dt)-bw/2).toFixed(1)}" y="${y(s.ton).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,y(0)-y(s.ton)).toFixed(1)}" rx="${Math.min(4,bw/2)}" fill="${s.col}"/>`).join('');
+ const rp=sel.filter(s=>s.rd!=null).sort((a,b)=>a.dt-b.dt);const yr=v=>pt+(1-v/100)*(H-pt-pb);
+ const rl=rp.length>1?`<path d="${rp.map((s,i)=>(i?'L':'M')+x(+s.dt).toFixed(1)+' '+yr(s.rd).toFixed(1)).join(' ')}" fill="none" stroke="#3cc46a" stroke-width="2" stroke-linejoin="round" stroke-dasharray="1 0"/>`:'';
+ const rd=rp.map(s=>`<circle cx="${x(+s.dt).toFixed(1)}" cy="${yr(s.rd).toFixed(1)}" r="3" fill="#0a0b0d" stroke="#3cc46a" stroke-width="2"/>`).join('');
+ return `<svg class="hs-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Volumen je Einheit">${g}${ml.join('')}${bars}</svg>`}
+function histCal(all){const ref=S.ui.hm?new Date(S.ui.hm+'-15T12:00:00'):new Date();const y0=ref.getFullYear(),m0=ref.getMonth();const first=new Date(y0,m0,1,12);const off=(first.getDay()+6)%7;const dim=new Date(y0,m0+1,0).getDate();
+ const by={};all.forEach(s=>{by[isoD(s.dt)]=s});const td=isoD(new Date());let c='';for(let i=0;i<off;i++)c+='<span></span>';
+ for(let d=1;d<=dim;d++){const k=isoD(new Date(y0,m0,d,12));const s=by[k];const z=s&&s.rd!=null?jrZone(s.rd).c:null;c+=s?`<button type="button" data-hday="${k}" class="on ${S.ui.hday===k?'sel':''}" style="--hc:${s.col}">${d}${z?`<i style="background:${z}"></i>`:''}</button>`:`<span class="${k===td?'td':''}">${d}</span>`}
+ const mk=(dy)=>{const n=new Date(y0,m0+dy,15);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')};
+ return `<div class="hs-cal"><div class="hs-cm"><button type="button" data-hm="${mk(-1)}" aria-label="Vormonat">‹</button><b>${first.toLocaleDateString('de-DE',{month:'long',year:'numeric'})}</b><button type="button" data-hm="${mk(1)}" aria-label="Nächster Monat">›</button></div><div class="hs-wd">${['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<span>${x}</span>`).join('')}</div><div class="hs-g">${c}</div></div>`}
+function histCard(s){const z=s.rd!=null?jrZone(s.rd):null;const dur=s.L.dur>0?fmtLen(s.L.dur):null;const df=s.L.diff?(s.L.diffs===6?DIFF6[s.L.diff-1][0]:CKW.diff[s.L.diff-1]):null;
+ return `<article class="hs-c"><button type="button" class="hs-ct" data-hgo="${s.pid}|${s.w}|${s.d}"><span style="color:${s.col}">${esc(s.prog)}</span><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+  <h3>${s.dt.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})} <small>· ${esc(s.day.f)}</small></h3>
+  <div class="hs-m">${z?`<span style="color:${z.c}">${HS_IC.bolt}${s.rd} · ${z.n}</span>`:''}<span>${HS_IC.bar}${Math.round(s.ton).toLocaleString('de-DE')} kg</span><span>${HS_IC.wk}Woche ${s.w+1} | Tag ${s.d+1}</span>${dur?`<span>${HS_IC.clock}${dur}</span>`:''}${df?`<span class="df">Schwierigkeit: ${df}</span>`:''}</div>
+  <div class="hs-x">${s.ex.map(e=>`<div><span class="n">${e.n}</span><i>×</i><span class="e">${esc(e.name)}</span><span class="sp"></span><span class="n">${pnum(e.r)!=null?nf(pnum(e.r),0):'–'}</span><i>×</i><span class="n">${pnum(e.kg)!=null?nf(pnum(e.kg),1)+' kg':'ohne kg'}</span></div>`).join('')}</div>
+  ${s.L.ach?`<p class="hs-n"><b>Erreicht:</b> ${esc(s.L.ach)}</p>`:''}${s.L.imp?`<p class="hs-n"><b>Besser machen:</b> ${esc(s.L.imp)}</p>`:''}</article>`}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-hp],[data-hv],[data-hm],[data-hday],[data-hgo]');if(!t)return;
+ if(t.dataset.hp){S.ui.hp=t.dataset.hp}else if(t.dataset.hv){S.ui.hv=t.dataset.hv}else if(t.dataset.hm){S.ui.hm=t.dataset.hm}else if(t.dataset.hday){S.ui.hday=S.ui.hday===t.dataset.hday?null:t.dataset.hday}
+ else if(t.dataset.hgo){const [pid,w,d]=t.dataset.hgo.split('|');if(pid!==PROG){S.meta.prog=pid;saveMeta();setProg(pid);S.ui.openB={};renderTL.done=false}S.ui.w=+w;S.ui.d=+d;S.ui.tab='train';render();window.scrollTo(0,0);return}
+ const y=window.scrollY;render();window.scrollTo(0,y)});
 /* ===== Readiness-Skala (Bereiche wie Juggernaut, Wert nur aus dem Check-in) ===== */
 const JRZ=[{k:'dz',lo:0,hi:49,c:'#ef4f4f',n:'Gefahrenzone',s:'Heute hat Erholung Vorrang.',t:'Die Erholung ist niedrig. Schlaf, Ernährung und Regeneration haben jetzt Vorrang. Trainiere exakt nach Plan, ohne Extras, und trage das RPE ehrlich ein.',a:'Ø unter 3,0'},
  {k:'fr',lo:50,hi:61,c:'#f5a524',n:'Fokus auf Erholung',s:'Qualität vor Tempo.',t:'Etwas Ermüdung ist noch da. Trainiere, halte die Qualität hoch und erzwinge keine PRs.',a:'Ø 3,0–3,7'},
@@ -5436,7 +5518,8 @@ function progData(){const A=allSets();
     <td class="r" style="color:${a.e1&&a.refE?(a.e1>=a.refE?'var(--ok)':'var(--hi)'):'inherit'}">${a.e1&&a.refE?(a.e1>=a.refE?'+':'')+nf(a.e1-a.refE,0):'–'}</td></tr>`).join('')}
    </tbody></table></div><p class="note2">Δ vergleicht das Test-e1RM mit dem Referenz-Wert (gerechnet als RPE 9).</p></section>`,
   rpeplan:()=>{setTimeout(rpCenter,20);return rpHTML()},
-  verlauf:()=>`<section class="card"><div class="ct"><h2 class="h2">Abgeschlossene Einheiten</h2></div>${sessions.length?`<div class="tw"><table class="tab">
+  verlauf:()=>histHTML(),
+  verlauf_alt:()=>`<section class="card"><div class="ct"><h2 class="h2">Abgeschlossene Einheiten</h2></div>${sessions.length?`<div class="tw"><table class="tab">
    <thead><tr><th>Einheit</th><th>Datum</th><th class="r">Dauer</th><th class="r">Sätze</th><th class="r">Tonnage</th></tr></thead><tbody>
    ${sessions.map(([w,d])=>{const L=log(w,d);const ss=A.filter(s=>s.w===w&&s.d===d);return `<tr><td><span class="dot" style="--c:${DAYCOL[d]}"></span>W${w+1} ${DAYS[d].tag} · ${esc(P[w][d].f)}</td><td>${L.date?new Date(L.date).toLocaleDateString('de-DE'):'–'}</td>
     <td class="r">${L.dur?Math.round(L.dur/60000)+' min':'–'}</td><td class="r">${ss.filter(s=>s.ok).length}</td><td class="r">${nf(ss.reduce((a,s)=>a+s.kg*s.r,0),0)} kg</td></tr>`}).join('')}
@@ -5445,7 +5528,7 @@ function progData(){const A=allSets();
 
 const PDT={rpeplan:['RPE-Planer','1RM & Last je RPE'],year:['Jahresplan','Phasen bis 31.12.2027'],kraft:['Kraft','e1RM & Verlauf'],treue:['Plan-Treue','Vorgaben & Umfang'],volumen:['Volumen','Tonnage & Sätze'],rpe:['RPE-Kalibrierung','Gefühl vs. Plan'],whoop:['Erholung','WHOOP & Leistung'],backoff:['Top & Backoff','Backoff-Qualität & Ermüdung'],punkte:['Punkte','IPF GL & DOTS'],rekorde:['Rekorde','Bestwerte je Übung'],zyklen:['Zyklen','Phasen-Vergleich'],test:['Testwoche','Test & Referenz'],verlauf:['Verlauf','Abgeschlossene Einheiten']};
 const PDI={rpeplan:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h3M13 11h3M8 15h3M13 15h3"/>',year:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',kraft:'<path d="M3 17l5-5 4 3 7-8"/><path d="M15 7h4v4"/>',treue:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',volumen:'<path d="M5 20V10M10 20V5M15 20v-7M20 20v-4"/>',rpe:'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/>',whoop:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',backoff:'<path d="M4 6h10M4 12h7M4 18h4"/><path d="M17 5v14M14 16l3 3 3-3"/>',punkte:'<path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/>',rekorde:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H4v2a3 3 0 0 0 3 3M18 5h2v2a3 3 0 0 1-3 3M12 13v4M8 20h8"/>',zyklen:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',test:'<path d="M9 4h6M10 4v5L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-10V4"/>',verlauf:'<path d="M4 6h16M4 12h16M4 18h10"/>'};
-const PDC={rpeplan:'#5ad1e6',year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',backoff:'#ff7a59',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#9aa0a8'};
+const PDC={rpeplan:'#5ad1e6',year:'#e2b04a',kraft:'#e8484f',treue:'#43c08a',volumen:'#5ad1e6',rpe:'#b48cff',whoop:'#f0a066',backoff:'#ff7a59',punkte:'#f3c969',rekorde:'#e2b04a',zyklen:'#7fa8ff',test:'#e8484f',verlauf:'#4069f5'};
 /* Farbsystem im blauen Thema: Blau = Training & Plan · Grün = Erholung · Gold = Erfolge · Rot = Test/Warnung */
 const HC={A:'#6f8cff',G:'#43c08a',Y:'#e2b04a',R:'#e8484f',N:'#8f9bc4'};
 if((window.CF_THEME||'blue')==='blue'){const {A,G,Y,R,N}=HC;
