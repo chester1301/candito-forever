@@ -3012,9 +3012,9 @@ function ckSteps(el){return;const sc=el.querySelector('.ck-sc');if(!sc)return;co
  if(!last&&go){go.hidden=true;const nx=document.createElement('button');nx.type='button';nx.className='btn primary';nx.dataset.ckstep='1';nx.textContent='Weiter';ft.appendChild(nx)}
  if(CK.step>0){const bk=document.createElement('button');bk.type='button';bk.className='btn';bk.dataset.ckstep='-1';bk.textContent='Zurück';const first=ft.firstElementChild;first.hidden=true;ft.prepend(bk)}}
 document.addEventListener('click',e=>{const t=e.target.closest('#ckin [data-ckstep]');if(!t||!CK)return;e.stopPropagation();CK.step=Math.max(0,(CK.step||0)+ +t.dataset.ckstep);const el=document.getElementById('ckin');el.innerHTML=ckHTML();const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
-function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
+function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;if(c.go)L.flow=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
 function ckSave(fn){if(CK.rest){if(!S.meta.rest)S.meta.rest={};const o=S.meta.rest[CK.rest]||(S.meta.rest[CK.rest]={});fn(o);o.at=Date.now();saveMeta();return}withProg(CK.pid,()=>{const L=log(CK.w,CK.d,true);fn(L);saveLog(key(CK.w,CK.d))})}
-function needCk(w,d){const L=log(w,d);return !(L&&(L.ck||L.done||L.start))}
+function needCk(w,d){const L=log(w,d);if(!L)return true;if(L.done)return false;return !L.b.flat().some(z=>z&&z.ok)}
 document.addEventListener('click',e=>{if(!CK)return;const t=e.target.closest('#ckin button');if(!t)return;
  if(t.dataset.ck){const [k,v]=t.dataset.ck.split('|');ckSave(L=>{if(!L.feel)L.feel={};if(L.feel[k]===+v)delete L.feel[k];else L.feel[k]=+v});ckRefresh();return}
  if(t.dataset.ckbw){ckSave(L=>{const b=pnum(L.bw)??curBw()??pnum(S.meta.bw)??80;L.bw=nf(Math.max(30,b+ +t.dataset.ckbw),1)});ckRefresh();return}
@@ -4933,7 +4933,7 @@ $('#view').addEventListener('click',e=>{const t=e.target.closest('button');if(!t
  if(a==='gym')openGym();
  if(a==='done'){const L=log(w,d,true);if(L.done){reopenSession(w,d);toast('Einheit wieder offen')}else finishSession(w,d);render()}
  if(a==='spause'){toggleSessPause(w,d);return}
- if(a==='sstart'){startSession(w,d);render();return}
+ if(a==='sstart'){const go=()=>{startSession(w,d);render()};if(needCk(w,d)){ckOpen(PROG,w,d,go);return}go();return}
  if(a==='reset'){if(!S.ui.confirmReset){S.ui.confirmReset=true;render();setTimeout(()=>{S.ui.confirmReset=false;if(S.ui.tab==='train')render()},4000);return}
   S.ui.confirmReset=false;const k=key(w,d);S.logs[k]={b:P[w][d].b.map(bl=>Array.from({length:bl.s},()=>({}))),note:'',u:0,resetAt:Date.now()+1};saveLog(k);toast('Einheit zurückgesetzt');render()}
  if(a==='csv')exportCsv();
@@ -5082,6 +5082,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden
 /* ===================== Gym-Modus ===================== */
 const G={b:0,i:0};let wake=null;
 async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
+ if(L.start&&!L.flow&&needCk(w,d)&&!CK)setTimeout(()=>{if(!CK&&!$('#gym').hidden)ckOpen(PROG,w,d,()=>{gymRefresh()})},350);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
 function closeGym(silent){if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
