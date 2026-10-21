@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-0439-b8b6354";
+<script>window.CF_VERSION="2026.10.21-0506-7336298";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3032,6 +3032,70 @@ body[data-tab="prog"] #view .card.plc{overflow:hidden}
 body[data-tab="prog"] #view .card table{max-width:100%}
 body[data-tab="prog"] #view .card .tw,body[data-tab="prog"] #view .card:has(>table){overflow-x:auto;-webkit-overflow-scrolling:touch}
 </style>
+<style id="cf-sq2">
+/* ===== Side Quests V2: einspaltige Bibliothek, Glas-Icons, Detailansicht ===== */
+body[data-tab="sq"] header.top{position:relative!important;top:auto!important}
+body[data-tab="sq"] #view .phead{flex-wrap:wrap;row-gap:2px}body[data-tab="sq"] #view .phead .sect{white-space:nowrap}body[data-tab="sq"] #view .phead .phs{white-space:normal}
+.tcb{background:linear-gradient(180deg,#0e163a,#080b1a)!important}
+body.tcb-on[data-tab="sq"] #view .pdh{top:var(--tcbh,64px)!important}
+.tcb-gear{padding:0!important;width:44px;justify-content:center}
+.sqg{--g:#4f8bff;position:relative;flex:none;width:60px;height:60px;border-radius:19px;display:grid;place-items:center;isolation:isolate;
+ background:radial-gradient(110% 90% at 28% 6%,color-mix(in srgb,var(--g) 62%,transparent),color-mix(in srgb,var(--g) 20%,transparent) 50%,transparent 78%),linear-gradient(160deg,#1d2338,#070910 85%);
+ border:1px solid rgba(226,232,250,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -12px 18px -10px rgba(0,0,0,.75),inset 0 0 0 1px color-mix(in srgb,var(--g) 22%,transparent),0 12px 24px -14px color-mix(in srgb,var(--g) 85%,transparent)}
+.sqg::before{content:"";position:absolute;left:12%;right:12%;top:5%;height:40%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0));z-index:-1}
+.sqg::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:linear-gradient(140deg,rgba(255,255,255,.55),rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.22));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;pointer-events:none}
+.sqg svg{width:54%;height:54%;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--g) 90%,transparent)) drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.sqg.lg{width:76px;height:76px;border-radius:23px}.sqg.sm{width:50px;height:50px;border-radius:16px}.sqg.xs{width:40px;height:40px;border-radius:13px}
+.sqg.xs svg{stroke-width:2.2}
+#view .sqlead{margin:-4px 2px 14px;font-size:14.5px;line-height:1.5;color:#c3c8d6}
+#view .sqlib{display:grid;gap:12px;margin-bottom:8px}
+#view .sqc{--g:#4f8bff;position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) 20px;gap:14px;align-items:center;width:100%;min-height:44px;margin:0;padding:16px 12px 16px 16px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;border-radius:22px;
+ border:1px solid color-mix(in srgb,var(--g) 34%,rgba(205,218,255,.14));
+ background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--g) 14%,transparent),transparent 55%),linear-gradient(180deg,#121a33,#0a0e1d);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 16px 34px -26px color-mix(in srgb,var(--g) 80%,transparent);transition:transform var(--mo-1) var(--mo-ease),border-color var(--mo-1)}
+#view .sqc:active{transform:scale(.985)}
+#view .sqc.on{border-color:color-mix(in srgb,var(--g) 62%,transparent)}
+#view .sqc-b{display:grid;gap:4px;min-width:0}
+#view .sqc-e{font:800 11px var(--f);letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--g) 70%,#fff);overflow-wrap:anywhere}
+#view .sqc-n{font:800 21px/1.15 var(--f);color:#fff;letter-spacing:-.01em;overflow-wrap:anywhere}
+#view .sqc-d{font-size:14px;line-height:1.42;color:#b9bfce}
+#view .sqc-m{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+#view .sqchip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font:700 12px var(--f);color:#d7ddf0;background:rgba(255,255,255,.06);border:1px solid rgba(205,218,255,.16)}
+#view .sqchip svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+#view .sqchip.on{color:#7ef0b6;border-color:rgba(67,192,138,.45);background:rgba(67,192,138,.12)}
+#view .sqc-ch{width:20px;height:20px;fill:none;stroke:#9aa3bb;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:359px){#view .sqc{gap:11px;padding:14px 10px 14px 12px}#view .sqc .sqg{width:50px;height:50px;border-radius:16px}#view .sqc-n{font-size:19px}}
+/* Aktive Side Quest */
+#view .card.sqact2{--g:#4f8bff;border:1px solid color-mix(in srgb,var(--g) 50%,transparent)!important;background:radial-gradient(130% 120% at 0% 0%,color-mix(in srgb,var(--g) 20%,transparent),transparent 60%),linear-gradient(180deg,#131c38,#0a0e1d)!important}
+#view .sqa-h{display:flex;gap:12px;align-items:center}#view .sqa-t{min-width:0;display:grid;gap:2px}
+#view .sqa-t h2{margin:0;font:800 20px/1.15 var(--f);color:#fff;overflow-wrap:anywhere}#view .sqa-t small{color:#b9bfce;font-size:13px}
+#view .sqa-p{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:12px 0 6px;font-size:13px;color:#b9bfce}#view .sqa-p b{color:#fff}
+#view .sqa-bar{height:6px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:12px}#view .sqa-bar i{display:block;height:100%;border-radius:inherit;background:var(--g)}
+/* Detail */
+#view .pdh .sqg.xs{margin-left:auto}body[data-tab="sq"] #view .pdh{background:linear-gradient(180deg,var(--bg,#05060b) calc(100% - 10px),rgba(5,6,11,0))!important;padding-bottom:14px!important;margin-bottom:6px!important}body[data-tab="sq"] #view .pdh .pdt{font-size:22px;line-height:1.15;overflow-wrap:anywhere}body[data-tab="sq"] #view .pdh>div{min-width:0;flex:1}body[data-tab="sq"] #view .pdh .pdb{width:44px;height:44px;flex:none}
+#view .card.sqhero2{--g:#4f8bff;display:flex;gap:16px;align-items:center;padding:20px 16px!important;border:1px solid color-mix(in srgb,var(--g) 45%,transparent)!important;
+ background:radial-gradient(120% 130% at 0% 0%,color-mix(in srgb,var(--g) 24%,transparent),transparent 58%),linear-gradient(180deg,#141d3b,#0a0e1d)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 40px -28px color-mix(in srgb,var(--g) 90%,transparent)!important}
+#view .sqh-t{min-width:0;display:grid;gap:4px}#view .sqh-t .eyebrow{margin:0;color:color-mix(in srgb,var(--g) 70%,#fff)}
+#view .sqh-t h2{margin:0;font:800 clamp(23px,7vw,28px)/1.1 var(--f);color:#fff;overflow-wrap:anywhere}#view .sqh-t small{font-size:13.5px;color:#b9bfce}#view .sqh-t em{font-style:normal;color:#7ef0b6;font-weight:800}
+#view .sqfacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}#view .sqf:nth-child(3){grid-column:1/-1}
+#view .sqf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center;padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))}
+#view .sqf svg{width:20px;height:20px;fill:none;stroke:#c9d4ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#view .sqf span{display:grid;min-width:0;line-height:1.2}#view .sqf b{font-size:13.5px;color:#fff;overflow-wrap:anywhere}#view .sqf small{font-size:11.5px;color:#9aa3bb}
+@media (max-width:339px){#view .sqfacts{grid-template-columns:minmax(0,1fr)}}
+#view .sqind{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;margin:0 0 14px;padding:14px;border-radius:20px;border:1px solid rgba(130,155,255,.32);background:linear-gradient(180deg,rgba(64,105,245,.14),rgba(64,105,245,.05))}
+#view .sqind svg{width:24px;height:24px;fill:none;stroke:#9fb4ff;stroke-width:2;stroke-linecap:round}
+#view .sqind span{display:grid;gap:3px;font-size:14px;line-height:1.45;color:#d0d6e6}#view .sqind b{color:#c7d3ff;font-size:15px}
+#view .sqvl{display:grid;gap:10px}
+#view .sqvc{display:grid;gap:4px;width:100%;min-height:44px;padding:14px;text-align:left;font:inherit;color:var(--ink);border-radius:18px;border:1px solid rgba(205,218,255,.14);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));cursor:pointer;transition:border-color var(--mo-1),background var(--mo-1)}
+#view .sqvl.one .sqvc{cursor:default}
+#view .sqvc.sel{border-color:rgba(110,145,255,.75);background:linear-gradient(180deg,rgba(64,105,245,.20),rgba(64,105,245,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(74,109,245,.25)}
+#view .sqvc-h{display:flex;align-items:center;gap:8px}#view .sqvc-h b{font-size:17px;color:#fff}
+#view .sqvc-ck{margin-left:auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1.5px solid rgba(205,218,255,.3);flex:none}
+#view .sqvc-ck svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+#view .sqvc.sel .sqvc-ck{background:#3d63f5;border-color:#7f98ff}#view .sqvc.sel .sqvc-ck svg{opacity:1}
+#view .sqvc-n{font-size:14.5px;line-height:1.4;color:#d8dcea;overflow-wrap:anywhere}#view .sqvc-m{font-size:12.5px;color:#9aa3bb;line-height:1.4}
+#view .sqsec .sqli li{line-height:1.5}
+</style>
 <style id="cf-tap">
 /* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
 .jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
@@ -3731,7 +3795,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.b8b6354.js"></script>
+<script src="assets/app-0.7336298.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */
