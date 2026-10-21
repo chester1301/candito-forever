@@ -2,6 +2,10 @@
 module.exports={name:'Einstellungen, Auto-Timer, Sicherungs-Erinnerung',async run({page,t}){
   const {seed}=require('../lib');
   const p=await page();
+  // Ein Timer in den Einstellungen: Auto-Timer enthält Ton, Vibration, Timer groß, Überzeit, feste Zeiten
+  await p.evaluate(()=>{S.ui.tab='setup';render()});await p.waitForTimeout(300);
+  t.eq(await p.evaluate(()=>[[...document.querySelectorAll('#view h2')].filter(h=>/Timer/.test(h.textContent)).map(h=>h.textContent),[...document.querySelectorAll('.card.rt [data-meta-tog]')].map(x=>x.dataset.metaTog),[...document.querySelectorAll('.card.rt [data-meta]')].map(x=>x.dataset.meta)]),
+    [['Auto-Timer'],['sound','vibe','autoSheet','overtime'],['restMain','restAcc']],'Nur noch der Auto-Timer – mit allen Timer-Einstellungen');
   // Auto-Timer: Candito-Standard und Priorität (Plan-Vorgabe > Zubehör > RPE-Stufe)
   t.eq(await p.evaluate(()=>rtTiers('lower')),[240,240,300,360],'Standard Unterkörper 4/4/5/6 min');
   const ra=await p.evaluate(()=>{switchProg('intro');const d=P[0][0];const b=d.b.findIndex(x=>EX[x.e].m&&EX[x.e].g!=='bp'&&!/8\s*[–-]\s*10/.test(x.x+(EX[x.e].t||'')));return [restAuto(0,0,b,6).s,restAuto(0,0,b,7.5).s,restAuto(0,0,b,8.5).s,restAuto(0,0,b,9).s]});

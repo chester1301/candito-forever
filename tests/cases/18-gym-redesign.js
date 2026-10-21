@@ -30,7 +30,7 @@ module.exports={name:'Gym-Redesign – Übungstypen, Antippbarkeit, Schnellzugri
       t.ok(r.x&&r.name,`${tag}: Übungsname und Candito-Vorgabe sichtbar`);
       t.ok(r.info&&!r.oldIcon,`${tag}: gläsernes Info-Icon statt Übungssymbol`);
       t.ok(r.hype&&r.rpeChips&&r.log&&r.timer,`${tag}: Belastung, Pflicht-RPE, Satz abhaken und Timer vorhanden`);
-      t.ok(['Info','Analyse','Verlauf','RPE'].every(k=>r.q.includes(k)),`${tag}: Schnellzugriffe ${r.q.join('/')}`);
+      t.ok(['Analyse','Verlauf','RPE'].every(k=>r.q.includes(k))&&!r.q.includes('Info'),`${tag}: Schnellzugriffe ${r.q.join('/')} (Info nur noch als großes Icon)`);
     }
     await p.close();
   }

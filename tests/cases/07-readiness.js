@@ -1,7 +1,7 @@
 // Readiness: eine Skala überall (Readiness-Karte, Erholung-Karte, Kachel), Zonen, Ruhetag, alte Einträge.
 module.exports={name:'Readiness – Skala, Zonen, Karten, Ruhetag',async run({page,t,}){
   const {seed}=require('../lib');
-  const p=await page();
+  const p=await page({fixedTime:'2026-10-22T17:00:00+02:00'}); // fester Trainingstag (Do) – an Ruhetagen kommt der Ruhetag-Ring hinzu
   // Skala (Candito-Zonen)
   t.eq(await p.evaluate(()=>[1,3,3.7,4.4,4.8,5].map(v=>Math.round(jrMap(v)))),[0,50,62,74,85,100],'Ø 1/3/3,7/4,4/4,8/5 → 0/50/62/74/85/100');
   t.eq(await p.evaluate(()=>[40,55,65,80,90].map(v=>jrZone(v).n)),['Gefahrenzone','Fokus auf Erholung','Sweet Spot','Bestens bereit','Voll erholt'],'Zonen-Namen');
