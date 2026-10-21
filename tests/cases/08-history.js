@@ -4,8 +4,8 @@ module.exports={name:'Verlauf & Zusammenfassung',async run({page,t}){
   const p=await page();
   t.eq(await seed(p,4,{pids:['intro']}),4,'4 Einheiten angelegt');
   await p.evaluate(()=>{switchProg('intro');const L=log(0,1);delete L.diff;delete L.diffs;saveLog(key(0,1));S.ui.tab='prog';render()});await p.waitForTimeout(400);
-  t.ok(await p.evaluate(()=>/4 Einheiten/.test(document.querySelector('.hs-go')?.textContent||'')),'Einstieg „Verlauf & Kalender“ zeigt 4 Einheiten');
-  await p.click('.hs-go');await p.waitForTimeout(500);
+  t.ok(await p.evaluate(()=>/4 Einheiten/.test(document.querySelector('[data-go-pd="verlauf"]')?.textContent||'')),'Einstieg „Verlauf & Kalender“ zeigt 4 Einheiten');
+  await p.click('[data-go-pd="verlauf"]');await p.waitForTimeout(500);
   const hist=await p.evaluate(()=>({cards:document.querySelectorAll('.hs-c').length,chart:!!document.querySelector('.hs-chart, .hs-ch, svg'),periods:[...document.querySelectorAll('.hs-per button, .hs-range button')].map(b=>b.textContent)}));
   t.eq(hist.cards,4,'4 Karten im Verlauf');
   t.ok(hist.chart,'Volumen-Diagramm vorhanden');
@@ -39,6 +39,6 @@ module.exports={name:'Verlauf & Zusammenfassung',async run({page,t}){
   await p.evaluate(()=>{try{closeGym(true)}catch(e){}});
   // Wochenbericht teilen erzeugt ein Bild
   await p.evaluate(()=>{S.ui.tab='prog';render()});await p.waitForTimeout(300);
-  if(await p.$('.hs-go')){await p.click('.hs-go');await p.waitForTimeout(300)}
+  if(await p.$('[data-go-pd="verlauf"]')){await p.click('[data-go-pd="verlauf"]');await p.waitForTimeout(300)}
   t.ok(await p.evaluate(()=>!!document.querySelector('[data-wkshare]')),'„Wochenbericht teilen“ vorhanden');
 }};

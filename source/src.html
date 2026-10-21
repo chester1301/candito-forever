@@ -2862,6 +2862,79 @@ body.gymopen .tcb{display:none}
 #view .tn-ta{min-height:140px!important;font-size:16px!important;line-height:1.5}
 #view .tnotes .savest{margin:0;justify-content:center}
 </style>
+<style id="cf-prog2">
+/* ===== Progress Redesign – Glas-Sprache wie Training/Gym ===== */
+body[data-tab="prog"] #view .card,body[data-tab="prog"] #view .ptile{border:1px solid rgba(205,218,255,.16)!important;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),linear-gradient(180deg,#111830,#0a0e1d)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 14px 34px -26px rgba(64,110,255,.6)!important;border-radius:22px!important}
+body[data-tab="prog"] #view .psec{grid-column:1/-1}
+/* Ebene 1 */
+.pgs{padding:18px!important;border-color:rgba(130,155,255,.38)!important;background:radial-gradient(130% 70% at 0% 0%,rgba(74,109,245,.30),rgba(74,109,245,0) 60%),linear-gradient(180deg,#131b3a,#0a0e1d)!important}
+.pgs-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.pgs-h .eyebrow{color:#9fb2ff}
+.pgs-t{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 10px;margin-top:4px}.pgs-t>b{font:900 clamp(46px,14vw,60px)/1 var(--d,var(--f));color:#fff;letter-spacing:-.02em}.pgs-t>em{font-style:normal;font:800 20px var(--f);color:#c9d4ff}
+.pgs i.up,.pgk i.up{font-style:normal;color:#6fe3ae;font-weight:800}.pgs i.dn,.pgk i.dn{font-style:normal;color:#ff8a8f;font-weight:800}.pgs i.no{font-style:normal;color:var(--ink2);font-weight:700;font-size:12px}
+.pgs-t i{font-size:18px}
+.pgs-est{flex:none;background:rgba(243,201,105,.14)!important;border-color:rgba(243,201,105,.5)!important;color:#f3c969!important;font-weight:800}
+.pgs-l{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.pgl{min-width:0;padding:11px 10px 8px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));display:grid;gap:3px;border-top:2px solid var(--c)}
+.pgl small{font-size:12px;font-weight:800;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pgl b{font:900 clamp(22px,6.6vw,28px)/1.05 var(--d,var(--f));color:#fff}.pgl b em{font-style:normal;font-size:12px;color:var(--ink2);margin-left:2px}
+.pgl i{font-size:12px}.pgsp{width:100%;height:30px;margin-top:2px}.pgsp-no{font-size:11px;color:var(--mut);margin-top:6px}
+.pgs-n{margin:12px 0 0;font-size:13px;line-height:1.45;color:#c9cfdc}.pgs-n b{color:#fff}
+/* Ebene 2 */
+.pg2 .ptile .ptv b{font-size:clamp(30px,9vw,38px)!important}
+.pg2 .ptile.pgo .tring,.pg2 .ptile .tring{position:absolute;right:14px;top:44px}.pg2 .ptile:has(.tring) .ptv{padding-right:56px;min-width:0;flex-wrap:wrap}.pg2 .ptile:has(.tring) .ptv small{white-space:normal}
+/* Kalendervorschau */
+.pcal{display:grid;gap:12px;width:100%;text-align:left;padding:16px!important;color:var(--ink);font:inherit;cursor:pointer}
+.pcal-h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}.pcal-t{display:grid;gap:2px;min-width:0}.pcal-t b{font-size:16px;color:#fff}.pcal-t small{font-size:12.5px;color:var(--ink2);line-height:1.35}
+.pcal .ptc{width:18px;height:18px;fill:none;stroke:var(--ink2);stroke-width:2.2}
+.pcal-g{display:grid;grid-template-columns:44px repeat(7,minmax(0,1fr));gap:5px;align-items:center}
+.pcal-g em{font-style:normal;font-size:11px;font-weight:800;color:var(--mut);text-align:center}.pcw{font-size:11px;font-weight:700;color:var(--mut)}
+.pcal-g i{display:block;height:22px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.04)}
+.pcal-g i.l1{background:#22306b}.pcal-g i.l2{background:#2f47a8}.pcal-g i.l3{background:#3d63f5}.pcal-g i.l4{background:#7d9bff}
+.pcal-g i.pl,.pcal-lg i.pl{background:none;border:1.5px dashed rgba(160,180,255,.55)}.pcal-g i.ms,.pcal-lg i.ms{background:rgba(232,72,79,.18);border-color:rgba(232,72,79,.5)}
+.pcal-g i.fut{opacity:.35}.pcal-g i.now{box-shadow:0 0 0 2px #fff}
+.pcal-lg{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:12px;font-weight:700;color:var(--ink2)}.pcal-lg>span{display:inline-flex;align-items:center;gap:6px}.pcal-lg i{display:inline-block;width:14px;height:14px;border-radius:4px;background:#3d63f5}
+.pcal-more{margin-left:auto;color:#9fb2ff!important}
+/* Kraft je Lift */
+.pgk-per{grid-template-columns:repeat(4,1fr)!important;margin:0 0 12px!important}
+.pgk{padding:16px!important;border-top:2px solid var(--c)!important}.pgk-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pgk-n{display:inline-flex;align-items:center;gap:8px;font:800 16px var(--f);color:#fff}.pgk-n i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.pgk-v{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 10px;margin-top:6px}.pgk-v b{font:900 38px/1 var(--d,var(--f));color:#fff}.pgk-v b em{font-style:normal;font-size:14px;color:var(--ink2);margin-left:3px}.pgk-v i{font-size:13px}
+.pgc{width:100%;height:auto;display:block;margin-top:8px}
+.pgk-few{margin:8px 0 0;padding:10px 12px;border-radius:12px;background:rgba(243,201,105,.08);border:1px solid rgba(243,201,105,.3);font-size:13px;color:#f3d58a}
+.pgk-m{margin:6px 0 0;font-size:12.5px;color:var(--ink2)}
+.pgk-pr{margin:10px 0 0;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#dfe4ef;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.pgk-pr span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:rgba(67,192,138,.16);color:#7fe0b4}
+/* Volumen */
+.pgv{padding:16px!important}.pgv-h{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center}.pgv-i img{width:46px;height:46px;border-radius:14px}
+.pgv-b{display:block;font:900 34px/1.05 var(--d,var(--f));color:#fff}.pgv-b em{font-style:normal;font-size:15px;color:var(--ink2);margin-left:4px}.pgv-h small{font-size:13px;color:var(--ink2)}
+.pgv-sw{grid-template-columns:repeat(2,1fr)!important;margin:14px 0 6px!important}.pgvc{width:100%;height:auto;display:block}
+/* Roadmap */
+.prd{padding:16px!important}.prd-line{display:flex;align-items:center;margin:12px 4px 6px}
+.prd-p{flex:1;display:flex;align-items:center;position:relative;height:18px}.prd-p:not(:last-child)::after{content:"";flex:1;height:2px;background:rgba(160,180,255,.25);margin:0 2px}
+.prd-p i{flex:none;width:12px;height:12px;border-radius:50%;border:2px solid rgba(160,180,255,.55);background:#0a0e1d}
+.prd-p.done i{background:#43c08a;border-color:#43c08a}.prd-p.done::after{background:rgba(67,192,138,.5)!important}
+.prd-p.cur i{width:18px;height:18px;background:#3d63f5;border-color:#c9d4ff;box-shadow:0 0 0 4px rgba(61,99,245,.3)}
+.prd-lb{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--mut)}
+.prm{display:grid;gap:4px;width:100%;text-align:left;padding:16px!important;color:var(--ink);font:inherit;cursor:pointer;position:relative}
+.prm-l{font-size:12px;font-weight:800;color:var(--ink2)}.prm b{font:900 26px/1.1 var(--d,var(--f));color:#fff}.prm small{font-size:13px;color:var(--ink2)}
+.prm.cur{border-color:rgba(130,155,255,.5)!important;background:radial-gradient(120% 80% at 0% 0%,rgba(74,109,245,.28),rgba(74,109,245,0) 60%),linear-gradient(180deg,#131b3a,#0a0e1d)!important}
+.prm-c{position:absolute;top:14px;right:14px}.prm-bar{display:block;height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}.prm-bar i{display:block;height:100%;background:linear-gradient(90deg,#3d63f5,#7d9bff)}
+.prt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:14px 16px!important;color:var(--ink);font:inherit;cursor:pointer;border-color:rgba(232,72,79,.4)!important}
+.prt-i{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:radial-gradient(120% 95% at 30% 10%,rgba(255,150,155,.4),rgba(160,30,40,.2) 50%,rgba(20,6,8,.85) 80%);border:1px solid rgba(255,170,175,.45)}
+.prt-i svg{width:22px;height:22px;fill:none;stroke:#ffe0e2;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.prt b{display:block;font-size:16px;color:#fff}.prt small{font-size:13px;color:var(--ink2)}.prt .ptc{width:18px;height:18px;fill:none;stroke:var(--ink2);stroke-width:2.2}
+/* Tabellen nie über den Kartenrand (Punkte, Erholung, Rekorde …): erste Spalte darf umbrechen, Zellen schmaler */
+body[data-tab="prog"] #view .card .tab{font-size:12.5px}body[data-tab="prog"] #view .card .tab th,body[data-tab="prog"] #view .card .tab td{padding-left:5px!important;padding-right:5px!important}
+body[data-tab="prog"] #view .card .tab td:first-child,body[data-tab="prog"] #view .card .tab th:first-child{white-space:normal!important;min-width:0}
+body[data-tab="prog"] #view .card .tab td.r,body[data-tab="prog"] #view .card .tab th.r{white-space:nowrap}
+/* Kachel-Titel und Chips umbrechen statt überlaufen */
+body[data-tab="prog"] #view .ptile .ptl{white-space:normal!important;overflow-wrap:anywhere;padding-right:16px;line-height:1.25}
+body[data-tab="prog"] #view .bo-h{flex-wrap:wrap!important;gap:6px!important}body[data-tab="prog"] #view .bo-h .evid{max-width:100%;white-space:normal}
+body[data-tab="prog"] #view .card.plc{overflow:hidden}
+@media (max-width:359px){body[data-tab="prog"] #view .card .tab{font-size:11.5px}body[data-tab="prog"] #view .card .tab th,body[data-tab="prog"] #view .card .tab td{padding-left:3px!important;padding-right:3px!important}body[data-tab="prog"] #view .card .tw{margin-left:-8px;margin-right:-8px}body[data-tab="prog"] #view .card .tab .evid{white-space:normal}body[data-tab="prog"] #view .card .tab:has(th:nth-child(7)) th,body[data-tab="prog"] #view .card .tab:has(th:nth-child(7)) td{padding-left:1.5px!important;padding-right:1.5px!important;font-size:11px}}
+
+body[data-tab="prog"] #view .card table{max-width:100%}
+body[data-tab="prog"] #view .card .tw,body[data-tab="prog"] #view .card:has(>table){overflow-x:auto;-webkit-overflow-scrolling:touch}
+</style>
 <style id="cf-tap">
 /* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
 .jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
@@ -5849,12 +5922,12 @@ function progData(){const A=allSets();
   return {bl,kg,r,e1:e1rm(kg,r,pnum(s.rpe)),ref:rk,refE:rk?e1rm(rk,1,9):null}});
  const ttl=k=>`W${k}`;
  const sec={
-  year:()=>planChartHTML(false)+yearHTML(),
-  kraft:()=>forecastHTML()+krPlanHTML()+fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
+  year:()=>roadmapHTML()+planChartHTML(false)+yearHTML(),
+  kraft:()=>liftCardsHTML()+forecastHTML()+krPlanHTML()+fairTrendHTML()+`<div class="lt-only">${labHTML(A)}</div><div class="lt-tot">${labHTML(A)}</div>${A.length?`<section class="card"><div class="ct"><h2 class="h2">e1RM-Verlauf</h2></div>
    <div class="leg">${['sq','bp','dl'].map(k=>`<span style="--c:${GC[k]}"><i></i>${names[k]}</span>`).join('')}</div>
    ${lineChart(series,[...Array(NW()).keys()].map(w=>'W'+(w+1)),{mark:(nextSession()||{w:NW()-1}).w,label:'e1RM-Verlauf'})||'<div class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</div>'}</section>`:'<section class="leer">Noch keine Sätze der Wettkampf-Lifts eingetragen.</section>'}`,
   treue:()=>adhHTML()+reportCardHTML(),
-  volumen:()=>liftVolHTML()+`<section class="kpis">
+  volumen:()=>volTopHTML(tonnage,doneSets,plannedSets,A)+liftVolHTML()+`<section class="kpis">
    <div><span>Einheiten</span><b class="zahl">${sessions.length}<small>/ ${NS()}</small></b></div>
    <div><span>Sätze erledigt</span><b class="zahl">${doneSets}<small>/ ${plannedSets}</small></b></div>
    <div><span>Tonnage gesamt</span><b class="zahl">${nf(tonnage/1000,1)}<small>t</small></b></div>
@@ -5875,7 +5948,7 @@ function progData(){const A=allSets();
     <td class="r">${a.kg?nf(a.kg,2)+' × '+nf(a.r):'–'}</td><td class="r">${a.e1?nf(a.e1,0):'–'}</td>
     <td class="r" style="color:${a.e1&&a.refE?(a.e1>=a.refE?'var(--ok)':'var(--hi)'):'inherit'}">${a.e1&&a.refE?(a.e1>=a.refE?'+':'')+nf(a.e1-a.refE,0):'–'}</td></tr>`).join('')}
    </tbody></table></div><p class="note2">Δ vergleicht das Test-e1RM mit dem Referenz-Wert (gerechnet als RPE 9).</p></section>`,
-  verlauf:()=>histHTML(),
+  verlauf:()=>calHTML()+histHTML(),
   verlauf_alt:()=>`<section class="card"><div class="ct"><h2 class="h2">Abgeschlossene Einheiten</h2></div>${sessions.length?`<div class="tw"><table class="tab">
    <thead><tr><th>Einheit</th><th>Datum</th><th class="r">Dauer</th><th class="r">Sätze</th><th class="r">Tonnage</th></tr></thead><tbody>
    ${sessions.map(([w,d])=>{const L=log(w,d);const ss=A.filter(s=>s.w===w&&s.d===d);return `<tr><td><span class="dot" style="--c:${DAYCOL[d]}"></span>W${w+1} ${DAYS[d].tag} · ${esc(P[w][d].f)}</td><td>${L.date?new Date(L.date).toLocaleDateString('de-DE'):'–'}</td>
@@ -5903,6 +5976,67 @@ function prHeroHTML(D){const RK={sq:'SQ',bp:'BP',dl:'DL'},N={sq:'Kniebeuge',bp:'
  const col=k=>`<div><small>${N[k]}</small><b>${D.best[k]!=null?nf(D.best[k],0):'–'}${D.best[k]!=null?'<em>kg</em>':''}</b>${dlt(D.best[k],st[k])}</div>`;
  const tot=D.total!=null?Math.round(D.best.sq)+Math.round(D.best.bp)+Math.round(D.best.dl):null,tst=['sq','bp','dl'].every(k=>st[k])?Math.round(st.sq)+Math.round(st.bp)+Math.round(st.dl):null;
  return `<section class="card prh">${col('sq')}${col('bp')}${col('dl')}<div class="tot"><small>Total</small><b>${tot!=null?nf(tot,0):'–'}${tot!=null?'<em>kg</em>':''}</b>${dlt(tot,tst)}</div><p class="prh-n">Geschätztes 1RM (e1RM) aus deinen Wettkampf-Lifts · Veränderung zum Startwert${tot!=null&&curBw()?` · DOTS <span style="color:var(--ink);font-weight:800">${nf(dots(tot,curBw(),S.meta.sex==='w'),1)}</span> bei ${nf(curBw(),1)} kg`:''}</p></section>`}
+/* ===== Progress Redesign: reine Darstellungsbausteine – nutzen ausschließlich vorhandene Berechnungen ===== */
+const PGN={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'},PGRK={sq:'SQ',bp:'BP',dl:'DL'},PGCOMP={sq:'csq',bp:'pbb',dl:'cdl'};
+function pgSpark(v,c,w=96,h=30){const a=v.filter(x=>x!=null);if(a.length<3)return '';const lo=Math.min(...a),hi=Math.max(...a),r=hi-lo||1;
+ const pts=a.map((x,i)=>`${(i/(a.length-1)*(w-4)+2).toFixed(1)},${(h-3-(x-lo)/r*(h-6)).toFixed(1)}`);
+ return `<svg class="pgsp" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${pts.join(' ')}"/><circle cx="${pts[pts.length-1].split(',')[0]}" cy="${pts[pts.length-1].split(',')[1]}" r="2.8" fill="${c}"/></svg>`}
+// Ebene 1: geschätztes Wettkampf-Total (gleiche Werte und Rundung wie bisher in der Total-Karte)
+function strengthHTML(D){const st={};['sq','bp','dl'].forEach(k=>{const rk=refKg(PGRK[k]);st[k]=rk?e1rm(rk,1,9):null});
+ const dlt=(b,a)=>b!=null&&a?`<i class="${b>=a?'up':'dn'}">${b>=a?'+':'−'}${nf(Math.abs(b-a),1)} kg</i>`:`<i class="no">${b!=null?'kein Startwert':'noch offen'}</i>`;
+ const tot=D.total!=null?Math.round(D.best.sq)+Math.round(D.best.bp)+Math.round(D.best.dl):null,tst=['sq','bp','dl'].every(k=>st[k])?Math.round(st.sq)+Math.round(st.bp)+Math.round(st.dl):null;
+ let pts={sq:[],bp:[],dl:[]};try{pts=krPlanData().pts}catch(e){}
+ const col=k=>`<div class="pgl" style="--c:${GC[k]}"><small>${PGN[k]}</small><b>${D.best[k]!=null?nf(D.best[k],0):'–'}${D.best[k]!=null?'<em>kg</em>':''}</b>${dlt(D.best[k],st[k])}${pgSpark(pts[k].slice(-10).map(x=>x.e1),GC[k])||`<span class="pgsp-no">${pts[k].length?'zu wenige Daten':'noch kein Verlauf'}</span>`}</div>`;
+ return `<section class="card pgs"><div class="pgs-h"><div><p class="eyebrow">Geschätztes Wettkampf-Total · e1RM</p><div class="pgs-t"><b>${tot!=null?nf(tot,0):'–'}</b>${tot!=null?'<em>kg</em>':''}${tot!=null?dlt(tot,tst):''}</div></div><span class="chip pgs-est">Schätzung</span></div>
+  <div class="pgs-l">${col('sq')}${col('bp')}${col('dl')}</div>
+  <p class="pgs-n">Geschätztes 1RM aus deinen Sätzen in Comp Squat, Comp Bench und Comp Deadlift – <b>kein gehobenes Wettkampf-Total</b>. Veränderung zum Startwert${tot!=null&&curBw()?` · DOTS <b>${nf(dots(tot,curBw(),S.meta.sex==='w'),1)}</b> bei ${nf(curBw(),1)} kg`:''}. Tatsächlich gehobene Bestwerte stehen unter „Rekorde“.</p></section>`}
+// Kompakte Kalendervorschau (letzte 6 Wochen) – öffnet „Verlauf & Kalender“ mit vollem Kalender
+function calMiniHTML(D){const m=dayTonMap();const vals=Object.values(m);const mx=vals.length?Math.max(...vals):1;const today=new Date();today.setHours(0,0,0,0);
+ const plan={};ORD().forEach(id=>{if(!PROGS[id])return;withProg(id,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt)plan[isoD(dt)]=dayStatus(w,d)||'open'}})});
+ const start=new Date(today);start.setDate(start.getDate()-((start.getDay()+6)%7)-5*7);let rows='';let nDone=0,nMiss=0,nPlan=0;
+ for(let r=0;r<6;r++){const ws=new Date(start);ws.setDate(ws.getDate()+r*7);let cells='';
+  for(let c=0;c<7;c++){const dt=new Date(ws);dt.setDate(dt.getDate()+c);const k=isoD(dt);const v=m[k];const fut=dt>today;const pl=plan[k];
+   const lv=v?Math.min(4,1+Math.floor(v/mx*3.999)):0;const cls=v?'l'+lv:pl&&fut?'pl':pl&&pl!=='done'&&dt<today?'ms':fut?'fut':'l0';if(v)nDone++;else if(cls==='ms')nMiss++;else if(cls==='pl')nPlan++;
+   cells+=`<i class="${cls} ${+dt===+today?'now':''}" title="${dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})}${v?' · '+nf(v/1000,2)+' t':cls==='pl'?' · geplant':cls==='ms'?' · nicht trainiert':''}"></i>`}
+  rows+=`<span class="pcw">${ws.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</span>${cells}`}
+ const all=histSessions();const l=all[0];const stk=streakWeeks();
+ return `<button type="button" class="card pcal" data-go-pd="verlauf"><span class="pcal-h"><span class="hs-gi">${HS_IC.cal}</span><span class="pcal-t"><b>Verlauf & Kalender</b><small>${all.length} ${all.length===1?'Einheit':'Einheiten'}${l?' · zuletzt '+l.dt.toLocaleDateString('de-DE',{day:'numeric',month:'short'}):''} · ${stk.n} ${stk.n===1?'Woche':'Wochen'} ohne verpasste Einheit</small></span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+  <span class="pcal-g" aria-label="Letzte 6 Wochen"><span></span>${['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<em>${x}</em>`).join('')}${rows}</span>
+  <span class="pcal-lg"><span><i class="l3"></i>Training ${nDone}</span><span><i class="pl"></i>Geplant ${nPlan}</span><span><i class="ms"></i>Nicht trainiert ${nMiss}</span><span class="pcal-more">Gesamten Kalender öffnen</span></span></button>`}
+// Kraft je Wettkampf-Lift mit Zeitraum (nur echte Datenpunkte; bei wenig Daten Hinweis statt Tendenz)
+function liftCardsHTML(){const per=S.ui.kper||'all';const P0={'4w':28,'8w':56,'12w':84,all:null}[per];const now=Date.now();let pts={sq:[],bp:[],dl:[]};try{pts=krPlanData().pts}catch(e){}
+ const A=allSets();
+ const card=k=>{const a=pts[k].filter(x=>P0==null||now-x.dt<=P0*864e5);const rk=refKg(PGRK[k]);const st=rk?e1rm(rk,1,9):null;const best=a.length?Math.max(...a.map(x=>x.e1)):null;const last=a[a.length-1];
+  const heavy=A.filter(x=>x.e===PGCOMP[k]&&x.ok).reduce((m,x)=>!m||x.kg>m.kg?x:m,null);
+  const W=320,H=120,pl=34,pr=8,pt=10,pb=20;let ch='';
+  if(a.length){const vs=a.map(x=>x.e1);let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(4,(hi-lo)*.2);lo-=pad;hi+=pad;const t0=+a[0].dt,t1=+a[a.length-1].dt;
+   const X=t=>a.length===1?(pl+W-pr)/2:pl+(t-t0)/((t1-t0)||1)*(W-pl-pr),Y=v=>pt+(1-(v-lo)/(hi-lo))*(H-pt-pb);
+   ch=`<svg class="chart pgc" viewBox="0 0 ${W} ${H}" role="img" aria-label="${PGN[k]}: e1RM je Einheit">${[lo+pad,hi-pad].map(v=>`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text x="${pl-5}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${nf(v,0)}</text>`).join('')}
+    ${a.length>=3?`<polyline fill="none" stroke="${GC[k]}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="${a.map(x=>X(+x.dt).toFixed(1)+','+Y(x.e1).toFixed(1)).join(' ')}"/>`:''}${a.map(x=>`<circle cx="${X(+x.dt).toFixed(1)}" cy="${Y(x.e1).toFixed(1)}" r="${x.pr?4.2:3}" fill="${GC[k]}" ${x.pr?'stroke="#fff" stroke-width="1.6"':''}/>`).join('')}
+    <text x="${pl}" y="${H-5}">${a[0].dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</text>${a.length>1?`<text x="${W-pr}" y="${H-5}" text-anchor="end">${last.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</text>`:''}</svg>`}
+  return `<section class="card pgk" style="--c:${GC[k]}"><div class="pgk-h"><span class="pgk-n"><i></i>${PGN[k]}</span><span class="chip pgs-est">e1RM · Schätzung</span></div>
+   <div class="pgk-v"><b>${best!=null?nf(best,0):'–'}<em>kg</em></b>${best!=null&&st?`<i class="${best>=st?'up':'dn'}">${best>=st?'+':'−'}${nf(Math.abs(best-st),1)} kg zum Startwert</i>`:''}</div>
+   ${ch}${a.length<3?`<p class="pgk-few">${a.length?'Noch zu wenige Daten für eine belastbare Tendenz':'Im gewählten Zeitraum keine Sätze dieser Wettkampfübung'} – ${a.length} ${a.length===1?'Einheit':'Einheiten'}.</p>`:`<p class="pgk-m">${a.length} Einheiten · bester Wert je Einheit${last?' · zuletzt '+nf(last.e1,0)+' kg':''}</p>`}
+   ${heavy?`<p class="pgk-pr"><span>Gehoben</span>Schwerster Satz: <b>${nf(heavy.kg,2)} kg × ${nf(heavy.r)}</b>${heavy.rpe!=null?' @ '+nf(heavy.rpe):''}</p>`:''}</section>`};
+ return `<div class="pgk-per seg" role="group" aria-label="Zeitraum">${[['4w','4 W'],['8w','8 W'],['12w','12 W'],['all','Gesamt']].map(([k,l])=>`<button type="button" data-kper="${k}" aria-pressed="${per===k}">${l}</button>`).join('')}</div>${card('sq')}${card('bp')}${card('dl')}`}
+// Volumen: Tonnage oder Sätze je Woche (Summen und Zählungen der vorhandenen Satzdaten)
+function volTopHTML(tonnage,done,planned,A){const md=S.ui.vmode||'ton';const n=NW();const wk=[...Array(n).keys()].map(w=>{const ss=A.filter(s=>s.w===w);return {ton:ss.reduce((a,s)=>a+s.kg*s.r,0),sets:ss.filter(s=>s.ok).length,plan:P[w].reduce((a,day)=>a+day.b.reduce((x,b)=>x+(b.opt?0:b.s),0),0)}});
+ const W=320,H=150,pl=8,pr=8,pt=22,pb=22;const val=x=>md==='ton'?x.ton:x.sets;const mx=Math.max(1,...wk.map(x=>md==='ton'?x.ton:Math.max(x.sets,x.plan)));const bw=(W-pl-pr)/n;
+ const bars=wk.map((x,i)=>{const v=val(x),h=v/mx*(H-pt-pb),ph=x.plan/mx*(H-pt-pb),X=pl+i*bw+bw*.18,Wd=bw*.64;return `${md==='sets'?`<rect x="${X.toFixed(1)}" y="${(H-pb-ph).toFixed(1)}" width="${Wd.toFixed(1)}" height="${ph.toFixed(1)}" rx="5" fill="none" stroke="rgba(160,180,255,.45)" stroke-dasharray="3 3"/>`:''}<rect x="${X.toFixed(1)}" y="${(H-pb-h).toFixed(1)}" width="${Wd.toFixed(1)}" height="${Math.max(0,h).toFixed(1)}" rx="5" fill="url(#pgvg)"/>${v?`<text class="val" x="${(X+Wd/2).toFixed(1)}" y="${(H-pb-h-6).toFixed(1)}" text-anchor="middle">${md==='ton'?nf(v/1000,1):v}</text>`:''}<text x="${(X+Wd/2).toFixed(1)}" y="${H-5}" text-anchor="middle">W${i+1}</text>`}).join('');
+ return `<section class="card pgv"><div class="pgv-h"><span class="pgv-i">${LXI.stack}</span><div><p class="eyebrow">Gesamtvolumen (bisher)</p><b class="pgv-b">${nf(tonnage/1000,1)}<em>t</em></b><small>${done} / ${planned} Sätze erledigt</small></div></div>
+  <div class="seg pgv-sw" role="group" aria-label="Darstellung"><button type="button" data-vmode="ton" aria-pressed="${md==='ton'}">Tonnage</button><button type="button" data-vmode="sets" aria-pressed="${md==='sets'}">Sätze</button></div>
+  <svg class="chart pgvc" viewBox="0 0 ${W} ${H}" role="img" aria-label="${md==='ton'?'Tonnage':'Sätze'} je Woche"><defs><linearGradient id="pgvg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7d9bff"/><stop offset="1" stop-color="#3157e8"/></linearGradient></defs><line class="base" x1="${pl}" x2="${W-pr}" y1="${H-pb}" y2="${H-pb}"/>${bars}</svg>
+  <p class="note2">${md==='ton'?'Tonnage je Woche in t (Gewicht × Wiederholungen aller eingetragenen Sätze).':'Erledigte Sätze je Woche; gestrichelt = geplante Sätze laut Candito.'}</p></section>`}
+// Jahresplan als Roadmap (vorhandene Phasen, Termine und Fortschritt)
+function roadmapHTML(){const o=ORD().filter(id=>PROGS[id]);const today=new Date();today.setHours(12,0,0,0);let wOff=0;
+ const ph=o.map(id=>{const r=phaseRange(id),dn=phaseDone(id),nw=withProg(id,NW);const td=withProg(id,()=>dayDate(TW(),TD()));const x={id,n:PROGS[id].short||PROGS[id].name,name:PROGS[id].name,a:r.a,b:r.b,dn,w0:wOff+1,w1:wOff+nw,td,done:dn.n>=dn.t};wOff+=nw;return x});
+ let ci=ph.findIndex(x=>x.id===PROG);if(ci<0)ci=0;const cur=ph[ci],nx=ph[ci+1],nx2=ph[ci+2];const fm=d=>d?d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):'–';
+ const dd=cur.td?Math.round((new Date(cur.td).setHours(12,0,0,0)-today)/864e5):null;
+ const pc=(x,lbl,cls)=>`<button type="button" class="card prm ${cls}" data-prog="${x.id}"><span class="prm-l">${lbl}</span><b>${esc(x.n)}</b><small>Woche ${x.w0}–${x.w1} · ${x.dn.t} Einheiten · ${fm(x.a)} – ${fm(x.b)}</small>${cls==='cur'?`<span class="prm-bar"><i style="width:${Math.round(x.dn.n/x.dn.t*100)}%"></i></span><small>${x.dn.n} / ${x.dn.t} Einheiten (${Math.round(x.dn.n/x.dn.t*100)} %)</small>`:x.dn.n?`<small>${x.dn.n} / ${x.dn.t} erledigt</small>`:''}${cls==='cur'?'<span class="chip ok prm-c">Aktuell</span>':''}</button>`;
+ return `<section class="card prd"><p class="eyebrow">Programm-Roadmap</p><div class="prd-line" role="list">${ph.map((x,i)=>`<span role="listitem" class="prd-p ${x.done?'done':''} ${i===ci?'cur':''}" title="${esc(x.name)}"><i></i></span>`).join('')}</div><div class="prd-lb"><span>${esc(ph[0].n)}</span><span>${esc(ph[ph.length-1].n)}</span></div></section>
+  ${pc(cur,'Aktuelle Phase','cur')}${nx?pc(nx,'Nächste Phase',''):''}${nx2?pc(nx2,'Übernächste Phase',''):''}
+  ${cur.td?`<button type="button" class="card prt" data-pd="test"><span class="prt-i">${'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L5 19a1.5 1.5 0 0 0 1.3 2h11.4a1.5 1.5 0 0 0 1.3-2l-5-10V3"/></svg>'}</span><span><b>Testwoche</b><small>${esc(cur.n)} · ${new Date(cur.td).toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'})}${dd!=null?' · '+(dd>0?'in '+dd+' Tagen':dd===0?'heute':'vorbei'):''}</small></span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:''}`}
+document.addEventListener('click',e=>{const k=e.target.closest('[data-kper]');if(k){S.ui.kper=k.dataset.kper;render();return}const v=e.target.closest('[data-vmode]');if(v){S.ui.vmode=v.dataset.vmode;render()}});
 function renderProg(){const D=progData(),{A}=D;
  const pd=S.ui.pd;if(pd&&D.sec[pd]){const [t,sub]=PDT[pd];return `<div class="pdh" style="--pc:${PDC[pd]}"><button type="button" class="pdb" data-pdback aria-label="Zurück zur Übersicht"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><p class="eyebrow">Progress · ${esc(PROGS[PROG].short)}</p><h2 class="pdt">${t}</h2></div><span class="pdi"><svg viewBox="0 0 24 24">${PDI[pd]}</svg></span></div><div class="pdbody">${D.sec[pd]()}</div>`}
  const T=(k,val,unit,sub,viz,wide)=>`<button type="button" class="ptile ${wide?'wide':''}" data-pd="${k}" style="--pc:${PDC[k]}"><span class="ptl"><svg viewBox="0 0 24 24">${PDI[k]}</svg>${PDT[k][0]}</span><span class="ptv"><b>${val}</b>${unit?`<small>${unit}</small>`:''}</span>${viz||''}<span class="pts">${sub}</span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`;
@@ -5946,8 +6080,14 @@ function renderProg(){const D=progData(),{A}=D;
  const te=T('test',dd==null?'–':dd>0?dd:dd===0?'Heute':'✓',dd>0?'Tage':'',td?`${DAYS[TD()].wdl}, ${new Date(td).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})} · W${TW()+1}`:'');
  // Verlauf
  const ver=T('verlauf',D.sessions.length,'/ '+NS(),D.sessions.length?(()=>{const [w,d]=D.sessions[D.sessions.length-1];const L=log(w,d);return 'Zuletzt '+(L.date?new Date(L.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'W'+(w+1)+' '+DAYS[d].tag)})():'noch keine Einheit abgeschlossen',`<div class="tdots">${[...Array(NS()).keys()].map(i=>`<i class="${dayStatus(Math.floor(i/ND()),i%ND())==='done'?'on':''}"></i>`).join('')}</div>`);
+ // Programmfortschritt (aus Jahresplan-Daten; öffnet den Jahresplan)
+ const dnC=phaseDone(PROG);const pf=dnC.t?dnC.n/dnC.t:0;
+ const prog=`<button type="button" class="ptile pgo" data-pd="year" style="--pc:${PDC.year}"><span class="ptl"><svg viewBox="0 0 24 24">${PDI.year}</svg>Programmfortschritt</span><span class="ptv"><b>${dnC.n}</b><small>/ ${dnC.t} Einheiten</small></span><span class="tring">${ringSVG(pf,PDC.year,46,6)}</span><span class="pts">${esc(PROGS[PROG].short)} · Phase ${cur+1} / ${o.length}${o[cur+1]?' · danach '+esc(PROGS[o[cur+1]].short):''}</span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`;
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
-  ${prHeroHTML(D)}${['sq','bp','dl'].some(k=>{try{return e1Forecast(k).f}catch(e){return false}})?forecastHTML():''}${calHTML()}<div class="pgrid">${psec('Kraft','Stärke & Bestwerte')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${psec('Training','Umfang & Ausführung')}${vol}${treue}${bo}${ver}${psec('Steuerung','Gefühl, Erholung & Planung')}${rpe}${wh}${psec('Plan','Phasen & Termine')}${year}${zy}${te}</div>`}
+  ${strengthHTML(D)}
+  <div class="pgrid pg2">${psec('Trainingssteuerung','Plan, Umfang, Erholung & Fortschritt')}${treue}${vol}${wh}${prog}</div>
+  ${calMiniHTML(D)}
+  <div class="pgrid">${psec('Analysen','Kraft, Bestwerte, Ausführung & Plan')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${bo}${rpe}${zy}${te}</div>`}
 function psec(t,s){return `<div class="psec"><h3>${t}</h3><small>${s}</small></div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
@@ -6397,7 +6537,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go,.pcal'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
