@@ -2800,6 +2800,79 @@ html[data-theme="blue"] #view .ptile{border-radius:var(--cf-r-tile);border-color
 html[data-theme="blue"] #view .ptile:active,html[data-theme="blue"] #view .card button:active{transform:scale(.985)}
 html[data-theme="blue"] .sect{letter-spacing:-.01em}
 html[data-theme="blue"] #view .pdh .pdb{width:var(--cf-touch);height:var(--cf-touch);border-radius:var(--cf-r-ctl)}
+
+/* Datensicherung: Status je Speicherort */
+#view .bkst{display:grid;gap:8px;margin:6px 0 12px}
+#view .bks{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1px solid var(--cf-line,rgba(205,218,255,.12));background:rgba(255,255,255,.035)}
+#view .bks i{grid-row:1/3;width:10px;height:10px;border-radius:50%;background:#a5aab6}
+#view .bks.ok i{background:#43c08a;box-shadow:0 0 8px rgba(67,192,138,.7)}#view .bks.warn i{background:#e39150;box-shadow:0 0 8px rgba(227,145,80,.6)}
+#view .bks b{font-size:14px;color:#fff}#view .bks small{font-size:12.5px;color:#b4bccf;line-height:1.35}
+
+/* Performance: lange, außerhalb des Bildschirms liegende Abschnitte erst beim Hinscrollen layouten (Inhalt bleibt vollständig im DOM) */
+#view .sqsec,#view .sqwk,#view .hs-c{content-visibility:auto;contain-intrinsic-size:auto 320px}
+
+/* Einheitliche Bottom-Sheets (Gym-Werkzeuge, Pause, Übungsinfo, Readiness, Übungstausch, Notizen) */
+html[data-theme="blue"] .gplan .gp-in,html[data-theme="blue"] .sheet-in,html[data-theme="blue"] .gxi-p0,html[data-theme="blue"] .jrs{border-radius:28px 28px 0 0!important;border:1px solid rgba(150,172,255,.26)!important;border-bottom:0!important;
+ background:radial-gradient(120% 45% at 20% 0%,rgba(60,96,230,.24),rgba(0,0,0,0) 62%),linear-gradient(180deg,#121a33,#0a0d1a 42%,#080a14)!important;box-shadow:0 -24px 60px -24px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.12)!important}
+html[data-theme="blue"] #gym .gdock .mid small{letter-spacing:.04em}
+</style>
+<style id="cf-home2">
+/* ===== Heute 2.0: Zustand mit Readiness-Ring und Kennzahl-Zeilen, Hero-Feinschliff ===== */
+#view .card.jr .jr-art{opacity:.35}
+#view .jr-hero{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;margin:10px 0 4px}
+#view .jr-ring{position:relative;width:118px;height:118px;flex:none}
+#view .jr-ring svg{display:block;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--zc) 55%,transparent))}
+#view .jr-ring svg circle:first-child{stroke:rgba(255,255,255,.08)}
+#view .jr-ring .jr-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0!important;gap:0}
+#view .jr-ring .jr-num b{font:900 40px/1 var(--d);letter-spacing:-.03em;color:#fff}
+#view .jr-ring .jr-num em{font-style:normal;font-size:12px;font-weight:700;color:var(--ink2);margin-top:2px}
+#view .jr-side{display:grid;gap:4px;min-width:0}
+#view .jr-side .jr-z{margin:0!important;font-size:clamp(20px,6vw,24px)!important;line-height:1.1;color:var(--zc)!important;overflow-wrap:anywhere}
+#view .jr-side .jr-s{margin:0!important;font-size:13.5px;line-height:1.4;color:#d8dcea}
+#view .jr-side .jr-d{position:static!important;display:inline-flex!important;align-items:baseline;gap:6px;margin-top:4px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);justify-self:start}
+#view .jr-side .jr-d b{font-size:14px}#view .jr-side .jr-d small{font-size:11.5px;color:var(--ink2)}
+#view .jr-ms{display:grid;gap:8px;margin:0 0 12px}
+#view .jr-mr{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,38%) 40px;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+#view .jr-ml{display:grid;min-width:0;line-height:1.2}#view .jr-ml b{font-size:14.5px;color:#fff}#view .jr-ml small{font-size:11.5px;color:var(--ink2);overflow-wrap:anywhere}
+#view .jr-mb{height:7px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}#view .jr-mb em{display:block;height:100%;border-radius:inherit;box-shadow:0 0 8px currentColor}
+#view .jr-mv{font:800 18px var(--d);text-align:right;font-variant-numeric:tabular-nums}
+#view .jr-erh .erh-b button{min-height:44px}
+@media (max-width:359px){#view .jr-hero{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}#view .jr-side .jr-d{justify-self:center}#view .jr-mr{grid-template-columns:minmax(0,1fr) 34%  36px;padding:9px 10px}}
+</style>
+<style id="cf-trainnav2">
+/* ===== Training 2.0: Programm-, Wochen- und Tagesnavigation, Übungskarten ===== */
+html[data-theme="blue"] .progsw button{min-height:44px!important;border-radius:14px!important;border:1px solid rgba(205,218,255,.14)!important;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+html[data-theme="blue"] .progsw button[aria-pressed="true"]{background:linear-gradient(180deg,#3d63f5,#2945c4)!important;border-color:rgba(170,190,255,.75)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 20px -10px rgba(61,99,245,.95)}
+html[data-theme="blue"] .progsw button[aria-pressed="true"] b,html[data-theme="blue"] .progsw button[aria-pressed="true"] small{color:#fff!important}
+html[data-theme="blue"] .progsw button i{background:rgba(255,255,255,.08)}
+html[data-theme="blue"] .tlc{border-radius:14px!important;min-height:44px}
+html[data-theme="blue"] .tlc.sel{background:linear-gradient(180deg,#5e80ff,#3d63f5)!important;border-color:rgba(200,212,255,.9)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 22px -10px rgba(61,99,245,1)!important}
+html[data-theme="blue"] .tlc.sel small,html[data-theme="blue"] .tlc.sel b{color:#fff!important}
+html[data-theme="blue"] .tlc.done:not(.sel){border-color:rgba(67,192,138,.45)!important}
+html[data-theme="blue"] .tlh .tlwk{border-radius:8px}
+/* Übungskarten */
+html[data-theme="blue"] #view .blk.mini2 .bn{width:28px;height:28px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03))!important;color:#dfe5f7!important;border:1px solid rgba(205,218,255,.25)!important;font-size:12.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-theme="blue"] #view .blk.mini2.next .bn{background:linear-gradient(180deg,#5e80ff,#3d63f5)!important;color:#fff!important;border-color:rgba(200,212,255,.8)!important}
+html[data-theme="blue"] #view .blk.mini2.done .bn{background:rgba(67,192,138,.18)!important;color:#7fe0b4!important;border-color:rgba(67,192,138,.45)!important}
+html[data-theme="blue"] #view .blk.mini2 .mn b{font-size:16px;letter-spacing:-.005em}
+html[data-theme="blue"] #view .blk.mini2 .mn>small{font:800 13.5px var(--d);color:#c9d4ff;letter-spacing:.01em}
+html[data-theme="blue"] #view .blk.mini2 .mx{font-size:13.5px;line-height:1.45;color:#d3d8e6}
+html[data-theme="blue"] #view .blk.mini2 .mr{display:inline-block;margin-top:2px;padding:2px 8px;border-radius:999px;background:rgba(127,152,255,.12);border:1px solid rgba(127,152,255,.28);font-size:11.5px!important;font-weight:700;color:#b9c7ff!important}
+</style>
+<style id="cf-coachq2">
+/* ===== Coach 2.0: Ring in der Statuskarte · Quests 2.0: „Weiterlesen“ in langen Abschnitten ===== */
+body[data-tab="coach"] #view .chb-ring{position:relative;display:grid;place-items:center;width:64px;height:64px}
+body[data-tab="coach"] #view .chb-ring svg{position:absolute;inset:0}
+body[data-tab="coach"] #view .chb-ring svg circle:first-child{stroke:rgba(255,255,255,.08)}
+body[data-tab="coach"] #view .chb-ring>span{position:relative;font-size:13px;font-weight:800;color:#9fb3ff}
+body[data-tab="coach"] #view .chb-ring>span b{font-size:21px!important;color:#fff}
+body[data-tab="coach"] #view .chb-p{justify-items:center!important}
+#view .sqmore{margin-top:6px;border-top:1px solid var(--cf-line,rgba(205,218,255,.12));padding-top:4px}
+#view .sqmore summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;color:#9fb3ff;font-weight:800;font-size:14.5px}
+#view .sqmore summary::-webkit-details-marker{display:none}
+#view .sqmore summary small{font-size:12.5px;font-weight:700;color:var(--ink2)}
+#view .sqmore summary .wch{margin-left:auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;transition:transform var(--mo-1)}
+#view .sqmore[open] summary .wch{transform:rotate(180deg)}#view .sqmore summary .c,#view .sqmore[open] summary .o,#view .sqmore[open] summary small{display:none}#view .sqmore[open] summary .c{display:inline}
 </style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
@@ -3916,7 +3989,10 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-errcopy]')){con
  if(e.target.closest('[data-errclear]')){cfErr.clear();toast('Fehlerprotokoll geleert');render()}});
 function backupHTML(){watchBackups();const L=BK.list;
  const rows=L?L.slice(0,12).map(x=>{const dt=new Date(x.d.at||0);return `<li><span><b>${dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})} · ${dt.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</b><small>${x.d.ok||0} erledigte Sätze</small></span><button type="button" class="btn sm" data-bkfill="${esc(x.id)}">Ergänzen</button></li>`}).join(''):'';
- return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
+ // Status getrennt nach Speicherort: automatische Sicherung auf diesem Gerät ≠ Sicherungsdatei (iCloud/Dateien)
+ const ex=bkAge(),cloud=PWA?'iCloud':'Sicherungsdatei',dt=BK.last?new Date(BK.last):null;
+ const st=`<div class="bkst" role="list"><span class="bks ${dt?'ok':'wait'}" role="listitem"><i></i><b>${PWA?'Auf dem iPhone':'Auf diesem Gerät'}</b><small>${dt?'automatisch gesichert · zuletzt '+dt.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'automatisch – erster Stand folgt mit der nächsten Eingabe'}</small></span><span class="bks ${ex==null?'warn':ex>7?'warn':'ok'}" role="listitem"><i></i><b>${cloud}</b><small>${ex==null?'noch keine Sicherung gespeichert':ex===0?'zuletzt heute gesichert':ex===1?'zuletzt gestern gesichert':'zuletzt vor '+ex+' Tagen gesichert'}</small></span></div>`;
+ return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
   <li><span><b>Auf dem Gerät:</b> Zusätzlich liegt immer eine Kopie im Gerätespeicher – auch offline.</span></li></ul>
@@ -4195,7 +4271,7 @@ function coachHubHTML(){const nd=ND(),nw=NW();const today=new Date();today.setHo
  const ring=x=>{const f=x.st==='ana'||x.st==='fin'?1:x.tot?x.dn/x.tot:0,C=2*Math.PI*15;return `<svg class="chr-r" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" class="chr-rt"/>${f>0?`<circle cx="18" cy="18" r="15" class="chr-rf" stroke-dasharray="${(C*f).toFixed(2)} ${C.toFixed(2)}" transform="rotate(-90 18 18)"/>`:''}</svg>`};
  const rows=wk.map(x=>`<button type="button" class="chr ${x.st} ${x.w===c.w?'cur':''}" data-coachw="${x.w}"><span class="chr-i">${ring(x)}${x.st==='ana'?icon.ana:x.st==='fin'?icon.fin:x.st==='run'?`<span class="chr-pn">${x.dn}</span>`:''}</span><span class="chr-m"><b>W${x.w+1} · ${esc(WEEKS[x.w]||'')}</b><small>${x.st==='ana'?`Analysiert${x.a.at?' am '+new Date(x.a.at).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):''}`:x.st==='fin'?'Fertig – jetzt senden':x.st==='run'?`Läuft · ${x.dn}/${x.tot} Einheiten`:`Geplant · ${x.tot} Einheiten`}</small>${x.st==='ana'&&x.a.text?`<em>„${esc(anaSnip(x.a.text))}…“</em>`:''}</span><svg class="chr-c" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`).join('');
  const outN=Object.values(S.out||{}).filter(o=>o.status==='bereit').length;
- return `<section class="card cwk chb"><p class="eyebrow">Wochenanalyse · ${esc(PROGS[PROG].short)}</p><div class="chb-h"><h2 class="h2">Woche ${c.w+1} · ${esc(WEEKS[c.w]||'')}</h2><span class="chb-p" aria-label="${c.dn} von ${c.tot} Einheiten"><span><b>${c.dn}</b>/${c.tot}</span><small>Einheiten</small></span></div>
+ return `<section class="card cwk chb"><p class="eyebrow">Wochenanalyse · ${esc(PROGS[PROG].short)}</p><div class="chb-h"><h2 class="h2">Woche ${c.w+1} · ${esc(WEEKS[c.w]||'')}</h2><span class="chb-p" aria-label="${c.dn} von ${c.tot} Einheiten"><span class="chb-ring">${ringSVG(pct,'#6f8cff',64,6)}<span><b>${c.dn}</b>/${c.tot}</span></span><small>Einheiten</small></span></div>
   <div class="chb-bar"><i style="width:${pct*100}%"></i></div>${cta}${first&&c.st!=='fin'?`<p class="chb-f">Deine erste Analyse kommt nach Woche 1 – Claude liest dann alle Sätze, RPE-Werte, Pausen und Notizen.</p>`:''}</section>
   <section class="card cwk chl"><p class="eyebrow">Alle Wochen</p><div class="chl-g">${rows}</div></section>
   <button type="button" class="cwk chc" data-tdk="cockpit"><span class="chc-i"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></span><span class="chc-m"><b>Cockpit · Postausgang</b><small>${outN?outN+' '+(outN===1?'Paket':'Pakete')+' bereit zum Teilen':'Keine Pakete bereit'}</small></span>${outN?`<em class="chc-n">${outN}</em>`:''}<svg class="chr-c" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`}
@@ -4735,8 +4811,8 @@ function jrCardHTML(){const m=jrDays();const ks=Object.keys(m).sort();if(!ks.len
  const lk=ks[ks.length-1],cur=m[lk],pv=ks.length>1?m[ks[ks.length-2]]:null,z=jrZone(cur.v),dl=pv?cur.v-pv.v:null;
  const dt=new Date(lk+'T12:00:00');const ds=isoD(new Date())===lk?'heute':dt.toLocaleDateString('de-DE',{day:'numeric',month:'short'});
  return `<section class="card jr" style="--zc:${z.c}">${jrPlate(z.c)}<div class="jr-top"><span>Readiness · ${ds}</span><b><i></i>${z.lo}–${z.hi}</b><button type="button" class="jr-i" data-jrinfo aria-label="Bereiche erklären">${jrIc()}</button></div>
-  <div class="jr-num"><b>${cur.v}</b><em>/100</em>${dl!=null?`<div class="jr-d ${dl>0?'up':dl<0?'dn':''}"><b>${dl>0?'↑':dl<0?'↓':'='} ${Math.abs(dl)}</b><small>vs. vorher</small></div>`:''}</div>
-  <h3 class="jr-z">${z.n}</h3><p class="jr-s">${z.s}</p>
+  <div class="jr-hero"><div class="jr-ring">${ringSVG(Math.max(0,Math.min(100,cur.v))/100,z.c,118,9)}<div class="jr-num"><b>${cur.v}</b><em>/100</em></div></div>
+   <div class="jr-side"><h3 class="jr-z">${z.n}</h3><p class="jr-s">${z.s}</p>${dl!=null?`<div class="jr-d ${dl>0?'up':dl<0?'dn':''}"><b>${dl>0?'↑':dl<0?'↓':'='} ${Math.abs(dl)}</b><small>vs. vorher</small></div>`:''}</div></div>
   <div class="jr-win"><div class="jr-wh"><span>Letzte 7 Tage</span><span class="jr-lg"><i class="a"></i>Aktuell${pv?'<i class="b"></i>Vorher':''}</span></div>${jrChart(m,cur,z)}</div>
   <p class="jr-src">Aus ${cur.n} Check-in-Antworten (${cur.src}${cur.f?' · '+esc(cur.f):''}) · WHOOP fließt nicht ein</p></section>`}
 function jrIc(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>'}
@@ -5770,7 +5846,8 @@ function sqHTML(){const fam=S.ui.sqd;const act=sqActive();
   <p class="sqlead">Eigenständige Programme aus Canditos Tabellen – 1:1 nachgebaut. Sie laufen unabhängig von deinem Jahresplan; nach dem Ende geht es mit deiner Phase weiter.</p>
   ${hero}<div class="sqlib">${SQORD.map(card).join('')}</div>`}
 function sqDetail(fam){const F=SQF[fam],vs=sqVs(fam);if(!S.ui.sqv||!vs.includes(S.ui.sqv))S.ui.sqv=vs[0];const id=S.ui.sqv,v=SQV[id];const act=sqActive();
- const sec=s=>`<section class="card sqsec"><h3 class="h2" style="font-size:17px">${esc(s.t)}</h3><ul class="sqli">${(s.items==='SQ6INFO'?SQ6INFO.map(esc):s.items).map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
+ const sec=s=>{const it=(s.items==='SQ6INFO'?SQ6INFO.map(esc):s.items).map(x=>`<li>${x}</li>`);const K=4;
+  return `<section class="card sqsec"><h3 class="h2" style="font-size:17px">${esc(s.t)}</h3><ul class="sqli">${it.slice(0,it.length>K+1?K:it.length).join('')}</ul>${it.length>K+1?`<details class="sqmore"><summary><span class="o">Weiterlesen</span><span class="c">Weniger anzeigen</span><small>${it.length-K} weitere Punkte</small><svg class="wch" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><ul class="sqli">${it.slice(K).join('')}</ul></details>`:''}</section>`};
  const key=(v.key||[]).filter(k=>k[0]&&k[1]&&/\(|Hype/.test(k[0]));
  const weeks=v.P.map((wk,w)=>`<details class="card sqwk"><summary><span class="wn">${w+1}</span><b>${esc(v.WEEKS[w])}</b><svg class="wch" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><div class="sqdays">${wk.map((day,d)=>`<div class="sqday"><b>${esc(v.DAYS[d].tag)} · ${esc(v.DAYS[d].wdl)}</b><small>${esc(day.f)}</small><ul>${day.b.map(bl=>`<li><span>${esc(EX[bl.e].n)}${bl.opt?' <em>(optional)</em>':''}</span><i>${esc(bl.x)}</i></li>`).join('')}</ul></div>`).join('')}</div></details>`).join('');
  const need=fam==='w6'?['SQ','BP','DL']:F.pct;const m=(S.meta.sq1rm&&S.meta.sq1rm[fam])||{};
@@ -5858,10 +5935,12 @@ function markEmpty(v){v.querySelectorAll('.ptile').forEach(t=>{const b=t.querySe
 function erhInner(ks){const R=readiness();const rest=!todayTraining();const ro=(S.meta.rest||{})[isoD(new Date())];const rs=rest?restScore(ro):null;
  const ring=(v,l,col)=>{const ok=v!=null&&!isNaN(v);const c=ok?(col||rfCol(v)):'rgba(255,255,255,.2)';const o=ok?100-Math.max(0,Math.min(100,v)):100;return `<div><span class="erh-ring"><svg viewBox="0 0 74 74"><circle class="bg" cx="37" cy="37" r="30"/><circle class="fg" cx="37" cy="37" r="30" pathLength="100" stroke-dasharray="100" stroke-dashoffset="${o}" stroke="${c}" ${ok&&v>0?'':'stroke-opacity="0"'}/></svg><b style="color:${ok?c:'var(--mut)'}">${ok?Math.round(v):'–'}</b></span><small>${l}</small></div>`};
  const jv=R&&R.feel?R.feel.score:null;const jz=jv!=null?jrZone(jv):null;
- const rings=[ring(jv,'Readiness',jz&&jz.c),ring(R&&R.body&&R.body.v?R.body.v.rec:null,'Recovery'),ring(R&&R.perf?R.perf.score:null,'Leistung')];if(rest)rings.push(ring(rs,'Ruhetag'));
  const vd=!R?'Noch keine nächste Einheit':jz?jz.n+(R.perfLow?' · Leistung sinkt':''):R.perf?'Kein Check-in · Leistung '+rfLbl(R.perf.score).toLowerCase():'Check-in & WHOOP fehlen noch';
  const bt=[];if(ks.includes('ready'))bt.push(`<button type="button" class="pri" data-tdk="ready">Details & Check-in</button>`);if(ks.includes('whoop'))bt.push(`<button type="button" data-tdk="whoop">WHOOP</button>`);if(rest&&ks.includes('rest'))bt.push(`<button type="button" data-tdk="rest">Ruhetag</button>`);
- const rr=rings.slice(1);return `<div class="erh jr-erh"><div class="erh-r" style="--n:${rr.length}">${rr.join('')}</div>${bt.length?`<div class="erh-b">${bt.join('')}</div>`:''}</div>`}
+ // Kennzahlen als Balkenzeilen (gleiche Werte wie bisher): Recovery aus WHOOP, Leistung aus den letzten Einheiten, ggf. Ruhetag
+ const bar=(v,l,sub)=>{const ok=v!=null&&!isNaN(v);const c=ok?rfCol(v):'rgba(255,255,255,.2)';return `<div class="jr-mr" role="listitem"><span class="jr-ml"><b>${l}</b><small>${ok?sub:sub+' · keine Daten'}</small></span><span class="jr-mb" aria-hidden="true"><em style="width:${ok?Math.max(0,Math.min(100,v)):0}%;background:${c}"></em></span><b class="jr-mv" style="color:${ok?c:'var(--mut)'}">${ok?Math.round(v):'–'}</b></div>`};
+ const rr=[bar(R&&R.body&&R.body.v?R.body.v.rec:null,'Recovery','WHOOP'),bar(R&&R.perf?R.perf.score:null,'Leistung','letzte Einheiten')];if(rest)rr.push(bar(rs,'Ruhetag','Erholungs-Check-in'));
+ return `<div class="erh jr-erh"><div class="jr-ms" role="list">${rr.join('')}</div>${bt.length?`<div class="erh-b">${bt.join('')}</div>`:''}</div>`}
 function zustandHTML(){const ks=window.__homeKs||[];let inner='';try{inner=erhInner(ks)}catch(e){inner=''}const jr=jrCardHTML();const hd='<div class="phead hsec"><h2 class="sect" style="margin:0">Zustand</h2><span class="phs">Readiness · Recovery · Leistung</span></div>';return hd+jr.replace(/<\/section>$/,inner+'</section>')}
 function tileize(v,tab){const C=TCFG[tab];if(!C)return;if(!S.ui.tdet)S.ui.tdet={};
  const kids=[...v.children];const match=(c,e)=>typeof c.m==='string'?e.matches(c.m):c.m instanceof RegExp?c.m.test(tx(e,'h2,.eyebrow')||tx(e).slice(0,40)):c.m(e);
@@ -7065,7 +7144,7 @@ function fitKg(){const cv=fitKg.c||(fitKg.c=document.createElement('canvas').get
 document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#gym .gdock .mid'))fitKg()});document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#gym [data-step]'))setTimeout(fitKg,0)});
 function fitGym(){setTimeout(fitKg,0);setTimeout(()=>{document.querySelectorAll('#gym .gz-why').forEach(e=>{e.classList.toggle('cl',e.scrollHeight>e.clientHeight+2||e.classList.contains('open'))})},0);const g=document.getElementById('gym');if(!g||g.hidden)return;const gi=g.querySelector('.gym-in');if(!gi||G.plan||G.wu||G.rc||G.hi||G.rpo)return;
  const over=()=>g.scrollHeight>g.clientHeight+1;if(!over())return;const gr=gi.querySelector('.grule');const sl=gi.querySelector('.gsl');if(sl){sl.classList.add('cmp');if(!over())return;sl.classList.add('row');if(!over())return}if(gr){gr.classList.add('cmp');if(!over())return}if(sl){sl.remove();if(!over())return}const gp=gi.querySelector('.gprev');if(gp){gp.remove();if(!over())return}gi.classList.add('tight');if(!over())return;gi.classList.add('tight2');if(!over())return;gi.classList.add('tight3');if(!over())return;gi.classList.add('tight4');if(!over())return;gi.classList.add('tight5')}
-{const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);requestAnimationFrame(gpIcons);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
+{const _rg=renderGym;renderGym=function(){_rg.apply(this,arguments);{const lb=document.querySelector('#gym [data-g="log"]');if(lb)lb._set={k:key(S.ui.w,S.ui.d),b:G.b,i:G.i}}requestAnimationFrame(gpIcons);const top=document.querySelector('#gym .gtop');if(top&&!top.querySelector('[data-gplan]')){const x=top.querySelector('[data-g="close"]');x&&x.insertAdjacentHTML('afterend','<button type="button" class="gpbtn" data-gplan="1" aria-label="Tagesplan mit Soll-Werten anzeigen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.2v.1"/></svg><b>Info</b></button>')}
  if(!P[S.ui.w][S.ui.d].b.length){G.hi=false;G.rc=null;G.wu=false;G.rpo=false}
  if(G.hi&&!G.plan&&!G.wu&&!G.rc){const gi=$('#gym .gym-in')||$('#gym');gi.insertAdjacentHTML('beforeend',gymHiHTML())}
  if(G.rpo&&!G.plan&&!G.wu){requestAnimationFrame(rpCenter);const gi=$('#gym .gym-in')||$('#gym');const {w,d}=S.ui;gi.insertAdjacentHTML('beforeend',`<div class="gplan rcs rpo" role="dialog" aria-modal="true" aria-label="RPE-Planer"><div class="gp-in"><div class="gp-top"><div><p class="eyebrow" style="color:#5ad1e6">RPE-Planer</p><h2>1RM & Last je RPE</h2><p class="gp-f">${esc(EX[P[w][d].b[G.b].e].n)} · Satz ${G.i+1}</p></div><button type="button" class="iconbtn" data-rpclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>${rpHTML()}</div></div>`)}
@@ -7101,7 +7180,12 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(g==='prevset'){gymSwipe(-1);return}if(g==='nextset'){gymSwipe(1);return}
  if(g==='prev'){G.b--;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=-1;renderGym();$('#gym').scrollTop=0}
  if(g==='next'){G.b++;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=1;renderGym();$('#gym').scrollTop=0}
- if(g==='log'){const pn=performance.now();if(G.logAt&&pn-G.logAt<650)return;G.logAt=pn; // Schutz vor Doppelbuchung (Doppeltipp/zweites Wischen direkt hintereinander)
+ if(g==='log'){// Schutz vor Doppelbuchung, zustandsbasiert: (1) der Knopf trägt den Satz, für den er gezeichnet wurde – passt er nicht
+  // mehr zum aktuellen Satz/Tag, wird nichts gebucht; (2) während ein Abschluss verarbeitet und neu gezeichnet wird, ist keine
+  // zweite Buchung möglich (frei erst, wenn die neue Ansicht steht; Sicherheitsnetz 1,5 s, falls die Seite im Hintergrund ist)
+  const btn=e.target.closest('[data-g="log"]'),tok=btn&&btn._set;
+  if(G.busy)return;if(tok&&(tok.k!==key(w,d)||tok.b!==G.b||tok.i!==G.i))return;
+  G.busy=true;const free=()=>{G.busy=false};requestAnimationFrame(()=>requestAnimationFrame(free));setTimeout(free,1500);
   const cv=curVals();const s=cv.s;
   if(!s.ok){if(cv.kg!=null)s.kg=nf(cv.kg,2);if(cv.r!=null)s.r=String(cv.r);completeSet(w,d,G.b,G.i);G.just={k:key(w,d),b:G.b,i:G.i,t:Date.now()}}
   const ob=G.b,oi=G.i;const nx=nextOpen(w,d,G.b,G.i);if(nx&&!(nx.b<G.b)){G.b=nx.b;G.i=nx.i}else if(G.i<cv.bl.s-1)G.i++;
@@ -7372,10 +7456,10 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   </div>
   <div class="gdock"><div class="gdock-in">
   <div class="stp2"><div class="card stp"><button type="button" data-step="kg" data-v="-${exInc(P[S.ui.w][S.ui.d].b[G.b].e)}" aria-label="Gewicht verringern">−</button>
-    <div class="mid"><small ${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'class="emp"':''}>${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'Empfehlung':'kg'}</small><input id="g-kg" data-gf="kg" inputmode="decimal" value="${kg!=null?nf(kg,2):''}" placeholder="–" aria-label="Gewicht"></div>
+    <div class="mid"><small ${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'class="emp"':''}>${pnum(s.kg)==null&&sg.kg!=null&&kg===sg.kg&&sg.t!=='v'?'Empfehlung':'Ist · kg'}</small><input id="g-kg" data-gf="kg" inputmode="decimal" value="${kg!=null?nf(kg,2):''}" placeholder="–" aria-label="Gewicht"></div>
     <button type="button" data-step="kg" data-v="${exInc(P[S.ui.w][S.ui.d].b[G.b].e)}" aria-label="Gewicht erhöhen">+</button></div>
   <div class="card stp"><button type="button" data-step="r" data-v="-1" aria-label="Wiederholungen verringern">−</button>
-    <div class="mid"><small>Wdh.${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</small><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></div>
+    <div class="mid"><small>Ist · Wdh.${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</small><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></div>
     <button type="button" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></div>
   ${(()=>{const RL=setRule(bl);const need=RL.need(G.i);const open=need||rpe!=null||G.rpeOpen===G.b+'-'+G.i;const over=RL.cap!=null&&rpe!=null&&rpe>RL.cap+1e-9;const tgt=bl.rpe!=null?bl.rpe:RL.cap!=null?RL.cap:RL.rpe;
    if(!open)return `<div class="grpe opt g2opt"><button type="button" class="rpeopen" data-rpeopen><span>RPE · optional – laut Plan ${bl.rpe!=null&&RL.mode==='first'?'nur im 1. Satz':bl.rpe!=null&&RL.mode==='last'?'nur im letzten Satz':'nicht nötig'}</span><b>+ eintragen</b></button></div>`;

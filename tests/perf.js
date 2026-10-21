@@ -8,7 +8,7 @@ const port=+(process.argv[2]||8766),N=+(process.argv[3]||7),THR=+(process.argv[4
   await p.waitForFunction(()=>document.getElementById('view')&&document.getElementById('view').children.length>0);
   st.push(await p.evaluate(()=>{const n=performance.getEntriesByType('navigation')[0];const fcp=performance.getEntriesByName('first-contentful-paint')[0];return {dcl:Math.round(n.domContentLoadedEventEnd),load:Math.round(n.loadEventEnd),fcp:fcp?Math.round(fcp.startTime):null}}));await c.close()}
  res.start=st;
- const p=await openPage(b,port,{width:390,height:844,scale:2,fixedTime:'2026-10-22T17:00:00+02:00'});
+ const p=await openPage(b,port,{width:390,height:844,scale:2,fixedTime:'2026-10-22T17:00:00+02:00',cv:true});
  if(THR>1){const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setCPUThrottlingRate',{rate:THR})}
  await seed(p,12,{pids:['intro','p8'],kg:100});
  const med=a=>{a=[...a].sort((x,y)=>x-y);return +a[Math.floor(a.length/2)].toFixed(1)};

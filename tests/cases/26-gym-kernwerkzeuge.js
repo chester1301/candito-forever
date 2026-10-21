@@ -13,6 +13,14 @@ module.exports={name:'Gym-Kernwerkzeuge – Satz, Warm-up, RPE-Planer, Timer, In
   await p.evaluate(()=>{const b=document.querySelector('#gym [data-g="log"]');b._ok=true;b.click();const b2=document.querySelector('#gym [data-g="log"]');if(b2){b2._ok=true;b2.click()}});await p.waitForTimeout(250);
   const d1=await p.evaluate(()=>({ok:log(0,3).b[0].filter(z=>z.ok).length,i:G.i}));
   t.ok(d1.ok===1&&d1.i===1,`Doppeltipp: genau 1 Satz gebucht, weiter zu Satz 2 (${JSON.stringify(d1)})`);
+  // Veralteter Knopf (gehört zu Satz 1, der schon gebucht ist) bucht nichts – unabhängig von der Zeit
+  await p.waitForTimeout(400);
+  const st=await p.evaluate(()=>{const b=document.querySelector('#gym [data-g="log"]');const keep=b._set;b._set={k:keep.k,b:0,i:0};b._ok=true;b.click();const r={ok:log(0,3).b[0].filter(z=>z.ok).length,i:G.i};b._set=keep;return r});
+  t.ok(st.ok===1&&st.i===1,`Knopf mit veraltetem Satzzustand wird ignoriert (${JSON.stringify(st)})`);
+  // Nach dem Neuaufbau ist der nächste echte Abschluss sofort möglich (keine starre Wartezeit)
+  const nx=await p.evaluate(()=>new Promise(res=>requestAnimationFrame(()=>requestAnimationFrame(()=>{try{stopRest();closeSheet()}catch(e){}const b=document.querySelector('#gym [data-g="log"]');b._ok=true;b.click();res({ok:log(0,3).b[0].filter(z=>z.ok).length,i:G.i})}))));
+  t.ok(nx.ok===2&&nx.i===2,`Nächster Satz direkt nach dem Neuaufbau buchbar (${JSON.stringify(nx)})`);
+  await p.evaluate(()=>{const L=log(0,3);L.b[0][1].ok=false;L.b[0][1].kg=null;L.b[0][1].r=null;saveLog(key(0,3));G.i=1;renderGym()});await p.waitForTimeout(100);
   try{await p.evaluate(()=>{try{stopRest()}catch(e){}try{closeSheet()}catch(e){}})}catch(e){}
   t.ok(await p.evaluate(()=>{const s=log(0,3).b[0][1];return s.rpe==null&&!document.querySelector('#gym .rpe1 [aria-pressed="true"]')}),'Satz 2: RPE wieder leer (keine Übernahme aus Satz 1)');
   await p.waitForTimeout(700);

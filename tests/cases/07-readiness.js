@@ -9,11 +9,12 @@ module.exports={name:'Readiness – Skala, Zonen, Karten, Ruhetag',async run({pa
   t.eq(await seed(p,3,{pids:['intro']}),3,'3 Einheiten angelegt');
   await p.evaluate(()=>{switchProg('intro');const n=nextSession();const L=log(n.w,n.d,true);L.feel={sleeph:4,energy:5,food:4,strength:4};L.ckAt=Date.now();saveLog(key(n.w,n.d));S.ui.tab='home';render()});
   await p.waitForTimeout(400);
-  const home=await p.evaluate(()=>({jr:document.querySelector('.card.jr .jr-v, .card.jr b')?.textContent,jrTxt:document.querySelector('.card.jr')?.textContent.replace(/\s+/g,' '),erh:[...document.querySelectorAll('.card.jr .erh-ring b')].map(x=>x.textContent),erhL:[...document.querySelectorAll('.card.jr .erh-r small')].map(x=>x.textContent),heads:[...document.querySelectorAll('#view .hsec .sect')].map(x=>x.textContent),zone:document.querySelector('.card.jr .jr-z')?.textContent}));
+  const home=await p.evaluate(()=>({jr:document.querySelector('.card.jr .jr-v, .card.jr b')?.textContent,jrTxt:document.querySelector('.card.jr')?.textContent.replace(/\s+/g,' '),erh:[...document.querySelectorAll('.card.jr .erh-ring b')].map(x=>x.textContent),erhL:[...document.querySelectorAll('.card.jr .jr-ml b')].map(x=>x.textContent),heads:[...document.querySelectorAll('#view .hsec .sect')].map(x=>x.textContent),zone:document.querySelector('.card.jr .jr-z')?.textContent}));
   t.ok(/71\/100/.test(home.jrTxt),'Readiness-Karte: Ø 4,25 → 71');
   t.eq(home.erhL,['Recovery','Leistung'],'Zustand-Karte: Recovery und Leistung neben dem Readiness-Wert');
-  const rg=await p.evaluate(()=>[...document.querySelectorAll('.card.jr .erh-r>div')].map(d=>{const r=d.querySelector('.erh-ring').getBoundingClientRect(),v=d.querySelector('svg').getBoundingClientRect(),l=d.querySelector('small').getBoundingClientRect();return Math.abs(r.width-v.width)<1&&l.top>=v.bottom}));
-  t.ok(rg.length&&rg.every(Boolean),'Zustand-Karte: Ringe passen in ihren Rahmen, Beschriftung darunter');
+  const rg=await p.evaluate(()=>{const c=document.querySelector('.card.jr').getBoundingClientRect();const ring=document.querySelector('.card.jr .jr-ring');const n=ring.querySelector('.jr-num').getBoundingClientRect(),r=ring.getBoundingClientRect();
+    const rows=[...document.querySelectorAll('.card.jr .jr-mr')].map(d=>{const b=d.getBoundingClientRect();return b.left>=c.left&&b.right<=c.right+1&&!!d.querySelector('.jr-mb')});return {inRing:n.left>=r.left&&n.right<=r.right&&n.top>=r.top&&n.bottom<=r.bottom,rows}});
+  t.ok(rg.inRing&&rg.rows.length===2&&rg.rows.every(Boolean),'Zustand-Karte: Readiness-Wert im Ring, Recovery/Leistung als Zeilen in der Karte');
   t.eq(home.heads,['Zustand','Woche'],'Heute-Ansicht in Blöcken Heute · Zustand · Woche');
   t.eq(home.zone,'Sweet Spot','Überschrift = Candito-Zone');
   // Alte Einträge (frühere Fragen) werden weiter gerechnet

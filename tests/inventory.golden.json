@@ -2112,7 +2112,8 @@
   "summary text:3Arbeit im mittleren Wiederh",
   "summary text:4Gewöhnung an schwere Gewich",
   "summary text:5Gewöhnung an schwere Gewich",
-  "summary text:6Taper & Test"
+  "summary text:6Taper & Test",
+  "summary text:WeiterlesenWeniger anzeigen8"
  ],
  "quest-pk8": [
   "button #gear",
@@ -2159,7 +2160,8 @@
   "summary text:5Submax-Einstieg Teil 2",
   "summary text:6Vorgegebene Woche Teil 2",
   "summary text:7Letzte Brücke",
-  "summary text:8Testwoche ohne Limit"
+  "summary text:8Testwoche ohne Limit",
+  "summary text:WeiterlesenWeniger anzeigen3"
  ],
  "quest-rm5": [
   "button #gear",

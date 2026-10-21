@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-0646-8628f55";
+<script>window.CF_VERSION="2026.10.21-0817-789aa18";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2897,6 +2897,79 @@ html[data-theme="blue"] #view .ptile{border-radius:var(--cf-r-tile);border-color
 html[data-theme="blue"] #view .ptile:active,html[data-theme="blue"] #view .card button:active{transform:scale(.985)}
 html[data-theme="blue"] .sect{letter-spacing:-.01em}
 html[data-theme="blue"] #view .pdh .pdb{width:var(--cf-touch);height:var(--cf-touch);border-radius:var(--cf-r-ctl)}
+
+/* Datensicherung: Status je Speicherort */
+#view .bkst{display:grid;gap:8px;margin:6px 0 12px}
+#view .bks{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1px solid var(--cf-line,rgba(205,218,255,.12));background:rgba(255,255,255,.035)}
+#view .bks i{grid-row:1/3;width:10px;height:10px;border-radius:50%;background:#a5aab6}
+#view .bks.ok i{background:#43c08a;box-shadow:0 0 8px rgba(67,192,138,.7)}#view .bks.warn i{background:#e39150;box-shadow:0 0 8px rgba(227,145,80,.6)}
+#view .bks b{font-size:14px;color:#fff}#view .bks small{font-size:12.5px;color:#b4bccf;line-height:1.35}
+
+/* Performance: lange, außerhalb des Bildschirms liegende Abschnitte erst beim Hinscrollen layouten (Inhalt bleibt vollständig im DOM) */
+#view .sqsec,#view .sqwk,#view .hs-c{content-visibility:auto;contain-intrinsic-size:auto 320px}
+
+/* Einheitliche Bottom-Sheets (Gym-Werkzeuge, Pause, Übungsinfo, Readiness, Übungstausch, Notizen) */
+html[data-theme="blue"] .gplan .gp-in,html[data-theme="blue"] .sheet-in,html[data-theme="blue"] .gxi-p0,html[data-theme="blue"] .jrs{border-radius:28px 28px 0 0!important;border:1px solid rgba(150,172,255,.26)!important;border-bottom:0!important;
+ background:radial-gradient(120% 45% at 20% 0%,rgba(60,96,230,.24),rgba(0,0,0,0) 62%),linear-gradient(180deg,#121a33,#0a0d1a 42%,#080a14)!important;box-shadow:0 -24px 60px -24px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.12)!important}
+html[data-theme="blue"] #gym .gdock .mid small{letter-spacing:.04em}
+</style>
+<style id="cf-home2">
+/* ===== Heute 2.0: Zustand mit Readiness-Ring und Kennzahl-Zeilen, Hero-Feinschliff ===== */
+#view .card.jr .jr-art{opacity:.35}
+#view .jr-hero{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;margin:10px 0 4px}
+#view .jr-ring{position:relative;width:118px;height:118px;flex:none}
+#view .jr-ring svg{display:block;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--zc) 55%,transparent))}
+#view .jr-ring svg circle:first-child{stroke:rgba(255,255,255,.08)}
+#view .jr-ring .jr-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0!important;gap:0}
+#view .jr-ring .jr-num b{font:900 40px/1 var(--d);letter-spacing:-.03em;color:#fff}
+#view .jr-ring .jr-num em{font-style:normal;font-size:12px;font-weight:700;color:var(--ink2);margin-top:2px}
+#view .jr-side{display:grid;gap:4px;min-width:0}
+#view .jr-side .jr-z{margin:0!important;font-size:clamp(20px,6vw,24px)!important;line-height:1.1;color:var(--zc)!important;overflow-wrap:anywhere}
+#view .jr-side .jr-s{margin:0!important;font-size:13.5px;line-height:1.4;color:#d8dcea}
+#view .jr-side .jr-d{position:static!important;display:inline-flex!important;align-items:baseline;gap:6px;margin-top:4px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);justify-self:start}
+#view .jr-side .jr-d b{font-size:14px}#view .jr-side .jr-d small{font-size:11.5px;color:var(--ink2)}
+#view .jr-ms{display:grid;gap:8px;margin:0 0 12px}
+#view .jr-mr{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,38%) 40px;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+#view .jr-ml{display:grid;min-width:0;line-height:1.2}#view .jr-ml b{font-size:14.5px;color:#fff}#view .jr-ml small{font-size:11.5px;color:var(--ink2);overflow-wrap:anywhere}
+#view .jr-mb{height:7px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}#view .jr-mb em{display:block;height:100%;border-radius:inherit;box-shadow:0 0 8px currentColor}
+#view .jr-mv{font:800 18px var(--d);text-align:right;font-variant-numeric:tabular-nums}
+#view .jr-erh .erh-b button{min-height:44px}
+@media (max-width:359px){#view .jr-hero{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}#view .jr-side .jr-d{justify-self:center}#view .jr-mr{grid-template-columns:minmax(0,1fr) 34%  36px;padding:9px 10px}}
+</style>
+<style id="cf-trainnav2">
+/* ===== Training 2.0: Programm-, Wochen- und Tagesnavigation, Übungskarten ===== */
+html[data-theme="blue"] .progsw button{min-height:44px!important;border-radius:14px!important;border:1px solid rgba(205,218,255,.14)!important;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+html[data-theme="blue"] .progsw button[aria-pressed="true"]{background:linear-gradient(180deg,#3d63f5,#2945c4)!important;border-color:rgba(170,190,255,.75)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 20px -10px rgba(61,99,245,.95)}
+html[data-theme="blue"] .progsw button[aria-pressed="true"] b,html[data-theme="blue"] .progsw button[aria-pressed="true"] small{color:#fff!important}
+html[data-theme="blue"] .progsw button i{background:rgba(255,255,255,.08)}
+html[data-theme="blue"] .tlc{border-radius:14px!important;min-height:44px}
+html[data-theme="blue"] .tlc.sel{background:linear-gradient(180deg,#5e80ff,#3d63f5)!important;border-color:rgba(200,212,255,.9)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 22px -10px rgba(61,99,245,1)!important}
+html[data-theme="blue"] .tlc.sel small,html[data-theme="blue"] .tlc.sel b{color:#fff!important}
+html[data-theme="blue"] .tlc.done:not(.sel){border-color:rgba(67,192,138,.45)!important}
+html[data-theme="blue"] .tlh .tlwk{border-radius:8px}
+/* Übungskarten */
+html[data-theme="blue"] #view .blk.mini2 .bn{width:28px;height:28px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03))!important;color:#dfe5f7!important;border:1px solid rgba(205,218,255,.25)!important;font-size:12.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-theme="blue"] #view .blk.mini2.next .bn{background:linear-gradient(180deg,#5e80ff,#3d63f5)!important;color:#fff!important;border-color:rgba(200,212,255,.8)!important}
+html[data-theme="blue"] #view .blk.mini2.done .bn{background:rgba(67,192,138,.18)!important;color:#7fe0b4!important;border-color:rgba(67,192,138,.45)!important}
+html[data-theme="blue"] #view .blk.mini2 .mn b{font-size:16px;letter-spacing:-.005em}
+html[data-theme="blue"] #view .blk.mini2 .mn>small{font:800 13.5px var(--d);color:#c9d4ff;letter-spacing:.01em}
+html[data-theme="blue"] #view .blk.mini2 .mx{font-size:13.5px;line-height:1.45;color:#d3d8e6}
+html[data-theme="blue"] #view .blk.mini2 .mr{display:inline-block;margin-top:2px;padding:2px 8px;border-radius:999px;background:rgba(127,152,255,.12);border:1px solid rgba(127,152,255,.28);font-size:11.5px!important;font-weight:700;color:#b9c7ff!important}
+</style>
+<style id="cf-coachq2">
+/* ===== Coach 2.0: Ring in der Statuskarte · Quests 2.0: „Weiterlesen“ in langen Abschnitten ===== */
+body[data-tab="coach"] #view .chb-ring{position:relative;display:grid;place-items:center;width:64px;height:64px}
+body[data-tab="coach"] #view .chb-ring svg{position:absolute;inset:0}
+body[data-tab="coach"] #view .chb-ring svg circle:first-child{stroke:rgba(255,255,255,.08)}
+body[data-tab="coach"] #view .chb-ring>span{position:relative;font-size:13px;font-weight:800;color:#9fb3ff}
+body[data-tab="coach"] #view .chb-ring>span b{font-size:21px!important;color:#fff}
+body[data-tab="coach"] #view .chb-p{justify-items:center!important}
+#view .sqmore{margin-top:6px;border-top:1px solid var(--cf-line,rgba(205,218,255,.12));padding-top:4px}
+#view .sqmore summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;color:#9fb3ff;font-weight:800;font-size:14.5px}
+#view .sqmore summary::-webkit-details-marker{display:none}
+#view .sqmore summary small{font-size:12.5px;font-weight:700;color:var(--ink2)}
+#view .sqmore summary .wch{margin-left:auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;transition:transform var(--mo-1)}
+#view .sqmore[open] summary .wch{transform:rotate(180deg)}#view .sqmore summary .c,#view .sqmore[open] summary .o,#view .sqmore[open] summary small{display:none}#view .sqmore[open] summary .c{display:inline}
 </style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
@@ -3869,7 +3942,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.8628f55.js"></script>
+<script src="assets/app-0.789aa18.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */

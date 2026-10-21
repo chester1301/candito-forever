@@ -45,6 +45,10 @@ module.exports={name:'Side-Quest-Redesign – Bibliothek, Details, Versionen, St
   await p.evaluate(()=>scrollTo(0,0));await p.waitForTimeout(450);
   t.ok(await p.evaluate(()=>!document.body.classList.contains('tcb-on')&&document.querySelector('header.top').getBoundingClientRect().top===0),'Am Seitenanfang wieder voller Kopf');
   await p.close();
+  // Mit Render-Optimierung (content-visibility): Abschnitte weit unten werden beim Hinscrollen vollständig gezeichnet
+  {const q=await page({width:390,height:844,cv:true});await q.evaluate(()=>{S.ui.tab='sq';S.ui.sqd='w6';S.ui.sqv=null;render();scrollTo(0,0)});
+   const far=await q.evaluate(async()=>{const ws=[...document.querySelectorAll('#view .sqwk')];const last=ws[ws.length-1];last.scrollIntoView();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const r=last.getBoundingClientRect();return {h:Math.round(r.height),txt:last.textContent.length,top:Math.round(r.top)}});
+   t.ok(far.h>30&&far.txt>5&&far.top<844,`Letzte Trainingswoche wird nach dem Scrollen gezeichnet (${JSON.stringify(far)})`);await q.close()}
   // Layout 390/320: kein Überlaufen, alle Knöpfe antippbar, nichts abgeschnitten
   for(const W of [390,320]){const q=await page({width:W,height:W===320?640:844,fixedTime:'2026-10-21T18:00:00+02:00'});
     const bad=await q.evaluate(()=>{const out=[];const nav=document.getElementById('nav').getBoundingClientRect().top;
