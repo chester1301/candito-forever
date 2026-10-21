@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-1132-b583c88</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-1337-f10d62b</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -1766,6 +1766,25 @@ function ckRestHTML(){const o=(S.meta.rest||{})[CK.rest]||{};const f=o.feel||{};
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung. Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
  <div class="ck-foot"><button type="button" class="btn" data-ckclose>Schließen</button><button type="button" class="btn primary" data-ckgo>Speichern</button></div></div>`}
+/* Ruhetag-Seite: Heute an trainingsfreien Tagen – nur vorhandene Daten (Plan, Canditos Hinweise, Erholungs-Check-in, WHOOP) */
+function restDayHTML(n,diff){if(!n||diff<1||todayTraining())return '';const {w,d}=n,day=P[w][d],dt=dayDate(w,d);if(!dt)return '';
+ const now=new Date(),t0=new Date(now);t0.setHours(0,0,0,0);
+ // Ring: Anteil der trainingsfreien Zeit seit der letzten geplanten Einheit, die schon vorbei ist
+ let prev=null;for(let W=0;W<NW();W++)for(let D=0;D<ND();D++){const x=dayDate(W,D);if(!x||!P[W][D].b.length)continue;const y=new Date(x);y.setHours(0,0,0,0);if(y<t0&&(!prev||y>prev))prev=y}
+ const nx=new Date(dt);nx.setHours(0,0,0,0);const fr=prev?Math.max(0,Math.min(1,(now-prev)/(nx-prev))):1;
+ const hrs=Math.max(1,Math.ceil((nx-now)/36e5));const big=diff===1?'Morgen':diff+' Tage',sm=diff===1?'noch '+hrs+' Std.':'bis zum Training';
+ const hy=['h','m','l'].find(k=>day.b.some(bl=>bl.h===k));
+ const td=isoD(now),o=(S.meta.rest||{})[td],sc=restScore(o),f=(o&&o.feel)||{},nA=CKR.filter(q=>f[q[0]]!=null).length;
+ const tips=(INFO[w+'-'+d]||[]).slice(0,2);const wk=[...Array(ND()).keys()].filter(D=>dayStatus(w,D)==='done').length;
+ const wh=(o&&o.whoop&&o.whoop.rec!=null)?o.whoop:todayWhoop();const rec=wh&&wh.rec!=null?wh.rec:null;
+ return `<section class="card rday" style="--c:${DAYCOL[d]}">
+  <div class="rd-hd"><div><p class="eyebrow" style="color:var(--ok)">Heute · laut Plan kein Training</p><h2>Ruhetag</h2></div></div>
+  <div class="rd-top"><span class="rd-cd" role="img" aria-label="Nächstes Training ${diff===1?'morgen, noch '+hrs+' Stunden':'in '+diff+' Tagen'}">${ringSVG(fr,'var(--ok)',96,9)}<span aria-hidden="true"><b>${big}</b><small>${sm}</small></span></span>
+   <div class="rd-nx"><small>Nächstes Training</small><b>${dt.toLocaleDateString('de-DE',{weekday:'short'})} · ${DAYS[d].tag} · <span>${esc(day.f)}</span></b><em>W${w+1} · ${esc(WEEKS[w])} · ${day.b.length} Übungen</em>${hy?`<span class="hymini ${hy}"><i></i>Hype ${HYLV[hy]}</span>`:''}</div></div>
+  <div class="rd-blk"><p>Erholungs-Check</p><div class="rd-ck">${rfRing(sc,rfCol(sc))}<span><b>${o&&o.feel?nA+' von '+CKR.length+' beantwortet':'Freiwillig · '+CKR.length+' kurze Fragen'}</b><small>${sc!=null?'Erholung '+rfLbl(sc).toLowerCase():'Schlaf, Kalorien, Erholung, Muskelkater'}</small></span><button type="button" class="btn sm ${o?'':'primary'}" data-rdopen>${o?'Bearbeiten':'Starten'}</button></div></div>
+  ${tips.length?`<div class="rd-blk"><p>Für die nächste Einheit · Candito</p><ul class="rd-tips">${tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul><button type="button" class="rd-more" data-act="homeplan">Tagesplan mit allen Hinweisen</button></div>`:''}
+  <div class="rd-st"><div><small>Diese Woche</small><b>${wk} / ${ND()}</b><em>Einheiten erledigt</em></div><div><small>Recovery</small><b>${rec!=null?nf(rec,0)+' %':'–'}</b><em>${rec!=null?'aus WHOOP':'WHOOP optional'}</em></div></div>
+  <p class="rd-ft">Keine Antwort ist vorausgewählt. Der Check ändert weder Programm noch Lasten.</p></section>`}
 function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());const o=(S.meta.rest||{})[td];const sc=restScore(o);const f=(o&&o.feel)||{};
  const hist=Object.keys(S.meta.rest||{}).filter(k=>k<td).sort().slice(-6).map(k=>({k,s:restScore(S.meta.rest[k]),r:S.meta.rest[k].whoop&&S.meta.rest[k].whoop.rec}));
  return `<section class="card rdc"><div class="ct"><div><p class="eyebrow" style="color:#7fa8ff">Ruhetag · ${new Date().toLocaleDateString('de-DE',{weekday:'long'})}</p><h2 class="h2">Erholungs-Check-in</h2></div>${sc!=null?`<span class="chip" style="color:${rfCol(sc)};border-color:currentColor">${rfLbl(sc)}</span>`:''}</div>
@@ -4451,6 +4470,7 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
  const ups=[];for(let k=w*ND()+d+1;k<NS()&&ups.length<3;k++){const W=Math.floor(k/ND()),D=k%ND();if(dayStatus(W,D)!=='done')ups.push([W,D])}
  return `<section class="greet"><p class="eyebrow">${greet()}, Marcel</p><h2 class="disp">${when}</h2>
   <div class="wkbar">${wk.map((s,D)=>`<span class="${s} ${D===d?'cur':''}" style="--c:${DAYCOL[D]}"><i></i><small>${DAYS[D].wd}</small></span>`).join('')}<em>W${w+1} · ${wk.filter(s=>s==='done').length}/4</em></div></section>
+ ${(()=>{try{return restDayHTML(n,diff)}catch(e){return ''}})()}
  <section class="card hero home lux" style="--c:${DAYCOL[d]}">
   <div class="home-k"><p class="eyebrow">${dt?dt.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}):''}</p><span class="chip day">W${w+1} · ${WEEKS[w]}</span></div>
   <h1 class="disp home-t">${DAYS[d].tag} · <span>${esc(day.f)}</span></h1>

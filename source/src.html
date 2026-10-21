@@ -2932,6 +2932,38 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-rday">
+/* Ruhetag-Seite (Heute an trainingsfreien Tagen) */
+#view .rday{display:flex;flex-direction:column;gap:12px;border-color:rgba(67,192,138,.35);background:radial-gradient(120% 90% at 0% 0%,rgba(67,192,138,.16),transparent 60%),var(--card)}
+#view .rday .rd-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#view .rday .rd-hd h2{margin:2px 0 0;font-family:var(--d);font-size:26px;font-weight:900;line-height:1.05}
+#view .rday .rd-top{display:flex;gap:14px;align-items:center}
+#view .rday .rd-cd{position:relative;flex:none;width:96px;height:96px}
+#view .rday .rd-cd>span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#view .rday .rd-cd b{font-family:var(--d);font-size:18px;font-weight:900;line-height:1}
+#view .rday .rd-cd small{font-size:11.5px;font-weight:700;color:var(--ink2);margin-top:3px}
+#view .rday .rd-nx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#view .rday .rd-nx>small{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-nx b{font-size:17px;font-weight:800;line-height:1.2}
+#view .rday .rd-nx b span{color:var(--c)}
+#view .rday .rd-nx em{font-style:normal;font-size:13px;color:var(--ink2)}
+#view .rday .rd-blk{border-radius:16px;padding:12px 14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:8px}
+#view .rday .rd-blk>p{margin:0;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-ck{display:flex;align-items:center;gap:12px}
+#view .rday .rd-ck .rf-ring{width:48px;height:48px;flex:none}
+#view .rday .rd-ck>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .rday .rd-ck>span b{font-size:14.5px}
+#view .rday .rd-ck>span small{font-size:12.5px;color:var(--ink2)}
+#view .rday .rd-ck .btn{min-height:44px;flex:none}
+#view .rday .rd-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.45;color:var(--ink2)}
+#view .rday .rd-more{align-self:flex-start;min-height:44px;padding:0 4px;border:0;background:none;color:var(--ink);font:800 13.5px var(--f);text-decoration:underline;text-underline-offset:3px}
+#view .rday .rd-st{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#view .rday .rd-st>div{padding:10px 12px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);min-width:0}
+#view .rday .rd-st small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-st b{display:block;font-family:var(--d);font-size:22px;font-weight:900;margin-top:2px}
+#view .rday .rd-st em{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--ink2)}
+#view .rday .rd-ft{margin:0;font-size:12px;color:var(--mut)}
+</style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
@@ -4642,6 +4674,25 @@ function ckRestHTML(){const o=(S.meta.rest||{})[CK.rest]||{};const f=o.feel||{};
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung. Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
  <div class="ck-foot"><button type="button" class="btn" data-ckclose>Schließen</button><button type="button" class="btn primary" data-ckgo>Speichern</button></div></div>`}
+/* Ruhetag-Seite: Heute an trainingsfreien Tagen – nur vorhandene Daten (Plan, Canditos Hinweise, Erholungs-Check-in, WHOOP) */
+function restDayHTML(n,diff){if(!n||diff<1||todayTraining())return '';const {w,d}=n,day=P[w][d],dt=dayDate(w,d);if(!dt)return '';
+ const now=new Date(),t0=new Date(now);t0.setHours(0,0,0,0);
+ // Ring: Anteil der trainingsfreien Zeit seit der letzten geplanten Einheit, die schon vorbei ist
+ let prev=null;for(let W=0;W<NW();W++)for(let D=0;D<ND();D++){const x=dayDate(W,D);if(!x||!P[W][D].b.length)continue;const y=new Date(x);y.setHours(0,0,0,0);if(y<t0&&(!prev||y>prev))prev=y}
+ const nx=new Date(dt);nx.setHours(0,0,0,0);const fr=prev?Math.max(0,Math.min(1,(now-prev)/(nx-prev))):1;
+ const hrs=Math.max(1,Math.ceil((nx-now)/36e5));const big=diff===1?'Morgen':diff+' Tage',sm=diff===1?'noch '+hrs+' Std.':'bis zum Training';
+ const hy=['h','m','l'].find(k=>day.b.some(bl=>bl.h===k));
+ const td=isoD(now),o=(S.meta.rest||{})[td],sc=restScore(o),f=(o&&o.feel)||{},nA=CKR.filter(q=>f[q[0]]!=null).length;
+ const tips=(INFO[w+'-'+d]||[]).slice(0,2);const wk=[...Array(ND()).keys()].filter(D=>dayStatus(w,D)==='done').length;
+ const wh=(o&&o.whoop&&o.whoop.rec!=null)?o.whoop:todayWhoop();const rec=wh&&wh.rec!=null?wh.rec:null;
+ return `<section class="card rday" style="--c:${DAYCOL[d]}">
+  <div class="rd-hd"><div><p class="eyebrow" style="color:var(--ok)">Heute · laut Plan kein Training</p><h2>Ruhetag</h2></div></div>
+  <div class="rd-top"><span class="rd-cd" role="img" aria-label="Nächstes Training ${diff===1?'morgen, noch '+hrs+' Stunden':'in '+diff+' Tagen'}">${ringSVG(fr,'var(--ok)',96,9)}<span aria-hidden="true"><b>${big}</b><small>${sm}</small></span></span>
+   <div class="rd-nx"><small>Nächstes Training</small><b>${dt.toLocaleDateString('de-DE',{weekday:'short'})} · ${DAYS[d].tag} · <span>${esc(day.f)}</span></b><em>W${w+1} · ${esc(WEEKS[w])} · ${day.b.length} Übungen</em>${hy?`<span class="hymini ${hy}"><i></i>Hype ${HYLV[hy]}</span>`:''}</div></div>
+  <div class="rd-blk"><p>Erholungs-Check</p><div class="rd-ck">${rfRing(sc,rfCol(sc))}<span><b>${o&&o.feel?nA+' von '+CKR.length+' beantwortet':'Freiwillig · '+CKR.length+' kurze Fragen'}</b><small>${sc!=null?'Erholung '+rfLbl(sc).toLowerCase():'Schlaf, Kalorien, Erholung, Muskelkater'}</small></span><button type="button" class="btn sm ${o?'':'primary'}" data-rdopen>${o?'Bearbeiten':'Starten'}</button></div></div>
+  ${tips.length?`<div class="rd-blk"><p>Für die nächste Einheit · Candito</p><ul class="rd-tips">${tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul><button type="button" class="rd-more" data-act="homeplan">Tagesplan mit allen Hinweisen</button></div>`:''}
+  <div class="rd-st"><div><small>Diese Woche</small><b>${wk} / ${ND()}</b><em>Einheiten erledigt</em></div><div><small>Recovery</small><b>${rec!=null?nf(rec,0)+' %':'–'}</b><em>${rec!=null?'aus WHOOP':'WHOOP optional'}</em></div></div>
+  <p class="rd-ft">Keine Antwort ist vorausgewählt. Der Check ändert weder Programm noch Lasten.</p></section>`}
 function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());const o=(S.meta.rest||{})[td];const sc=restScore(o);const f=(o&&o.feel)||{};
  const hist=Object.keys(S.meta.rest||{}).filter(k=>k<td).sort().slice(-6).map(k=>({k,s:restScore(S.meta.rest[k]),r:S.meta.rest[k].whoop&&S.meta.rest[k].whoop.rec}));
  return `<section class="card rdc"><div class="ct"><div><p class="eyebrow" style="color:#7fa8ff">Ruhetag · ${new Date().toLocaleDateString('de-DE',{weekday:'long'})}</p><h2 class="h2">Erholungs-Check-in</h2></div>${sc!=null?`<span class="chip" style="color:${rfCol(sc)};border-color:currentColor">${rfLbl(sc)}</span>`:''}</div>
@@ -7327,6 +7378,7 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
  const ups=[];for(let k=w*ND()+d+1;k<NS()&&ups.length<3;k++){const W=Math.floor(k/ND()),D=k%ND();if(dayStatus(W,D)!=='done')ups.push([W,D])}
  return `<section class="greet"><p class="eyebrow">${greet()}, Marcel</p><h2 class="disp">${when}</h2>
   <div class="wkbar">${wk.map((s,D)=>`<span class="${s} ${D===d?'cur':''}" style="--c:${DAYCOL[D]}"><i></i><small>${DAYS[D].wd}</small></span>`).join('')}<em>W${w+1} · ${wk.filter(s=>s==='done').length}/4</em></div></section>
+ ${(()=>{try{return restDayHTML(n,diff)}catch(e){return ''}})()}
  <section class="card hero home lux" style="--c:${DAYCOL[d]}">
   <div class="home-k"><p class="eyebrow">${dt?dt.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}):''}</p><span class="chip day">W${w+1} · ${WEEKS[w]}</span></div>
   <h1 class="disp home-t">${DAYS[d].tag} · <span>${esc(day.f)}</span></h1>

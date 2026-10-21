@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-1132-b583c88";
+<script>window.CF_VERSION="2026.10.21-1337-f10d62b";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3029,6 +3029,38 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-rday">
+/* Ruhetag-Seite (Heute an trainingsfreien Tagen) */
+#view .rday{display:flex;flex-direction:column;gap:12px;border-color:rgba(67,192,138,.35);background:radial-gradient(120% 90% at 0% 0%,rgba(67,192,138,.16),transparent 60%),var(--card)}
+#view .rday .rd-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#view .rday .rd-hd h2{margin:2px 0 0;font-family:var(--d);font-size:26px;font-weight:900;line-height:1.05}
+#view .rday .rd-top{display:flex;gap:14px;align-items:center}
+#view .rday .rd-cd{position:relative;flex:none;width:96px;height:96px}
+#view .rday .rd-cd>span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#view .rday .rd-cd b{font-family:var(--d);font-size:18px;font-weight:900;line-height:1}
+#view .rday .rd-cd small{font-size:11.5px;font-weight:700;color:var(--ink2);margin-top:3px}
+#view .rday .rd-nx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#view .rday .rd-nx>small{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-nx b{font-size:17px;font-weight:800;line-height:1.2}
+#view .rday .rd-nx b span{color:var(--c)}
+#view .rday .rd-nx em{font-style:normal;font-size:13px;color:var(--ink2)}
+#view .rday .rd-blk{border-radius:16px;padding:12px 14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:8px}
+#view .rday .rd-blk>p{margin:0;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-ck{display:flex;align-items:center;gap:12px}
+#view .rday .rd-ck .rf-ring{width:48px;height:48px;flex:none}
+#view .rday .rd-ck>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .rday .rd-ck>span b{font-size:14.5px}
+#view .rday .rd-ck>span small{font-size:12.5px;color:var(--ink2)}
+#view .rday .rd-ck .btn{min-height:44px;flex:none}
+#view .rday .rd-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.45;color:var(--ink2)}
+#view .rday .rd-more{align-self:flex-start;min-height:44px;padding:0 4px;border:0;background:none;color:var(--ink);font:800 13.5px var(--f);text-decoration:underline;text-underline-offset:3px}
+#view .rday .rd-st{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#view .rday .rd-st>div{padding:10px 12px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);min-width:0}
+#view .rday .rd-st small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+#view .rday .rd-st b{display:block;font-family:var(--d);font-size:22px;font-weight:900;margin-top:2px}
+#view .rday .rd-st em{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--ink2)}
+#view .rday .rd-ft{margin:0;font-size:12px;color:var(--mut)}
+</style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
@@ -4002,7 +4034,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.b583c88.js"></script>
+<script src="assets/app-0.f10d62b.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */
