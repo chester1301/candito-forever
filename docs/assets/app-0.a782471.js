@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-1337-f10d62b</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-1508-a782471</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -1766,6 +1766,49 @@ function ckRestHTML(){const o=(S.meta.rest||{})[CK.rest]||{};const f=o.feel||{};
   <p class="ck-note" style="margin:10px 2px 0">Reine Selbsteinschätzung. Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
  <div class="ck-foot"><button type="button" class="btn" data-ckclose>Schließen</button><button type="button" class="btn primary" data-ckgo>Speichern</button></div></div>`}
+/* ===================== Wettkampf-Planer (freigegeben 21.10.2026: neues, freiwilliges Feld S.meta.comp) =====================
+   S.meta.comp = {date:'JJJJ-MM-TT', name, t:{sq,bp,dl:'HH:MM'}, att:{sq,bp,dl:[kg,kg,kg]}} – nur Eingaben des Athleten.
+   Versuche und Aufwärmplan sind Empfehlungen (e1RM-Schätzung × Faustregel), nichts wird automatisch übernommen. */
+const WKL={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'},WKP=[.9,.95,1],WKN=['1. Versuch · Opener','2. Versuch','3. Versuch'];
+function wkComp(){const c=S.meta.comp;return c&&c.date&&!isNaN(new Date(c.date+'T12:00:00'))?c:null}
+function wkDays(c){const t=new Date(c.date+'T00:00:00'),n=new Date();n.setHours(0,0,0,0);return Math.round((t-n)/864e5)}
+function wkBase(g){let m=null;ORD().forEach(pid=>{try{const v=phaseLift(pid)[g].val;if(v&&(m==null||v>m))m=v}catch(e){}});return m}
+const wkR=kg=>Math.round(kg/2.5)*2.5;
+// Aufwärmstufen wie im Gym-Aufwärmen für ein Single (gleiche Prozente), 6 Minuten Abstand – Empfehlung
+function wkWarm(g,W){const bar=S.meta.bar||20;const st=g==='dl'?[[.4,5],[.55,3],[.7,2]]:[[0,10],[.4,5],[.55,3],[.7,2]];st.push([.8,1],[.9,1]);
+ const out=[];for(const [p,r] of st){let kg=p===0?bar:Math.round(W*p/5)*5;if(g==='dl'&&kg<60&&W>100)kg=60;if(p>0&&kg<=bar)continue;if(kg>=W-1)continue;if(out.some(o=>o.kg===kg))continue;out.push({kg,r})}
+ return out.map((x,i)=>Object.assign(x,{min:(out.length-i)*6}))}
+function wkClock(hm,min){const m=/^(\d{1,2}):(\d{2})$/.exec(hm||'');if(!m)return '';let t=(+m[1])*60+(+m[2])-min;t=(t+1440)%1440;return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}
+function wkPl(kg){const pl=plates(kg);return pl.length?pl.map(p=>nf(p,2)).join(' + ')+' je Seite'+(pl.miss?' · '+nf(pl.miss,2)+' kg fehlen':''):'nur Stange'}
+function wkpHTML(){const c=wkComp();const det=S.ui.tdet&&S.ui.tdet.home==='wkp';
+ if(!det)return `<section class="card wkp"><h2 class="h2">Wettkampf</h2></section>`;
+ const C=S.meta.comp||{};const g=S.ui.wkl||'sq';const n=c?wkDays(c):null;
+ const base=wkBase(g),rec=base?WKP.map(p=>wkR(base*p)):null;const own=((C.att||{})[g]||[]).map(pnum);
+ const op=own[0]??(rec&&rec[0]);const wu=op?wkWarm(g,op):[];const tm=(C.t||{})[g]||'';
+ const cd=n==null?'':n<0?`Wettkampf war vor ${-n} ${-n===1?'Tag':'Tagen'}`:n===0?'Heute ist Wettkampf':n===1?'Morgen ist Wettkampf':`Noch ${n} Tage`;
+ return `<section class="card wkp">
+  <div class="wk-blk"><p class="wk-h">Wettkampf</p>
+   <div class="wk-f2"><label class="wk-in"><small>Datum</small><input type="date" data-wkf="date" value="${esc(C.date||'')}"></label><label class="wk-in"><small>Name (optional)</small><input type="text" data-wkf="name" maxlength="40" value="${esc(C.name||'')}" placeholder="z. B. Landesmeisterschaft"></label></div>
+   ${cd?`<p class="wk-cd"><b>${cd}</b>${c?' · '+new Date(c.date+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}):''}</p>`:'<p class="wk-note">Trag das Datum ein – dann zählt die Kachel auf „Heute“ die Tage herunter.</p>'}</div>
+  <div class="wk-seg" role="group" aria-label="Disziplin">${['sq','bp','dl'].map(k=>`<button type="button" data-wkl="${k}" aria-pressed="${k===g}" style="--c:${GC[k]}">${{sq:'Kniebeuge',bp:'Bank',dl:'Kreuzheben'}[k]}</button>`).join('')}</div>
+  <div class="wk-blk"><div class="wk-bh"><p class="wk-h">Versuche · ${WKL[g]}</p><span class="chip wk-est">${base?'e1RM '+nf(base,0)+' kg · Schätzung':'noch keine Schätzung'}</span></div>
+   ${[0,1,2].map(i=>`<div class="wk-at${i===2?' l':''}"><div class="wk-al"><b>${WKN[i]}</b>${rec?`<small><i class="et">Empfehlung</i> ${nf(rec[i],2)} kg · ≈ ${Math.round(WKP[i]*100)} %</small>`:'<small>Empfehlung folgt, sobald Sätze eingetragen sind</small>'}</div>
+    <label class="wk-in wk-own"><small>Dein Plan · kg</small><input inputmode="decimal" data-wka="${g}:${i}" value="${own[i]!=null?nf(own[i],2):''}" placeholder="–"></label>
+    ${own[i]!=null?`<span class="wk-pl">${wkPl(own[i])}</span>`:''}</div>`).join('')}
+   ${own.filter(x=>x!=null).some((x,i,a)=>i&&x<a[i-1])?'<p class="wk-warn">Hinweis: Ein Versuch ist leichter als der vorherige – im Wettkampf darf die Last von Versuch zu Versuch nicht sinken.</p>':''}
+   ${rec?`<button type="button" class="btn sm" data-wkadopt="${g}">Empfehlungen als Plan übernehmen</button>`:''}</div>
+  <div class="wk-blk"><div class="wk-bh"><p class="wk-h">Aufwärmen bis zum Opener</p><i class="wuemp">Empfehlung</i></div>
+   <label class="wk-in wk-tm"><small>Erster Versuch ${WKL[g]} ca. (Uhrzeit)</small><input type="time" data-wkt="${g}" value="${esc(tm)}"></label>
+   ${wu.length?`<div class="wk-wu">${wu.map(x=>`<div><span class="wk-mn">${tm?wkClock(tm,x.min):'−'+x.min+' min'}</span><b>${x.kg===(S.meta.bar||20)?'Stange':nf(x.kg,2)+' kg'} × ${x.r}</b><small>${x.kg===(S.meta.bar||20)?'':wkPl(x.kg)}</small></div>`).join('')}<div class="op"><span class="wk-mn">${tm||'0 min'}</span><b>${nf(op,2)} kg × 1</b><small>Opener${own[0]==null?' (Empfehlung)':''}</small></div></div>`:'<p class="wk-note">Erscheint, sobald ein Opener feststeht.</p>'}
+   <p class="wk-note">Gleiche Stufen wie beim Aufwärmen im Gym, etwa alle 6 Minuten. Scheiben laut deiner Hantel-Einstellung, ohne Verschlüsse.</p></div>
+  <p class="wk-note">Empfehlungen sind nur Orientierung (≈ 90 / 95 / 100 % deiner e1RM-Schätzung). Am Wettkampftag entscheidest du – die App passt nichts automatisch an.</p></section>`}
+function wkSet(fn){if(!S.meta.comp)S.meta.comp={};fn(S.meta.comp);saveMeta();render()}
+document.addEventListener('click',e=>{const l=e.target.closest('[data-wkl]');if(l){S.ui.wkl=l.dataset.wkl;render();return}
+ const a=e.target.closest('[data-wkadopt]');if(a){const g=a.dataset.wkadopt,b=wkBase(g);if(!b)return;wkSet(C=>{C.att=Object.assign({},C.att||{});C.att[g]=WKP.map(p=>wkR(b*p))});toast('Empfehlungen als Plan übernommen – jederzeit änderbar')}});
+document.addEventListener('change',e=>{const t=e.target;if(!t.dataset)return;
+ if(t.dataset.wkf){const k=t.dataset.wkf,v=t.value.trim();wkSet(C=>{if(v)C[k]=v;else delete C[k]})}
+ else if(t.dataset.wkt){const g=t.dataset.wkt,v=t.value;wkSet(C=>{C.t=Object.assign({},C.t||{});if(v)C.t[g]=v;else delete C.t[g]})}
+ else if(t.dataset.wka){const [g,i]=t.dataset.wka.split(':');const v=pnum(t.value);wkSet(C=>{C.att=Object.assign({},C.att||{});const a=(C.att[g]||[null,null,null]).slice();a[+i]=v!=null&&v>0?v:null;C.att[g]=a})}});
 /* Ruhetag-Seite: Heute an trainingsfreien Tagen – nur vorhandene Daten (Plan, Canditos Hinweise, Erholungs-Check-in, WHOOP) */
 function restDayHTML(n,diff){if(!n||diff<1||todayTraining())return '';const {w,d}=n,day=P[w][d],dt=dayDate(w,d);if(!dt)return '';
  const now=new Date(),t0=new Date(now);t0.setHours(0,0,0,0);
@@ -3100,7 +3143,7 @@ const WCOL=['#e2b04a','#43c08a','#5ad1e6','#e8484f','#b48cff','#f0a066','#7fa8ff
 function wisItems(its){return `<div class="wlist">${its.map(({it,i},k)=>`<details class="card wq" ${S.ui.wq?'open':''}><summary><span class="wn">${i+1}</span><b>${esc(it.q)}</b><svg class="wch" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><div class="wa">${it.a.map(p=>/^<(table|div|ol|ul)/.test(p)?p:`<p>${p}</p>`).join('')}</div></details>`).join('')}</div>`}
 
 /* ===================== Kachel-Ebene für Heute · Training · Coach · Einstellungen ===================== */
-const TIC={palette:'<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4-4-7.4-9-7.4z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/>',book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',bar:'<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',ring:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',next:'<path d="M5 12h14M13 6l6 6-6 6"/>',info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',box:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cal:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',shift:'<path d="M4 12h12M12 6l6 6-6 6M4 5v14"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',calc:'<path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',sheet:'<path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16"/>'};
+const TIC={trophy:'<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4.5a2.5 2.5 0 0 0 2.5 4M17 6h2.5a2.5 2.5 0 0 1-2.5 4M10 18h4M12 14v4M8 21h8"/>',palette:'<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4-4-7.4-9-7.4z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/>',book:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',bar:'<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',ring:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',next:'<path d="M5 12h14M13 6l6 6-6 6"/>',info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',box:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cal:'<path d="M4 6h16v14H4zM4 10h16M9 3v4M15 3v4"/>',shift:'<path d="M4 12h12M12 6l6 6-6 6M4 5v14"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',calc:'<path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',sheet:'<path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16"/>'};
 const tx=(el,sel)=>{const x=sel?el.querySelector(sel):el;if(!x)return '';if(x.dataset&&x.dataset.count!=null&&x.firstChild&&x.firstChild.nodeType===3){const n=+x.dataset.count;const rest=[...x.childNodes].filter(c=>c!==x.firstChild).map(c=>c.textContent).join('');return (n?nf(n,x.dataset.dec?+x.dataset.dec:0):x.firstChild.textContent.trim())+rest.replace(/\s+/g,' ')}return x.textContent.replace(/\s+/g,' ').trim()};
 // Wert eines Felds der Trainingszeit-Karte ohne innerText (kein erzwungenes Layout)
 const wtSum=(e,i)=>{const d=e.querySelectorAll('.wt-sum>div')[i];return d?[...d.childNodes].filter(n=>n.nodeName!=='SMALL').map(n=>n.textContent).join('').replace(/\s+/g,' ').trim():''};
@@ -3113,6 +3156,7 @@ const TCFG={
   {k:'zeit',m:'.wtime',t:'Zeit · Woche',ic:'clock',c:'#5ad1e6',val:e=>wtSum(e,0)||'–',sub:e=>{const h=tx(e,'h2');const m=wtSum(e,1);return (h?h.replace(/ · .*/,'')+' · ':'')+(m&&/\d/.test(m)?'Ø '+m+' pro Einheit':'Trainingszeit gesamt')}},
   {k:'next',m:'.nxtp',t:'Anschluss',ic:'next',c:'#7fa8ff',val:e=>tx(e,'.rct b').replace(/^Candito /,''),sub:e=>tx(e,'.rct small')},
   {k:'zyklus',m:e=>/Zyklus-Fortschritt/.test(e.textContent),t:'Zyklus',ic:'ring',c:'#43c08a',val:e=>tx(e,'.cring b')+' / '+NS(),sub:e=>tx(e,'h2')},
+  {k:'wkp',m:'.wkp',t:'Wettkampf',ic:'trophy',c:'#f6d65e',val:()=>{const c=wkComp();if(!c)return '–';const n=wkDays(c);return n<0?'vorbei':n===0?'Heute':n+' T'},sub:()=>{const c=wkComp();if(!c)return 'Datum eintragen · Versuche planen';const t=new Date(c.date+'T12:00:00');return t.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})+(c.name?' · '+c.name:' · Versuche planen')}},
   {k:'wissen',m:'.wistile',t:'Wissen',ic:'book',c:'#e2b04a',go:'wissen',val:()=>wisSecs().length+'',sub:()=>'Kapitel zu Programmen, RPE, Hype & Pausen'}]},
  train:{keep:'.trh,.sechead,.exlist',list:[
   {k:'info',m:e=>/Tagesinfo/.test(tx(e,'.eyebrow,h2')),t:'Tagesinfo',ic:'info',c:'#e2b04a',val:()=>{const n=(INFO[S.ui.w+'-'+S.ui.d]||[]).length;return n?n+' '+(n===1?'Hinweis':'Hinweise'):'Info'},sub:()=>{const dd=P[S.ui.w][S.ui.d].d||'';return dd.length>95?dd.slice(0,92).replace(/\s+\S*$/,'')+' …':dd||'Hinweise aus dem Original-Programm'}},
@@ -4499,6 +4543,7 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
  ${weekTimeHTML()}
  ${restCardHTML()}
  ${rfcHTML()}
+ ${(()=>{try{return wkpHTML()}catch(e){return ''}})()}
  <section class="wistile" hidden></section>
  ${doneN>=NS()-4?nxt:''}
  <section class="card"><div class="cyc"><span class="cring">${ringSVG(doneN/NS(),'var(--day)',84,8)}<b class="zahl" data-count="${doneN}">${doneN}</b><small>/${NS()}</small></span>

@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-1337-f10d62b";
+<script>window.CF_VERSION="2026.10.21-1508-a782471";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3029,6 +3029,43 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-wkp">
+/* Wettkampf-Planer */
+#view .wkp{display:flex;flex-direction:column;gap:12px}
+#view .wkp:not(.tdet)>h2{margin:0}
+#view .wkp .wk-blk{border-radius:16px;padding:12px 14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:10px;min-width:0}
+#view .wkp .wk-h{margin:0;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#view .wkp .wk-bh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+#view .wkp .wk-est{color:#f3c969;border-color:rgba(243,201,105,.45);background:rgba(243,201,105,.1)}
+#view .wkp .wk-f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px}
+#view .wkp .wk-in{display:flex;flex-direction:column;gap:4px;min-width:0}
+#view .wkp .wk-in small{font-size:11.5px;font-weight:800;color:var(--mut)}
+#view .wkp .wk-in input{min-height:46px;box-sizing:border-box;width:100%;min-width:0;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:700 15px var(--f);padding:0 10px}
+#view .wkp .wk-own input{font:800 18px var(--d);text-align:center}
+#view .wkp .wk-cd{margin:0;font-size:13.5px;color:var(--ink2)}
+#view .wkp .wk-cd b{color:#f6d65e}
+#view .wkp .wk-seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:14px;border:1px solid var(--line2);background:rgba(0,0,0,.25)}
+#view .wkp .wk-seg button{min-height:44px;border:0;border-radius:10px;background:transparent;color:var(--ink2);font:800 13.5px var(--f);min-width:0}
+#view .wkp .wk-seg button[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--ink);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 70%,transparent)}
+#view .wkp .wk-at{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:6px 10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+#view .wkp .wk-at:first-of-type{border-top:0;padding-top:0}
+#view .wkp .wk-al{display:flex;flex-direction:column;gap:3px;min-width:0}
+#view .wkp .wk-al b{font-size:14.5px}
+#view .wkp .wk-al small{font-size:12.5px;color:var(--ink2)}
+#view .wkp .wk-al .et{font-style:normal;font-weight:800;color:#f3c969;margin-right:2px}
+#view .wkp .wk-pl{grid-column:1/-1;font-size:12.5px;color:var(--ink2)}
+#view .wkp .btn{min-height:44px;align-self:flex-start}
+#view .wkp .wk-tm{max-width:240px}
+#view .wkp .wk-wu{display:flex;flex-direction:column;gap:2px}
+#view .wkp .wk-wu>div{display:grid;grid-template-columns:70px minmax(0,auto) minmax(0,1fr);gap:8px;align-items:baseline;min-height:34px;padding:4px 0;font-size:13.5px}
+#view .wkp .wk-wu>div small{font-size:12px;color:var(--ink2);text-align:right}
+#view .wkp .wk-wu>div.op{border-top:1px solid var(--line2);padding-top:8px}
+#view .wkp .wk-wu>div.op b{color:#f6d65e}
+#view .wkp .wk-mn{font:700 13px var(--mono);color:#9fb3ff}
+#view .wkp .wk-warn{margin:0;padding:8px 10px;border-radius:10px;font-size:12.5px;font-weight:700;color:#ffb25c;background:rgba(245,154,69,.1);border:1px solid rgba(245,154,69,.4)}
+#view .wkp .wk-note{margin:0;font-size:12.5px;color:var(--mut);line-height:1.45}
+@media (max-width:359px){#view .wkp .wk-f2{grid-template-columns:minmax(0,1fr)}#view .wkp .wk-at{grid-template-columns:minmax(0,1fr) 96px}#view .wkp .wk-wu>div{grid-template-columns:58px minmax(0,1fr)}#view .wkp .wk-wu>div small{grid-column:2;text-align:left}}
+</style>
 <style id="cf-rday">
 /* Ruhetag-Seite (Heute an trainingsfreien Tagen) */
 #view .rday{display:flex;flex-direction:column;gap:12px;border-color:rgba(67,192,138,.35);background:radial-gradient(120% 90% at 0% 0%,rgba(67,192,138,.16),transparent 60%),var(--card)}
@@ -4034,7 +4071,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.f10d62b.js"></script>
+<script src="assets/app-0.a782471.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */
