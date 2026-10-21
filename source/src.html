@@ -2874,6 +2874,45 @@ body[data-tab="coach"] #view .chb-p{justify-items:center!important}
 #view .sqmore summary .wch{margin-left:auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;transition:transform var(--mo-1)}
 #view .sqmore[open] summary .wch{transform:rotate(180deg)}#view .sqmore summary .c,#view .sqmore[open] summary .o,#view .sqmore[open] summary small{display:none}#view .sqmore[open] summary .c{display:inline}
 </style>
+<style id="cf-tnav">
+/* ===== Training: Navigation Programm · Woche · Tag (übersichtlich, eine Woche auf einmal) ===== */
+.top-in>#tl{order:1}.top-in>#progsw{order:2}
+body[data-tab="train"] #tl{display:grid!important;gap:10px;overflow:visible!important;margin:0!important;padding:2px 0 4px!important;scroll-snap-type:none!important}
+body[data-tab="train"]:not([data-tnav="prog"]) #progsw{display:none!important}
+body[data-tab="train"][data-tnav="prog"] #progsw{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin:0!important;padding:0!important;overflow:visible!important;max-height:none!important}
+body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-height:52px!important;padding:6px 8px!important;justify-content:center!important}
+.tnseg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:16px;background:rgba(5,8,20,.55);border:1px solid rgba(205,218,255,.12)}
+.tnseg button{min-height:40px;border:0;border-radius:12px;background:transparent;color:var(--ink2);font:800 14px var(--f);cursor:pointer;transition:background var(--mo-1),color var(--mo-1)}
+.tnseg button[aria-selected="true"]{background:linear-gradient(180deg,#3d63f5,#2945c4);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 18px -10px rgba(61,99,245,.95)}
+.tncard{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(205,218,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.tnc-t{display:grid;gap:1px;min-width:0}.tnc-t small{font-size:12.5px;font-weight:700;color:var(--ink2)}.tnc-t b{font:800 18px/1.2 var(--f);color:#fff;overflow-wrap:anywhere}
+.tnc-r{position:relative;display:grid;place-items:center;width:40px;height:40px}.tnc-r svg{position:absolute;inset:0}.tnc-r svg circle:first-child{stroke:rgba(255,255,255,.1)}.tnc-r em{position:relative;font-style:normal;font-size:11px;font-weight:800;color:#bfe9d4}
+.tnweeks{display:grid;grid-template-columns:repeat(var(--nw,4),minmax(0,1fr));gap:6px}
+.tnweeks button{position:relative;min-height:44px;border-radius:14px;border:1px solid rgba(205,218,255,.14);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));color:var(--ink2);font:800 15px var(--f);cursor:pointer}
+.tnweeks button.done{color:#9fe3c2}
+.tnweeks button.hasel::after{content:"";position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#7f98ff}
+.tnweeks button[aria-pressed="true"]{background:linear-gradient(180deg,#3d63f5,#2945c4);border-color:rgba(170,190,255,.75);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 18px -10px rgba(61,99,245,.95)}
+.tndays .tlr{display:grid!important;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:8px}
+#tl .tndays .tlc{width:auto!important;height:auto!important;min-height:78px;padding:8px 4px!important;gap:8px!important;border-radius:16px!important;border:1px solid rgba(205,218,255,.14);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))!important;transform:none!important}
+#tl .tndays .tlc .tld{display:flex;align-items:baseline;gap:4px}#tl .tndays .tlc .tld small{font-size:13px;font-weight:800;color:#fff}#tl .tndays .tlc .tld b{font-size:16px;font-weight:800;color:#e6eaf5;font-family:var(--f)}
+#tl .tndays .tlc>i{display:none}
+#tl .tndays .tls{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);color:#9fb3ff}
+#tl .tndays .tls svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#tl .tndays .tls.done{background:#2fa36e;color:#fff;box-shadow:0 0 12px -2px rgba(67,192,138,.8)}
+#tl .tndays .tls.part{background:rgba(227,145,80,.2);color:#f0b07a}
+#tl .tndays .tlc.test .tls{background:rgba(255,90,95,.18);color:#ff8f93}
+#tl .tndays .tlc.sel{background:linear-gradient(180deg,rgba(94,128,255,.55),rgba(61,99,245,.25))!important;border-color:rgba(190,205,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 24px -12px rgba(61,99,245,1)!important}
+#tl .tndays .tlc.sel .tld b{color:#fff}
+#tl .tndays .tlc.today:not(.sel){border-color:rgba(255,255,255,.45)}
+.tnwl{display:grid;gap:6px}
+.tnwr{display:grid;grid-template-columns:auto minmax(0,1fr) 64px auto;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border-radius:14px;border:1px solid rgba(205,218,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));color:var(--ink);text-align:left;font:inherit;cursor:pointer}
+.tnwr em{font-style:normal;font:800 13px var(--f);padding:3px 8px;border-radius:8px;background:rgba(127,152,255,.16);color:#c9d4ff}
+.tnwr span{display:grid;min-width:0}.tnwr b{font-size:14.5px;overflow-wrap:anywhere}.tnwr span small{font-size:12px;color:var(--ink2)}
+.tnwr .tlp{width:64px!important}.tnwn{font-size:12px;font-weight:800;color:var(--ink2)}
+.tnwr.cur{border-color:rgba(127,152,255,.6);background:linear-gradient(180deg,rgba(64,105,245,.22),rgba(64,105,245,.06))}
+.tnwr.done em{background:rgba(67,192,138,.2);color:#9fe3c2}
+@media (max-width:359px){.tndays .tlr{gap:6px}#tl .tndays .tlc .tld{flex-direction:column;align-items:center;gap:0}.tnwr{grid-template-columns:auto minmax(0,1fr) auto}.tnwr .tlp{display:none}}
+</style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
@@ -6886,7 +6925,7 @@ function completeSet(w,d,b,i){const L=log(w,d,true),s=L.b[b][i];const now=Date.n
  offerUndo(w,d,b,i,_snap,_tsnap)}
 
 $('#tl').addEventListener('click',e=>{const b=e.target.closest('[data-tw]');if(!b)return;selSession(+b.dataset.tw,+b.dataset.td)});
-function selSession(w,d){S.ui.w=w;S.ui.d=d;S.ui.wEdit=null;if(S.ui.tab==='home'||S.ui.tab==='setup'||S.ui.tab==='coach')S.ui.tab='train';cache();render();window.scrollTo({top:0})}
+function selSession(w,d){S.ui.w=w;S.ui.d=d;S.ui.navw=null;S.ui.wEdit=null;if(S.ui.tab==='home'||S.ui.tab==='setup'||S.ui.tab==='coach')S.ui.tab='train';cache();render();window.scrollTo({top:0})}
 $('#sesschip').addEventListener('click',()=>{const c=$('#sesschip');S.ui.w=+c.dataset.w;S.ui.d=+c.dataset.d;openGym()});
 $('#gear').addEventListener('click',()=>{if(!$('#gym').hidden)closeGym(true);S.ui.tab='setup';render();window.scrollTo({top:0})});
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -7305,13 +7344,24 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
  </section>`}
 
 /* ---------- Zeitleiste mit Wochenbalken ---------- */
-function renderTL(){const today=new Date();let h='';
- for(let w=0;w<NW();w++){const dn=[...Array(ND()).keys()].filter(d=>dayStatus(w,d)==='done').length;
-  h+=`<div class="tlw ${S.ui.w===w?'cur':''}"><span class="tlh"><em class="tlwk">W${w+1}</em><span class="tln">${WEEKS[w]}</span><i class="tlp"><b style="width:${dn/ND()*100}%"></b></i></span><div class="tlr">`+[...Array(ND()).keys()].map(d=>{const st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d);
-   return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${w===TW()&&d===TD()?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b><i></i></button>`}).join('')+`</div></div>`}
- const tl=$('#tl');tl.innerHTML=h;const sel=tl.querySelector('.tlc.sel');
- if(sel&&!renderTL.done){renderTL.done=true;requestAnimationFrame(()=>{tl.scrollLeft=sel.offsetLeft-tl.clientWidth/2+sel.clientWidth/2})}
- else if(sel){const l=sel.offsetLeft,r=l+sel.offsetWidth;if(l<tl.scrollLeft||r>tl.scrollLeft+tl.clientWidth)tl.scrollTo({left:l-tl.clientWidth/2+sel.offsetWidth/2,behavior:'smooth'})}}
+function renderTL(){const today=new Date();
+ // Übersichtliche Navigation (Programm · Woche · Tag): Karte mit Programm/Woche, Wochen-Tabs und die Tage nur der gewählten Woche.
+ // Gleiche Bedienelemente wie bisher (data-tw/data-td wählen den Tag, data-prog das Programm) – nur anders angeordnet.
+ const mode=S.ui.tnav||'day',nw=NW(),nd=ND();let vw=S.ui.navw!=null&&S.ui.navw<nw?S.ui.navw:S.ui.w;if(vw>=nw)vw=0;
+ const wDone=w=>[...Array(nd).keys()].filter(d=>dayStatus(w,d)==='done').length;const g=PROGS[PROG];
+ const IC={done:'<svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg>',part:'<svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="8"/></svg>',test:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg>',plan:'<svg viewBox="0 0 24 24"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg>'};
+ const seg=`<div class="tnseg" role="tablist" aria-label="Auswahl">${[['prog','Programm'],['week','Woche'],['day','Tag']].map(([k,l])=>`<button type="button" role="tab" data-tnav="${k}" aria-selected="${mode===k}">${l}</button>`).join('')}</div>`;
+ const dn=wDone(vw);
+ const card=`<div class="tncard"><div class="tnc-t"><small>${esc(g.name)}</small><b>Woche ${vw+1} · ${esc(WEEKS[vw]||'')}</b></div><span class="tnc-r" aria-label="${dn} von ${nd} Einheiten">${ringSVG(nd?dn/nd:0,'#43c08a',40,4)}<em>${dn}/${nd}</em></span></div>`;
+ const tabs=`<div class="tnweeks" role="group" aria-label="Woche" style="--nw:${Math.min(nw,5)}">${[...Array(nw).keys()].map(w=>`<button type="button" data-navw="${w}" aria-pressed="${w===vw}" class="${wDone(w)===nd?'done':''}${w===S.ui.w?' hasel':''}">W${w+1}</button>`).join('')}</div>`;
+ const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD();
+   return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${test?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}${st==='done'?' · erledigt':''}"><span class="tld"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b></span><span class="tls ${st||'plan'}">${st==='done'?IC.done:st==='part'?IC.part:test?IC.test:IC.plan}</span><i></i></button>`}).join('')+`</div></div>`;
+ const weeks=`<div class="tnwl">${[...Array(nw).keys()].map(w=>{const n=wDone(w),a=dayDate(w,0),z=dayDate(w,nd-1),fd=x=>x?x.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'';return `<button type="button" class="tnwr ${w===S.ui.w?'cur':''} ${n===nd?'done':''}" data-navw="${w}" data-navday="1"><em>W${w+1}</em><span><b>${esc(WEEKS[w]||'')}</b><small>${fd(a)} – ${fd(z)}</small></span><i class="tlp"><b style="width:${nd?n/nd*100:0}%"></b></i><small class="tnwn">${n}/${nd}</small></button>`}).join('')}</div>`;
+ const tl=$('#tl');tl.dataset.mode=mode;tl.innerHTML=seg+card+(mode==='day'?tabs+days:mode==='week'?weeks:'');
+ document.body.dataset.tnav=mode}
+document.addEventListener('click',e=>{const t=e.target.closest('#tl [data-tnav],#tl [data-navw]');if(!t)return;
+ if(t.dataset.tnav){S.ui.tnav=t.dataset.tnav;if(t.dataset.tnav!=='week')S.ui.navw=null;renderTL();return}
+ S.ui.navw=+t.dataset.navw;if(t.dataset.navday)S.ui.tnav='day';renderTL()},true);
 
 /* ---------- Performance Lab mit Symbolen & Leerstellen ---------- */
 function labHTML(A){let h=labHTMLBase(A);

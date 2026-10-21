@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-0941-34b392d</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-1008-fae899f</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -4068,7 +4068,7 @@ function completeSet(w,d,b,i){const L=log(w,d,true),s=L.b[b][i];const now=Date.n
  offerUndo(w,d,b,i,_snap,_tsnap)}
 
 $('#tl').addEventListener('click',e=>{const b=e.target.closest('[data-tw]');if(!b)return;selSession(+b.dataset.tw,+b.dataset.td)});
-function selSession(w,d){S.ui.w=w;S.ui.d=d;S.ui.wEdit=null;if(S.ui.tab==='home'||S.ui.tab==='setup'||S.ui.tab==='coach')S.ui.tab='train';cache();render();window.scrollTo({top:0})}
+function selSession(w,d){S.ui.w=w;S.ui.d=d;S.ui.navw=null;S.ui.wEdit=null;if(S.ui.tab==='home'||S.ui.tab==='setup'||S.ui.tab==='coach')S.ui.tab='train';cache();render();window.scrollTo({top:0})}
 $('#sesschip').addEventListener('click',()=>{const c=$('#sesschip');S.ui.w=+c.dataset.w;S.ui.d=+c.dataset.d;openGym()});
 $('#gear').addEventListener('click',()=>{if(!$('#gym').hidden)closeGym(true);S.ui.tab='setup';render();window.scrollTo({top:0})});
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -4487,13 +4487,24 @@ function renderHome(){if(S.meta.pause)return pauseHTML();const n=nextSession();l
  </section>`}
 
 /* ---------- Zeitleiste mit Wochenbalken ---------- */
-function renderTL(){const today=new Date();let h='';
- for(let w=0;w<NW();w++){const dn=[...Array(ND()).keys()].filter(d=>dayStatus(w,d)==='done').length;
-  h+=`<div class="tlw ${S.ui.w===w?'cur':''}"><span class="tlh"><em class="tlwk">W${w+1}</em><span class="tln">${WEEKS[w]}</span><i class="tlp"><b style="width:${dn/ND()*100}%"></b></i></span><div class="tlr">`+[...Array(ND()).keys()].map(d=>{const st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d);
-   return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${w===TW()&&d===TD()?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b><i></i></button>`}).join('')+`</div></div>`}
- const tl=$('#tl');tl.innerHTML=h;const sel=tl.querySelector('.tlc.sel');
- if(sel&&!renderTL.done){renderTL.done=true;requestAnimationFrame(()=>{tl.scrollLeft=sel.offsetLeft-tl.clientWidth/2+sel.clientWidth/2})}
- else if(sel){const l=sel.offsetLeft,r=l+sel.offsetWidth;if(l<tl.scrollLeft||r>tl.scrollLeft+tl.clientWidth)tl.scrollTo({left:l-tl.clientWidth/2+sel.offsetWidth/2,behavior:'smooth'})}}
+function renderTL(){const today=new Date();
+ // Übersichtliche Navigation (Programm · Woche · Tag): Karte mit Programm/Woche, Wochen-Tabs und die Tage nur der gewählten Woche.
+ // Gleiche Bedienelemente wie bisher (data-tw/data-td wählen den Tag, data-prog das Programm) – nur anders angeordnet.
+ const mode=S.ui.tnav||'day',nw=NW(),nd=ND();let vw=S.ui.navw!=null&&S.ui.navw<nw?S.ui.navw:S.ui.w;if(vw>=nw)vw=0;
+ const wDone=w=>[...Array(nd).keys()].filter(d=>dayStatus(w,d)==='done').length;const g=PROGS[PROG];
+ const IC={done:'<svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg>',part:'<svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="8"/></svg>',test:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg>',plan:'<svg viewBox="0 0 24 24"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg>'};
+ const seg=`<div class="tnseg" role="tablist" aria-label="Auswahl">${[['prog','Programm'],['week','Woche'],['day','Tag']].map(([k,l])=>`<button type="button" role="tab" data-tnav="${k}" aria-selected="${mode===k}">${l}</button>`).join('')}</div>`;
+ const dn=wDone(vw);
+ const card=`<div class="tncard"><div class="tnc-t"><small>${esc(g.name)}</small><b>Woche ${vw+1} · ${esc(WEEKS[vw]||'')}</b></div><span class="tnc-r" aria-label="${dn} von ${nd} Einheiten">${ringSVG(nd?dn/nd:0,'#43c08a',40,4)}<em>${dn}/${nd}</em></span></div>`;
+ const tabs=`<div class="tnweeks" role="group" aria-label="Woche" style="--nw:${Math.min(nw,5)}">${[...Array(nw).keys()].map(w=>`<button type="button" data-navw="${w}" aria-pressed="${w===vw}" class="${wDone(w)===nd?'done':''}${w===S.ui.w?' hasel':''}">W${w+1}</button>`).join('')}</div>`;
+ const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD();
+   return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${test?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}${st==='done'?' · erledigt':''}"><span class="tld"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b></span><span class="tls ${st||'plan'}">${st==='done'?IC.done:st==='part'?IC.part:test?IC.test:IC.plan}</span><i></i></button>`}).join('')+`</div></div>`;
+ const weeks=`<div class="tnwl">${[...Array(nw).keys()].map(w=>{const n=wDone(w),a=dayDate(w,0),z=dayDate(w,nd-1),fd=x=>x?x.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'';return `<button type="button" class="tnwr ${w===S.ui.w?'cur':''} ${n===nd?'done':''}" data-navw="${w}" data-navday="1"><em>W${w+1}</em><span><b>${esc(WEEKS[w]||'')}</b><small>${fd(a)} – ${fd(z)}</small></span><i class="tlp"><b style="width:${nd?n/nd*100:0}%"></b></i><small class="tnwn">${n}/${nd}</small></button>`}).join('')}</div>`;
+ const tl=$('#tl');tl.dataset.mode=mode;tl.innerHTML=seg+card+(mode==='day'?tabs+days:mode==='week'?weeks:'');
+ document.body.dataset.tnav=mode}
+document.addEventListener('click',e=>{const t=e.target.closest('#tl [data-tnav],#tl [data-navw]');if(!t)return;
+ if(t.dataset.tnav){S.ui.tnav=t.dataset.tnav;if(t.dataset.tnav!=='week')S.ui.navw=null;renderTL();return}
+ S.ui.navw=+t.dataset.navw;if(t.dataset.navday)S.ui.tnav='day';renderTL()},true);
 
 /* ---------- Performance Lab mit Symbolen & Leerstellen ---------- */
 function labHTML(A){let h=labHTMLBase(A);
