@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-0358-1f1b32a";
+<script>window.CF_VERSION="2026.10.21-0410-69da15b";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2888,7 +2888,9 @@ svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
-body[data-tab="train"] header.top{position:relative!important}
+body[data-tab="train"] header.top{position:relative!important;top:auto!important}  /* top:auto – sonst verschiebt der Sicherheitsbereich (Dynamic Island) den Kopf nach unten */
+/* Detail-Kopf (Zurück) rückt unter die schmale Leiste statt verdeckt zu werden */
+body.tcb-on[data-tab="train"] #view .pdh{top:var(--tcbh,64px)!important}
 .tcb{position:fixed;left:0;right:0;top:0;z-index:45;padding:calc(env(safe-area-inset-top,0px) + 6px) max(14px,env(safe-area-inset-right,0px)) 8px max(14px,env(safe-area-inset-left,0px));
  background:linear-gradient(180deg,rgba(14,22,58,.97),rgba(8,11,26,.95));border-bottom:1px solid rgba(130,155,255,.22);box-shadow:0 10px 30px -14px rgba(20,40,160,.7);
  transform:translate3d(0,-110%,0);transition:transform var(--mo-2) var(--mo-ease);pointer-events:none}
@@ -3656,7 +3658,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.1f1b32a.js"></script>
+<script src="assets/app-0.69da15b.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */

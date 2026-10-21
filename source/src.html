@@ -2791,7 +2791,9 @@ svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
-body[data-tab="train"] header.top{position:relative!important}
+body[data-tab="train"] header.top{position:relative!important;top:auto!important}  /* top:auto – sonst verschiebt der Sicherheitsbereich (Dynamic Island) den Kopf nach unten */
+/* Detail-Kopf (Zurück) rückt unter die schmale Leiste statt verdeckt zu werden */
+body.tcb-on[data-tab="train"] #view .pdh{top:var(--tcbh,64px)!important}
 .tcb{position:fixed;left:0;right:0;top:0;z-index:45;padding:calc(env(safe-area-inset-top,0px) + 6px) max(14px,env(safe-area-inset-right,0px)) 8px max(14px,env(safe-area-inset-left,0px));
  background:linear-gradient(180deg,rgba(14,22,58,.97),rgba(8,11,26,.95));border-bottom:1px solid rgba(130,155,255,.22);box-shadow:0 10px 30px -14px rgba(20,40,160,.7);
  transform:translate3d(0,-110%,0);transition:transform var(--mo-2) var(--mo-ease);pointer-events:none}
@@ -5035,6 +5037,7 @@ function trainPost(v){tcbUpdate();if(S.ui.tdet&&S.ui.tdet.train)return;const til
  c.innerHTML=`<span class="ti-bulb" aria-hidden="true">${TI_BULB}</span><span class="th-t"><b>${info.length?`Tageshinweise · ${info.length}`:'Tagesinfo'}</b><span>${esc(first)}</span></span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>`;
  sh.before(c);const g=tile.parentElement;tile.remove();[...g.children].forEach((t,i,a)=>t.classList.toggle('wide',a.length%2===1&&i===a.length-1))}
 function tcbEnsure(){let el=document.getElementById('tcb');if(el)return el;el=document.createElement('div');el.id='tcb';el.className='tcb';el.setAttribute('aria-hidden','true');document.body.appendChild(el);
+ try{new ResizeObserver(()=>document.documentElement.style.setProperty('--tcbh',el.offsetHeight+'px')).observe(el)}catch(e){}
  const top=document.querySelector('header.top');if(top&&'IntersectionObserver' in window){new IntersectionObserver(es=>{const out=es[0].boundingClientRect.bottom<=0||!es[0].isIntersecting;document.body.classList.toggle('tcb-on',out&&document.body.dataset.tab==='train'&&$('#gym').hidden);tcbAria()},{threshold:0}).observe(top)}
  return el}
 function tcbAria(){const el=document.getElementById('tcb');if(!el)return;const on=document.body.classList.contains('tcb-on');el.setAttribute('aria-hidden',String(!on));el.querySelectorAll('button').forEach(b=>b.tabIndex=on?0:-1)}

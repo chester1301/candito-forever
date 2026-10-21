@@ -37,6 +37,16 @@ module.exports={name:'Training-Redesign – Übersicht, Kopfleiste, Tagesinfo, T
   }
   const p=await page({width:390,height:844,fixedTime:'2026-10-21T18:00:00+02:00'});
   await p.evaluate(()=>{switchProg('intro');S.ui.tab='train';S.ui.w=0;S.ui.d=3;render()});await p.waitForTimeout(300);
+  // iPhone mit Dynamic Island simulieren (Sicherheitsbereich 59 px): Kopf darf nicht verrutschen und nichts überdecken
+  await p.addStyleTag({content:'html body header.top{top:59px}'});
+  await p.evaluate(()=>{S.ui.tab='train';S.ui.tdet={train:null};render();scrollTo(0,0)});await p.waitForTimeout(300);
+  const sa=await p.evaluate(()=>{const h=document.querySelector('header.top').getBoundingClientRect();scrollTo(0,250);const h2=document.querySelector('header.top').getBoundingClientRect();const card=document.querySelector('#view .trh').getBoundingClientRect();return {y0:Math.round(h.top),moved:Math.round(h2.top),over:h2.bottom>card.top+1}});
+  t.ok(sa.y0===0&&sa.moved===-250&&!sa.over,`Mit Sicherheitsbereich: Kopf scrollt sauber mit, überdeckt nichts (${JSON.stringify(sa)})`);
+  // Detailseite: Zurück-Zeile bleibt unter der schmalen Leiste sichtbar
+  await p.evaluate(()=>{S.ui.tdet={train:'info'};render();scrollTo(0,0)});await p.waitForTimeout(200);await p.evaluate(()=>scrollTo(0,1200));await p.waitForTimeout(500);
+  const pd=await p.evaluate(()=>{const b=document.querySelector('#view .pdh').getBoundingClientRect(),c=document.querySelector('#tcb').getBoundingClientRect();const back=document.querySelector('#view [data-tdback]');const r=back.getBoundingClientRect();const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return {on:document.body.classList.contains('tcb-on'),below:b.top>=c.bottom-1,hit:!!hit&&(hit===back||back.contains(hit))}});
+  t.ok(pd.on&&pd.below&&pd.hit,`Tagesinfo gescrollt: Zurück-Knopf unter der Kopfleiste erreichbar (${JSON.stringify(pd)})`);
+  await p.evaluate(()=>{S.ui.tdet={train:null};render();scrollTo(0,0)});await p.waitForTimeout(300);
   // In anderen Reitern keine Kopfleiste
   await p.evaluate(()=>{scrollTo(0,900)});await p.waitForTimeout(400);await p.evaluate(()=>{S.ui.tab='home';render();scrollTo(0,900)});await p.waitForTimeout(400);
   t.ok(await p.evaluate(()=>!document.body.classList.contains('tcb-on')),'Kopfleiste nur im Training-Reiter');
