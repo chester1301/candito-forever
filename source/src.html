@@ -2626,9 +2626,8 @@ body.scrl .amb::before,body.scrl .nav .ni::after,body.scrl .bigbtn.hb2::after,bo
 #cfbar.bk{display:none!important}
 body.gymopen #cfbar{display:none!important}
 </style>
-<style id="cf-hype">
-html[data-theme=blue] .hype.h{background:linear-gradient(135deg,#6f8cff 0%,#3157e8 55%,#1d3fc4 100%)!important;box-shadow:0 0 0 1px rgba(160,180,255,.55) inset,0 6px 18px -6px rgba(49,87,232,.8)!important;color:#fff!important}
-html[data-theme=blue] .hype.h .hic{background:rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)!important}
+<style id="cf-hype-alt">
+/* (frühere blaue „Hoch“-Darstellung entfernt – Hype-Farben siehe cf-hype) */
 </style>
 <style id="cf-charts">
 /* Einheitliches Diagramm-Thema: Raster, Achsenschrift, Hervorhebungen */
@@ -2912,6 +2911,26 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .tnwr.cur{border-color:rgba(127,152,255,.6);background:linear-gradient(180deg,rgba(64,105,245,.22),rgba(64,105,245,.06))}
 .tnwr.done em{background:rgba(67,192,138,.2);color:#9fe3c2}
 @media (max-width:359px){.tndays .tlr{gap:6px}#tl .tndays .tlc .tld{flex-direction:column;align-items:center;gap:0}.tnwr{grid-template-columns:auto minmax(0,1fr) auto}.tnwr .tlp{display:none}}
+</style>
+<style id="cf-hype">
+/* ===== Hype-Farben einheitlich in allen Themen: Niedrig = Gelb · Moderat = Orange · Hoch = Rot ===== */
+.hype.h{color:#fff!important;background:linear-gradient(135deg,#ff6b5e 0%,#e8262f 55%,#a3121b 100%)!important;box-shadow:inset 0 0 0 1px rgba(255,140,130,.55),0 6px 18px -8px rgba(232,38,47,.8)!important}
+.hype.h .hic{background:rgba(0,0,0,.24)!important;color:#ffd8a0!important;box-shadow:none!important}
+.hype.h .hmt i{background:#fff!important}
+.hype.m{color:#ffb25c!important;background:linear-gradient(135deg,rgba(245,140,50,.30),rgba(245,140,50,.10))!important;box-shadow:inset 0 0 0 1px rgba(245,140,50,.6)!important}
+.hype.m .hic{background:linear-gradient(135deg,#f7a24c,#e2701c)!important;color:#2a1405!important}
+.hype.m .hmt i{background:#ffb25c!important}
+.hype.l{color:#f6d65e!important;background:linear-gradient(135deg,rgba(243,201,105,.22),rgba(243,201,105,.07))!important;box-shadow:inset 0 0 0 1px rgba(243,201,105,.55)!important}
+.hype.l .hic{background:rgba(243,201,105,.22)!important;color:#f6d65e!important}
+.hype.l .hmt i{background:#f6d65e!important}
+.hymini.h{color:#ff5a5f!important}.hymini.m{color:#f59a45!important}.hymini.l{color:#f3c969!important}
+.blk.hy-h{border-color:rgba(232,38,47,.5)!important}
+.gym[data-hy="h"] .ghero{border-color:rgba(232,38,47,.5)!important}
+.gym[data-hy="m"] .ghero{border-color:rgba(245,140,50,.45)!important}
+.gym[data-hy="l"] .ghero{border-color:rgba(243,201,105,.45)!important}
+.gym[data-hy="h"] .strip span.c{background:#e8262f!important}
+.gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
+.gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
