@@ -15,7 +15,7 @@ module.exports={name:'Progress-Redesign – Ebenen, Vollständigkeit, Werte, Kra
       cells:v.querySelectorAll('.pcal-g i').length,need:Object.keys(PDT).filter(k=>k!=='rpeplan'&&k!=='verlauf')}});
   t.ok(m.first&&m.est,'Ebene 1: geschätztes Total oben, klar als Schätzung gekennzeichnet');
   t.eq(m.tot,m.totExp,'Total identisch zur bisherigen Berechnung (Rundung je Lift)');
-  t.eq(m.pg2,['treue','volumen','whoop','year'],'Ebene 2: Plan-Treue, Volumen, Erholung, Programmfortschritt');
+  t.eq(m.pg2,['kraft','rekorde','punkte','test','treue','volumen','backoff','rpe','whoop','year','zyklen'],'Gliederung: Kraft & Rekorde · Training & Umsetzung · Erholung & Langfristverlauf');
   t.ok(m.need.every(k=>m.pds.includes(k))&&m.ver===1,`Alle Analysebereiche erreichbar (${m.need.join(', ')} + Verlauf)`);
   t.eq(m.pds.length,new Set(m.pds).size,'Kein Bereich doppelt auf der Hauptseite');
   t.eq(m.cells,42,'Kompakter Kalender: 6 Wochen × 7 Tage');

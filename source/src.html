@@ -2788,6 +2788,19 @@ svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){.gxi-p0,.gxi-bg{animation:none}}
 </style>
 <style id="cf-rtmore">.rt-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.rt-more .sec{margin:12px 0 8px}.rt-more .sec:first-child{margin-top:0}</style>
+<style id="cf-ds2">
+/* ===== Candito Forever 2.0 – zentrale Design-Tokens (Midnight Blue) =====
+   Farben/Schriften: siehe :root oben und Theme-Skript. Hier: Radien, Abstände, Schatten, Glas, Bewegung, Touch.
+   Bereichs-Styles (cf-train2, cf-prog2, cf-sq2 …) bauen auf diesen Werten auf und dürfen sie gezielt übersteuern. */
+:root{--cf-r-card:20px;--cf-r-tile:20px;--cf-r-ctl:14px;--cf-r-chip:999px;--cf-sp-1:6px;--cf-sp-2:10px;--cf-sp-3:14px;--cf-sp-4:18px;--cf-touch:44px;
+ --cf-line:rgba(205,218,255,.12);--cf-line-2:rgba(205,218,255,.20);--cf-hl:inset 0 1px 0 rgba(255,255,255,.08);--cf-sh:0 16px 34px -26px rgba(0,0,0,.9);
+ --cf-glow:0 18px 40px -28px rgba(64,110,255,.85);--cf-surface:linear-gradient(180deg,#121a33,#0a0e1d);--cf-surface-2:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012))}
+html[data-theme="blue"] #view .card{border-radius:var(--cf-r-card);border-color:var(--cf-line)!important;box-shadow:var(--cf-hl),var(--cf-sh)}
+html[data-theme="blue"] #view .ptile{border-radius:var(--cf-r-tile);border-color:color-mix(in srgb,var(--pc,#7f98ff) 22%,var(--cf-line))!important;box-shadow:var(--cf-hl),var(--cf-sh)}
+html[data-theme="blue"] #view .ptile:active,html[data-theme="blue"] #view .card button:active{transform:scale(.985)}
+html[data-theme="blue"] .sect{letter-spacing:-.01em}
+html[data-theme="blue"] #view .pdh .pdb{width:var(--cf-touch);height:var(--cf-touch);border-radius:var(--cf-r-ctl)}
+</style>
 <style id="cf-train2">
 /* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
 /* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
@@ -2938,6 +2951,12 @@ body[data-tab="prog"] #view .card .tw,body[data-tab="prog"] #view .card:has(>tab
 <style id="cf-sq2">
 /* ===== Side Quests V2: einspaltige Bibliothek, Glas-Icons, Detailansicht ===== */
 body[data-tab="sq"] header.top{position:relative!important;top:auto!important}
+#view{grid-template-columns:minmax(0,1fr)}
+body[data-tab="setup"] #view .ptile .ptl{white-space:normal!important;overflow-wrap:anywhere;padding-right:16px;line-height:1.25}
+#view .pgk-h{flex-wrap:wrap;row-gap:6px}
+#view .rt-r{flex-wrap:wrap;row-gap:8px}#view .rt-r>:first-child{min-width:0;flex:1 1 120px}
+#view select{max-width:100%}
+@media (max-width:359px){body[data-tab="setup"] #view .ptile .ptv b{font-size:clamp(20px,7.4vw,26px)!important;letter-spacing:-.02em}}  /* Spalte nie breiter als der Bildschirm (sonst wächst sie mit langen Titeln) */
 body[data-tab="sq"] #view .phead{flex-wrap:wrap;row-gap:2px}body[data-tab="sq"] #view .phead .sect{white-space:nowrap}body[data-tab="sq"] #view .phead .phs{white-space:normal}
 .tcb{background:linear-gradient(180deg,#0e163a,#080b1a)!important}
 body.tcb-on[data-tab="sq"] #view .pdh{top:var(--tcbh,64px)!important}
@@ -3941,7 +3960,14 @@ async function initDb(){
 }
 
 /* ===================== Rechnen ===================== */
-const nf=(n,d=1)=>n==null||isNaN(n)?'–':Number(n).toLocaleString('de-DE',{maximumFractionDigits:d,useGrouping:false});
+// Zahlformat: Intl.NumberFormat je Nachkommastellen nur einmal anlegen (gleiches Ergebnis wie toLocaleString, aber ohne Neuaufbau pro Aufruf)
+const NF_C=new Map();const nf=(n,d=1)=>{if(n==null||isNaN(n))return '–';let f=NF_C.get(d);if(!f){f=new Intl.NumberFormat('de-DE',{maximumFractionDigits:d,useGrouping:false});NF_C.set(d,f)}return f.format(Number(n))};
+// Datumsformat: toLocaleDateString('de-DE',{…}) legt sonst bei jedem Aufruf einen neuen Formatierer an (teuer beim Rendern).
+// Gleiches Ergebnis über zwischengespeicherte Intl.DateTimeFormat-Objekte; nur für reine Datumsoptionen, sonst Original.
+// Cache wird beim Zurückkehren in die App und minütlich geleert (Zeitzonenwechsel auf Reisen).
+(function(){const orig=Date.prototype.toLocaleDateString;if(orig.__cf)return;const C=new Map(),OK=/^(weekday|era|year|month|day)$/;
+ const fast=function(loc,o){if(loc==='de-DE'&&(o===undefined||(o&&typeof o==='object'&&Object.keys(o).length&&Object.keys(o).every(k=>OK.test(k)&&typeof o[k]==='string')))&&!isNaN(this)){const k=o?JSON.stringify(o):'';let f=C.get(k);if(!f){f=new Intl.DateTimeFormat('de-DE',o);C.set(k,f)}return f.format(this)}return orig.apply(this,arguments)};
+ fast.__cf=1;fast.orig=orig;Date.prototype.toLocaleDateString=fast;const clr=()=>C.clear();document.addEventListener('visibilitychange',clr);setInterval(clr,60000)})();
 const pnum=v=>{if(v==null||v==='')return null;const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?null:n};
 const rnd=x=>{const s=S.meta.round||2.5;return Math.round(x/s)*s};
 const exInc=ex=>(S.meta.exInc&&S.meta.exInc[ex])||S.meta.round||2.5;
@@ -5225,6 +5251,18 @@ const TI_BULB='<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 
 const TNQ=['Gute Einheit','Schlecht geschlafen','Viel Energie','Starke Leistung','Technik fokussiert','Schmerzen','Motiviert','Stressig'];
 const tnHas=(t,q)=>new RegExp('(^|\\n|· )'+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|\\n| ·)').test(t||'');
 /* ===== Trainingsbereich: Tageshinweise-Karte & kompakte Kopfleiste beim Scrollen ===== */
+// Einstellungen: Kacheln und Karten nur optisch in vier Bereiche gliedern (alle Einträge bleiben, Reihenfolge innerhalb gleich)
+const SETG=[['Athlet & Trainingsplanung','Körpergewicht, Phasen, Hantel',['athlet','plan','shift','hantel']],['Gym & Timer','Pausen, Ton, Vibration',['.rt']],['Darstellung','Farbthema, Schrift, Bewegung',['design']],['Daten & System','Regeln, Sicherung, Export, Abgleich',['rechnet','backup','export','sheet','.errlog']]];
+function setupGroups(v){const g=v.querySelector('.tgrid');if(!g||v.querySelector('.setg'))return;const used=new Set();const frag=document.createDocumentFragment();
+ SETG.forEach(([t,sub,ks])=>{const items=[];ks.forEach(k=>{const e=k[0]==='.'?v.querySelector(':scope>'+k):g.querySelector(`[data-tdk="${k}"]`);if(e&&!used.has(e)){used.add(e);items.push(e)}});if(!items.length)return;
+  const hd=document.createElement('div');hd.className='phead hsec setg';hd.innerHTML=`<h2 class="sect" style="margin:0">${t}</h2><span class="phs">${sub}</span>`;frag.appendChild(hd);
+  const tiles=items.filter(e=>e.classList.contains('ptile')),cards=items.filter(e=>!e.classList.contains('ptile'));
+  if(tiles.length){const gg=document.createElement('div');gg.className='pgrid tgrid';tiles.forEach((e,i)=>{e.classList.toggle('wide',tiles.length%2===1&&i===tiles.length-1);gg.appendChild(e)});frag.appendChild(gg)}
+  cards.forEach(e=>frag.appendChild(e))});
+ // nicht zugeordnete Kacheln/Karten bleiben erhalten (am Ende)
+ const rest=[...g.children].filter(e=>!used.has(e));if(rest.length){const gg=document.createElement('div');gg.className='pgrid tgrid';rest.forEach(e=>gg.appendChild(e));frag.appendChild(gg)}
+ [...v.children].filter(e=>e!==g&&!e.matches('.phead')&&!used.has(e)).forEach(e=>frag.appendChild(e));
+ g.replaceWith(frag)}
 function trainPost(v){tcbUpdate();if(S.ui.tdet&&S.ui.tdet.train)return;const tile=v.querySelector('.tgrid [data-tdk="info"]');const sh=v.querySelector('.sechead');if(!tile||!sh)return;
  const {w,d}=S.ui;const info=INFO[w+'-'+d]||[];const day=P[w][d];const first=info[0]||day.d||'';
  const c=document.createElement('button');c.type='button';c.className='card thint';c.dataset.tdk='info';
@@ -6232,9 +6270,10 @@ function renderProg(){const D=progData(),{A}=D;
  const prog=`<button type="button" class="ptile pgo" data-pd="year" style="--pc:${PDC.year}"><span class="ptl"><svg viewBox="0 0 24 24">${PDI.year}</svg>Programmfortschritt</span><span class="ptv"><b>${dnC.n}</b><small>/ ${dnC.t} Einheiten</small></span><span class="tring">${ringSVG(pf,PDC.year,46,6)}</span><span class="pts">${esc(PROGS[PROG].short)} · Phase ${cur+1} / ${o.length}${o[cur+1]?' · danach '+esc(PROGS[o[cur+1]].short):''}</span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`;
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
   ${strengthHTML(D)}
-  <div class="pgrid pg2">${psec('Trainingssteuerung','Plan, Umfang, Erholung & Fortschritt')}${treue}${vol}${wh}${prog}</div>
-  ${calMiniHTML(D)}
-  <div class="pgrid">${psec('Analysen','Kraft, Bestwerte, Ausführung & Plan')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${bo}${rpe}${zy}${te}</div>`}
+  <div class="pgrid pg2 pgk3" data-grp="kraft">${psec('Kraft & Rekorde','e1RM, Bestwerte, Punkte & Test')}${kraft}${rek}${pk}${te}</div>
+  <div class="pgrid pg2" data-grp="training">${psec('Training & Umsetzung','Plan-Treue, Volumen, Backoffs & RPE')}${treue}${vol}${bo}${rpe}</div>
+  <div class="pgrid pg2" data-grp="erholung">${psec('Erholung & Langfristverlauf','Erholung, Jahresplan, Zyklen & Kalender')}${wh}${prog}${zy.replace('class="ptile ','class="ptile wide ')}</div>
+  ${calMiniHTML(D)}`}
 function psec(t,s){return `<div class="psec"><h3>${t}</h3><small>${s}</small></div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
@@ -6684,7 +6723,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train'&&S.ui.tab!=='sq')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{if(S.ui.tab==='sq')sqTcb()}catch(e){console.warn('Quests',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go,.pcal'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train'&&S.ui.tab!=='sq')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{if(S.ui.tab==='sq')sqTcb()}catch(e){console.warn('Quests',e)}try{if(S.ui.tab==='setup'&&!(S.ui.tdet||{}).setup)setupGroups(v)}catch(e){console.warn('Einstellungen',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go,.pcal'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
@@ -7062,7 +7101,8 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(g==='prevset'){gymSwipe(-1);return}if(g==='nextset'){gymSwipe(1);return}
  if(g==='prev'){G.b--;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=-1;renderGym();$('#gym').scrollTop=0}
  if(g==='next'){G.b++;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=1;renderGym();$('#gym').scrollTop=0}
- if(g==='log'){const cv=curVals();const s=cv.s;
+ if(g==='log'){const pn=performance.now();if(G.logAt&&pn-G.logAt<650)return;G.logAt=pn; // Schutz vor Doppelbuchung (Doppeltipp/zweites Wischen direkt hintereinander)
+  const cv=curVals();const s=cv.s;
   if(!s.ok){if(cv.kg!=null)s.kg=nf(cv.kg,2);if(cv.r!=null)s.r=String(cv.r);completeSet(w,d,G.b,G.i);G.just={k:key(w,d),b:G.b,i:G.i,t:Date.now()}}
   const ob=G.b,oi=G.i;const nx=nextOpen(w,d,G.b,G.i);if(nx&&!(nx.b<G.b)){G.b=nx.b;G.i=nx.i}else if(G.i<cv.bl.s-1)G.i++;
   if(ob!==G.b||oi!==G.i)G.slide=1;renderGym();$('#gym').scrollTop=0}

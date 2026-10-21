@@ -1,0 +1,31 @@
+// Alle Ansichten der App (Name, ganze Seite?, Vorbereitung, Aufräumen) – genutzt von Funktionsinventur und Katalog
+const T=(tab,k)=>`()=>{S.ui.tab='${tab}';S.ui.tdet={};S.ui.pd=null;S.ui.sqd=null;${k?`S.ui.tdet.${tab}='${k}';`:''}render();scrollTo(0,0)}`;
+const VIEWS=[
+ ['heute',1,T('home')],['heute-oben',0,T('home')],
+ ...['ready','whoop','satz','zeit','next','zyklus'].map(k=>['heute-'+k,1,T('home',k)]),
+ ['checkin',0,"()=>{S.ui.tab='home';S.ui.tdet={};render();ckOpen(PROG,0,3,false)}","()=>{const e=document.getElementById('ckin');if(e)e.hidden=true;CK=null}"],
+ ['readiness-info',0,"()=>{S.ui.tab='home';render();jrSheet()}","()=>{const e=document.getElementById('jrsheet');if(e)e.hidden=true}"],
+ ['wissen',1,"()=>{S.ui.tab='wissen';S.ui.tdet={};render();scrollTo(0,0)}"],
+ ['training',1,"()=>{S.ui.tab='train';S.ui.tdet={};S.ui.w=0;S.ui.d=3;render();scrollTo(0,0)}"],
+ ['training-kompakt',0,"()=>{S.ui.tab='train';S.ui.tdet={};S.ui.w=0;S.ui.d=3;render();scrollTo(0,0);setTimeout(()=>scrollTo(0,900),50)}"],
+ ...['info','whoop','notiz'].map(k=>['training-'+k,1,`()=>{S.ui.tab='train';S.ui.w=0;S.ui.d=3;S.ui.tdet={train:'${k}'};render();scrollTo(0,0)}`]),
+ ['gym-aufwaermen',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=0;G.wu=true;renderGym()}","()=>{G.wu=false;try{closeGym(true)}catch(e){}}"],
+ ['gym-satz',0,"()=>{S.ui.w=0;S.ui.d=3;const L=log(0,3,true);L.done=false;L.start=Date.now();L.flow=1;L.ck=1;saveLog(key(0,3));openGym();G.b=0;G.i=0;renderGym()}","()=>{try{closeGym(true)}catch(e){}}"],
+ ['gym-satz-unten',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=0;renderGym();setTimeout(()=>{const g=document.querySelector('#gym .gym-in')||document.getElementById('gym');g.scrollTop=9999},50)}","()=>{try{closeGym(true)}catch(e){}}"],
+ ['gym-info-sheet',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=0;renderGym();exInfoOpen('v')}","()=>{try{exInfoClose()}catch(e){}try{closeGym(true)}catch(e){}}"],
+ ['gym-pause',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=1;renderGym();startRest(240,{w:0,d:3,b:0,i:1});openSheet()}","()=>{try{stopRest()}catch(e){}try{closeSheet()}catch(e){}try{closeGym(true)}catch(e){}}"],
+ ['gym-rpe-planer',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=0;rpOpenGym();renderGym()}","()=>{G.rpo=false;try{closeGym(true)}catch(e){}}"],
+ ['gym-verlauf',0,"()=>{S.ui.w=0;S.ui.d=3;openGym();G.b=0;G.i=0;G.hi=true;renderGym()}","()=>{G.hi=false;try{closeGym(true)}catch(e){}}"],
+ ['uebungstausch',0,"()=>{S.ui.tab='train';S.ui.tdet={};S.ui.w=0;S.ui.d=3;render();swSheet(0,3,5)}","()=>{document.querySelectorAll('.jrs,#swsheet,[id^=sw]').forEach(e=>{if(e.id&&e.id!=='sw')e.hidden=true});try{render()}catch(e){}}"],
+ ['uebungs-info',0,"()=>{openEx('pbb')}","()=>{try{closeEx()}catch(e){}}"],
+ ['abschluss',0,"()=>{endOpen(0,3)}","()=>{try{endClose()}catch(e){}}"],
+ ['zusammenfassung',0,"()=>{svOpen(PROG,0,1,false)}","()=>{try{svClose()}catch(e){}}"],
+ ['progress',1,T('prog')],
+ ...['kraft','rekorde','punkte','volumen','treue','backoff','rpe','whoop','year','zyklen','test','verlauf'].map(k=>['progress-'+k,1,`()=>{S.ui.tab='prog';S.ui.tdet={};S.ui.pd='${k}';render();scrollTo(0,0)}`,"()=>{S.ui.pd=null}"]),
+ ['coach',1,T('coach')],['coach-claude',1,T('coach','claude')],['coach-cockpit',1,T('coach','cockpit')],
+ ['quests',1,"()=>{S.ui.tab='sq';S.ui.sqd=null;render();scrollTo(0,0)}"],
+ ...['w6','pk8','rm5','pv','rm20'].map(f=>['quest-'+f,1,`()=>{S.ui.tab='sq';S.ui.sqd='${f}';S.ui.sqv=null;render();scrollTo(0,0)}`,"()=>{S.ui.sqd=null}"]),
+ ['einstellungen',1,T('setup')],
+ ...['athlet','plan','shift','design','hantel','rechnet','backup','export','sheet'].map(k=>['einstellungen-'+k,1,T('setup',k)]),
+];
+module.exports={VIEWS};

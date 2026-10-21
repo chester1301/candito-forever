@@ -1176,7 +1176,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ok">aktiv</span></div>
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-0533-bd6137f</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.21-0646-8628f55</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -1217,7 +1217,14 @@ async function initDb(){
 }
 
 /* ===================== Rechnen ===================== */
-const nf=(n,d=1)=>n==null||isNaN(n)?'–':Number(n).toLocaleString('de-DE',{maximumFractionDigits:d,useGrouping:false});
+// Zahlformat: Intl.NumberFormat je Nachkommastellen nur einmal anlegen (gleiches Ergebnis wie toLocaleString, aber ohne Neuaufbau pro Aufruf)
+const NF_C=new Map();const nf=(n,d=1)=>{if(n==null||isNaN(n))return '–';let f=NF_C.get(d);if(!f){f=new Intl.NumberFormat('de-DE',{maximumFractionDigits:d,useGrouping:false});NF_C.set(d,f)}return f.format(Number(n))};
+// Datumsformat: toLocaleDateString('de-DE',{…}) legt sonst bei jedem Aufruf einen neuen Formatierer an (teuer beim Rendern).
+// Gleiches Ergebnis über zwischengespeicherte Intl.DateTimeFormat-Objekte; nur für reine Datumsoptionen, sonst Original.
+// Cache wird beim Zurückkehren in die App und minütlich geleert (Zeitzonenwechsel auf Reisen).
+(function(){const orig=Date.prototype.toLocaleDateString;if(orig.__cf)return;const C=new Map(),OK=/^(weekday|era|year|month|day)$/;
+ const fast=function(loc,o){if(loc==='de-DE'&&(o===undefined||(o&&typeof o==='object'&&Object.keys(o).length&&Object.keys(o).every(k=>OK.test(k)&&typeof o[k]==='string')))&&!isNaN(this)){const k=o?JSON.stringify(o):'';let f=C.get(k);if(!f){f=new Intl.DateTimeFormat('de-DE',o);C.set(k,f)}return f.format(this)}return orig.apply(this,arguments)};
+ fast.__cf=1;fast.orig=orig;Date.prototype.toLocaleDateString=fast;const clr=()=>C.clear();document.addEventListener('visibilitychange',clr);setInterval(clr,60000)})();
 const pnum=v=>{if(v==null||v==='')return null;const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?null:n};
 const rnd=x=>{const s=S.meta.round||2.5;return Math.round(x/s)*s};
 const exInc=ex=>(S.meta.exInc&&S.meta.exInc[ex])||S.meta.round||2.5;
@@ -2501,6 +2508,18 @@ const TI_BULB='<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 
 const TNQ=['Gute Einheit','Schlecht geschlafen','Viel Energie','Starke Leistung','Technik fokussiert','Schmerzen','Motiviert','Stressig'];
 const tnHas=(t,q)=>new RegExp('(^|\\n|· )'+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|\\n| ·)').test(t||'');
 /* ===== Trainingsbereich: Tageshinweise-Karte & kompakte Kopfleiste beim Scrollen ===== */
+// Einstellungen: Kacheln und Karten nur optisch in vier Bereiche gliedern (alle Einträge bleiben, Reihenfolge innerhalb gleich)
+const SETG=[['Athlet & Trainingsplanung','Körpergewicht, Phasen, Hantel',['athlet','plan','shift','hantel']],['Gym & Timer','Pausen, Ton, Vibration',['.rt']],['Darstellung','Farbthema, Schrift, Bewegung',['design']],['Daten & System','Regeln, Sicherung, Export, Abgleich',['rechnet','backup','export','sheet','.errlog']]];
+function setupGroups(v){const g=v.querySelector('.tgrid');if(!g||v.querySelector('.setg'))return;const used=new Set();const frag=document.createDocumentFragment();
+ SETG.forEach(([t,sub,ks])=>{const items=[];ks.forEach(k=>{const e=k[0]==='.'?v.querySelector(':scope>'+k):g.querySelector(`[data-tdk="${k}"]`);if(e&&!used.has(e)){used.add(e);items.push(e)}});if(!items.length)return;
+  const hd=document.createElement('div');hd.className='phead hsec setg';hd.innerHTML=`<h2 class="sect" style="margin:0">${t}</h2><span class="phs">${sub}</span>`;frag.appendChild(hd);
+  const tiles=items.filter(e=>e.classList.contains('ptile')),cards=items.filter(e=>!e.classList.contains('ptile'));
+  if(tiles.length){const gg=document.createElement('div');gg.className='pgrid tgrid';tiles.forEach((e,i)=>{e.classList.toggle('wide',tiles.length%2===1&&i===tiles.length-1);gg.appendChild(e)});frag.appendChild(gg)}
+  cards.forEach(e=>frag.appendChild(e))});
+ // nicht zugeordnete Kacheln/Karten bleiben erhalten (am Ende)
+ const rest=[...g.children].filter(e=>!used.has(e));if(rest.length){const gg=document.createElement('div');gg.className='pgrid tgrid';rest.forEach(e=>gg.appendChild(e));frag.appendChild(gg)}
+ [...v.children].filter(e=>e!==g&&!e.matches('.phead')&&!used.has(e)).forEach(e=>frag.appendChild(e));
+ g.replaceWith(frag)}
 function trainPost(v){tcbUpdate();if(S.ui.tdet&&S.ui.tdet.train)return;const tile=v.querySelector('.tgrid [data-tdk="info"]');const sh=v.querySelector('.sechead');if(!tile||!sh)return;
  const {w,d}=S.ui;const info=INFO[w+'-'+d]||[];const day=P[w][d];const first=info[0]||day.d||'';
  const c=document.createElement('button');c.type='button';c.className='card thint';c.dataset.tdk='info';
@@ -3508,9 +3527,10 @@ function renderProg(){const D=progData(),{A}=D;
  const prog=`<button type="button" class="ptile pgo" data-pd="year" style="--pc:${PDC.year}"><span class="ptl"><svg viewBox="0 0 24 24">${PDI.year}</svg>Programmfortschritt</span><span class="ptv"><b>${dnC.n}</b><small>/ ${dnC.t} Einheiten</small></span><span class="tring">${ringSVG(pf,PDC.year,46,6)}</span><span class="pts">${esc(PROGS[PROG].short)} · Phase ${cur+1} / ${o.length}${o[cur+1]?' · danach '+esc(PROGS[o[cur+1]].short):''}</span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`;
  return `<div class="phead"><h2 class="sect" style="margin:0">Progress</h2><span class="phs">${esc(PROGS[PROG].name)}</span></div>
   ${strengthHTML(D)}
-  <div class="pgrid pg2">${psec('Trainingssteuerung','Plan, Umfang, Erholung & Fortschritt')}${treue}${vol}${wh}${prog}</div>
-  ${calMiniHTML(D)}
-  <div class="pgrid">${psec('Analysen','Kraft, Bestwerte, Ausführung & Plan')}${kraft}${rek}${pk.replace('class="ptile ','class="ptile wide ')}${bo}${rpe}${zy}${te}</div>`}
+  <div class="pgrid pg2 pgk3" data-grp="kraft">${psec('Kraft & Rekorde','e1RM, Bestwerte, Punkte & Test')}${kraft}${rek}${pk}${te}</div>
+  <div class="pgrid pg2" data-grp="training">${psec('Training & Umsetzung','Plan-Treue, Volumen, Backoffs & RPE')}${treue}${vol}${bo}${rpe}</div>
+  <div class="pgrid pg2" data-grp="erholung">${psec('Erholung & Langfristverlauf','Erholung, Jahresplan, Zyklen & Kalender')}${wh}${prog}${zy.replace('class="ptile ','class="ptile wide ')}</div>
+  ${calMiniHTML(D)}`}
 function psec(t,s){return `<div class="psec"><h3>${t}</h3><small>${s}</small></div>`}
 /* ---------- Setup ---------- */
 function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const athl=`<section class="card"><div class="ct"><h2 class="h2">Athlet</h2></div>
@@ -3960,7 +3980,7 @@ function render(){tick.k="";if((S.meta.prog||'intro')!==PROG){setProg(S.meta.pro
  const v=$('#view');const sig=S.ui.tab+'|'+S.ui.w+'|'+S.ui.d+'|'+(S.ui.pd||'')+'|'+((S.ui.tdet||{})[S.ui.tab]||'')+'|'+(S.ui.sqd||'')+'|'+(S.ui.wd??'');const enter=sig!==render.sig;render.sig=sig;
  v.innerHTML=S.ui.tab==='home'?renderHome():S.ui.tab==='prog'?renderProg():S.ui.tab==='setup'?renderSetup():S.ui.tab==='coach'?renderCoach():S.ui.tab==='wissen'?renderWissen():S.ui.tab==='sq'?sqHTML():renderTrain();
  if(enter&&render.booted){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');countUp(v)}render.booted=true;
- document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train'&&S.ui.tab!=='sq')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{if(S.ui.tab==='sq')sqTcb()}catch(e){console.warn('Quests',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go,.pcal'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
+ document.body.dataset.tab=S.ui.tab;if(S.ui.tab!=='train'&&S.ui.tab!=='sq')document.body.classList.remove('tcb-on');try{if(window._hpic){v.querySelectorAll('img.hpic').forEach(im=>{if(im.getAttribute('src')===window._hpic[0])im.src=window._hpic[1]})}}catch(e){}try{tileize(v,S.ui.tab)}catch(e){console.warn('Kacheln',e)}try{if(S.ui.tab==='train')trainPost(v)}catch(e){console.warn('Training',e)}try{if(S.ui.tab==='sq')sqTcb()}catch(e){console.warn('Quests',e)}try{if(S.ui.tab==='setup'&&!(S.ui.tdet||{}).setup)setupGroups(v)}catch(e){console.warn('Einstellungen',e)}try{markEmpty(v)}catch(e){}try{swDecorate(v)}catch(e){console.warn(e)}try{rfTidy(v)}catch(e){}try{if(S.ui.tab==='train'&&!(S.ui.tdet||{}).train){const h=testPlanHTML(S.ui.w,S.ui.d);const t=v.querySelector('.trh');if(h&&t)t.insertAdjacentHTML('afterend',h)}requestAnimationFrame(()=>twHint(v));if(S.ui.tab==='prog'&&!S.ui.pd){const f=v.querySelector('.psec,section,.card');if(f&&!v.querySelector('.hs-go,.pcal'))f.insertAdjacentHTML('beforebegin',hsGoHTML())}if(S.ui.tab==='home'&&!(S.ui.tdet||{}).home){const h=zustandHTML()+bkDueHTML()+weekRecapHTML()+anaDueHTML();const t=v.querySelector('.hero');if(h&&t)t.insertAdjacentHTML('afterend',h)}bkDot();}catch(e){console.warn(e)}bbMount();
  if(!$('#gym').hidden)renderGym(); if(!$('#sheet').hidden)renderSheet()}
 function progTidy(v){if(allSets().length)return;const secs=[...v.children].filter(x=>!x.matches('.sect,.lt-only')&&!/Jahresplan|Zyklus-Bericht|AMRAP-Test|Nächster Zyklus/.test(x.textContent)&&(x.matches('.leer')||x.querySelector('.leer')||/Noch zu wenig Daten|Total folgt|kein KG|RPE eintragen/.test(x.textContent)));if(secs.length<2)return;
  secs.forEach(x=>x.classList.add('pt-hid'));const first=secs[0];const b=document.createElement('section');b.className='card pt-empty';
@@ -4338,7 +4358,8 @@ $('#gym').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if(g==='prevset'){gymSwipe(-1);return}if(g==='nextset'){gymSwipe(1);return}
  if(g==='prev'){G.b--;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=-1;renderGym();$('#gym').scrollTop=0}
  if(g==='next'){G.b++;const f=L.b[G.b].findIndex(z=>!z.ok);G.i=f>=0?f:0;G.slide=1;renderGym();$('#gym').scrollTop=0}
- if(g==='log'){const cv=curVals();const s=cv.s;
+ if(g==='log'){const pn=performance.now();if(G.logAt&&pn-G.logAt<650)return;G.logAt=pn; // Schutz vor Doppelbuchung (Doppeltipp/zweites Wischen direkt hintereinander)
+  const cv=curVals();const s=cv.s;
   if(!s.ok){if(cv.kg!=null)s.kg=nf(cv.kg,2);if(cv.r!=null)s.r=String(cv.r);completeSet(w,d,G.b,G.i);G.just={k:key(w,d),b:G.b,i:G.i,t:Date.now()}}
   const ob=G.b,oi=G.i;const nx=nextOpen(w,d,G.b,G.i);if(nx&&!(nx.b<G.b)){G.b=nx.b;G.i=nx.i}else if(G.i<cv.bl.s-1)G.i++;
   if(ob!==G.b||oi!==G.i)G.slide=1;renderGym();$('#gym').scrollTop=0}
