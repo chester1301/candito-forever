@@ -3025,6 +3025,8 @@ body[data-tab="prog"] #view .card .tw,body[data-tab="prog"] #view .card:has(>tab
 /* ===== Side Quests V2: einspaltige Bibliothek, Glas-Icons, Detailansicht ===== */
 body[data-tab="sq"] header.top{position:relative!important;top:auto!important}
 #view{grid-template-columns:minmax(0,1fr)}
+/* Bereichsüberschriften in den Einstellungen: Untertitel unter den Titel, nie abgeschnitten */
+body[data-tab="setup"] #view .phead.setg{flex-direction:column;align-items:flex-start;gap:2px;margin-top:10px}body[data-tab="setup"] #view .phead.setg .sect{white-space:normal;line-height:1.1}body[data-tab="setup"] #view .phead.setg .phs{white-space:normal;overflow:visible;text-overflow:clip;padding-left:14px}
 body[data-tab="setup"] #view .ptile .ptl{white-space:normal!important;overflow-wrap:anywhere;padding-right:16px;line-height:1.25}
 #view .pgk-h{flex-wrap:wrap;row-gap:6px}
 #view .rt-r{flex-wrap:wrap;row-gap:8px}#view .rt-r>:first-child{min-width:0;flex:1 1 120px}
