@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-0339-406fa32";
+<script>window.CF_VERSION="2026.10.21-0358-1f1b32a";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -2885,6 +2885,78 @@ svg.chart .kp-ph{font:800 11px var(--f)!important;letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){.gxi-p0,.gxi-bg{animation:none}}
 </style>
 <style id="cf-rtmore">.rt-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.rt-more .sec{margin:12px 0 8px}.rt-more .sec:first-child{margin-top:0}</style>
+<style id="cf-train2">
+/* ===== Trainingsbereich (Übersicht, Tagesinfo, Tagesform, Notizen) – gleiche Glas-Sprache wie der Gym-Modus ===== */
+/* Kopf scrollt im Training-Reiter mit; danach übernimmt die schmale Leiste (keine Höhenänderung → kein Springen) */
+body[data-tab="train"] header.top{position:relative!important}
+.tcb{position:fixed;left:0;right:0;top:0;z-index:45;padding:calc(env(safe-area-inset-top,0px) + 6px) max(14px,env(safe-area-inset-right,0px)) 8px max(14px,env(safe-area-inset-left,0px));
+ background:linear-gradient(180deg,rgba(14,22,58,.97),rgba(8,11,26,.95));border-bottom:1px solid rgba(130,155,255,.22);box-shadow:0 10px 30px -14px rgba(20,40,160,.7);
+ transform:translate3d(0,-110%,0);transition:transform var(--mo-2) var(--mo-ease);pointer-events:none}
+body.tcb-on .tcb{transform:none;pointer-events:auto}
+body.gymopen .tcb{display:none}
+.tcb-in{display:flex;align-items:center;gap:10px;max-width:620px;margin:0 auto;min-height:44px}
+.tcb-wm{flex:1;min-width:0;display:grid;line-height:1.15}
+.tcb-wm b{font:800 15px Montserrat,var(--f);letter-spacing:.01em;color:#fff;white-space:nowrap}.tcb-wm b i{font-style:normal;color:#4a6df5}
+.tcb-wm small{font-size:12px;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcb-day{flex:none;display:grid;justify-items:center;line-height:1.05;padding:5px 10px;border-radius:12px;background:rgba(74,109,245,.22);border:1px solid rgba(130,155,255,.45)}
+.tcb-day b{font-size:12px;color:#c9d4ff}.tcb-day small{font:800 14px var(--f);color:#fff}
+.tcb-go{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:14px;border:1px solid var(--glass-b);background:rgba(255,255,255,.07);color:#fff;font:800 13px var(--f);cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.tcb-go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:359px){.tcb-go span{display:none}.tcb-go{padding:0;width:44px;justify-content:center}}
+/* Tageskarte kompakter */
+#view .trh2{padding:16px!important;border:1px solid rgba(130,155,255,.30)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 40px -26px rgba(64,110,255,.6)!important}
+#view .trh2 .thero{font-size:clamp(24px,7vw,30px)!important;line-height:1.08!important}
+#view .trh2 .tsub{margin-top:6px!important;font-size:13.5px}
+#view .trh2 .tstats{margin-top:12px!important;gap:8px!important}
+#view .trh2 .tstats>div{padding:10px!important;border-radius:16px!important;border:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important}
+#view .trh2 .aktionen{margin-top:12px!important}
+/* Tageshinweise-Karte */
+#view .thint{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:14px 14px 14px 12px!important;color:var(--ink);font:inherit;cursor:pointer;
+ border:1px solid rgba(243,201,105,.38)!important;background:radial-gradient(120% 140% at 0% 0%,rgba(243,201,105,.14),rgba(243,201,105,0) 55%),linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important}
+.ti-bulb{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;background:radial-gradient(120% 95% at 30% 10%,rgba(255,226,150,.45),rgba(190,140,40,.18) 50%,rgba(20,16,8,.85) 80%);border:1px solid rgba(255,230,170,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 18px -10px rgba(243,201,105,.8)}
+.ti-bulb svg{width:24px;height:24px;fill:none;stroke:#fff3cf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#view .thint .th-t{display:grid;gap:3px;min-width:0}#view .thint .th-t b{font-size:15.5px;color:#fff}
+#view .thint .th-t span{font-size:14px;line-height:1.4;color:#d8dbe4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#view .thint .ptc{width:18px;height:18px;fill:none;stroke:var(--ink2);stroke-width:2.2}
+/* Übungskarten: Nummer, Icon, Name, Schema/Last, Hype, Anweisung, Regel, Fortschritt */
+#view .blk.mini2{align-items:start!important;padding-top:12px!important;padding-bottom:12px!important;border:1px solid rgba(205,218,255,.16)!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
+#view .blk.mini2.next{border-color:rgba(130,155,255,.5)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(74,109,245,.25),0 14px 30px -20px rgba(64,110,255,.8)!important}
+#view .blk.mini2.done{opacity:.78}
+#view .blk.mini2 .mn{display:grid;gap:4px;min-width:0}
+#view .blk.mini2 .mn b{white-space:normal!important;line-height:1.2}
+#view .blk.mini2 .mn small{font-size:13.5px!important}
+#view .blk.mini2 .mhy{display:flex;justify-content:flex-start;justify-self:start;padding:0!important;margin:0!important;border:0!important;background:none!important}body[data-tab="train"] #view .tgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#view .blk.mini2 .mhy .hype{margin:0!important;padding:2px 9px 2px 3px!important;transform:none!important}#view .blk.mini2 .mhy .hype .hic{width:20px!important;height:20px!important}#view .blk.mini2 .mhy .hype .htx small,#view .blk.mini2 .mhy .hype .hmt{display:none}#view .blk.mini2 .mhy .hype .htx b{font-size:12.5px!important}
+#view .blk.mini2 .mx{font-size:13px;line-height:1.4;color:#c9cfdc;display:block}
+#view .blk.mini2 .mr{font-size:12px;font-weight:700;color:#9fb2ff}
+#view .blk.mini2 .mprog{align-self:center}
+/* Tagesinfo */
+#view details.info>summary{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+#view details.info .lead{font-size:17px!important;line-height:1.5!important;color:#fff!important;padding:14px 16px;border-radius:18px;border:1px solid rgba(243,201,105,.35);background:linear-gradient(180deg,rgba(243,201,105,.10),rgba(243,201,105,.03))}
+#view details.info .tipc{padding:12px 14px!important;border-radius:16px!important;border:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important}
+#view details.info .tipc b{font-size:16px!important;line-height:1.35}#view details.info .tipc p{font-size:15px!important;line-height:1.5!important}
+#view .tiflow .prow{display:grid!important;grid-template-columns:28px minmax(0,1fr) auto;gap:12px!important;align-items:start!important;padding:12px 2px!important}#view .tnotes.tdet .tn-h{display:none}
+#view .tiflow .tin{width:28px!important;height:28px!important;min-width:28px;border-radius:9px!important;display:grid!important;place-items:center;font:800 13px var(--f);color:#c9d4ff;background:rgba(91,124,255,.16)!important;border:1px solid rgba(130,155,255,.32);margin-top:1px}
+#view .tiflow .tin.ok{color:#7fe0b4;background:rgba(67,192,138,.16)!important;border-color:rgba(67,192,138,.45)}
+#view .tiflow .pn b{font-size:15.5px}#view .tiflow .pn small{font-size:13.5px!important;line-height:1.45}
+#view .tiflow .hymini{border-radius:999px!important}
+/* Tagesform */
+#view #whoop{border:1px solid rgba(90,209,230,.28)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 40px -28px rgba(90,209,230,.6)!important}
+#view #whoop .wtile{border-radius:16px!important;border:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))!important}
+#view #whoop .we2-b{min-height:48px}
+/* Notizen */
+#view .tnotes{display:grid;gap:14px}#view .tn-h{margin:0}
+#view .tn-c{padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015))}
+#view .tn-l{display:block;font-size:15px;font-weight:800;color:#fff;margin-bottom:10px}
+#view .tn-s{margin:-4px 0 10px;font-size:12.5px;color:var(--ink2)}
+#view .tn-bw{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;gap:10px;align-items:center}
+#view .tn-bw .in{display:flex;align-items:center}#view .tn-bw input{width:100%;min-height:54px;text-align:center;font:900 26px var(--f)!important}
+#view .tn-st{min-height:52px;border-radius:16px;border:1px solid var(--glass-b);background:rgba(255,255,255,.07);color:#fff;font:700 24px var(--f);cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+#view .tn-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+#view .tn-q{min-height:40px;padding:0 13px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--ink);font:700 13.5px var(--f);cursor:pointer}
+#view .tn-q[aria-pressed="true"]{background:linear-gradient(180deg,#4a6df5,#3157e8);border-color:transparent;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+#view .tn-ta{min-height:140px!important;font-size:16px!important;line-height:1.5}
+#view .tnotes .savest{margin:0;justify-content:center}
+</style>
 <style id="cf-tap">
 /* Tap-Flächen ≥ 44 pt ohne Layout-Änderung: unsichtbare Trefferfläche um kleine Knöpfe (Apple HIG) */
 .jr-i,.plc-go,[data-rt],[data-step],.gnva,.gsets button,.sv-i,.sv-sh,[data-hv],[data-hp],.lockhint-x,.xm-add,.fl-skip,.sesschip,.tog,.rt-sw,[data-rts],#sheet [data-t],.sv-nb,.sv-x,.jrs-x,.iconbtn,.xe-x,[data-undo],[data-svclose],.gpbtn,.sessbtn,.hs-ct,.exlink{position:relative}
@@ -3584,7 +3656,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.406fa32.js"></script>
+<script src="assets/app-0.1f1b32a.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */
