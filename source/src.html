@@ -4278,7 +4278,7 @@ body.jx #view .jx-cal{padding:16px!important;display:grid;gap:10px}
 /* 9 Plan-Diagramm: umrandete Balken */
 html[data-theme=blue] #view .plc-svg rect{fill-opacity:.12!important;stroke-width:2!important;vector-effect:non-scaling-stroke}
 /* 10 Runde Umriss-Knöpfe & große Titel */
-html[data-theme=blue] body .iconbtn,html[data-theme=blue] body .gl-cb,html[data-theme=blue] body .gl-ib2,html[data-theme=blue] body #gym .gl-top button{width:48px!important;height:48px!important;border-radius:50%!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
+html[data-theme=blue] body .iconbtn,html[data-theme=blue] body .gl-cb,html[data-theme=blue] body .gl-ib2,html[data-theme=blue] body #gym .gl-top button:not(.gl-chip){width:48px!important;height:48px!important;border-radius:50%!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
 html[data-theme=blue] body #view .phead h2.sect,html[data-theme=blue] body #view .phead .sect{font:800 clamp(22px,7.4vw,30px)/1.1 var(--d)!important;min-width:0;overflow-wrap:anywhere}
 html[data-theme=blue] #view .tab,html[data-theme=blue] #view table{--d:"Archivo","Manrope",system-ui,sans-serif;--f:"Manrope",-apple-system,system-ui,sans-serif;font-family:var(--f)}
 html[data-theme=blue] #view .rf-ckh{flex-wrap:wrap}
@@ -4368,9 +4368,12 @@ html[data-theme=blue].navl-aus body .nav button{font-size:0!important;gap:0!impo
 html[data-theme=blue].navl-aus body .nav button .ni svg{width:27px!important;height:27px!important}
 html[data-theme=blue].gymhy body .gym[data-hy]:not([data-hy=""]) .gym-in{background:transparent!important}
 html[data-theme=blue].glow-off body .gym .gym-in,html[data-theme=blue].glow-low body .gym .gym-in{background:transparent!important}
-html[data-theme=blue].gymhy body .gym[data-hy="h"]{background:radial-gradient(90% 360px at 0% 0%,rgba(232,38,47,.85) 0%,rgba(150,24,32,.45) 32%,rgba(50,10,14,.25) 56%,transparent 80%) no-repeat,#000!important}
-html[data-theme=blue].gymhy body .gym[data-hy="m"]{background:radial-gradient(90% 360px at 0% 0%,rgba(245,154,69,.8) 0%,rgba(170,96,30,.42) 32%,rgba(60,30,10,.22) 56%,transparent 80%) no-repeat,#000!important}
-html[data-theme=blue].gymhy body .gym[data-hy="l"]{background:radial-gradient(90% 360px at 0% 0%,rgba(246,214,94,.7) 0%,rgba(160,130,40,.38) 32%,rgba(55,45,12,.2) 56%,transparent 80%) no-repeat,#000!important}
+@property --gyc{syntax:'<color>';inherits:true;initial-value:#2f4bc0}
+html[data-theme=blue].gymhy body .gym[data-hy]:not([data-hy=""]){background:radial-gradient(90% 360px at 0% 0%,color-mix(in srgb,var(--gyc) 88%,transparent) 0%,color-mix(in srgb,var(--gyc) 48%,transparent) 32%,color-mix(in srgb,var(--gyc) 20%,transparent) 56%,transparent 80%) no-repeat,#000!important;transition:--gyc .7s ease}
+html.gymhy body .gym[data-hy="h"]{--gyc:#e8262f}html.gymhy body .gym[data-hy="m"]{--gyc:#f59a45}html.gymhy body .gym[data-hy="l"]{--gyc:#f6d65e}html.gymhy body .gym[data-hy="n"]{--gyc:#2f4bc0}
+html.gymhy #gym .gl-ex[data-hyk="h"]::before{background:#e8262f!important;box-shadow:0 0 12px rgba(232,38,47,.55)}html.gymhy #gym .gl-ex[data-hyk="m"]::before{background:#f59a45!important;box-shadow:0 0 12px rgba(245,154,69,.5)}html.gymhy #gym .gl-ex[data-hyk="l"]::before{background:#f6d65e!important;box-shadow:0 0 12px rgba(246,214,94,.45)}
+html[data-acc="gelb"] :is(.seg [aria-pressed="true"],.tnseg [aria-pressed="true"],.tnseg .on,#gym .gl-row.cur .gl-n,.ds-pre [aria-pressed="true"] b,.jx-vt [aria-pressed="true"]){color:#14120a!important}
+html[data-acc="gelb"] .jx-vt [aria-pressed="true"] svg{stroke:#14120a!important}
 .ds-ord{display:grid;gap:6px;margin:8px 0 0}
 .ds-ord li{display:grid;grid-template-columns:28px minmax(0,1fr) 44px 44px;align-items:center;gap:6px;padding:4px 6px 4px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);list-style:none}
 .ds-ord li>i{font-style:normal;color:var(--mut);font-weight:700}.ds-ord li>b{font-weight:600}
@@ -4410,6 +4413,7 @@ html[data-theme=blue].glow-off .ds-pv{background:#000}
 .ds-gb{padding:0 0 6px}
 .ds-reset{width:100%;margin:18px 0 0;min-height:50px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:var(--ink2);font:600 15px var(--f);cursor:pointer}
 .ds-reset.armed{border-color:#e8484f;color:#ff8a8f;background:rgba(232,72,79,.1)}
+html[data-theme=blue] body #gym .gl-top .gl-chip{width:auto!important;min-width:48px;height:48px!important;padding:0 16px!important;border-radius:999px!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4426,7 +4430,7 @@ button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer
 (function(){if((window.CF_THEME||'blue')!=='blue')return;
 function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2;if(mx!==mn){var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s,l]}
 function rgb(h,s,l){h/=360;function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p}var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return[f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(function(x){return Math.round(x*255)})}
-var ACC={blue:null,cyan:188,violett:262,orange:22}[(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})()]||null;window.CF_ACC=ACC;
+var ACCN=(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})();var ACC={blue:null,cyan:188,violett:262,orange:22,gelb:46}[ACCN]||null;window.CF_ACC=ACC;document.documentElement.dataset.acc=ACCN;
 function map(r,g,b){if(r===60&&g===196&&b===106)return null;if(r===74&&g===109&&b===245)return null;var c=hsl(r,g,b);
  if(ACC!=null&&c[0]>=214&&c[0]<=246&&c[1]>=.3){return rgb(ACC,c[1],c[2])}
  if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
@@ -7298,7 +7302,7 @@ function bkDot(){if(!window.CF_PWA)return;const g=document.getElementById('gear'
 window.addEventListener('cf-exported',()=>{bkDot();render()});setInterval(bkDot,60000);
 // 3/4 Anzeige: Textgröße & OLED
 function applyView(){const b=document.body;b.classList.remove('fs-m','fs-l');if(S.meta.fs==='m'||S.meta.fs==='l')b.classList.add('fs-'+S.meta.fs);b.classList.toggle('oled',!!S.meta.oled);document.documentElement.classList.toggle('noshine',S.meta.shine===false);dsApply()}
-const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue','Blau'],['cyan','Cyan'],['violett','Violett'],['orange','Orange']]],
+const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue','Blau'],['cyan','Cyan'],['violett','Violett'],['orange','Orange'],['gelb','Gelb']]],
  glow:['Leuchten oben links',[['kraeftig','Kräftig'],['low','Dezent'],['off','Aus']]],
  cards:['Kartenstil',[['navy','Nachtblau'],['grau','Grau'],['schwarz','Schwarz']]],
  dayc:['Tagesname im Titel',[['0','Weiß'],['1','Farbig']]],
@@ -8639,13 +8643,16 @@ function post(){document.body.classList.add('jx');const v=document.getElementByI
 const G0=window.renderGymL;if(G0)window.renderGymL=function(){const r=G0.apply(this,arguments);try{gpost()}catch(e){console.warn(e)}return r};
 function noteBtn(b,t){return `<button type="button" class="jx-note" data-jxnote="${b}" aria-label="Notiz zur Übung ${t?'ändern':'hinzufügen'}"><b>Notizen</b>${t?`<span class="jx-nt">${esc(t)}</span>`:`<span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Notiz hinzufügen</span>`}</button>`}
 function gpost(){const g=document.getElementById('gym');const {w,d}=S.ui;const L=log(w,d,true);const xn=L.xn||{};
- if((S.meta.ds||{}).gymhy){const day=P[w][d];g.dataset.hy=['h','m','l'].find(k=>day.b.some(bl=>bl.h===k))||''}
- {const day=P[w][d];const HC2={h:'#e8262f',m:'#f59a45',l:'#f6d65e'};const LC={sq:'#6f8cff',bp:'#5ad1e6',dl:'#b48cff',acc:'#8f9bc4'};g.querySelectorAll('.gl-ex').forEach(ex=>{const b=+String(ex.id).replace('glx-','');const bl=day.b[b];if(!bl)return;const e=(L.sw&&L.sw[b])||bl.e;ex.dataset.sth=HC2[bl.h]||'';ex.dataset.stl=LC[(EX[e]||{}).g]||''})}
+
+ {const day=P[w][d];const HC2={h:'#e8262f',m:'#f59a45',l:'#f6d65e'};const LC={sq:'#6f8cff',bp:'#5ad1e6',dl:'#b48cff',acc:'#8f9bc4'};g.querySelectorAll('.gl-ex').forEach(ex=>{const b=+String(ex.id).replace('glx-','');const bl=day.b[b];if(!bl)return;const e=(L.sw&&L.sw[b])||bl.e;ex.dataset.sth=HC2[bl.h]||'';ex.dataset.hyk=bl.h||'';ex.dataset.stl=LC[(EX[e]||{}).g]||''})}
  g.querySelectorAll('.gl-ex').forEach(ex=>{if(ex.querySelector('.jx-note'))return;const b=+String(ex.id).replace('glx-','');
   const x=ex.querySelector('.gl-x');if(x&&!ex.querySelector('.jx-sg')){const m=x.textContent.match(/^(\d+)\s*[×x]\s*([\d–\-]+)/);if(m)x.insertAdjacentHTML('beforebegin',`<p class="jx-sg">${m[1]} ${m[1]==='1'?'Satz':'Sätze'} × ${m[2]} Wdh.</p>`)}
   ex.insertAdjacentHTML('beforeend',noteBtn(b,xn[b]))});
  const top=g.querySelector('.gl-top'),h=g.querySelector('.gl-hd h1');if(top&&h&&!top.querySelector('.jx-tp')){const sp=top.querySelector('span[style*="flex:1"]');const p=document.createElement('span');p.className='jx-tp';p.setAttribute('aria-hidden','true');p.textContent=h.textContent;if(sp)sp.after(p);else top.appendChild(p)}
- if(!g._jx){g._jx=()=>g.classList.toggle('jx-sc',g.scrollTop>90);g.addEventListener('scroll',g._jx,{passive:true})}g._jx()}
+ if(!g._jx){g._jx=()=>{g.classList.toggle('jx-sc',g.scrollTop>90);gymHyFollow(g)};g.addEventListener('scroll',g._jx,{passive:true})}g._jx()}
+/* Gym-Hintergrund nach Hype: Lichtkegel folgt der Übung, die gerade oben im Bild ist */
+function gymHyFollow(g){if(!(S.meta.ds||{}).gymhy)return;const exs=g.querySelectorAll('.gl-ex');if(!exs.length)return;const y=g.getBoundingClientRect().top+Math.min(220,g.clientHeight*.3);let cur=exs[0];
+ for(const ex of exs){if(ex.getBoundingClientRect().top<=y)cur=ex;else break}const k=cur.dataset.hyk||'n';if(g.dataset.hy!==k)g.dataset.hy=k}
 /* Notiz-Fenster */
 function noteOpen(b){const {w,d}=S.ui;const L=log(w,d,true);const day=P[w][d];const ex=EX[(L.sw&&L.sw[b])||day.b[b].e]||{};
  let el=document.getElementById('jxnote');if(!el){el=document.createElement('div');el.id='jxnote';el.className='jx-nbox';document.body.appendChild(el)}

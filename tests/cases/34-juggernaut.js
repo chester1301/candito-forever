@@ -69,5 +69,12 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
     t.eq([pv.min,pv.nacht],[['off','schwarz',false,false,true],[true,'gross',true]],`${W}px: Stile „Minimal“ und „Gym-Nacht“ setzen ihre Werte`);
     t.ok(pv.stripe&&pv.sth&&pv.col!=='rgb(63, 100, 246)'&&pv.cur,`${W}px: Streifen nach Hype, aktuelles Training hervorgehoben`);
     t.eq(pv.reset,['{}',false,true,true,false],`${W}px: Zurücksetzen (mit Nachfrage) stellt den Standard wieder her`);t.ok(pv.armed,`${W}px: Zurücksetzen fragt erst nach`);
+    // Hype-Lichtkegel folgt beim Scrollen der Übung, Streifen in Hype-Farbe; Gelb als Akzent wählbar; Kopfknöpfe überlappen nicht
+    const hf=await p.evaluate(async()=>{S.meta.ds={gymhy:true};applyView();S.ui.w=0;S.ui.d=2;const L=log(0,2,true);L.flow=1;L.ck=1;openGym();const g=document.getElementById('gym');const o={a:g.dataset.hy};
+      const ex=document.querySelectorAll('#gym .gl-ex')[1];g.scrollTop+=ex.getBoundingClientRect().top-120;g.dispatchEvent(new Event('scroll'));await new Promise(r=>setTimeout(r,50));o.b=g.dataset.hy;o.want=[P[0][2].b[0].h,P[0][2].b[1].h];
+      o.stripe=getComputedStyle(ex,'::before').backgroundColor;const tb=[...document.querySelectorAll('#gym .gl-top > button')].map(b=>b.getBoundingClientRect());o.ovl=tb.some((r,i)=>tb.some((q,j)=>j>i&&r.right>q.left+1&&q.right>r.left+1));closeGym(true);
+      S.ui.tab='setup';S.ui.tdet={setup:'design'};S.ui.dsOpen={farbe:true};render();o.gelb=!!document.querySelector('[data-ds="acc|gelb"]');S.meta.ds={};applyView();return o});
+    t.eq([hf.a,hf.b],hf.want,`${W}px: Lichtkegel folgt beim Scrollen dem Hype der Übung`);
+    t.ok(hf.stripe!=='rgb(63, 100, 246)'&&!hf.ovl&&hf.gelb,`${W}px: Streifen in Hype-Farbe, Kopfknöpfe ohne Überlappung, Gelb als Akzentfarbe`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};
