@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1157-f4676cf</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1231-65b8448</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -3970,12 +3970,14 @@ function swDecorate(v){if(S.ui.tab!=='train')return;const {w,d}=S.ui;const ex=v.
 
 (function(){let tm=null,iv=null,rep=0,eat=0;const stop=()=>{clearTimeout(tm);clearInterval(iv);tm=iv=null;if(rep){eat=Date.now()+600}rep=0};
  // Gedrückt halten wiederholt −/+. Der Knopf wird nach jedem Schritt neu gezeichnet, deshalb per Selektor wiederfinden.
- document.addEventListener('pointerdown',e=>{const b=e.target.closest('#gym [data-step]');if(!b)return;stop();eat=0;const sel=`#gym [data-step="${b.dataset.step}"][data-v="${b.dataset.v}"]`;
-  tm=setTimeout(()=>{iv=setInterval(()=>{const nb=document.querySelector(sel);if(!nb||$('#gym').hidden){stop();return}rep++;nb.click()},110)},420)},{passive:true});
+ const HOLD='#gym [data-step],[data-t="add"]';
+ document.addEventListener('pointerdown',e=>{const b=e.target.closest(HOLD);if(!b)return;stop();eat=0;const isAdd=b.dataset.t==='add',box=b.closest('#gym')?'#gym':'#sheet';
+  const sel=isAdd?`${box} [data-t="add"][data-v="${b.dataset.v}"]`:`#gym [data-step="${b.dataset.step}"][data-v="${b.dataset.v}"]`;
+  tm=setTimeout(()=>{iv=setInterval(()=>{const nb=document.querySelector(sel);if(!nb||$(box).hidden){stop();return}rep++;nb.click()},isAdd?220:110)},420)},{passive:true});
  ['pointerup','pointercancel','touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,stop,{passive:true}));
  // Nach dem Halten keinen zusätzlichen Schritt durch den abschließenden Klick
- document.addEventListener('click',e=>{if(eat&&Date.now()<eat&&e.isTrusted&&e.target.closest('#gym [data-step]')){e.stopImmediatePropagation();e.preventDefault();eat=0}},true);
- document.addEventListener('contextmenu',e=>{if(e.target.closest('#gym [data-step]'))e.preventDefault()})})();
+ document.addEventListener('click',e=>{if(eat&&Date.now()<eat&&e.isTrusted&&e.target.closest(HOLD)){e.stopImmediatePropagation();e.preventDefault();eat=0}},true);
+ document.addEventListener('contextmenu',e=>{if(e.target.closest(HOLD))e.preventDefault()})})();
 /* Icons einmalig vorrendern (Graustufen + Screen auf Navy) – spart Filter/Blend-Ebenen beim Scrollen */
 async function preIcons(){if((window.CF_THEME||'blue')!=='blue'||preIcons.done)return;preIcons.done=1;const BG=[19,26,48];
  // Ergebnis je App-Version im Cache-Speicher ablegen: ab dem zweiten Start keine Pixel-Schleifen mehr
@@ -4196,8 +4198,8 @@ const T={on:false,end:0,total:0,paused:false,left:0,ctx:null,beeped:-1};
 try{const t=JSON.parse(localStorage.getItem(LST)||'null');if(t&&t.on&&(t.paused||Date.now()-t.end<30*60000))Object.assign(T,t)}catch(e){}
 const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){}};
 let actx=null;
-function unlockAudio(){try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state!=='running')actx.resume();
- if(!unlockAudio.done&&actx.state==='running'){const b=actx.createBuffer(1,1,22050),src=actx.createBufferSource();src.buffer=b;src.connect(actx.destination);src.start(0);unlockAudio.done=1}}catch(e){}}
+function unlockAudio(){try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state!=='running'){const r=actx.resume();if(r&&r.catch)r.catch(()=>{})}
+ if(!unlockAudio.done){const b=actx.createBuffer(1,1,22050),src=actx.createBufferSource();src.buffer=b;src.connect(actx.destination);src.start(0);if(actx.state==='running')unlockAudio.done=1}}catch(e){}}
 ['pointerdown','touchend','click'].forEach(ev=>document.addEventListener(ev,()=>{if(S.meta&&S.meta.sound)unlockAudio()},{passive:true,capture:true}));
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')unlockAudio.done=0});
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
@@ -4257,7 +4259,7 @@ function renderSheet(){tick.k="";const sh=$('#sheet');if(sh.hidden)return;const 
    <span class="psum" style="color:var(--day)">${esc(ni.sg.why)}</span>
    ${pl.length?`<span class="psum">pro Seite: ${pl.map(p=>nf(p,2)).join(' + ')}</span>`:''}<span class="psum">${esc(ni.bl.x)}</span></div>`:''}
   <button type="button" class="skip" data-t="skip">${over?'Los geht’s – nächster Satz':'Pause beenden'}</button>
-  <div class="toggles"><button type="button" class="tog" data-t="snd" aria-pressed="${!!S.meta.sound}">Ton ${S.meta.sound?'an':'aus'}</button><button type="button" class="tog" data-t="vib" aria-pressed="${!!S.meta.vibe}">Vibration ${S.meta.vibe?'an':'aus'}</button></div>
+  <div class="toggles"><button type="button" class="tog" data-t="snd" aria-pressed="${!!S.meta.sound}">Ton ${S.meta.sound?'an':'aus'}</button><button type="button" class="tog" data-t="sndtest">Ton testen</button><button type="button" class="tog" data-t="vib" aria-pressed="${!!S.meta.vibe}">Vibration ${S.meta.vibe?'an':'aus'}</button></div>
   ${lockHint()}
  </div>`;tick()}
 // iOS lässt Web-Apps im Hintergrund weder Ton noch Vibration zu. Der Bildschirm wird im Gym wach gehalten; wird das iPhone trotzdem gesperrt, holt die App das Signal beim Zurückkommen nach.
@@ -4273,6 +4275,8 @@ function timerClick(e){const t=e.target.closest('[data-t]');if(!t)return;const a
  if(a==='preset'){setPreset(+t.dataset.v);T.src='von dir gewählt';saveT();tick.k=null}
  if(a==='merk'){const ex=T.ctx&&T.ctx.from;if(!ex)return;if(t.checked)S.meta.restEx[ex]=T.total;else delete S.meta.restEx[ex];saveMeta();return}
  if(a==='snd'){S.meta.sound=!S.meta.sound;saveMeta();renderSheet()}
+ if(a==='sndtest'){if(!S.meta.sound){toast('Ton ist ausgeschaltet – erst „Ton an“ antippen',4000);return}unlockAudio();setTimeout(()=>{sfx('end');const st=actx?actx.state:'fehlt';
+  toast(st==='running'?'Ton abgespielt. Nichts gehört? Lautstärke hoch und Lautlos-Modus aus – im Lautlos-Modus spielt das iPhone in Web-Apps keinen Ton.':'Ton ist noch blockiert ('+st+'). Bitte nochmal auf „Ton testen“ tippen.',7000)},120)}
  if(a==='vib'){S.meta.vibe=!S.meta.vibe;saveMeta();renderSheet()}
  if(a==='skip'){const c=T.ctx;stopRest();if(c&&!$('#gym').hidden&&c.w===S.ui.w&&c.d===S.ui.d){G.b=c.b;G.i=c.i;renderGym();$('#gym').scrollTop=0}}}
 $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet'){closeSheet();return}timerClick(e)});

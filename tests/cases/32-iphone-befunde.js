@@ -12,6 +12,12 @@ module.exports={name:'iPhone-Befunde – Halten, ±15 s, Ton, Wettkampf in der P
   const add=await p.evaluate(()=>{startRest(120);const c=document.querySelector('#gym canvas,#gym .gym-in');const t0=T.total;addTime(15);addTime(-15);addTime(15);
     return {same:!!c&&c.isConnected,tot:T.total-t0}});
   t.ok(add.same&&add.tot===15,'±15 s ändert nur die Zeit, der Gym wird nicht neu aufgebaut');
+  await p.evaluate(()=>gymRefresh());await p.waitForTimeout(150);
+  const hold=await p.evaluate(async()=>{const b=document.querySelector('#gym [data-t="add"][data-v="15"]');if(!b)return null;const t0=T.total;
+    b.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));await new Promise(r=>setTimeout(r,1400));document.dispatchEvent(new PointerEvent('pointerup',{bubbles:true}));return T.total-t0});
+  t.ok(hold!=null&&hold>=45,`Halten auf +15 s wiederholt (+${hold} s)`);
+  const ts=await p.evaluate(()=>{openSheet();const b=document.querySelector('#sheet [data-t="sndtest"]');return !!b});
+  t.ok(ts,'Timer-Fenster hat „Ton testen“');await p.evaluate(()=>closeSheet());
   const au=await p.evaluate(()=>{S.meta.sound=true;actx=null;unlockAudio.done=0;document.body.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));return !!actx});
   t.ok(au,'Ton wird bei einer Berührung vorbereitet');
   await p.evaluate(()=>{stopRest();closeGym(true)});
