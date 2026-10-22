@@ -79,8 +79,8 @@ module.exports={name:'Gym als Liste – Werkzeuge, Satz, Lastarten, Ausrüstung,
     await p.evaluate(()=>document.querySelector('#gym [data-glx]').click());await p.waitForTimeout(100);
     // Menü
     await p.evaluate(()=>document.querySelector('#gym [data-glsh="menu"]').click());await p.waitForTimeout(150);
-    const M=await p.evaluate(()=>{const g=document.querySelector('#gym .gls');return ['glck','glgwu','gplan','glsh','glview','g','glnote'].map(k=>!!g.querySelector(`[data-${k.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}]`))});
-    t.ok(M.every(Boolean),`${W}px: Menü mit Check-in, Aufwärmen, Tagesplan, Ausrüstung, Ansicht, Abschluss, Notiz`);
+    const M=await p.evaluate(()=>{const g=document.querySelector('#gym .gls');return ['gplan','glsh','glview','g','glnote'].map(k=>!!g.querySelector(`[data-${k.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}]`))});
+    t.ok(M.every(Boolean)&&!(await p.evaluate(()=>!!document.querySelector('#gym .gls [data-glck],#gym .gls [data-glgwu]'))),`${W}px: Menü mit Tagesplan, Ausrüstung, Ansicht, Abschluss, Notiz`);
     await p.evaluate(()=>document.querySelector('#gym [data-gplan="1"]').click());await p.waitForTimeout(150);
     t.ok(await p.evaluate(()=>G.plan&&!!document.querySelector('#gym .gplan')),`${W}px: Tagesplan öffnet`);
     await p.evaluate(()=>{G.plan=false;renderGym();document.querySelector('#gym [data-glsh="menu"]').click()});await p.waitForTimeout(100);
@@ -99,6 +99,13 @@ module.exports={name:'Gym als Liste – Werkzeuge, Satz, Lastarten, Ausrüstung,
   await r.evaluate(()=>['sleeph','energy','food','strength'].forEach(k=>document.querySelector(`#ckin [data-ck="${k}|3"]`).click()));await r.waitForTimeout(100);
   await r.click('#ckin [data-ckgo]');await r.waitForTimeout(500);
   t.ok(await r.evaluate(()=>!$('#gym').hidden&&!!document.querySelector('#gym .gl')&&document.getElementById('ckin').hidden),'Ablauf führt in die Gym-Liste');t.eq(r.errors,[],'Ablauf: keine Skriptfehler');await r.close();
+  // Gym-Reiter bei nicht gestartetem Training: erst „So läuft es ab“, schließen schließt auch den Gym
+  const u=await page({width:390,height:844,fixedTime:'2026-10-20T17:00:00+02:00',gymList:true});
+  await u.evaluate(()=>{switchProg('intro');S.ui.w=0;S.ui.d=3;openGym()});await u.waitForTimeout(300);
+  t.ok(await u.evaluate(()=>!document.getElementById('ckin').hidden&&document.querySelector('#ckin .fl-h').textContent==='So läuft es ab'&&!log(0,3).start),'Gym öffnen zeigt zuerst den Ablauf, Training noch nicht gestartet');
+  await u.click('#ckin [data-ckclose]');await u.waitForTimeout(300);
+  t.ok(await u.evaluate(()=>$('#gym').hidden&&document.getElementById('ckin').hidden),'Ablauf schließen schließt auch den Gym');
+  t.eq(u.errors,[],'Gym-Reiter: keine Skriptfehler');await u.close();
   // Classic-Design: Liste ohne Fehler
   const q=await page({width:390,height:844,fixedTime:'2026-10-24T17:00:00+02:00',gymList:true});
   await q.evaluate(()=>{localStorage.setItem('cf-theme','classic')});await q.reload();await q.waitForTimeout(3000);

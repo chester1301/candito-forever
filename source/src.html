@@ -4933,7 +4933,7 @@ function ckSteps(el){return;const sc=el.querySelector('.ck-sc');if(!sc)return;co
  if(!last&&go){go.hidden=true;const nx=document.createElement('button');nx.type='button';nx.className='btn primary';nx.dataset.ckstep='1';nx.textContent='Weiter';ft.appendChild(nx)}
  if(CK.step>0){const bk=document.createElement('button');bk.type='button';bk.className='btn';bk.dataset.ckstep='-1';bk.textContent='Zurück';const first=ft.firstElementChild;first.hidden=true;ft.prepend(bk)}}
 document.addEventListener('click',e=>{const t=e.target.closest('#ckin [data-ckstep]');if(!t||!CK)return;e.stopPropagation();CK.step=Math.max(0,(CK.step||0)+ +t.dataset.ckstep);const el=document.getElementById('ckin');el.innerHTML=ckHTML();const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
-function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;if(c.go)L.flow=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
+function ckClose(go){const el=document.getElementById('ckin');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('ckopen');const c=CK;CK=null;if(c&&c.rest){render();return}if(c&&c.cg&&!go){closeGym();return}if(c){withProg(c.pid,()=>{const L=log(c.w,c.d,true);L.ck=1;if(c.go)L.flow=1;saveLog(key(c.w,c.d))});if(go&&c.go)c.go();else render()}}
 function ckSave(fn){if(CK.rest){if(!S.meta.rest)S.meta.rest={};const o=S.meta.rest[CK.rest]||(S.meta.rest[CK.rest]={});fn(o);o.at=Date.now();saveMeta();return}withProg(CK.pid,()=>{const L=log(CK.w,CK.d,true);fn(L);saveLog(key(CK.w,CK.d))})}
 function needCk(w,d){const L=log(w,d);if(!L)return true;if(L.done)return false;return !L.b.flat().some(z=>z&&z.ok)}
 document.addEventListener('click',e=>{if(!CK)return;const t=e.target.closest('#ckin button');if(!t)return;
@@ -7485,7 +7485,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden
 const G={b:0,i:0};let wake=null;
 async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  if(typeof SV!=='undefined'&&SV)svClose();
- if(L.start&&!L.flow&&needCk(w,d)&&!CK)setTimeout(()=>{if(!CK&&!$('#gym').hidden)ckOpen(PROG,w,d,()=>{gymRefresh()})},350);
+ if(gymList()&&!L.done&&!L.flow&&needCk(w,d)&&!CK){ckOpen(PROG,w,d,()=>{startSession(w,d);gymRefresh()});CK.cg=1}
+ else if(L.start&&!L.flow&&needCk(w,d)&&!CK)setTimeout(()=>{if(!CK&&!$('#gym').hidden)ckOpen(PROG,w,d,()=>{gymRefresh()})},350);
  const f=nextOpen(w,d,0,-1);Object.assign(G,f||{b:0,i:0});$('#gym').hidden=false;document.body.classList.add('gymopen');document.body.style.overflow='hidden';render();
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
 function closeGym(silent){try{const xi=document.getElementById('gxi');if(xi&&!xi.hidden){xi.hidden=true;document.body.classList.remove('gxiopen')}}catch(e){}if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
@@ -8076,9 +8077,6 @@ function glRtHTML(){return `${glHead('Gym · Pausen','Auto-Timer nach Candito','
 function glMenuHTML(){const {w,d}=S.ui;const L=log(w,d,true);const day=P[w][d];const f=L.feel||{};const cn=CKG.filter(q=>f[q[0]]!=null).length;const side=wuSide(w,d);const GWU=side==='up'?GWU_UP:GWU_LO;const wn=GWU.filter(x=>(L.gwu||{})[x[0]]).length;
  const it=(ic,t,sub,attr)=>`<button type="button" class="gl-mi" ${attr}><span class="gl-mic">${gli(ic)}</span><span><b>${t}</b><small>${sub}</small></span><i>›</i></button>`;
  return `${glHead('Menü · ganze Einheit',`W${w+1} · ${DAYS[d].tag} · ${esc(day.f)}`)}<div class="gls-sc">
-  <p class="gl-ms">Vor dem Training</p>
-  ${it('heart','Readiness-Check-in',cn+'/'+CKG.length+' beantwortet · ansehen oder ändern','data-glck')}
-  ${it('body','Allgemeines Aufwärmen',(side==='up'?'Oberkörper':'Unterkörper')+' · '+wn+'/'+GWU.length+' erledigt','data-glgwu')}
   <p class="gl-ms">Einheit</p>
   ${it('doc','Tagesplan &amp; Hinweise · Candito','Alle Übungen mit Soll-Werten','data-gplan="1"')}
   ${it('plate','Stange &amp; Scheiben',nf(S.meta.bar||20,2)+' kg · '+(invOf()?'eigener Bestand':'unbegrenzt'),'data-glsh="inv"')}
