@@ -15,7 +15,7 @@ module.exports={name:'Readiness – Skala, Zonen, Karten, Ruhetag',async run({pa
   const rg=await p.evaluate(()=>{const c=document.querySelector('.card.jr').getBoundingClientRect();const ring=document.querySelector('.card.jr .jr-ring');const n=ring.querySelector('.jr-num').getBoundingClientRect(),r=ring.getBoundingClientRect();
     const rows=[...document.querySelectorAll('.card.jr .jr-mr')].map(d=>{const b=d.getBoundingClientRect();return b.left>=c.left&&b.right<=c.right+1&&!!d.querySelector('.jr-mb')});return {inRing:n.left>=r.left&&n.right<=r.right&&n.top>=r.top&&n.bottom<=r.bottom,rows}});
   t.ok(rg.inRing&&rg.rows.length===2&&rg.rows.every(Boolean),'Zustand-Karte: Readiness-Wert im Ring, Recovery/Leistung als Zeilen in der Karte');
-  t.eq(home.heads,['Zustand','Woche'],'Heute-Ansicht in Blöcken Heute · Zustand · Woche');
+  t.eq(home.heads,['Woche'],'Heute-Ansicht: Readiness als Bühne ganz oben (ohne Zustand-Überschrift), dann Woche');
   t.eq(home.zone,'Sweet Spot','Überschrift = Candito-Zone');
   // Alte Einträge (frühere Fragen) werden weiter gerechnet
   const old=await p.evaluate(()=>{const L=log(0,0);L.feel={sleepq:3,energy:3,mood:3,strength:3,stress:3,food:3,hydra:3,push:3,pull:3,lback:3,post:3,quad:3};saveLog(key(0,0));const m=jrDays();const k=Object.keys(m).sort()[0];return m[k].v});

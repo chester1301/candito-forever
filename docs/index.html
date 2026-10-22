@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1525-d5b9137";
+<script>window.CF_VERSION="2026.10.22-1719-8ecb587";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -109,7 +109,7 @@ addEventListener('unhandledrejection',function(e){var r=e&&e.reason;if(r&&r.name
 <meta name="theme-color" content="#090a0e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..104,500..900&family=Montserrat:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..104,500..900&family=Montserrat:wght@700;800&family=Poppins:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
 /* Gestaltung angelehnt an das Powerlifting Coach Cockpit: ein dunkles Erscheinungsbild, Karten mit 20px Radius,
    Archivo (kondensiert) für Leistungszahlen, Manrope für Text, JetBrains Mono für Technik.
@@ -4251,6 +4251,169 @@ body.hdc .top .progsw{max-height:0;opacity:0;margin-top:-10px;pointer-events:non
 button.cwk-n{cursor:pointer}
 button.cwk-n b{color:#9fb3ff}
 </style>
+<style id="cf-jg">
+/* Farbdesign wie JuggernautAI (nur blaues Thema) – Schwarz, blaues Eckleuchten, neutrale Karten, Pillen-Navigation */
+html[data-theme=blue]{--bg:#000;--bg2:#17181d;--card:#121317;--raise:#1c1d23;--line:#25262d;--line2:#383a42;--ink:#fff;--ink2:#c9cad1;--mut:#8e9099;--brand:#3f64f6;--action:#3f64f6;--brand-soft:rgba(61,99,245,.16);--jg-card:linear-gradient(180deg,#0a0c14 0%,#0d1122 100%);--jg-b:#1d2232}
+html[data-theme=blue]{background:#000!important}
+html[data-theme=blue] body{background:radial-gradient(150% 520px at 0% 0%,#2a43a5 0%,#1f327b 16%,#162357 30%,#101834 46%,rgba(12,16,34,.55) 62%,transparent 82%) no-repeat,#000!important}
+/* blaues Leuchten oben links (wie Juggernaut) */
+html[data-theme=blue] body::before{background:linear-gradient(100deg,#2b4be0 0%,#1a2d8f 30%,#070b1f 65%,#000 100%)!important}
+html[data-theme=blue]{--day:#6f8cff;--day-soft:rgba(111,140,255,.14)}
+html[data-theme=blue] .amb{display:block!important;position:fixed!important;inset:0!important;pointer-events:none;z-index:-1!important;background:none!important}
+html[data-theme=blue] .amb::after{content:""!important;position:absolute!important;left:0;right:0;top:0;height:340px!important;background:radial-gradient(120% 100% at 0% 0%,rgba(44,76,226,.95) 0%,rgba(30,52,170,.55) 28%,rgba(12,20,70,.25) 55%,transparent 78%)!important}
+html[data-theme=blue] header.top{background:radial-gradient(150% 520px at 0% 0%,#2a43a5 0%,#1f327b 16%,#162357 30%,#101834 46%,rgba(12,16,34,.55) 62%,transparent 82%) no-repeat,#000!important;background-size:100vw 520px!important;border-bottom:0!important;box-shadow:none!important}
+html[data-theme=blue] body.tcb-on .tcb,html[data-theme=blue] .tcb{background:rgba(0,0,0,.86)!important;border-color:var(--jg-b)!important}
+/* Karten neutral dunkel, feine graue Kante */
+html[data-theme=blue] body .card,html[data-theme=blue] body .ptile,html[data-theme=blue] body .blk,html[data-theme=blue] body #view .card,html[data-theme=blue] body #view .ptile,html[data-theme=blue] body[data-tab] #view .card,html[data-theme=blue] body[data-tab] #view .ptile{background:var(--jg-card)!important;border:1px solid var(--jg-b)!important;box-shadow:none!important;border-radius:24px!important}
+html[data-theme=blue] body #view .card.hero,html[data-theme=blue] body #view .card.trh{background:linear-gradient(180deg,#0d1226,#0b0e1c)!important;border-color:#232a44!important}
+html[data-theme=blue] body #view .card.plc{background:none!important;border-color:transparent!important}
+/* Aktionen: Umriss-Pille (wie „Resume“ / „Finish Workout“) */
+html[data-theme=blue] body .btn.primary,html[data-theme=blue] body .cta,html[data-theme=blue] body .hbtn.fl-go,html[data-theme=blue] body .sessbtn.start,html[data-theme=blue] body .gp-go,html[data-theme=blue] body .hs-go{background:#1c1d21!important;border:1.5px solid rgba(255,255,255,.55)!important;color:#fff!important;border-radius:999px!important;box-shadow:none!important;background-image:none!important}
+html[data-theme=blue] body .btn:not(.primary){background:#141828!important;border:1px solid #262b3d!important;border-radius:999px!important;color:#fff!important;box-shadow:none!important}
+/* Umschalter: grauer Rahmen, aktiv kräftiges Blau */
+html[data-theme=blue] body .seg,html[data-theme=blue] body .tnseg,html[data-theme=blue] body .yseg,html[data-theme=blue] body .gl-seg,html[data-theme=blue] body .hs-seg{background:#161a2a!important;border:0!important;box-shadow:none!important}
+html[data-theme=blue] body .seg [aria-pressed="true"],html[data-theme=blue] body .seg .on,html[data-theme=blue] body .seg [aria-selected="true"],html[data-theme=blue] body .tnseg [aria-pressed="true"],html[data-theme=blue] body .tnseg .on,html[data-theme=blue] body .tnseg [aria-selected="true"]{background:#3f64f6!important;color:#fff!important;box-shadow:none!important}
+/* Navigation: schwebende Pille, aktiver Punkt dunkel hinterlegt, Blau */
+html[data-theme=blue] body .nav{left:14px!important;right:14px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 8px)!important;height:66px!important;padding:5px!important;border-radius:999px!important;background:rgba(28,28,30,.96)!important;border:1px solid rgba(255,255,255,.2)!important;box-shadow:0 10px 30px -10px #000!important}
+html[data-theme=blue] body .nav button{border-radius:999px!important;color:#fff!important;font-size:11px!important;font-weight:600!important;flex-direction:column!important;gap:3px!important;background:none!important}
+html[data-theme=blue] body .nav button::before{display:none!important}
+html[data-theme=blue] body .nav button .ni,html[data-theme=blue] body .nav button[aria-current="page"] .ni,html[data-theme=blue] body .nav .fab span{width:auto!important;height:auto!important;margin:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-theme=blue] body .nav button .ni::after{display:none!important}
+html[data-theme=blue] body .nav button .ni svg,html[data-theme=blue] body .nav .fab span svg{stroke:#fff!important;width:24px!important;height:24px!important;filter:none!important}
+html[data-theme=blue] body .nav button[aria-current="page"]{background:#0b0b0d!important;color:#6683ff!important}
+html[data-theme=blue] body .nav button[aria-current="page"] .ni svg{stroke:#5b7cff!important}
+/* Texte: neutrales Grau statt Blaugrau */
+html[data-theme=blue] .eyebrow{color:#c9cad1!important}
+html[data-theme=blue] body .sect{color:#fff}
+
+/* Tagesname im Titel blau statt Lift-Farbe */
+html[data-theme=blue] #view :is(h1,h2).disp span,html[data-theme=blue] #view .home-t span{color:#5b7cff!important;-webkit-text-fill-color:#5b7cff!important;background:none!important}
+html[data-theme=blue] #view [style*="--day"],html[data-theme=blue] #view .card.hero,html[data-theme=blue] #view .card.trh{--day:#3d63f5!important;--day-soft:rgba(61,99,245,.16)!important}
+/* Blätter & Überlagerungen: Schwarz mit blauem Eckleuchten, Karten neutral */
+html[data-theme=blue] body .sheet-in,html[data-theme=blue] body .jrs,html[data-theme=blue] body .gp-in,html[data-theme=blue] body .gp-top.g2top{background:radial-gradient(130% 45% at 0% 0%,rgba(42,67,165,.75),transparent 65%),linear-gradient(180deg,#0b0e1a,#06070c 45%)!important;border-color:#2a2b32!important}
+html[data-theme=blue] body .gp-top.g2top{background:transparent!important}
+html[data-theme=blue] body .xm-c{background:var(--jg-card)!important;border:1px solid var(--jg-b)!important}
+html[data-theme=blue] body .gym,html[data-theme=blue] body .gym[data-hy],html[data-theme=blue] body .ckin{background:radial-gradient(150% 520px at 0% 0%,#2a43a5 0%,#1f327b 16%,#162357 30%,#101834 46%,rgba(12,16,34,.55) 62%,transparent 82%) no-repeat,#000!important}
+html[data-theme=blue] body .ck-in.fl{background:radial-gradient(150% 520px at 0% 0%,#2a43a5 0%,#1f327b 16%,#162357 30%,#101834 46%,rgba(12,16,34,.55) 62%,transparent 82%) no-repeat,#000!important}
+html[data-theme=blue] body .ck-c,html[data-theme=blue] body .ckqc{background:var(--jg-card)!important;border:1px solid var(--jg-b)!important}
+html[data-theme=blue] body .fl-foot{background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.92) 30%,#000)!important}
+html[data-theme=blue] body .gdock{background:linear-gradient(rgba(0,0,0,0),#000 18px)!important}
+html[data-theme=blue] body .gtq,html[data-theme=blue] body .grgo{background:#13204f!important;border-color:#3f64f6!important}
+/* v2 nach Referenz: Navy-Karten, Innenflächen, Plus-Knöpfe */
+html[data-theme=blue] body .jx-note{background:#141829!important;border-color:#262b3e!important}
+html[data-theme=blue] body #view .pdbody>.card,html[data-theme=blue] body .gl-ex{background:var(--jg-card)!important;border:1px solid var(--jg-b)!important}
+html[data-theme=blue] body .gl-add,html[data-theme=blue] body .gl-row .gl-p{background:#13204f!important;border:1.5px solid #3f64f6!important}
+/* Erfolg/erledigt in Juggernaut-Hellblau statt Grün */
+html[data-theme=blue]{--ok:#5aaee8!important;--ok-soft:rgba(90,174,232,.14)!important}
+/* Juggernaut-Ideen 1–11 */
+/* 11 Schrift */
+html[data-theme=blue]{--d:"Poppins","Manrope",system-ui,sans-serif;--f:"Poppins","Manrope",system-ui,sans-serif}
+/* 1 Readiness groß */
+body.jx #view .card.jr.jx-jr{background:radial-gradient(120% 70% at 0% 0%,color-mix(in srgb,var(--zc) 34%,transparent),transparent 65%),linear-gradient(180deg,#10161a,#0b0d10)!important;border-color:color-mix(in srgb,var(--zc) 28%,#26272e)!important}
+body.jx .jx-jr .jr-hero{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:end!important;gap:6px 14px!important;justify-items:start!important;text-align:left!important}
+body.jx .jx-jr .jr-ring{width:auto!important;height:auto!important;display:block!important}
+body.jx .jx-jr .jr-ring>svg{display:none!important}
+body.jx .jx-jr .jr-num{position:static!important;display:flex!important;align-items:baseline;gap:4px}
+body.jx .jx-jr .jr-num b{font:900 104px/0.86 var(--d)!important;letter-spacing:-.04em!important;color:#fff!important;text-shadow:0 0 30px color-mix(in srgb,var(--zc) 45%,transparent)}
+body.jx .jx-jr .jr-num em{font:500 30px var(--d)!important;color:#8e909a!important;font-style:normal}
+body.jx .jx-jr .jr-side{grid-column:1/-1;display:grid!important;gap:2px;justify-items:start!important}
+body.jx .jx-jr .jr-z{font:800 28px/1.1 var(--d)!important;color:var(--zc)!important;order:1}
+body.jx .jx-jr .jr-s{order:2;color:#c9cad1!important;font-size:15px!important}
+body.jx .jx-jr .jr-d{position:absolute;right:18px;top:64px;justify-self:end;display:grid!important;justify-items:start;background:none!important;border:0!important}
+body.jx .jx-jr .jr-d b{font:800 26px var(--d)!important;color:#fff!important}
+body.jx .jx-jr .jr-d small{color:#8e909a!important;font-size:13px!important}
+body.jx .jx-jr .jr-art{opacity:.55}
+body.jx .jx-jr .jr-top span{letter-spacing:.14em!important}
+/* 2 Raster */
+body.jx #view .jx-grid{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;text-align:left;width:100%;padding:16px 16px 12px!important;color:#fff;font:inherit;cursor:pointer}
+.jx-gl{display:grid}.jx-gl b{font:800 40px/1 var(--d)}.jx-gl span{font:700 20px var(--d);color:#8e909a;margin-top:2px}.jx-gl small{color:#8e909a;font-size:12.5px;margin-top:4px}
+.jx-gg{display:grid;gap:7px 6px;justify-content:end}
+.jx-gg b{font:600 11px var(--f);color:#8e909a;text-align:center}
+.jx-gg i{width:22px;height:22px;border-radius:6px;border:1.6px solid #4a4c55;box-sizing:border-box}
+.jx-gg i.ok{background:#5aaee8;border-color:#5aaee8}.jx-gg i.live{border-color:#5aaee8;box-shadow:inset 0 0 0 3px #000,inset 0 0 0 10px #5aaee8}
+.jx-more{grid-column:1/-1;justify-self:end;color:#5b7cff;font-weight:700;font-size:15px}
+/* 3 Schlaf/Gewicht */
+.jx-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+body.jx #view .jx-t{padding:14px 14px 10px!important;display:grid;gap:2px;min-width:0}
+.jx-th{display:flex;align-items:center;gap:6px;margin:0;color:#c9cad1;font-weight:700;font-size:15px}.jx-th svg{width:17px;height:17px;fill:none;stroke:#5b7cff;stroke-width:1.9}
+.jx-t>b{font:800 24px var(--d)}.jx-t>small{color:#8e909a;font-size:12.5px}
+.jx-ml{width:100%;height:46px;margin-top:8px}
+.jx-ax{display:flex;justify-content:space-between;padding:4px 4px 0;color:#8e909a;font-size:12px;font-weight:600}
+/* 4 Kraft */
+.jx-max{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.jx #view .jx-m{position:relative;display:grid;gap:2px;justify-items:start;text-align:left;padding:14px 12px 12px!important;color:#fff;font:inherit;cursor:pointer;min-height:100px;align-content:start}
+.jx-m b{font:800 22px var(--d)}.jx-m b em{font-style:normal;font-size:15px}.jx-m small{color:#c9cad1;font-size:13.5px;font-weight:600}.jx-m span{color:#8e909a;font-size:11.5px}
+.jx-m svg{position:absolute;right:8px;top:14px;width:18px;height:18px;fill:none;stroke:#5b7cff;stroke-width:2.2}
+/* 6 Fortsetzen */
+.jx-res{position:fixed;left:24px;right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:31;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:999px;border:1.5px solid rgba(255,255,255,.6);background:rgba(8,8,10,.94);color:#fff;font:inherit;box-shadow:0 12px 30px -10px #000}
+.jx-res svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.2;background:#fff;stroke:#000;border-radius:50%;padding:3px;box-sizing:border-box}
+.jx-res span{display:grid;text-align:left}.jx-res b{font:800 17px var(--d)}.jx-res small{color:#8e909a;font-size:12px}
+/* 5 Gym-Liste */
+html[data-theme=blue] #gym .gl-ex{position:relative;padding-left:26px!important}
+html[data-theme=blue] #gym .gl-ex::before{content:"";position:absolute;left:12px;top:20px;bottom:20px;width:4px;border-radius:2px;background:#3d63f5}
+html[data-theme=blue] #gym .gl-ex.done::before{background:#3f64f6}
+.jx-sg{margin:10px 0 0;font:700 15px var(--f);color:#fff}
+.jx-note{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:16px 18px;border-radius:18px;border:1px solid #2c2e36;background:#16171c}
+.jx-note b{font-size:15px}.jx-note span{display:flex;align-items:center;gap:6px;color:#5b7cff;font-weight:700;font-size:15px}.jx-note svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+/* 7 Titel-Pille */
+.jx-tp{flex:1;min-width:0;text-align:center;opacity:0;transition:opacity .2s}
+#gym.jx-sc .jx-tp{opacity:1}
+#gym .jx-tp{font:800 15px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.6);flex:0 1 auto;margin:0 auto}
+#gym .gl-top{position:sticky;top:0;z-index:5}
+/* 8 Kalender */
+body.jx #view .jx-cal{padding:16px!important;display:grid;gap:10px}
+.jx-ch{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}.jx-ch p{margin:0;flex:1 1 140px;min-width:0;color:#c9cad1;font-weight:700;font-size:15px}
+.jx-vt{display:flex;gap:2px;padding:3px;border-radius:14px;background:#1a1b21}.jx-vt button{width:44px;height:36px;border:0;border-radius:11px;background:none;display:grid;place-items:center}.jx-vt button[aria-pressed=true]{background:#3d63f5}.jx-vt svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8}
+.jx-mh{display:flex;align-items:center;justify-content:center;gap:8px}.jx-mh b{font:800 19px var(--d);flex:0 1 190px;min-width:0;text-align:center}.jx-mh button{width:44px;height:44px;border:0;background:none;color:#fff;font-size:28px}
+.jx-wd,.jx-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.jx-wd span{text-align:center;color:#8e909a;font-size:13px;font-weight:600}
+.jx-days span{aspect-ratio:1.15;display:grid;place-items:center;border-radius:9px;font:600 15px var(--f);color:#fff;background:#0c1638}
+.jx-days span.out{background:none;color:#4a4c55}.jx-days span.tr{background:#5aaee8;color:#fff;font-weight:800}.jx-days span.pl{background:#1b2c6e}.jx-days span.fu{background:none;border:1.6px solid #2e3038}.jx-days span.pa{background:#0c1638}
+.jx-days span.td{box-shadow:0 0 0 2px #fff inset}
+.jx-lg{display:flex;flex-wrap:wrap;gap:12px;margin:2px 0 0;color:#8e909a;font-size:12.5px}.jx-lg span{display:flex;align-items:center;gap:6px}.jx-lg i{width:12px;height:12px;border-radius:4px}.jx-lg i.tr{background:#5aaee8}.jx-lg i.pl{background:#1b2c6e}.jx-lg i.fu{border:1.5px solid #4a4c55}
+/* 9 Plan-Diagramm: umrandete Balken */
+html[data-theme=blue] #view .plc-svg rect{fill-opacity:.12!important;stroke-width:2!important;vector-effect:non-scaling-stroke}
+/* 10 Runde Umriss-Knöpfe & große Titel */
+html[data-theme=blue] body .iconbtn,html[data-theme=blue] body .gl-cb,html[data-theme=blue] body .gl-ib2,html[data-theme=blue] body #gym .gl-top button{width:48px!important;height:48px!important;border-radius:50%!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
+html[data-theme=blue] body #view .phead h2.sect,html[data-theme=blue] body #view .phead .sect{font:800 clamp(22px,7.4vw,30px)/1.1 var(--d)!important;min-width:0;overflow-wrap:anywhere}
+html[data-theme=blue] #view .tab,html[data-theme=blue] #view table{--d:"Archivo","Manrope",system-ui,sans-serif;--f:"Manrope",-apple-system,system-ui,sans-serif;font-family:var(--f)}
+html[data-theme=blue] #view .rf-ckh{flex-wrap:wrap}
+html[data-theme=blue] body #view .phead::before,html[data-theme=blue] body #view .sect::before{display:none!important}
+html[data-theme=blue] body #view .pdh h2,html[data-theme=blue] body #view .pdh .pdt{font:800 32px/1.1 var(--d)!important}
+body.jx .jx-jr .jr-num{white-space:nowrap!important;width:auto!important;flex-wrap:nowrap!important}
+body.jx .jx-jr .jr-hero{grid-template-columns:minmax(0,1fr)!important}
+body.jx #view .card.jr.jx-jr .jr-d{position:absolute!important;right:18px!important;top:70px!important;margin:0!important}
+html[data-theme=blue] #gym.jx-sc .gl-top{background:linear-gradient(180deg,rgba(0,0,0,.92) 70%,rgba(0,0,0,0))!important}
+body.jx #view .jx-jr .jr-num{display:block!important}
+body.jx #view .jx-jr .jr-num b,body.jx #view .jx-jr .jr-num em{display:inline!important}
+body.jx #view .jx-jr .jr-num em{margin-left:4px}
+/* Schrift wie Referenz: Text normal, nur Titel fett */
+html[data-theme=blue] #gym .gl-x,html[data-theme=blue] #gym .jx-sg{font-weight:500!important;font-size:16px!important}
+html[data-theme=blue] #gym .gl-row .gl-v,html[data-theme=blue] #gym .gl-row .gl-d{font-weight:500!important;font-size:16.5px!important}
+html[data-theme=blue] #gym .gl-tg{font-weight:500!important}
+html[data-theme=blue] #view .jr-src,html[data-theme=blue] #view .pts,html[data-theme=blue] #view small{font-weight:500}
+
+/* Notiz je Übung */
+button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
+.jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.jx-nbox{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;background:rgba(0,0,0,.55)}
+.jx-nbox>div{width:100%;box-sizing:border-box;padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px));border-radius:28px 28px 0 0;background:linear-gradient(180deg,#10142a,#0a0c16);border-top:1px solid #232941;display:grid;gap:12px}
+.jx-nbox h3{margin:0;font:800 20px var(--d);color:#fff}.jx-nbox p{margin:0;color:#8e909a;font-size:13px}
+.jx-nbox textarea{width:100%;box-sizing:border-box;min-height:120px;border-radius:16px;border:1px solid #2c3146;background:#0b0e1a;color:#fff;font:500 16px/1.4 var(--f);padding:12px 14px;resize:vertical}
+.jx-nbox .jx-nb{display:grid;grid-template-columns:1fr 1fr;gap:10px}.jx-nbox button{min-height:52px;border-radius:999px;font:800 16px var(--d);cursor:pointer}
+.jx-nbox .jx-nc{background:#1c1d21;border:1.5px solid rgba(255,255,255,.35);color:#fff}.jx-nbox .jx-ns{background:#3f64f6;border:0;color:#fff}
+.sv-xn{margin:6px 0 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);color:#c9cad1;font-size:13.5px;white-space:pre-wrap}.sv-xn b{display:block;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.jx-days.off,.jx-wd.off,.jx-mh.off,.jx-lg.off{display:none}
+</style>
+<script>/* Juggernaut-Farben: Grün für „erledigt/Erfolg“ wird im blauen Thema zu Hellblau; das Readiness-Grün (#3cc46a) bleibt */
+(function(){if((window.CF_THEME||'blue')!=='blue')return;
+function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2;if(mx!==mn){var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s,l]}
+function rgb(h,s,l){h/=360;function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p}var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return[f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(function(x){return Math.round(x*255)})}
+function map(r,g,b){if(r===60&&g===196&&b===106)return null;var c=hsl(r,g,b);if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
+var RX=/#([0-9a-fA-F]{6})\b|#([0-9a-fA-F]{3})\b|(rgba?\()\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;
+function conv(t){return t.replace(RX,function(m,h6,h3,fn,a,b2,c){var r,g,b;if(h6){r=parseInt(h6.slice(0,2),16);g=parseInt(h6.slice(2,4),16);b=parseInt(h6.slice(4,6),16)}else if(h3){r=parseInt(h3[0]+h3[0],16);g=parseInt(h3[1]+h3[1],16);b=parseInt(h3[2]+h3[2],16)}else{r=+a;g=+b2;b=+c}
+ var o=map(r,g,b);if(!o)return m;if(fn)return fn+o.join(',');return '#'+o.map(function(x){return('0'+x.toString(16)).slice(-2)}).join('')})}
+window.cfJgConv=conv;
+document.querySelectorAll('style').forEach(function(s){var t=s.textContent,n=conv(t);if(n!==t)s.textContent=n})})();</script>
 <div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
 <header class="top"><div class="top-in">
   <div class="marke"><span class="logo lg2" aria-hidden="true"><svg class="logosvg" viewBox="0 0 100 100" aria-hidden="true"><defs>
@@ -4329,7 +4492,94 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.d5b9137.js"></script>
+<script src="assets/app-0.8ecb587.js"></script>
+<script>/* Juggernaut-Ideen 1–11: Readiness-Bühne, Einheiten-Raster, Schlaf & Gewicht, Kraft-Kacheln, Gym-Liste (Streifen, Satzgruppe, Notiz je Übung, Titel-Pille), Fortsetzen-Pille, Monatskalender.
+   Reine Anzeige aus vorhandenen Daten; einziges neues Feld: L.xn = {Block-Index: Notiz} (von Marcel freigegeben). */
+(function(){
+const WD=['S','M','D','M','D','F','S'];
+function last7(){const t0=new Date();t0.setHours(12,0,0,0);const a=[];for(let i=6;i>=0;i--){const d=new Date(t0);d.setDate(d.getDate()-i);a.push(d)}return a}
+function dayVals(get){const m={};rfAllLogs().forEach(x=>{const v=get(x.L);if(v!=null)m[isoD(x.dt)]=v});Object.entries(S.meta.rest||{}).forEach(([k,o])=>{const v=get(o);if(v!=null&&m[k]==null)m[k]=v});return m}
+let gid=0;
+function miniLine(vals){const W=150,H=46;const pts=vals.map((v,i)=>v==null?null:[i,v]).filter(Boolean);
+ if(!pts.length)return `<svg class="jx-ml" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${H-6}" y2="${H-6}" stroke="#2c2e36" stroke-dasharray="3 4"/></svg>`;
+ const lo=Math.min(...pts.map(p=>p[1])),hi=Math.max(...pts.map(p=>p[1]));const X=i=>6+i*(W-12)/6,Y=v=>H-8-((v-lo)/((hi-lo)||1))*(H-20);
+ const d=pts.map((p,j)=>(j?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' ');const l=pts[pts.length-1];const id='jxg'+(++gid);
+ return `<svg class="jx-ml" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f64f6" stop-opacity=".55"/><stop offset="1" stop-color="#3f64f6" stop-opacity="0"/></linearGradient></defs>${pts.length>1?`<path d="${d} L${X(l[0])} ${H} L${X(pts[0][0])} ${H}Z" fill="url(#${id})"/>`:''}<path d="${d}" fill="none" stroke="#3f64f6" stroke-width="3" stroke-linecap="round"/><circle cx="${X(l[0])}" cy="${Y(l[1])}" r="4.5" fill="#6683ff"/></svg>`}
+/* 2 – Raster der Einheiten (Zeile = Trainingstag, Spalte = Woche) */
+function gridHTML(){const n=NW(),m=ND();let done=0,cells='';
+ for(let d=0;d<m;d++)for(let w=0;w<n;w++){const L=log(w,d);const ok=L&&L.done;if(ok)done++;const live=L&&typeof isLive==='function'&&isLive(L);cells+=`<i class="${ok?'ok':live?'live':''}" style="grid-row:${d+2};grid-column:${w+1}"></i>`}
+ const head=Array.from({length:n},(_,w)=>`<b style="grid-row:1;grid-column:${w+1}">${w+1}</b>`).join('');
+ return `<button type="button" class="card jx-grid" data-go-pd="verlauf" aria-label="${done} von ${n*m} Einheiten erledigt – Verlauf öffnen"><span class="jx-gl"><b>${done}</b><span>${done===1?'Einheit':'Einheiten'}</span><small>von ${n*m} erledigt</small></span>
+  <span class="jx-gg" style="grid-template-columns:repeat(${n},22px)" aria-hidden="true">${head}${cells}</span><span class="jx-more">Verlauf ›</span></button>`}
+/* 3 – Schlaf (Check-in-Antwort 1–5 = 5 bis 9+ Std) & Körpergewicht */
+function tilesHTML(){const ds=last7();
+ const sl=dayVals(L=>L&&L.feel&&L.feel.sleeph!=null?L.feel.sleeph+4:null);const bw=dayVals(L=>L&&pnum(L.bw));
+ const sv=ds.map(d=>sl[isoD(d)]??null),bv=ds.map(d=>bw[isoD(d)]??null);
+ const sAll=Object.values(sl).slice(-7);const sAvg=sAll.length?sAll.reduce((a,b)=>a+b,0)/sAll.length:null;const sLast=Object.keys(sl).length?sl[Object.keys(sl).sort().pop()]:null;
+ const bLast=curBw();const hrs=v=>v>=9?'9+':nf(v,0);
+ const axis=`<div class="jx-ax" aria-hidden="true">${ds.map(d=>`<span>${WD[d.getDay()]}</span>`).join('')}</div>`;
+ return `<div class="jx-two">
+ <section class="card jx-t"><p class="jx-th"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Schlaf</p><b>${sLast!=null?hrs(sLast)+' Std':'–'}</b><small>${sAvg!=null?'Ø '+nf(sAvg,1)+' laut Check-in':'aus dem Check-in'}</small>${miniLine(sv)}${axis}</section>
+ <section class="card jx-t"><p class="jx-th"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5a4 4 0 0 1 6 0M12 12l1.5-2"/></svg>Gewicht</p><b>${bLast!=null?nf(bLast,1)+' kg':'–'}</b><small>${bLast!=null?'zuletzt eingetragen':'im Check-in eintragen'}</small>${miniLine(bv)}${axis}</section></div>`}
+/* 4 – Kraft-Kacheln (e1RM) */
+function maxHTML(){let D=null;try{D=progData()}catch(e){}const b=(D&&D.best)||{};const N={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};
+ return `<div class="jx-max">${['sq','bp','dl'].map(k=>`<button type="button" class="card jx-m" data-go-pd="kraft" aria-label="${N[k]} e1RM ${b[k]!=null?nf(b[k],0)+' kg':'noch offen'} – Kraft öffnen"><b>${b[k]!=null?nf(b[k],0)+'<em> kg</em>':'–'}</b><small>${N[k]}</small><span>e1RM</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>`).join('')}</div>`}
+/* 6 – Fortsetzen-Pille */
+function resume(){let el=document.getElementById('jx-res');const r=typeof runningSession==='function'?runningSession():null;const tb=document.getElementById('tbar');
+ const show=r&&document.getElementById('gym').hidden&&(!tb||tb.hidden);
+ if(!show){if(el)el.hidden=true;return}
+ if(!el){el=document.createElement('button');el.type='button';el.id='jx-res';el.className='jx-res';document.body.appendChild(el);el.addEventListener('click',()=>{const r2=runningSession();if(r2){S.ui.w=r2.w;S.ui.d=r2.d;el.hidden=true;openGym()}})}
+ const min=Math.max(0,Math.round((Date.now()-r.L.start)/60000));el.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg><span><b>Training fortsetzen</b><small>${esc(P[r.w][r.d].f)} · ${Math.floor(min/60)}:${String(min%60).padStart(2,'0')} h</small></span>`;el.hidden=false}
+setInterval(()=>{try{if(!document.hidden)resume()}catch(e){}},30000);
+/* 8 – Monatskalender im Verlauf */
+let CM=null,CV='cal';
+function calHTML(){const now=new Date();if(!CM)CM=new Date(now.getFullYear(),now.getMonth(),1);
+ const tr={};rfAllLogs().forEach(x=>{if(x.L.done)tr[isoD(x.dt)]=1});
+ const pl={};for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(L&&L.done)continue;const dt=dayDate(w,d);if(dt)pl[isoD(dt)]=1}
+ const y=CM.getFullYear(),m=CM.getMonth();const first=new Date(y,m,1),start=new Date(first);start.setDate(1-((first.getDay()+6)%7));const tk=isoD(now);
+ let cells='';for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(i>=35&&d.getMonth()!==m)break;const k=isoD(new Date(d.getFullYear(),d.getMonth(),d.getDate(),12));const out=d.getMonth()!==m;const fut=k>tk;
+  const cls=out?'out':tr[k]?'tr':pl[k]?'pl':fut?'fu':'pa';cells+=`<span class="${cls}${tk===k?' td':''}">${d.getDate()}</span>`}
+ const cnt=Object.keys(tr).length;const off=CV==='list'?' off':'';
+ return `<section class="card jx-cal"><div class="jx-ch"><p>${cnt} ${cnt===1?'Einheit':'Einheiten'} abgeschlossen</p><span class="jx-vt" role="group" aria-label="Ansicht"><button type="button" data-jxv="cal" aria-pressed="${CV==='cal'}" aria-label="Kalender"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button><button type="button" data-jxv="list" aria-pressed="${CV==='list'}" aria-label="Nur Liste"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></button></span></div>
+ <div class="jx-mh${off}"><button type="button" data-jxm="-1" aria-label="Vormonat">‹</button><b>${first.toLocaleDateString('de-DE',{month:'long',year:'numeric'})}</b><button type="button" data-jxm="1" aria-label="Nächster Monat">›</button></div>
+ <div class="jx-wd${off}" aria-hidden="true">${['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<span>${x}</span>`).join('')}</div><div class="jx-days${off}">${cells}</div>
+ <p class="jx-lg${off}"><span><i class="tr"></i>Trainiert</span><span><i class="pl"></i>Geplant</span><span><i class="fu"></i>Kommend</span></p></section>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-jxm],[data-jxv]');if(!b)return;if(b.dataset.jxm)CM.setMonth(CM.getMonth()+ +b.dataset.jxm);else CV=b.dataset.jxv;const c=document.querySelector('.jx-cal');if(c)c.outerHTML=calHTML()});
+/* Einhängen in die Bildschirme */
+const R0=window.render;window.render=function(){const r=R0.apply(this,arguments);try{post()}catch(e){console.warn(e)}return r};
+function post(){document.body.classList.add('jx');const v=document.getElementById('view');const tab=S.ui.tab;
+ if(tab==='home'&&!v.querySelector('.jx-grid')){const g=v.querySelector('.greet'),jr=v.querySelector('.card.jr'),hero=v.querySelector('.card.hero');
+  if(jr&&g){g.after(jr);if(!jr.classList.contains('jr-empty'))jr.classList.add('jx-jr')}
+  if(hero)hero.insertAdjacentHTML('afterend',gridHTML()+tilesHTML()+maxHTML());
+  const pz=[...v.querySelectorAll('.phead')].find(h=>/^Zustand/.test(h.textContent.trim()));if(pz)pz.remove()}
+ if(tab==='prog'&&S.ui.pd==='verlauf'&&!v.querySelector('.jx-cal')){const b=v.querySelector('.pdbody');const seg=b&&[...b.children].find(c=>/\b1W\b/.test(c.textContent)&&c.textContent.length<40);
+  const tgt=seg||(b&&b.firstElementChild);if(tgt)tgt.insertAdjacentHTML(seg?'beforebegin':'afterend',calHTML())}
+ resume()}
+/* 5 & 7 – Gym-Liste: Satzgruppe, Notiz je Übung, Titel-Pille beim Scrollen */
+const G0=window.renderGymL;if(G0)window.renderGymL=function(){const r=G0.apply(this,arguments);try{gpost()}catch(e){console.warn(e)}return r};
+function noteBtn(b,t){return `<button type="button" class="jx-note" data-jxnote="${b}" aria-label="Notiz zur Übung ${t?'ändern':'hinzufügen'}"><b>Notizen</b>${t?`<span class="jx-nt">${esc(t)}</span>`:`<span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Notiz hinzufügen</span>`}</button>`}
+function gpost(){const g=document.getElementById('gym');const {w,d}=S.ui;const L=log(w,d,true);const xn=L.xn||{};
+ g.querySelectorAll('.gl-ex').forEach(ex=>{if(ex.querySelector('.jx-note'))return;const b=+String(ex.id).replace('glx-','');
+  const x=ex.querySelector('.gl-x');if(x&&!ex.querySelector('.jx-sg')){const m=x.textContent.match(/^(\d+)\s*[×x]\s*([\d–\-]+)/);if(m)x.insertAdjacentHTML('beforebegin',`<p class="jx-sg">${m[1]} ${m[1]==='1'?'Satz':'Sätze'} × ${m[2]} Wdh.</p>`)}
+  ex.insertAdjacentHTML('beforeend',noteBtn(b,xn[b]))});
+ const top=g.querySelector('.gl-top'),h=g.querySelector('.gl-hd h1');if(top&&h&&!top.querySelector('.jx-tp')){const sp=top.querySelector('span[style*="flex:1"]');const p=document.createElement('span');p.className='jx-tp';p.setAttribute('aria-hidden','true');p.textContent=h.textContent;if(sp)sp.after(p);else top.appendChild(p)}
+ if(!g._jx){g._jx=()=>g.classList.toggle('jx-sc',g.scrollTop>90);g.addEventListener('scroll',g._jx,{passive:true})}g._jx()}
+/* Notiz-Fenster */
+function noteOpen(b){const {w,d}=S.ui;const L=log(w,d,true);const day=P[w][d];const ex=EX[(L.sw&&L.sw[b])||day.b[b].e]||{};
+ let el=document.getElementById('jxnote');if(!el){el=document.createElement('div');el.id='jxnote';el.className='jx-nbox';document.body.appendChild(el)}
+ el.innerHTML=`<div role="dialog" aria-modal="true" aria-label="Notiz zur Übung"><h3>${esc(ex.n||'Übung')}</h3><p>Notiz zu dieser Übung in dieser Einheit – nur auf dem iPhone gespeichert.</p><textarea id="jxnt" rows="5" placeholder="z. B. Technik, Gefühl, Hinweise fürs nächste Mal …">${esc((L.xn||{})[b]||'')}</textarea><div class="jx-nb"><button type="button" class="jx-nc" data-jxnc>Abbrechen</button><button type="button" class="jx-ns" data-jxns="${b}">Speichern</button></div></div>`;
+ el.hidden=false;setTimeout(()=>{const t=document.getElementById('jxnt');if(t)t.focus()},50)}
+document.addEventListener('click',e=>{const o=e.target.closest('[data-jxnote]');if(o){e.preventDefault();e.stopPropagation();noteOpen(+o.dataset.jxnote);return}
+ const el=document.getElementById('jxnote');if(!el||el.hidden)return;
+ if(e.target.closest('[data-jxnc]')||e.target===el){el.hidden=true;return}
+ const s=e.target.closest('[data-jxns]');if(s){const b=+s.dataset.jxns;const {w,d}=S.ui;const L=log(w,d,true);const v=(document.getElementById('jxnt').value||'').trim();
+  L.xn=Object.assign({},L.xn||{});if(v)L.xn[b]=v;else delete L.xn[b];if(!Object.keys(L.xn).length)delete L.xn;saveLog(key(w,d));el.hidden=true;try{renderGym()}catch(_){}}},true);
+/* Inline-Farben aus Vorlagen (Ringe, Häkchen): Grün -> Hellblau, Readiness ausgenommen */
+if((window.CF_THEME||'blue')==='blue'&&window.cfJgConv){const conv=window.cfJgConv;const SKIP='.jr,.jrs,#jrsheet,.jr-ring,.rf';
+ const one=e=>{if(!e.getAttribute||(e.closest&&e.closest(SKIP)))return;['stroke','fill','stop-color'].forEach(k=>{const v=e.getAttribute(k);if(v){const n=conv(v);if(n!==v)e.setAttribute(k,n)}});const st=e.getAttribute('style');if(st){const n2=conv(st);if(n2!==st)e.setAttribute('style',n2)}};
+ const all=r=>{one(r);r.querySelectorAll&&r.querySelectorAll('[style],[stroke],[fill],[stop-color]').forEach(one)};
+ new MutationObserver(ms=>{for(const m of ms){if(m.type==='attributes')one(m.target);else m.addedNodes.forEach(n=>{if(n.nodeType===1)all(n)})}}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style','stroke','fill','stop-color']});all(document.body)}
+})();</script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */
