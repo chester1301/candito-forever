@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1114-27cf25c</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1157-f4676cf</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -3148,7 +3148,7 @@ const tx=(el,sel)=>{const x=sel?el.querySelector(sel):el;if(!x)return '';if(x.da
 // Wert eines Felds der Trainingszeit-Karte ohne innerText (kein erzwungenes Layout)
 const wtSum=(e,i)=>{const d=e.querySelectorAll('.wt-sum>div')[i];return d?[...d.childNodes].filter(n=>n.nodeName!=='SMALL').map(n=>n.textContent).join('').replace(/\s+/g,' ').trim():''};
 const TCFG={
- home:{keep:'.greet,.hero,.plc',list:[
+ home:{keep:'.greet,.hero,.plc,.pzcard,.pzx',list:[
   {k:'rest',hide:1,m:'.rdc',t:'Ruhetag',ic:'heart',c:'#7fa8ff',val:()=>{const o=(S.meta.rest||{})[isoD(new Date())];const sc=restScore(o);return sc!=null?sc+' %':'–'},sub:()=>{const o=(S.meta.rest||{})[isoD(new Date())];return o?'Erholung · '+rfLbl(restScore(o)):'Erholungs-Check-in'}},
   {k:'ready',hide:1,m:'.rfc',t:'Readiness',ic:'heart',c:'#43c08a',val:()=>{const R=readiness();return R&&R.feel?String(R.feel.score):'–'},sub:()=>{const R=readiness();return R?(R.feel?jrZone(R.feel.score).n+(R.perfLow?' · Leistung sinkt':''):'Check-in fehlt'):''}},
   {k:'whoop',hide:1,m:'.wcard',t:'Tagesform',ic:'heart',c:'#f0a066',val:e=>tx(e,'.wc-ring b')||'–',sub:e=>tx(e,'.wc-t b')},
@@ -3203,7 +3203,7 @@ function tileize(v,tab){const C=TCFG[tab];if(!C)return;if(!S.ui.tdet)S.ui.tdet={
   const b=document.createElement('button');b.type='button';b.className='ptile'+(vis.length%2&&i===vis.length-1?' wide':'');if(f.c.go)b.dataset.go=f.c.go;else b.dataset.tdk=f.c.k;b.style.setProperty('--pc',f.c.c);
   b.innerHTML=`<span class="ptl"><svg viewBox="0 0 24 24">${TIC[f.c.ic]}</svg>${f.c.t}</span><span class="ptv"><b class="${/^[≈\d–±+\-]/.test(val)&&val.length<9?'':'tw'}">${esc(val)}</b></span><span class="pts">${esc(sub)}</span><svg class="ptc" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>`;g.appendChild(b);f.e.remove()});
  const lastKeep=[...v.children].filter(e=>C.keep&&e.matches(C.keep)).pop();if(lastKeep)lastKeep.after(g);else v.prepend(g);
- if(tab==='home'&&!S.ui.tdet.home){const plc=v.querySelector('.plc');const hd=document.createElement('div');hd.className='phead hsec';hd.innerHTML='<h2 class="sect" style="margin:0">Woche</h2><span class="phs">Fortschritt, Zeit & Test</span>';(plc||g).before(hd)}
+ if(tab==='home'&&!S.ui.tdet.home&&!S.meta.pause){const plc=v.querySelector('.plc');const hd=document.createElement('div');hd.className='phead hsec';hd.innerHTML='<h2 class="sect" style="margin:0">Woche</h2><span class="phs">Fortschritt, Zeit & Test</span>';(plc||g).before(hd)}
  if(tab==='setup'){const hd=document.createElement('div');hd.className='phead';hd.innerHTML='<h2 class="sect" style="margin:0">Einstellungen</h2><span class="phs">Tippe auf eine Kachel</span>';v.prepend(hd)}
  if(tab==='coach'){const hd=document.createElement('div');hd.className='phead';hd.innerHTML='<h2 class="sect" style="margin:0">Coach</h2><span class="phs">Analyse & Cockpit</span>';v.prepend(hd)}}
 function wcol(s,i){if((window.CF_THEME||'blue')!=='blue')return WCOL[i%WCOL.length];const t=((s&&s.t)||'')+' '+((s&&s.s)||'');return /RPE|RIR|Kalibr/i.test(t)?'#b48cff':/Pause|Erhol|Hype|Schlaf|WHOOP|Ermüd/i.test(t)?'#43c08a':'#6f8cff'}
@@ -3270,7 +3270,8 @@ function pauseHTML(){const I=pauseInfo();const {p,days,weeks,missed,why}=I;const
   <button type="button" class="cta" data-pz="off"><span>Training fortsetzen</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   <button type="button" class="btn ${why.length?'':'ghost'} pzre" data-pz="restart">${S.ui.pzConfirm?'Wirklich neu starten? Nochmal tippen':'Phase stattdessen neu starten'}</button>
   <ul class="hinw" style="margin-top:12px"><li><span><b>Candito:</b> Verpasst du ein paar Tage, mach einfach weiter und verschiebe den Rest gleichmäßig. Pack keine Einheiten zusammen – krank heißt leicht abtrainiert und zusätzlicher Stress.</span></li></ul></section>
-  ${(()=>{try{return pauseMoreHTML(I)}catch(e){return ''}})()}`}
+  ${(()=>{try{return pauseMoreHTML(I)}catch(e){return ''}})()}
+  ${(()=>{try{return wkpHTML()}catch(e){return ''}})()}`}
 /* Pausen-Modus: Neustart-Grenze, Phasen nach dem Fortsetzen, Erholung, Canditos Wissen – nur vorhandene Regeln und Daten */
 function pauseMoreHTML(I){const {p,days,weeks,why}=I;const LIM=11;const fm=t=>t.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'});
  const o=ORD(),i=o.indexOf(p.prog);const rows=i<0?[]:o.slice(i).map(id=>{const a=new Date(withProg(id,progStart)+'T12:00:00');const b=new Date(a);b.setDate(b.getDate()+weeks*7);return {id,a,b}});
@@ -3967,9 +3968,14 @@ function swDecorate(v){if(S.ui.tab!=='train')return;const {w,d}=S.ui;const ex=v.
  kids.forEach((c,b)=>{const bl=P[w][d].b[b];if(!bl)return;const tag=swTag(bl);const mn=c.querySelector('.mn')||c.querySelector('.bh div')||c;if(tag&&!c.querySelector('.swtag'))mn.insertAdjacentHTML('beforeend',tag);
   if(c.classList.contains('open')&&!c.querySelector('.swbtn')){const h=swBtn(w,d,b);if(h)(c.querySelector('.bh')||c).insertAdjacentHTML('afterend',`<div class="swrow">${h}</div>`)}if(c.classList.contains('open')&&!c.querySelector('.grule')){const bh=c.querySelector('.bh');if(bh)bh.insertAdjacentHTML('afterend',gymRuleHTML(bl))}})}
 
-(function(){let tm=null,iv=null;const stop=()=>{clearTimeout(tm);clearInterval(iv);tm=iv=null};
- document.addEventListener('pointerdown',e=>{const b=e.target.closest('#gym [data-step]');if(!b)return;stop();tm=setTimeout(()=>{iv=setInterval(()=>{if(!b.isConnected){stop();return}const nb=document.querySelector(`#gym [data-step="${b.dataset.step}"][data-v="${b.dataset.v}"]`);nb&&nb.click()},110)},420)},{passive:true});
- ['pointerup','pointercancel','pointerleave','touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,stop,{passive:true}))})();
+(function(){let tm=null,iv=null,rep=0,eat=0;const stop=()=>{clearTimeout(tm);clearInterval(iv);tm=iv=null;if(rep){eat=Date.now()+600}rep=0};
+ // Gedrückt halten wiederholt −/+. Der Knopf wird nach jedem Schritt neu gezeichnet, deshalb per Selektor wiederfinden.
+ document.addEventListener('pointerdown',e=>{const b=e.target.closest('#gym [data-step]');if(!b)return;stop();eat=0;const sel=`#gym [data-step="${b.dataset.step}"][data-v="${b.dataset.v}"]`;
+  tm=setTimeout(()=>{iv=setInterval(()=>{const nb=document.querySelector(sel);if(!nb||$('#gym').hidden){stop();return}rep++;nb.click()},110)},420)},{passive:true});
+ ['pointerup','pointercancel','touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,stop,{passive:true}));
+ // Nach dem Halten keinen zusätzlichen Schritt durch den abschließenden Klick
+ document.addEventListener('click',e=>{if(eat&&Date.now()<eat&&e.isTrusted&&e.target.closest('#gym [data-step]')){e.stopImmediatePropagation();e.preventDefault();eat=0}},true);
+ document.addEventListener('contextmenu',e=>{if(e.target.closest('#gym [data-step]'))e.preventDefault()})})();
 /* Icons einmalig vorrendern (Graustufen + Screen auf Navy) – spart Filter/Blend-Ebenen beim Scrollen */
 async function preIcons(){if((window.CF_THEME||'blue')!=='blue'||preIcons.done)return;preIcons.done=1;const BG=[19,26,48];
  // Ergebnis je App-Version im Cache-Speicher ablegen: ab dem zweiten Start keine Pixel-Schleifen mehr
@@ -4190,7 +4196,10 @@ const T={on:false,end:0,total:0,paused:false,left:0,ctx:null,beeped:-1};
 try{const t=JSON.parse(localStorage.getItem(LST)||'null');if(t&&t.on&&(t.paused||Date.now()-t.end<30*60000))Object.assign(T,t)}catch(e){}
 const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){}};
 let actx=null;
-function unlockAudio(){try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume()}catch(e){}}
+function unlockAudio(){try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state!=='running')actx.resume();
+ if(!unlockAudio.done&&actx.state==='running'){const b=actx.createBuffer(1,1,22050),src=actx.createBufferSource();src.buffer=b;src.connect(actx.destination);src.start(0);unlockAudio.done=1}}catch(e){}}
+['pointerdown','touchend','click'].forEach(ev=>document.addEventListener(ev,()=>{if(S.meta&&S.meta.sound)unlockAudio()},{passive:true,capture:true}));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')unlockAudio.done=0});
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
 function beep(f=880,ms=140,delay=0,vol=.22){if(!actx||!S.meta.sound)return;try{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';
  o.connect(g);g.connect(actx.destination);const t0=actx.currentTime+delay;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+ms/1000);o.start(t0);o.stop(t0+ms/1000+.03)}catch(e){}}
@@ -4204,7 +4213,7 @@ function startRest(sec,ctx){if((S.meta.lockHint||0)<3){S.meta.lockHint=(S.meta.l
  if(S.meta.autoSheet&&$('#gym').hidden)openSheet();gymRefresh();tick()}
 function stopRest(){T.on=false;saveT();closeSheet();gymRefresh();tick()}
 function gymRefresh(){if(!$('#gym').hidden){const y=$('#gym').scrollTop;renderGym();$('#gym').scrollTop=y}}
-function addTime(s){if(!T.on){startRest(Math.max(15,s));return}if(T.paused)T.left=Math.max(0,T.left+s);else T.end+=s*1000;T.total=Math.max(15,T.total+s);T.beeped=Math.ceil(tLeft())+1;saveT();gymRefresh();tick()}
+function addTime(s){if(!T.on){startRest(Math.max(15,s));return}if(T.paused)T.left=Math.max(0,T.left+s);else T.end+=s*1000;T.total=Math.max(15,T.total+s);T.beeped=Math.ceil(tLeft())+1;saveT();tick.k='';tick()}
 function togglePause(){if(!T.on)return;if(T.paused){T.end=Date.now()+T.left*1000;T.paused=false}else{T.left=tLeft();T.paused=true}saveT();renderSheet();gymRefresh();tick()}
 function setPreset(sec){if(T.on){const el=T.total-tLeft();T.total=sec;if(T.paused)T.left=sec-el;else T.end=Date.now()+(sec-el)*1000;T.beeped=Math.ceil(tLeft())+1;saveT();renderSheet();gymRefresh();tick()}else startRest(sec)}
 function nextInfo(){const c=T.ctx;if(!c)return null;const bl=P[c.w]&&P[c.w][c.d]&&P[c.w][c.d].b[c.b];if(!bl)return null;
@@ -4223,7 +4232,7 @@ function tick(){const bar=$('#tbar');document.body.classList.toggle('tmr',T.on);
  const ni=nextInfo();document.querySelectorAll('[data-tnext]').forEach(e=>e.textContent=ni?`Nächster: ${ni.ex.n} · Satz ${ni.c.i+1}`:'Pause');}
  if(!T.paused){const sec=Math.ceil(left);
   if(sec<=10&&sec>=1&&sec<T.beeped){T.beeped=sec;sfx(sec<=3?'tick':'tick2');if(sec<=3)vib(60);document.querySelectorAll('.grest,.rest').forEach(e=>e.dataset.cd=sec)}
-  if(sec<=0&&T.beeped>0){T.beeped=0;const late=-left;try{unlockAudio()}catch(e){}sfx('end');vib([280,100,280]);flashEnd();saveT();const msg=late>8?`Pause ist seit ${mmss(late)} vorbei – auf zum nächsten Satz`:'Pause vorbei – auf zum nächsten Satz';if(!S.meta.overtime){stopRest();toast(msg);return}toast(msg);renderSheet();gymRefresh()}
+  if(sec<=0&&T.beeped>0){T.beeped=0;const late=-left;try{unlockAudio()}catch(e){}sfx('end');vib([280,100,280]);flashEnd();saveT();const msg=late>8?`Pause ist seit ${mmss(late)} vorbei – auf zum nächsten Satz`:'Pause vorbei – auf zum nächsten Satz';if(!S.meta.overtime){stopRest();toast(msg,late>5?8000:2200);return}toast(msg,late>5?8000:2200);renderSheet();gymRefresh()}
   else if(sec<=0&&!S.meta.overtime){stopRest();return}}}
 let tickN=0;function loopT(){clearTimeout(loopT.t);if(!document.hidden){tickN=4;try{tick()}catch(e){}try{sessTick()}catch(e){}const el=$('#gEl');if(el){const L=log(S.ui.w,S.ui.d);if(L&&L.start)el.textContent=mmss((Date.now()-L.start)/1000)}}loopT.t=setTimeout(loopT,document.hidden?5000:T.on?250:1000)}loopT();document.addEventListener('visibilitychange',()=>{if(!document.hidden)loopT()});
 
