@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1952-7857c2f";
+<script>window.CF_VERSION="2026.10.22-2015-2aca563";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -4511,6 +4511,27 @@ html[data-theme=blue].glow-off .ds-pv{background:#000}
 .ds-reset{width:100%;margin:18px 0 0;min-height:50px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:var(--ink2);font:600 15px var(--f);cursor:pointer}
 .ds-reset.armed{border-color:#e8484f;color:#ff8a8f;background:rgba(232,72,79,.1)}
 html[data-theme=blue] body #gym .gl-top .gl-chip{width:auto!important;min-width:48px;height:48px!important;padding:0 16px!important;border-radius:999px!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
+.ds-pvsc{display:grid;gap:8px}
+html[data-theme=blue] .ds-pv[style*="--pvg"]{background:radial-gradient(90% 200px at 0% 0%,color-mix(in srgb,var(--pvg) 70%,transparent),transparent 70%),#000}
+.ds-mini{margin:0!important;padding:12px!important;display:grid;gap:6px;border-radius:18px!important}
+.ds-pvjr{display:grid}.ds-pvjr small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}.ds-pvjr b{font:800 44px/1 var(--d);color:#fff}.ds-pvjr b em{font:500 16px var(--d);color:var(--mut);font-style:normal}.ds-pvjr i{font-style:normal;color:#3cc46a;font-weight:700}
+.ds-pvjrc{background:radial-gradient(120% 90% at 0% 0%,rgba(60,196,106,.3),transparent 65%),var(--jg-card,var(--card))!important}
+.ds-pvjr.ring{grid-template-columns:52px auto minmax(0,1fr);align-items:center;gap:8px;position:relative}.ds-pvjr.ring svg{width:52px;height:52px;grid-column:1;grid-row:1}.ds-pvjr.ring b{grid-column:1;grid-row:1;text-align:center;font-size:17px}.ds-pvjr.ring span{grid-column:2/4;display:grid}.ds-pvjr.ring small{font-size:10px}
+.ds-pvgr{grid-template-columns:auto 1fr!important;align-items:center}.ds-pvgr b{font:800 28px var(--d)}.ds-pvgr span{display:grid;grid-template-columns:repeat(4,14px);gap:4px;justify-content:end}.ds-pvgr i{width:14px;height:14px;border-radius:4px;border:1.5px solid #4a4c55;box-sizing:border-box}.ds-pvgr i.ok{background:#5aaee8;border-color:#5aaee8}
+.ds-pv2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ds-pv3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ds-pv2 small,.ds-pv3 small{color:var(--mut);font-size:11px}.ds-pv2 b,.ds-pv3 b{font:800 18px var(--d)}
+.ds-pvw,.ds-pvd{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ds-pvw span{text-align:center;padding:8px 0;border-radius:12px;background:var(--jg-card,var(--card));border:1px solid var(--jg-b,var(--line));font-weight:800;font-size:13px}.ds-pvw span.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.ds-pvd span{display:grid;justify-items:center;gap:4px;padding:8px 0;border-radius:12px;background:var(--jg-card,var(--card));border:1px solid var(--jg-b,var(--line));font-size:12px}.ds-pvd span.sel{border-color:var(--brand)}
+.ds-pvd i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.06);font-style:normal;display:grid;place-items:center;font-size:12px;color:#fff}.ds-pvd i.ok{background:#5aaee8}
+.ds-pvn{margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.ds-pvex{grid-template-columns:4px minmax(0,1fr)!important;gap:10px!important}.ds-pvex .ds-pvs{height:auto;align-self:stretch;background:var(--stc)}
+.ds-pvex .ds-pvt{font:800 17px var(--d);color:#fff}.ds-pvex .ds-pvx{grid-template-columns:28px minmax(0,1fr) 56px;margin-top:6px}
+.ds-pvn2{width:28px;height:26px;border-radius:8px;display:grid;place-items:center;background:#2a2c33;font-weight:600;font-size:13px}.ds-pvn2.cur{background:var(--brand);color:#fff}
+.ds-pvp.off{opacity:.55}
+html.gnum-gross .ds-pvex .ds-pvb{font-size:20px;font-weight:700}
+.ds-pv.oled,.ds-pv.oled .ds-mini{background:#000!important}
+.ds-pv .hype.l .hic{background:#f6d65e!important}.ds-pv .hype.h .hic{background:#e8262f!important}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4615,8 +4636,8 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.7857c2f.js"></script>
-<script src="assets/app-1.7857c2f.js"></script>
+<script src="assets/app-0.2aca563.js"></script>
+<script src="assets/app-1.2aca563.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */

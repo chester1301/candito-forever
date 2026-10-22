@@ -76,5 +76,12 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
       S.ui.tab='setup';S.ui.tdet={setup:'design'};S.ui.dsOpen={farbe:true};render();o.gelb=!!document.querySelector('[data-ds="acc|gelb"]');S.meta.ds={};applyView();return o});
     t.eq([hf.a,hf.b],hf.want,`${W}px: Lichtkegel folgt beim Scrollen dem Hype der Übung`);
     t.ok(hf.stripe!=='rgb(63, 100, 246)'&&!hf.ovl&&hf.gelb,`${W}px: Streifen in Hype-Farbe, Kopfknöpfe ohne Überlappung, Gelb als Akzentfarbe`);
+    // Vorschau mit Tabs Heute/Training/Gym; Stil „Klassik“ lädt neu und bleibt im Design-Menü
+    const tb=await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const o={};['heute','train','gym'].forEach(k=>{document.querySelector(`[data-dspv="${k}"]`).click();const v=document.querySelector('.ds-pv');o[k]=!!v&&v.getAttribute('aria-label')==='Vorschau '+k});
+      S.meta.ds={jr:'ring'};S.ui.dsPv='heute';render();o.ring=!!document.querySelector('.ds-pv .ds-pvjr.ring');S.meta.ds={};S.ui.dsPv=null;render();return o});
+    t.ok(tb.heute&&tb.train&&tb.gym&&tb.ring,`${W}px: Vorschau zeigt Heute, Training und Gym mit den Einstellungen`);
+    await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-dspre="klassik"]').click()});await p.waitForTimeout(3500);
+    const kl=await p.evaluate(()=>[S.ui.tab,(S.ui.tdet||{}).setup,window.CF_THEME]);await p.evaluate(()=>{localStorage.setItem('cf-theme','blue');S.meta.ds={};saveMeta()});
+    t.eq(kl,['setup','design','classic'],`${W}px: nach „Klassik“ bleibt man im Design-Menü`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};

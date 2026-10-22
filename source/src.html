@@ -4414,6 +4414,27 @@ html[data-theme=blue].glow-off .ds-pv{background:#000}
 .ds-reset{width:100%;margin:18px 0 0;min-height:50px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:var(--ink2);font:600 15px var(--f);cursor:pointer}
 .ds-reset.armed{border-color:#e8484f;color:#ff8a8f;background:rgba(232,72,79,.1)}
 html[data-theme=blue] body #gym .gl-top .gl-chip{width:auto!important;min-width:48px;height:48px!important;padding:0 16px!important;border-radius:999px!important;border:1.5px solid rgba(255,255,255,.55)!important;background:rgba(0,0,0,.35)!important;color:#fff!important}
+.ds-pvsc{display:grid;gap:8px}
+html[data-theme=blue] .ds-pv[style*="--pvg"]{background:radial-gradient(90% 200px at 0% 0%,color-mix(in srgb,var(--pvg) 70%,transparent),transparent 70%),#000}
+.ds-mini{margin:0!important;padding:12px!important;display:grid;gap:6px;border-radius:18px!important}
+.ds-pvjr{display:grid}.ds-pvjr small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}.ds-pvjr b{font:800 44px/1 var(--d);color:#fff}.ds-pvjr b em{font:500 16px var(--d);color:var(--mut);font-style:normal}.ds-pvjr i{font-style:normal;color:#3cc46a;font-weight:700}
+.ds-pvjrc{background:radial-gradient(120% 90% at 0% 0%,rgba(60,196,106,.3),transparent 65%),var(--jg-card,var(--card))!important}
+.ds-pvjr.ring{grid-template-columns:52px auto minmax(0,1fr);align-items:center;gap:8px;position:relative}.ds-pvjr.ring svg{width:52px;height:52px;grid-column:1;grid-row:1}.ds-pvjr.ring b{grid-column:1;grid-row:1;text-align:center;font-size:17px}.ds-pvjr.ring span{grid-column:2/4;display:grid}.ds-pvjr.ring small{font-size:10px}
+.ds-pvgr{grid-template-columns:auto 1fr!important;align-items:center}.ds-pvgr b{font:800 28px var(--d)}.ds-pvgr span{display:grid;grid-template-columns:repeat(4,14px);gap:4px;justify-content:end}.ds-pvgr i{width:14px;height:14px;border-radius:4px;border:1.5px solid #4a4c55;box-sizing:border-box}.ds-pvgr i.ok{background:#5aaee8;border-color:#5aaee8}
+.ds-pv2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ds-pv3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ds-pv2 small,.ds-pv3 small{color:var(--mut);font-size:11px}.ds-pv2 b,.ds-pv3 b{font:800 18px var(--d)}
+.ds-pvw,.ds-pvd{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ds-pvw span{text-align:center;padding:8px 0;border-radius:12px;background:var(--jg-card,var(--card));border:1px solid var(--jg-b,var(--line));font-weight:800;font-size:13px}.ds-pvw span.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.ds-pvd span{display:grid;justify-items:center;gap:4px;padding:8px 0;border-radius:12px;background:var(--jg-card,var(--card));border:1px solid var(--jg-b,var(--line));font-size:12px}.ds-pvd span.sel{border-color:var(--brand)}
+.ds-pvd i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.06);font-style:normal;display:grid;place-items:center;font-size:12px;color:#fff}.ds-pvd i.ok{background:#5aaee8}
+.ds-pvn{margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.ds-pvex{grid-template-columns:4px minmax(0,1fr)!important;gap:10px!important}.ds-pvex .ds-pvs{height:auto;align-self:stretch;background:var(--stc)}
+.ds-pvex .ds-pvt{font:800 17px var(--d);color:#fff}.ds-pvex .ds-pvx{grid-template-columns:28px minmax(0,1fr) 56px;margin-top:6px}
+.ds-pvn2{width:28px;height:26px;border-radius:8px;display:grid;place-items:center;background:#2a2c33;font-weight:600;font-size:13px}.ds-pvn2.cur{background:var(--brand);color:#fff}
+.ds-pvp.off{opacity:.55}
+html.gnum-gross .ds-pvex .ds-pvb{font-size:20px;font-weight:700}
+.ds-pv.oled,.ds-pv.oled .ds-mini{background:#000!important}
+.ds-pv .hype.l .hic{background:#f6d65e!important}.ds-pv .hype.h .hic{background:#e8262f!important}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -5349,7 +5370,7 @@ function restCardHTML(){if(todayTraining())return '';const td=isoD(new Date());c
   ${CKR.filter(([k])=>f[k]!=null).length?`<div class="rf-cks">${CKR.filter(([k])=>f[k]!=null).map(([k,t])=>`<span style="--c:${CKC[f[k]]}"><i></i>${t}</span>`).join('')}</div>`:''}
   ${hist.length?`<p class="sec" style="margin:12px 0 6px">Letzte Ruhetage</p><div class="rd-h">${hist.map(x=>`<span><em>${x.s??'–'}</em><b><i style="height:${Math.max(8,x.s??0)}%;background:${rfCol(x.s)}"></i></b><small>${new Date(x.k+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</small></span>`).join('')}</div>`:''}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn ${o?'':'primary'}" data-rdopen>${o?'Bearbeiten':'Check-in starten'}</button></div></section>`}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||b.tagName!=='BUTTON')return;try{localStorage.setItem('cf-theme',b.dataset.theme)}catch(err){}location.reload()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||b.tagName!=='BUTTON')return;try{localStorage.setItem('cf-theme',b.dataset.theme)}catch(err){}dsReload()});
 document.addEventListener('click',e=>{if(e.target.closest('[data-rdopen]')){CK={rest:isoD(new Date())};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}});
 
 
@@ -7317,12 +7338,28 @@ const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue'
 const HOME_BL=[['jr','Readiness'],['hero','Nächstes Training'],['grid','Einheiten-Raster'],['tiles','Schlaf & Gewicht'],['max','Kraft-Kacheln']];
 function dsVal(k){const m=S.meta.ds||{};if(k==='acc'){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}}if(k==='dayc'||k==='gymhy')return m[k]?'1':'0';if(k==='hl')return m.hl===false?'0':'1';return m[k]||DSL[k][1][0][0]}
 function homeOrd(){const o=((S.meta.ds||{}).ord||[]).filter(k=>HOME_BL.some(b=>b[0]===k));HOME_BL.forEach(b=>{if(!o.includes(b[0]))o.push(b[0])});return o}
+function dsReload(){try{sessionStorage.setItem('cf-ret',JSON.stringify({open:S.ui.dsOpen||{},pv:S.ui.dsPv||'heute',y:scrollY}))}catch(e){}location.reload()}
 function dsRow(k){const [t,o]=DSL[k];const v=dsVal(k);return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${o.length},1fr);margin:6px 0 0">${o.map(([x,l])=>`<button type="button" data-ds="${k}|${x}" aria-pressed="${v===x}">${l}</button>`).join('')}</div>`}
 function dsSeg(t,attr,opts){return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${opts.length},1fr);margin:6px 0 0">${opts.map(([v,l,on])=>`<button type="button" ${attr}="${v}" aria-pressed="${!!on}">${l}</button>`).join('')}</div>`}
 const DSP=[['jugg','Juggernaut','Blau, Leuchten, Nachtblau'],['minimal','Minimal','Schwarz, ruhig, kompakt'],['nacht','Gym-Nacht','OLED, dezent, große Zahlen'],['klassik','Klassik','Rot/Gold-Thema']];
 function dsGroup(id,t,body){const open=(S.ui.dsOpen||{})[id];return `<details class="ds-grp" data-dsgrp="${id}"${open?' open':''}><summary><b>${t}</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ds-gb">${body}</div></details>`}
-function dsPreviewHTML(){const ds=S.meta.ds||{};return `<div class="ds-pv" aria-label="Vorschau des Designs"><div class="ds-pvc card${ds.hl===false?'':' jx-cur'}"><p class="ds-pve">Vorschau · Samstag</p><h3 class="ds-pvh home-t">Tag 1 · <span>Beine</span></h3><div class="ds-pvr">${hypeB('m')}<span class="ds-pvn">3 Sätze × 7 Wdh.</span></div><div class="ds-pvx"><i class="ds-pvs" style="--stc:${(ds.stripe==='hype')?'#f59a45':(ds.stripe==='lift')?'#6f8cff':'var(--brand)'}"></i><span class="ds-pvb">100 kg × 7</span><span class="ds-pvp">+</span></div><span class="btn primary ds-pvbtn">Training starten →</span></div>
- <div class="ds-pvnav" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>${ds.navl==='aus'?'':'<em>Heute</em>'}</span><span><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${ds.navl==='aus'?'':'<em>Training</em>'}</span><span><svg viewBox="0 0 24 24"><path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/></svg>${ds.navl==='aus'?'':'<em>Gym</em>'}</span></div></div>`}
+function dsPreviewHTML(){const ds=S.meta.ds||{};const tab=S.ui.dsPv||'heute';const hyC={h:'#e8262f',m:'#f59a45',l:'#f6d65e'};
+ const nav=k=>`<div class="ds-pvnav" aria-hidden="true">${[['heute','Heute','<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'],['train','Training','<path d="M4 6h16M4 12h16M4 18h10"/>'],['gym','Gym','<path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/>']].map(([id,l,ic])=>`<span class="${id===k?'on':''}"><svg viewBox="0 0 24 24">${ic}</svg>${ds.navl==='aus'?'':`<em>${l}</em>`}</span>`).join('')}</div>`;
+ const cur=ds.hl===false?'':' jx-cur';
+ const jr=ds.jr==='ring'?`<div class="ds-pvjr ring"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="5"/><circle cx="22" cy="22" r="18" fill="none" stroke="#3cc46a" stroke-width="5" stroke-dasharray="113" stroke-dashoffset="34" transform="rotate(-90 22 22)" stroke-linecap="round"/></svg><b>67</b><span><i>Sweet Spot</i><small>Readiness</small></span></div>`:`<div class="ds-pvjr"><small>Readiness</small><b>67<em>/100</em></b><i>Sweet Spot</i></div>`;
+ const blocks={jr:`<div class="card ds-mini ds-pvjrc">${jr}</div>`,hero:`<div class="card ds-mini${cur}"><p class="ds-pve">Samstag</p><h3 class="ds-pvh home-t">Tag 1 · <span>Beine</span></h3><span class="btn primary ds-pvbtn">Training starten →</span></div>`,
+  grid:`<div class="card ds-mini ds-pvgr"><b>4</b><span>${[1,1,1,1,0,0,0,0].map(x=>`<i class="${x?'ok':''}"></i>`).join('')}</span></div>`,tiles:`<div class="ds-pv2"><div class="card ds-mini"><small>Schlaf</small><b>8 Std</b></div><div class="card ds-mini"><small>Gewicht</small><b>80 kg</b></div></div>`,
+  max:`<div class="ds-pv3">${['133','144','146'].map(v=>`<div class="card ds-mini"><b>${v}</b><small>e1RM</small></div>`).join('')}</div>`};
+ const heute=homeOrd().slice(0,3).map(k=>blocks[k]).join('');
+ const train=`<div class="ds-pvw">${['W1','W2','W3','W4'].map((w,i)=>`<span class="${i?'':'on'}">${w}</span>`).join('')}</div><div class="ds-pvd">${['Sa','So','Di','Do'].map((d,i)=>`<span class="${i===3?'sel':''}"><b>${d}</b>${i<2?'<i class="ok">✓</i>':'<i></i>'}</span>`).join('')}</div>
+  <div class="card ds-mini${cur}"><h3 class="ds-pvh home-t">Tag 4 · <span>Brust</span></h3><p class="ds-pvn">${hypeB('h')} 7 Übungen</p><span class="btn primary ds-pvbtn">Training starten →</span></div>`;
+ const ex=[['High Bar Squat','m','sq','100 kg × 7'],['Paused Deadlift','l','dl','110 kg × 4']];
+ const stc=(h,l)=>ds.gymhy||ds.stripe==='hype'?hyC[h]:ds.stripe==='lift'?({sq:'#6f8cff',dl:'#b48cff'}[l]):'var(--brand)';
+ const gym=`<h3 class="ds-pvh">Tag 3 · Beine</h3>${ex.map(([n,h,l,v],i)=>`<div class="card ds-mini ds-pvex" style="--stc:${stc(h,l)}"><i class="ds-pvs"></i><div><b class="ds-pvt">${n}</b><p class="ds-pvn">${hypeB(h)}</p><div class="ds-pvx"><span class="ds-pvn2${i?'':' cur'}">1</span><span class="ds-pvb">${v}</span><span class="ds-pvp${i?' off':''}">+</span></div></div></div>`).join('')}`;
+ const glow=tab==='gym'&&ds.gymhy?hyC.m:null;
+ return `<div class="ds-pvt-tabs seg" role="group" aria-label="Vorschau-Bildschirm" style="grid-template-columns:repeat(3,1fr);margin:6px 0 8px">${[['heute','Heute'],['train','Training'],['gym','Gym']].map(([k,l])=>`<button type="button" data-dspv="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</div>
+ <div class="ds-pv${tab==='gym'&&S.meta.oled?' oled':''}" aria-label="Vorschau ${tab}"${glow?` style="--pvg:${glow}"`:''}><div class="ds-pvsc">${tab==='heute'?heute:tab==='train'?train:gym}</div>${tab==='gym'?'':nav(tab)}</div>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-dspv]');if(!b)return;const y=scrollY;S.ui.dsPv=b.dataset.dspv;render();scrollTo(0,y)});
 function dsCardHTML(){const blue=(window.CF_THEME||'blue')==='blue';const anim=S.meta.motion!==false&&S.meta.shine!==false;
  const theme=`<div class="seg" style="grid-template-columns:repeat(2,1fr);margin:10px 0 0"><button type="button" data-theme="blue" aria-pressed="${blue}">Midnight Blue</button><button type="button" data-theme="classic" aria-pressed="${!blue}">Classic Rot/Gold</button></div>`;
  const animRow=dsSeg('Animationen (bewegter Hintergrund und Glanz beim Scrollen)','data-anim',[['1','An',anim],['0','Aus',!anim]]);
@@ -7348,22 +7385,22 @@ function dsSetAcc(v){let cur='blue';try{cur=localStorage.getItem('cf-accent')||'
 document.addEventListener('click',e=>{const a=e.target.closest('[data-anim],[data-dspre],[data-dsreset]');if(!a)return;const y=scrollY;
  if(a.dataset.anim){const on=a.dataset.anim==='1';S.meta.motion=on;S.meta.shine=on;saveMeta();document.body.classList.toggle('nomo',!on);applyView();render();scrollTo(0,y);return}
  if(a.dataset.dspre){const k=a.dataset.dspre;
-  if(k==='klassik'){S.meta.ds=Object.assign({},S.meta.ds||{},{preset:k});saveMeta();try{localStorage.setItem('cf-theme','classic')}catch(_){}location.reload();return}
+  if(k==='klassik'){S.meta.ds=Object.assign({},S.meta.ds||{},{preset:k});saveMeta();try{localStorage.setItem('cf-theme','classic')}catch(_){}dsReload();return}
   const P0={jugg:{ds:{},oled:false,anim:true},minimal:{ds:{glow:'off',cards:'schwarz',dens:'kompakt',navl:'aus',font:'kompakt'},oled:false,anim:false},nacht:{ds:{glow:'low',cards:'schwarz',gnum:'gross',gymhy:true},oled:true,anim:false}}[k];
   S.meta.ds=Object.assign({},P0.ds,{acc:'blue',preset:k,ord:(S.meta.ds||{}).ord});S.meta.oled=P0.oled;S.meta.motion=P0.anim;S.meta.shine=P0.anim;saveMeta();document.body.classList.toggle('nomo',!P0.anim);
-  if(dsSetAcc('blue')){location.reload();return}applyView();render();scrollTo(0,y);toast('Stil „'+a.querySelector('b').textContent+'“ übernommen');return}
+  if(dsSetAcc('blue')){dsReload();return}applyView();render();scrollTo(0,y);toast('Stil „'+a.querySelector('b').textContent+'“ übernommen');return}
  if(a.dataset.dsreset!=null){if(!S.ui.dsReset){S.ui.dsReset=1;render();scrollTo(0,y);setTimeout(()=>{if(S.ui.dsReset){S.ui.dsReset=0;if(S.ui.tab==='setup'){const yy=scrollY;render();scrollTo(0,yy)}}},4000);return}
   S.ui.dsReset=0;S.meta.ds={};S.meta.fs='s';S.meta.oled=false;S.meta.motion=true;S.meta.shine=true;saveMeta();document.body.classList.remove('nomo');
   let reload=dsSetAcc('blue');if((window.CF_THEME||'blue')!=='blue'){try{localStorage.setItem('cf-theme','blue')}catch(_){}reload=true}
-  if(reload){location.reload();return}applyView();render();scrollTo(0,y);toast('Design auf Standard zurückgesetzt')}});
+  if(reload){dsReload();return}applyView();render();scrollTo(0,y);toast('Design auf Standard zurückgesetzt')}});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ds],[data-dsord]');if(!b)return;const y=scrollY;S.meta.ds=Object.assign({},S.meta.ds||{});
  if(b.dataset.dsord){const [k,d]=b.dataset.dsord.split('|');const o=homeOrd();const i=o.indexOf(k),j=i+ +d;if(j<0||j>=o.length)return;[o[i],o[j]]=[o[j],o[i]];S.meta.ds.ord=o;saveMeta();render();scrollTo(0,y);return}
  const [k,v]=b.dataset.ds.split('|');
- if(k==='acc'){delete S.meta.ds.preset;try{localStorage.setItem('cf-accent',v)}catch(_){}S.meta.ds.acc=v;saveMeta();toast('Akzentfarbe wird übernommen …');setTimeout(()=>location.reload(),350);return}
+ if(k==='acc'){delete S.meta.ds.preset;try{localStorage.setItem('cf-accent',v)}catch(_){}S.meta.ds.acc=v;saveMeta();toast('Akzentfarbe wird übernommen …');setTimeout(dsReload,350);return}
  delete S.meta.ds.preset;if(k==='dayc'||k==='gymhy'||k==='hl')S.meta.ds[k]=v==='1';else S.meta.ds[k]=v;saveMeta();applyView();render();scrollTo(0,y)});
 const DSO={stripe:['akzent','hype','lift'],glow:['kraeftig','low','off'],cards:['navy','grau','schwarz'],font:['rund','kompakt','sportlich'],dens:['normal','kompakt'],gnum:['normal','gross'],navl:['an','aus']};
 function dsApply(){const h=document.documentElement,m=S.meta.ds||{};Object.keys(DSO).forEach(k=>DSO[k].forEach(v=>h.classList.remove(k+'-'+v)));['glow','cards','font','dens','gnum','navl','stripe'].forEach(k=>{if(m[k]&&m[k]!==DSO[k][0])h.classList.add(k+'-'+m[k])});h.classList.toggle('dayc',!!m.dayc);h.classList.toggle('hl-on',m.hl!==false);h.classList.toggle('gymhy',!!m.gymhy);
- if(m.acc&&!dsApply.r){let cur='blue';try{cur=localStorage.getItem('cf-accent')||'blue'}catch(e){}if(cur!==m.acc){dsApply.r=1;try{localStorage.setItem('cf-accent',m.acc);setTimeout(()=>location.reload(),60)}catch(e){}}}}
+ if(m.acc&&!dsApply.r){let cur='blue';try{cur=localStorage.getItem('cf-accent')||'blue'}catch(e){}if(cur!==m.acc){dsApply.r=1;try{localStorage.setItem('cf-accent',m.acc);setTimeout(()=>{const t=S.ui.tab;if(t==='setup')dsReload();else location.reload()},60)}catch(e){}}}}
 document.addEventListener('click',e=>{const f=e.target.closest('[data-fs]');if(f){S.meta.fs=f.dataset.fs;saveMeta();applyView();render();return}const o=e.target.closest('[data-oled]');if(o){S.meta.oled=o.dataset.oled==='1';saveMeta();applyView();render();return}const sh=e.target.closest('[data-shine]');if(sh){S.meta.shine=sh.dataset.shine==='1';saveMeta();document.documentElement.classList.toggle('noshine',S.meta.shine===false);render()}});
 setTimeout(()=>{applyView();bkDot()},0);
 // 6 Prognose zur Testwoche (Schätzung, keine Vorgabe)
@@ -8564,6 +8601,7 @@ function boot(){
  try{autoClosePast()}catch(e){}                 // 3. liegen gebliebene Einheiten (>12 h) abschließen
  pickToday();edgeLayout();                      // 4. heutige/nächste Einheit wählen
  render();tick();                               // 5. erste Anzeige
+ try{const r=JSON.parse(sessionStorage.getItem('cf-ret')||'null');if(r){sessionStorage.removeItem('cf-ret');S.ui.tab='setup';S.ui.tdet={setup:'design'};S.ui.dsOpen=r.open||{};S.ui.dsPv=r.pv;render();setTimeout(()=>scrollTo(0,r.y||0),60)}}catch(e){}
  initDb();                                      // 6. Abgleich mit IndexedDB (asynchron; nur neuere Stände überschreiben)
  setTimeout(()=>{try{if(autoClosePast())render()}catch(e){}},4000);setInterval(()=>{try{if(autoClosePast())render()}catch(e){}},30*60e3);
  // 7. Programm laut Kalender – nur, wenn der Nutzer nicht selbst umgeschaltet hat
