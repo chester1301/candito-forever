@@ -11,7 +11,7 @@ const TOL_PX=40; // max. abweichende Pixel (≈ 6×6 pt); zwei identische Läufe
 
 const STILL=`*,*::before,*::after{animation-duration:0s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important;caret-color:transparent!important}
 #cfbar,.toast,.undo{display:none!important}
-html.vis-full #nav,html.vis-full #edge{display:none!important}`;
+html.vis-full #nav,html.vis-full #edge,html.vis-full .navband{display:none!important}`;
 
 // Ansichten: name → Vorbereitung in der Seite; full = ganze Seite statt nur Bildschirm
 const VIEWS=[

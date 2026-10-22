@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1719-8ecb587";
+<script>window.CF_VERSION="2026.10.22-1731-f63e680";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -4278,7 +4278,8 @@ html[data-theme=blue] body .nav{left:14px!important;right:14px!important;bottom:
 html[data-theme=blue] body .nav button{border-radius:999px!important;color:#fff!important;font-size:11px!important;font-weight:600!important;flex-direction:column!important;gap:3px!important;background:none!important}
 html[data-theme=blue] body .nav button::before{display:none!important}
 html[data-theme=blue] body .nav button .ni,html[data-theme=blue] body .nav button[aria-current="page"] .ni,html[data-theme=blue] body .nav .fab span{width:auto!important;height:auto!important;margin:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-html[data-theme=blue] body .nav button .ni::after{display:none!important}
+html[data-theme=blue] body .nav button .ni::after,html[data-theme=blue] body .nav button .ni::before,html[data-theme=blue] body .nav button::after{display:none!important}
+html[data-theme=blue] body .nav button[aria-current="page"] .ni::after,html[data-theme=blue] body .nav button[aria-current="page"] .ni::before{display:none!important}
 html[data-theme=blue] body .nav button .ni svg,html[data-theme=blue] body .nav .fab span svg{stroke:#fff!important;width:24px!important;height:24px!important;filter:none!important}
 html[data-theme=blue] body .nav button[aria-current="page"]{background:#0b0b0d!important;color:#6683ff!important}
 html[data-theme=blue] body .nav button[aria-current="page"] .ni svg{stroke:#5b7cff!important}
@@ -4392,6 +4393,12 @@ html[data-theme=blue] #gym .gl-row .gl-v,html[data-theme=blue] #gym .gl-row .gl-
 html[data-theme=blue] #gym .gl-tg{font-weight:500!important}
 html[data-theme=blue] #view .jr-src,html[data-theme=blue] #view .pts,html[data-theme=blue] #view small{font-weight:500}
 
+/* Navigation fest am unteren Rand: schwarzer Streifen darunter, Inhalt läuft nicht sichtbar unter der Leiste durch */
+.navband{display:none}
+html[data-theme=blue] .navband{display:block;position:fixed;left:0;right:0;bottom:0;z-index:29;pointer-events:none;height:calc(max(6px,env(safe-area-inset-bottom,0px) - 12px) + 66px + 26px);background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,.9) 18px,#000 26px)}
+html[data-theme=blue] body .nav{bottom:max(6px,calc(env(safe-area-inset-bottom,0px) - 12px))!important}
+html[data-theme=blue] body.gymopen .navband,html[data-theme=blue] body.ckopen .navband,html[data-theme=blue] body.svopen .navband{display:none}
+html[data-theme=blue] .jx-res{bottom:calc(max(6px,env(safe-area-inset-bottom,0px) - 12px) + 84px)}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4474,6 +4481,7 @@ document.querySelectorAll('style').forEach(function(s){var t=s.textContent,n=con
 (function(){if((window.CF_THEME||'blue')!=='blue')return;var M={'#ff5562':'#6b93ff','#d7121f':'#1f56dc','#8e0611':'#0f2f94','#5a020a':'#081b5e','#ff8b94':'#9ab8ff','#c50f1c':'#1b49cc','#5e030b':'#0a1f63','#ff6a75':'#7a9eff','#b80c19':'#1843bd','#3d0006':'#040f3f','#3a0207':'#030c35','#2a0004':'#020926','#ff9aa3':'#aec6ff','#ff8e98':'#a2bdff'};
 var sv=document.querySelector('.logosvg');if(!sv)return;sv.querySelectorAll('[stop-color],[fill],[stroke]').forEach(function(e){['stop-color','fill','stroke'].forEach(function(k){var v=(e.getAttribute(k)||'').toLowerCase();if(M[v])e.setAttribute(k,M[v])})});
 sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.replace('25 KG','20 KG').replace('55 LB','45 LB')})})();</script>
+<div class="navband" aria-hidden="true"></div>
 <nav class="nav" id="nav">
   <button type="button" data-tab="home"><span class="ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></span>Heute</button>
   <button type="button" data-tab="train"><span class="ni"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>Training</button>
@@ -4492,7 +4500,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.8ecb587.js"></script>
+<script src="assets/app-0.f63e680.js"></script>
 <script>/* Juggernaut-Ideen 1–11: Readiness-Bühne, Einheiten-Raster, Schlaf & Gewicht, Kraft-Kacheln, Gym-Liste (Streifen, Satzgruppe, Notiz je Übung, Titel-Pille), Fortsetzen-Pille, Monatskalender.
    Reine Anzeige aus vorhandenen Daten; einziges neues Feld: L.xn = {Block-Index: Notiz} (von Marcel freigegeben). */
 (function(){
