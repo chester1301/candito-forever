@@ -39,10 +39,10 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
       S.ui.tab='home';render();const jr=document.querySelector('.card.jr');return {ok,zc:jr?jr.style.getPropertyValue('--zc'):null,theme:document.documentElement.dataset.theme}});
     t.ok(col.theme!=='blue'||(col.ok.toLowerCase()==='#5aaee8'&&/3cc46a/i.test(col.zc||'')),`${W}px: „erledigt“ in Hellblau, Readiness bleibt grün`);
     // Glanz-Effekt beim Scrollen abschaltbar (Einstellungen › Design)
-    const sh=await p.evaluate(async()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const out={};const off=document.querySelector('[data-shine="0"]');out.btn=!!off;if(!off)return out;off.click();
+    const sh=await p.evaluate(async()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const out={};const off=document.querySelector('[data-anim="0"]');out.btn=!!off;if(!off)return out;off.click();
       out.meta=S.meta.shine;out.cls=document.documentElement.classList.contains('noshine');S.ui.tab='home';render();scrollTo(0,300);dispatchEvent(new Event('scroll'));await new Promise(r=>setTimeout(r,200));
       out.vis=[...document.querySelectorAll('.cgl')].filter(g=>getComputedStyle(g).display!=='none'&&+getComputedStyle(g).opacity>0).length;
-      S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-shine="1"]').click();out.on=S.meta.shine===true&&!document.documentElement.classList.contains('noshine');return out});
+      S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-anim="1"]').click();out.on=S.meta.shine===true&&!document.documentElement.classList.contains('noshine');return out});
     t.ok(sh.btn&&sh.meta===false&&sh.cls&&sh.vis===0&&sh.on,`${W}px: Glanz-Effekt in den Einstellungen aus- und wieder einschaltbar`);
     // Design-Einstellungen
     const ds=await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const out={rows:document.querySelectorAll('[data-ds]').length,ord:document.querySelectorAll('[data-dsord]').length};
@@ -56,5 +56,18 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
     t.ok(ds.rows>=25&&/glow-off/.test(ds.cls)&&/cards-schwarz/.test(ds.cls)&&/font-kompakt/.test(ds.cls)&&/dens-kompakt/.test(ds.cls)&&/gnum-gross/.test(ds.cls)&&/navl-aus/.test(ds.cls)&&/dayc/.test(ds.cls)&&/gymhy/.test(ds.cls),`${W}px: Design-Einstellungen setzen Leuchten, Karten, Schrift, Ansicht, Gym-Zahlen, Navigation, Tagesname, Hype-Hintergrund`);
     t.ok(ds.ring&&ds.seq[0]<ds.seq[1]&&ds.seq[1]<ds.seq[2]&&JSON.stringify(ds.ord)===JSON.stringify(['jr','hero','grid','max','tiles'])&&ds.sw<=W+1,`${W}px: Readiness als Ring und eigene Reihenfolge der Heute-Bereiche`);
     t.ok(['h','m','l'].includes(ds.hy)&&!/glow-|cards-|font-|gymhy/.test(ds.reset),`${W}px: Gym-Hintergrund nach Hype; Zurücksetzen entfernt alle Stile`);
+    // Vorschau, fertige Stile, Gruppen, Zurücksetzen, Hervorhebung, Streifenfarbe
+    const pv=await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const o={pv:!!document.querySelector('.ds-pv'),grp:document.querySelectorAll('details.ds-grp').length,pre:document.querySelectorAll('[data-dspre]').length};
+      document.querySelector('[data-dspre="minimal"]').click();o.min=[S.meta.ds.glow,S.meta.ds.cards,S.meta.motion,S.meta.shine,document.documentElement.classList.contains('glow-off')];
+      document.querySelector('[data-dspre="nacht"]').click();o.nacht=[S.meta.oled,S.meta.ds.gnum,S.meta.ds.gymhy];
+      document.querySelector('[data-ds="stripe|hype"]').click();o.stripe=document.documentElement.classList.contains('stripe-hype');
+      S.ui.w=0;S.ui.d=2;const L=log(0,2,true);L.flow=1;L.ck=1;openGym();renderGym();const ex=document.querySelector('#gym .gl-ex');o.sth=ex.dataset.sth;o.col=getComputedStyle(ex,'::before').backgroundColor;closeGym(true);
+      S.ui.tab='home';render();o.cur=!!document.querySelector('#view .card.hero.jx-cur')&&document.documentElement.classList.contains('hl-on');
+      S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-dsreset]').click();o.armed=!!document.querySelector('.ds-reset.armed');document.querySelector('[data-dsreset]').click();
+      o.reset=[JSON.stringify(S.meta.ds),S.meta.oled,S.meta.motion,S.meta.shine,/glow-|stripe-|cards-/.test(document.documentElement.className)];return o});
+    t.ok(pv.pv&&pv.grp===5&&pv.pre===4,`${W}px: Design mit Vorschau, 5 aufklappbaren Gruppen und 4 fertigen Stilen`);
+    t.eq([pv.min,pv.nacht],[['off','schwarz',false,false,true],[true,'gross',true]],`${W}px: Stile „Minimal“ und „Gym-Nacht“ setzen ihre Werte`);
+    t.ok(pv.stripe&&pv.sth&&pv.col!=='rgb(63, 100, 246)'&&pv.cur,`${W}px: Streifen nach Hype, aktuelles Training hervorgehoben`);
+    t.eq(pv.reset,['{}',false,true,true,false],`${W}px: Zurücksetzen (mit Nachfrage) stellt den Standard wieder her`);t.ok(pv.armed,`${W}px: Zurücksetzen fragt erst nach`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};

@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1919-8cfc76b";
+<script>window.CF_VERSION="2026.10.22-1934-fa36244";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -4473,6 +4473,40 @@ html[data-theme=blue].gymhy body .gym[data-hy="l"]{background:radial-gradient(90
 .ds-ord li>i{font-style:normal;color:var(--mut);font-weight:700}.ds-ord li>b{font-weight:600}
 .ds-ord button{height:40px;border-radius:12px;border:1px solid var(--line2);background:transparent;color:var(--ink);font-size:18px;cursor:pointer}
 .ds-ord button:disabled{opacity:.3}
+/* Design-Bereich: Vorschau, Stile, Gruppen, Zurücksetzen, Hervorhebung, Streifenfarbe */
+html.stripe-hype #gym .gl-ex[data-sth="#e8262f"]::before{background:#e8262f!important}html.stripe-hype #gym .gl-ex[data-sth="#f59a45"]::before{background:#f59a45!important}html.stripe-hype #gym .gl-ex[data-sth="#f6d65e"]::before{background:#f6d65e!important}
+html.stripe-lift #gym .gl-ex[data-stl="#6f8cff"]::before{background:#6f8cff!important}html.stripe-lift #gym .gl-ex[data-stl="#5ad1e6"]::before{background:#5ad1e6!important}html.stripe-lift #gym .gl-ex[data-stl="#b48cff"]::before{background:#b48cff!important}html.stripe-lift #gym .gl-ex[data-stl="#8f9bc4"]::before{background:#8f9bc4!important}
+html[data-theme=blue].hl-on body #view .card.jx-cur{border-color:var(--brand)!important;outline:1px solid var(--brand);outline-offset:-2px}
+.ds-pv{margin:6px 0 0;padding:14px;border-radius:24px;background:#000;border:1px solid var(--line);display:grid;gap:12px;position:relative;overflow:hidden}
+html[data-theme=blue] .ds-pv{background:radial-gradient(90% 200px at 0% 0%,color-mix(in srgb,var(--brand) 55%,transparent),transparent 70%),#000}
+html[data-theme=blue].glow-low .ds-pv{background:radial-gradient(80% 160px at 0% 0%,color-mix(in srgb,var(--brand) 28%,transparent),transparent 70%),#000}
+html[data-theme=blue].glow-off .ds-pv{background:#000}
+.ds-pvc{margin:0!important;display:grid;gap:8px;padding:14px 14px 14px!important}
+.ds-pve{margin:0;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.ds-pvh{margin:0!important;font:800 24px/1.1 var(--d)!important;color:#fff}
+.ds-pv .hype.m .hic{background:#f59a45!important}
+.ds-pvr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ds-pvn{font-size:13px;color:var(--ink2)}
+.ds-pvx{display:grid;grid-template-columns:4px minmax(0,1fr) 64px;align-items:center;gap:10px}
+.ds-pvs{height:34px;border-radius:2px;background:var(--stc,var(--brand))}
+.ds-pvb{font-weight:500;font-size:16px}
+.ds-pvp{height:36px;border-radius:999px;border:1.5px solid var(--brand);background:color-mix(in srgb,var(--brand) 22%,#000);display:grid;place-items:center;font-size:22px;font-weight:300}
+.ds-pvbtn{display:flex!important;justify-content:center;min-height:44px;align-items:center;pointer-events:none}
+.ds-pvnav{justify-self:center;display:flex;gap:4px;padding:5px;border-radius:999px;background:rgba(28,28,30,.96);border:1px solid rgba(255,255,255,.2)}
+.ds-pvnav span{display:grid;justify-items:center;gap:2px;padding:6px 14px;border-radius:999px;color:#fff;font-size:10px}
+.ds-pvnav span.on{background:#0b0b0d;color:var(--brand)}.ds-pvnav em{font-style:normal}
+.ds-pvnav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ds-pre{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 0}
+.ds-pre button{display:grid;gap:2px;text-align:left;min-height:60px;padding:10px 12px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--ink);font:inherit;cursor:pointer}
+.ds-pre button b{font-weight:700;font-size:15px}.ds-pre button small{color:var(--mut);font-size:12px}
+.ds-pre button[aria-pressed="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 16%,transparent)}
+.ds-grp{margin:14px 0 0;border-top:1px solid var(--line)}
+.ds-grp summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:52px;cursor:pointer;font-size:16px}
+.ds-grp summary::-webkit-details-marker{display:none}
+.ds-grp summary svg{width:22px;height:22px;fill:none;stroke:var(--brand);stroke-width:2;transition:transform .2s}
+.ds-grp[open] summary svg{transform:rotate(180deg)}
+.ds-gb{padding:0 0 6px}
+.ds-reset{width:100%;margin:18px 0 0;min-height:50px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:var(--ink2);font:600 15px var(--f);cursor:pointer}
+.ds-reset.armed{border-color:#e8484f;color:#ff8a8f;background:rgba(232,72,79,.1)}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4577,7 +4611,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.8cfc76b.js"></script>
+<script src="assets/app-0.fa36244.js"></script>
 <script>/* Juggernaut-Ideen 1–11: Readiness-Bühne, Einheiten-Raster, Schlaf & Gewicht, Kraft-Kacheln, Gym-Liste (Streifen, Satzgruppe, Notiz je Übung, Titel-Pille), Fortsetzen-Pille, Monatskalender.
    Reine Anzeige aus vorhandenen Daten; einziges neues Feld: L.xn = {Block-Index: Notiz} (von Marcel freigegeben). */
 (function(){
@@ -4640,8 +4674,10 @@ function post(){document.body.classList.add('jx');const v=document.getElementByI
  if(tab==='home'&&!v.querySelector('.jx-grid')){const g=v.querySelector('.greet'),jr=v.querySelector('.card.jr'),hero=v.querySelector('.card.hero');
   if(jr&&g){g.after(jr);if(!jr.classList.contains('jr-empty')&&(S.meta.ds||{}).jr!=='ring')jr.classList.add('jx-jr')}
   if(hero)hero.insertAdjacentHTML('afterend',gridHTML()+tilesHTML()+maxHTML());
+  {const he=v.querySelector('.card.hero');if(he)he.classList.add('jx-cur')}
   if(g&&typeof homeOrd==='function'){const M={jr:v.querySelector('.card.jr'),hero:v.querySelector('.card.hero'),grid:v.querySelector('.jx-grid'),tiles:v.querySelector('.jx-two'),max:v.querySelector('.jx-max')};let an=g;homeOrd().forEach(k=>{if(k==='hero'){const rd=v.querySelector('.rday');if(rd){an.after(rd);an=rd}}const n=M[k];if(n){an.after(n);an=n}})}
   const pz=[...v.querySelectorAll('.phead')].find(h=>/^Zustand/.test(h.textContent.trim()));if(pz)pz.remove()}
+ if(tab==='train'){const t=v.querySelector('.card.trh');if(t){const n=nextSession(),r=typeof runningSession==='function'?runningSession():null;const c=(r&&r.w===S.ui.w&&r.d===S.ui.d)||(n&&n.w===S.ui.w&&n.d===S.ui.d);t.classList.toggle('jx-cur',!!c)}}
  if(tab==='prog'&&S.ui.pd==='verlauf'&&!v.querySelector('.jx-cal')){const b=v.querySelector('.pdbody');const seg=b&&[...b.children].find(c=>/\b1W\b/.test(c.textContent)&&c.textContent.length<40);
   const tgt=seg||(b&&b.firstElementChild);if(tgt)tgt.insertAdjacentHTML(seg?'beforebegin':'afterend',calHTML())}
  resume()}
@@ -4650,6 +4686,7 @@ const G0=window.renderGymL;if(G0)window.renderGymL=function(){const r=G0.apply(t
 function noteBtn(b,t){return `<button type="button" class="jx-note" data-jxnote="${b}" aria-label="Notiz zur Übung ${t?'ändern':'hinzufügen'}"><b>Notizen</b>${t?`<span class="jx-nt">${esc(t)}</span>`:`<span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Notiz hinzufügen</span>`}</button>`}
 function gpost(){const g=document.getElementById('gym');const {w,d}=S.ui;const L=log(w,d,true);const xn=L.xn||{};
  if((S.meta.ds||{}).gymhy){const day=P[w][d];g.dataset.hy=['h','m','l'].find(k=>day.b.some(bl=>bl.h===k))||''}
+ {const day=P[w][d];const HC2={h:'#e8262f',m:'#f59a45',l:'#f6d65e'};const LC={sq:'#6f8cff',bp:'#5ad1e6',dl:'#b48cff',acc:'#8f9bc4'};g.querySelectorAll('.gl-ex').forEach(ex=>{const b=+String(ex.id).replace('glx-','');const bl=day.b[b];if(!bl)return;const e=(L.sw&&L.sw[b])||bl.e;ex.dataset.sth=HC2[bl.h]||'';ex.dataset.stl=LC[(EX[e]||{}).g]||''})}
  g.querySelectorAll('.gl-ex').forEach(ex=>{if(ex.querySelector('.jx-note'))return;const b=+String(ex.id).replace('glx-','');
   const x=ex.querySelector('.gl-x');if(x&&!ex.querySelector('.jx-sg')){const m=x.textContent.match(/^(\d+)\s*[×x]\s*([\d–\-]+)/);if(m)x.insertAdjacentHTML('beforebegin',`<p class="jx-sg">${m[1]} ${m[1]==='1'?'Satz':'Sätze'} × ${m[2]} Wdh.</p>`)}
   ex.insertAdjacentHTML('beforeend',noteBtn(b,xn[b]))});

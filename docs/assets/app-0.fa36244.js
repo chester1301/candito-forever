@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1919-8cfc76b</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.22-1934-fa36244</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -3654,10 +3654,7 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
   ${ORD().filter(id=>id!=='intro').map(id=>`<label class="fld">Start ${esc(PROGS[id].name)} (Samstag = Tag 1)<span class="in"><input type="date" id="set-${SKEY[id]}" data-meta="${SKEY[id]}" value="${esc(m[SKEY[id]]||withProg(id,progStart))}"></span></label>`).join('')}</div>
   <p class="note2">Tag 1 Samstag · Tag 2 Sonntag · Tag 3 Dienstag · Tag 4 Donnerstag. Die Daten der Einheiten werden daraus berechnet.</p></section>
  ${shiftHTML()}
- <section class="card"><div class="ct"><h2 class="h2">Design</h2></div><p class="note2" style="margin-top:0">Farbthema der App. Die Signalfarben (Grün/Gelb/Rot, Lift-Farben) bleiben in beiden Varianten gleich.</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:10px 0 0"><button type="button" data-theme="blue" aria-pressed="${(window.CF_THEME||'blue')==='blue'}">Midnight Blue</button><button type="button" data-theme="classic" aria-pressed="${window.CF_THEME==='classic'}">Classic Rot/Gold</button></div><p class="note2" style="margin:12px 0 0">Bewegter Hintergrund & schimmernde Navigation</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-motion="1" aria-pressed="${S.meta.motion!==false}">An</button><button type="button" data-motion="0" aria-pressed="${S.meta.motion===false}">Aus</button></div>
- <p class="note2" style="margin:14px 0 0">Textgröße (ganze App, im Gym-Modus besonders deutlich)</p><div class="seg" style="grid-template-columns:repeat(3,1fr);margin:6px 0 0"><button type="button" data-fs="s" aria-pressed="${!S.meta.fs||S.meta.fs==='s'}">Standard</button><button type="button" data-fs="m" aria-pressed="${S.meta.fs==='m'}">Groß</button><button type="button" data-fs="l" aria-pressed="${S.meta.fs==='l'}">Sehr groß</button></div>
- <p class="note2" style="margin:14px 0 0">Gym-Modus in reinem Schwarz (OLED – spart Akku, blendet weniger)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-oled="1" aria-pressed="${!!S.meta.oled}">An</button><button type="button" data-oled="0" aria-pressed="${!S.meta.oled}">Aus</button></div>
- <p class="note2" style="margin:14px 0 0">Glanz-Effekt beim Scrollen (Lichtstreifen über die Karten)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-shine="1" aria-pressed="${S.meta.shine!==false}">An</button><button type="button" data-shine="0" aria-pressed="${S.meta.shine===false}">Aus</button></div>${dsHTML()}</section>
+ ${dsCardHTML()}
  ${rtHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Hantel & Rundung</h2></div>
   <div class="fgrid"><label class="fld">Stangengewicht<span class="in"><input id="set-bar" inputmode="decimal" data-meta="bar" value="${nf(m.bar,2)}"><i>kg</i></span></label>
@@ -3817,7 +3814,7 @@ window.addEventListener('cf-exported',()=>{bkDot();render()});setInterval(bkDot,
 // 3/4 Anzeige: Textgröße & OLED
 function applyView(){const b=document.body;b.classList.remove('fs-m','fs-l');if(S.meta.fs==='m'||S.meta.fs==='l')b.classList.add('fs-'+S.meta.fs);b.classList.toggle('oled',!!S.meta.oled);document.documentElement.classList.toggle('noshine',S.meta.shine===false);dsApply()}
 const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue','Blau'],['cyan','Cyan'],['violett','Violett'],['orange','Orange']]],
- glow:['Blaues Leuchten oben links',[['kraeftig','Kräftig'],['low','Dezent'],['off','Aus']]],
+ glow:['Leuchten oben links',[['kraeftig','Kräftig'],['low','Dezent'],['off','Aus']]],
  cards:['Kartenstil',[['navy','Nachtblau'],['grau','Grau'],['schwarz','Schwarz']]],
  dayc:['Tagesname im Titel',[['0','Weiß'],['1','Farbig']]],
  font:['Schriftart',[['rund','Rund'],['kompakt','Kompakt'],['sportlich','Sportlich']]],
@@ -3825,24 +3822,58 @@ const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue'
  gnum:['Zahlen in der Gym-Liste',[['normal','Normal'],['gross','Groß']]],
  navl:['Navigation unten',[['an','Mit Text'],['aus','Nur Symbole']]],
  jr:['Readiness auf „Heute“',[['zahl','Große Zahl'],['ring','Ring']]],
- gymhy:['Gym-Hintergrund',[['0','Blau'],['1','Nach Hype']]]};
+ gymhy:['Gym-Hintergrund',[['0','Akzentfarbe'],['1','Nach Hype']]],
+ hl:['Aktuelles Training hervorheben',[['1','An'],['0','Aus']]],
+ stripe:['Streifen links an jeder Übung',[['akzent','Akzentfarbe'],['hype','Nach Hype'],['lift','Nach Lift']]]};
 const HOME_BL=[['jr','Readiness'],['hero','Nächstes Training'],['grid','Einheiten-Raster'],['tiles','Schlaf & Gewicht'],['max','Kraft-Kacheln']];
-function dsVal(k){const m=S.meta.ds||{};if(k==='acc'){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}}if(k==='dayc'||k==='gymhy')return m[k]?'1':'0';return m[k]||DSL[k][1][0][0]}
+function dsVal(k){const m=S.meta.ds||{};if(k==='acc'){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}}if(k==='dayc'||k==='gymhy')return m[k]?'1':'0';if(k==='hl')return m.hl===false?'0':'1';return m[k]||DSL[k][1][0][0]}
 function homeOrd(){const o=((S.meta.ds||{}).ord||[]).filter(k=>HOME_BL.some(b=>b[0]===k));HOME_BL.forEach(b=>{if(!o.includes(b[0]))o.push(b[0])});return o}
-function dsHTML(){if((window.CF_THEME||'blue')!=='blue')return '<p class="note2" style="margin:14px 0 0">Weitere Design-Einstellungen gibt es im Thema „Midnight Blue“.</p>';
- const row=k=>{const [t,o]=DSL[k];const v=dsVal(k);return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${o.length},1fr);margin:6px 0 0">${o.map(([x,l])=>`<button type="button" data-ds="${k}|${x}" aria-pressed="${v===x}">${l}</button>`).join('')}</div>`};
- const ord=homeOrd();
- return `<p class="sec" style="margin-top:20px">Farben & Stil</p>${['acc','glow','cards','dayc'].map(row).join('')}
- <p class="sec" style="margin-top:20px">Schrift & Darstellung</p>${['font','dens','gnum','navl'].map(row).join('')}
- <p class="sec" style="margin-top:20px">Startseite „Heute“</p>${row('jr')}<p class="note2" style="margin:14px 0 0">Reihenfolge der Bereiche</p><ol class="ds-ord">${ord.map((k,i)=>`<li><i>${i+1}</i><b>${(HOME_BL.find(b=>b[0]===k)||[])[1]}</b><button type="button" data-dsord="${k}|-1" aria-label="${(HOME_BL.find(b=>b[0]===k)||[])[1]} nach oben" ${i?'':'disabled'}>↑</button><button type="button" data-dsord="${k}|1" aria-label="${(HOME_BL.find(b=>b[0]===k)||[])[1]} nach unten" ${i<ord.length-1?'':'disabled'}>↓</button></li>`).join('')}</ol>
- <p class="sec" style="margin-top:20px">Gym-Modus</p>${row('gymhy')}`}
+function dsRow(k){const [t,o]=DSL[k];const v=dsVal(k);return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${o.length},1fr);margin:6px 0 0">${o.map(([x,l])=>`<button type="button" data-ds="${k}|${x}" aria-pressed="${v===x}">${l}</button>`).join('')}</div>`}
+function dsSeg(t,attr,opts){return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${opts.length},1fr);margin:6px 0 0">${opts.map(([v,l,on])=>`<button type="button" ${attr}="${v}" aria-pressed="${!!on}">${l}</button>`).join('')}</div>`}
+const DSP=[['jugg','Juggernaut','Blau, Leuchten, Nachtblau'],['minimal','Minimal','Schwarz, ruhig, kompakt'],['nacht','Gym-Nacht','OLED, dezent, große Zahlen'],['klassik','Klassik','Rot/Gold-Thema']];
+function dsGroup(id,t,body){const open=(S.ui.dsOpen||{})[id];return `<details class="ds-grp" data-dsgrp="${id}"${open?' open':''}><summary><b>${t}</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ds-gb">${body}</div></details>`}
+function dsPreviewHTML(){const ds=S.meta.ds||{};return `<div class="ds-pv" aria-label="Vorschau des Designs"><div class="ds-pvc card${ds.hl===false?'':' jx-cur'}"><p class="ds-pve">Vorschau · Samstag</p><h3 class="ds-pvh home-t">Tag 1 · <span>Beine</span></h3><div class="ds-pvr">${hypeB('m')}<span class="ds-pvn">3 Sätze × 7 Wdh.</span></div><div class="ds-pvx"><i class="ds-pvs" style="--stc:${(ds.stripe==='hype')?'#f59a45':(ds.stripe==='lift')?'#6f8cff':'var(--brand)'}"></i><span class="ds-pvb">100 kg × 7</span><span class="ds-pvp">+</span></div><span class="btn primary ds-pvbtn">Training starten →</span></div>
+ <div class="ds-pvnav" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>${ds.navl==='aus'?'':'<em>Heute</em>'}</span><span><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${ds.navl==='aus'?'':'<em>Training</em>'}</span><span><svg viewBox="0 0 24 24"><path d="M2 12h20M5 8v8M8 6v12M16 6v12M19 8v8"/></svg>${ds.navl==='aus'?'':'<em>Gym</em>'}</span></div></div>`}
+function dsCardHTML(){const blue=(window.CF_THEME||'blue')==='blue';const anim=S.meta.motion!==false&&S.meta.shine!==false;
+ const theme=`<div class="seg" style="grid-template-columns:repeat(2,1fr);margin:10px 0 0"><button type="button" data-theme="blue" aria-pressed="${blue}">Midnight Blue</button><button type="button" data-theme="classic" aria-pressed="${!blue}">Classic Rot/Gold</button></div>`;
+ const animRow=dsSeg('Animationen (bewegter Hintergrund und Glanz beim Scrollen)','data-anim',[['1','An',anim],['0','Aus',!anim]]);
+ const fsRow=dsSeg('Textgröße (ganze App, im Gym-Modus besonders deutlich)','data-fs',[['s','Standard',!S.meta.fs||S.meta.fs==='s'],['m','Groß',S.meta.fs==='m'],['l','Sehr groß',S.meta.fs==='l']]);
+ const oledRow=dsSeg('Gym-Modus in reinem Schwarz (OLED – spart Akku, blendet weniger)','data-oled',[['1','An',!!S.meta.oled],['0','Aus',!S.meta.oled]]);
+ const reset=`<button type="button" class="ds-reset${S.ui.dsReset?' armed':''}" data-dsreset>${S.ui.dsReset?'Wirklich alles zurücksetzen? Nochmal tippen':'Auf Standard zurücksetzen'}</button>`;
+ if(!blue)return `<section class="card"><div class="ct"><h2 class="h2">Design</h2></div><p class="note2" style="margin-top:0">Farbthema der App. Die Signalfarben bleiben in beiden Varianten gleich.</p>${theme}${animRow}${fsRow}${oledRow}<p class="note2" style="margin:14px 0 0">Weitere Design-Einstellungen gibt es im Thema „Midnight Blue“.</p>${reset}</section>`;
+ const ord=homeOrd();const nm=k=>(HOME_BL.find(b=>b[0]===k)||[])[1];
+ const ordHTML=`<p class="note2" style="margin:14px 0 0">Reihenfolge der Bereiche</p><ol class="ds-ord">${ord.map((k,i)=>`<li><i>${i+1}</i><b>${nm(k)}</b><button type="button" data-dsord="${k}|-1" aria-label="${nm(k)} nach oben" ${i?'':'disabled'}>↑</button><button type="button" data-dsord="${k}|1" aria-label="${nm(k)} nach unten" ${i<ord.length-1?'':'disabled'}>↓</button></li>`).join('')}</ol>`;
+ const pr=(S.meta.ds||{}).preset;
+ return `<section class="card ds-card"><div class="ct"><h2 class="h2">Design</h2></div>
+ ${dsPreviewHTML()}
+ <p class="sec" style="margin-top:16px">Fertige Stile</p><div class="ds-pre">${DSP.map(([k,t,d])=>`<button type="button" data-dspre="${k}" aria-pressed="${pr===k}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>
+ <p class="note2" style="margin:8px 0 0">Danach kannst du unten alles einzeln anpassen.</p>
+ ${dsGroup('farbe','Farben & Stil',`<p class="note2" style="margin:6px 0 0">Farbthema der App</p>${theme}${['acc','glow','cards','dayc','hl'].map(dsRow).join('')}`)}
+ ${dsGroup('schrift','Schrift & Darstellung',fsRow+['font','dens','gnum','navl'].map(dsRow).join(''))}
+ ${dsGroup('anim','Animationen',animRow)}
+ ${dsGroup('heute','Startseite „Heute“',dsRow('jr')+ordHTML)}
+ ${dsGroup('gym','Gym-Modus',oledRow+['gymhy','stripe'].map(dsRow).join(''))}
+ ${reset}</section>`}
+document.addEventListener('toggle',e=>{const d=e.target;if(!d.matches||!d.matches('details[data-dsgrp]'))return;S.ui.dsOpen=Object.assign({},S.ui.dsOpen||{});S.ui.dsOpen[d.dataset.dsgrp]=d.open},true);
+function dsSetAcc(v){let cur='blue';try{cur=localStorage.getItem('cf-accent')||'blue'}catch(e){}if(cur===v)return false;try{localStorage.setItem('cf-accent',v)}catch(e){}return true}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-anim],[data-dspre],[data-dsreset]');if(!a)return;const y=scrollY;
+ if(a.dataset.anim){const on=a.dataset.anim==='1';S.meta.motion=on;S.meta.shine=on;saveMeta();document.body.classList.toggle('nomo',!on);applyView();render();scrollTo(0,y);return}
+ if(a.dataset.dspre){const k=a.dataset.dspre;
+  if(k==='klassik'){S.meta.ds=Object.assign({},S.meta.ds||{},{preset:k});saveMeta();try{localStorage.setItem('cf-theme','classic')}catch(_){}location.reload();return}
+  const P0={jugg:{ds:{},oled:false,anim:true},minimal:{ds:{glow:'off',cards:'schwarz',dens:'kompakt',navl:'aus',font:'kompakt'},oled:false,anim:false},nacht:{ds:{glow:'low',cards:'schwarz',gnum:'gross',gymhy:true},oled:true,anim:false}}[k];
+  S.meta.ds=Object.assign({},P0.ds,{acc:'blue',preset:k,ord:(S.meta.ds||{}).ord});S.meta.oled=P0.oled;S.meta.motion=P0.anim;S.meta.shine=P0.anim;saveMeta();document.body.classList.toggle('nomo',!P0.anim);
+  if(dsSetAcc('blue')){location.reload();return}applyView();render();scrollTo(0,y);toast('Stil „'+a.querySelector('b').textContent+'“ übernommen');return}
+ if(a.dataset.dsreset!=null){if(!S.ui.dsReset){S.ui.dsReset=1;render();scrollTo(0,y);setTimeout(()=>{if(S.ui.dsReset){S.ui.dsReset=0;if(S.ui.tab==='setup'){const yy=scrollY;render();scrollTo(0,yy)}}},4000);return}
+  S.ui.dsReset=0;S.meta.ds={};S.meta.fs='s';S.meta.oled=false;S.meta.motion=true;S.meta.shine=true;saveMeta();document.body.classList.remove('nomo');
+  let reload=dsSetAcc('blue');if((window.CF_THEME||'blue')!=='blue'){try{localStorage.setItem('cf-theme','blue')}catch(_){}reload=true}
+  if(reload){location.reload();return}applyView();render();scrollTo(0,y);toast('Design auf Standard zurückgesetzt')}});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ds],[data-dsord]');if(!b)return;const y=scrollY;S.meta.ds=Object.assign({},S.meta.ds||{});
  if(b.dataset.dsord){const [k,d]=b.dataset.dsord.split('|');const o=homeOrd();const i=o.indexOf(k),j=i+ +d;if(j<0||j>=o.length)return;[o[i],o[j]]=[o[j],o[i]];S.meta.ds.ord=o;saveMeta();render();scrollTo(0,y);return}
  const [k,v]=b.dataset.ds.split('|');
- if(k==='acc'){try{localStorage.setItem('cf-accent',v)}catch(_){}S.meta.ds.acc=v;saveMeta();toast('Akzentfarbe wird übernommen …');setTimeout(()=>location.reload(),350);return}
- if(k==='dayc'||k==='gymhy')S.meta.ds[k]=v==='1';else S.meta.ds[k]=v;saveMeta();applyView();render();scrollTo(0,y)});
-const DSO={glow:['kraeftig','low','off'],cards:['navy','grau','schwarz'],font:['rund','kompakt','sportlich'],dens:['normal','kompakt'],gnum:['normal','gross'],navl:['an','aus']};
-function dsApply(){const h=document.documentElement,m=S.meta.ds||{};Object.keys(DSO).forEach(k=>DSO[k].forEach(v=>h.classList.remove(k+'-'+v)));['glow','cards','font','dens','gnum','navl'].forEach(k=>{if(m[k]&&m[k]!==DSO[k][0])h.classList.add(k+'-'+m[k])});h.classList.toggle('dayc',!!m.dayc);h.classList.toggle('gymhy',!!m.gymhy);
+ if(k==='acc'){delete S.meta.ds.preset;try{localStorage.setItem('cf-accent',v)}catch(_){}S.meta.ds.acc=v;saveMeta();toast('Akzentfarbe wird übernommen …');setTimeout(()=>location.reload(),350);return}
+ delete S.meta.ds.preset;if(k==='dayc'||k==='gymhy'||k==='hl')S.meta.ds[k]=v==='1';else S.meta.ds[k]=v;saveMeta();applyView();render();scrollTo(0,y)});
+const DSO={stripe:['akzent','hype','lift'],glow:['kraeftig','low','off'],cards:['navy','grau','schwarz'],font:['rund','kompakt','sportlich'],dens:['normal','kompakt'],gnum:['normal','gross'],navl:['an','aus']};
+function dsApply(){const h=document.documentElement,m=S.meta.ds||{};Object.keys(DSO).forEach(k=>DSO[k].forEach(v=>h.classList.remove(k+'-'+v)));['glow','cards','font','dens','gnum','navl','stripe'].forEach(k=>{if(m[k]&&m[k]!==DSO[k][0])h.classList.add(k+'-'+m[k])});h.classList.toggle('dayc',!!m.dayc);h.classList.toggle('hl-on',m.hl!==false);h.classList.toggle('gymhy',!!m.gymhy);
  if(m.acc&&!dsApply.r){let cur='blue';try{cur=localStorage.getItem('cf-accent')||'blue'}catch(e){}if(cur!==m.acc){dsApply.r=1;try{localStorage.setItem('cf-accent',m.acc);setTimeout(()=>location.reload(),60)}catch(e){}}}}
 document.addEventListener('click',e=>{const f=e.target.closest('[data-fs]');if(f){S.meta.fs=f.dataset.fs;saveMeta();applyView();render();return}const o=e.target.closest('[data-oled]');if(o){S.meta.oled=o.dataset.oled==='1';saveMeta();applyView();render();return}const sh=e.target.closest('[data-shine]');if(sh){S.meta.shine=sh.dataset.shine==='1';saveMeta();document.documentElement.classList.toggle('noshine',S.meta.shine===false);render()}});
 setTimeout(()=>{applyView();bkDot()},0);
