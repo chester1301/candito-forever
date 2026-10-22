@@ -15,11 +15,13 @@ module.exports={name:'Wettkampf-Planer – Datum, Versuche, Aufwärmen',async ru
     await p.click('[data-wkadopt="sq"]');await p.waitForTimeout(150);
     const r1=await p.evaluate(()=>{const b=wkBase('sq');return {c:S.meta.comp,exp:[.9,.95,1].map(x=>Math.round(b*x/2.5)*2.5),cd:document.querySelector('.wkp .wk-cd b').textContent,
       wu:[...document.querySelectorAll('.wkp .wk-wu .wk-mn')].map(x=>x.textContent),pl:document.querySelectorAll('.wkp .wk-pl').length,sw:document.scrollingElement.scrollWidth,
-      small:[...document.querySelectorAll('.wkp button,.wkp input')].filter(x=>x.getBoundingClientRect().height<44).length}});
+      small:[...document.querySelectorAll('.wkp button,.wkp input')].filter(x=>x.getBoundingClientRect().height<44).length,
+      fs:[...document.querySelectorAll('.wkp input')].filter(x=>parseFloat(getComputedStyle(x).fontSize)<16).length,wide:[...document.querySelectorAll('.wkp input')].filter(x=>x.getBoundingClientRect().right>innerWidth).length}});
     t.eq(r1.c.att.sq,r1.exp,`${W}px: Übernehmen setzt genau die Empfehlungen (auf 2,5 kg gerundet)`);
     t.ok(r1.c.date==='2026-11-14'&&r1.c.name==='Testmeisterschaft'&&r1.c.t.sq==='10:40'&&r1.cd==='Noch 24 Tage',`${W}px: Datum, Name, Uhrzeit gespeichert; Countdown`);
     t.ok(r1.wu.length>=4&&r1.wu[r1.wu.length-1]==='10:40'&&r1.pl===3,`${W}px: Aufwärmplan bis zur Uhrzeit, Scheiben je Versuch`);
-    t.ok(r1.sw<=W+1&&r1.small===0,`${W}px: kein Überlauf, Tippflächen ≥ 44 px`);
+    t.ok(r1.sw<=W+1&&r1.small===0&&r1.wide===0,`${W}px: kein Überlauf, Tippflächen ≥ 44 px`);
+    t.eq(r1.fs,0,`${W}px: alle Eingabefelder ≥ 16 px (kein Auto-Zoom auf dem iPhone)`);
     await p.fill('[data-wka="sq:2"]','100');await p.dispatchEvent('[data-wka="sq:2"]','change');await p.waitForTimeout(150);
     t.ok(!!(await p.$('.wkp .wk-warn')),`${W}px: Hinweis bei sinkender Last`);
     await p.click('[data-wkl="bp"]');await p.waitForTimeout(150);

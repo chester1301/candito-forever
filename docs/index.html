@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.21-1508-a782471";
+<script>window.CF_VERSION="2026.10.22-1114-27cf25c";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3029,6 +3029,36 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-pz2">
+/* Pausen-Modus: Zusatzkarten */
+#view .pzx{display:flex;flex-direction:column;gap:10px}
+#view .pzx .eyebrow{margin:0}
+#view .pzx .note2{margin:0}
+#view .pzx-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+#view .pzx-h>b{font-family:var(--d);font-size:18px;font-weight:900}
+#view .pzbar{display:block;height:10px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+#view .pzbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--ok),var(--warn))}
+#view .pzph{display:flex;flex-direction:column}
+#view .pzph>div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:9px 0;border-top:1px solid var(--line)}
+#view .pzph>div:first-child{border-top:0;padding-top:0}
+#view .pzph b{font-size:14px}
+#view .pzph b em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ok);margin-left:4px}
+#view .pzph small{font-size:12.5px;color:var(--ink2)}
+#view .pzph s{color:var(--mut)}
+#view .pzrc{display:flex;align-items:center;gap:12px}
+#view .pzrc .rf-ring{width:48px;height:48px;flex:none}
+#view .pzrc>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .pzrc>span b{font-size:14.5px}
+#view .pzrc>span small{font-size:12.5px;color:var(--ink2)}
+#view .pzrc .btn{min-height:44px;flex:none}
+#view .pzwi summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+#view .pzwi summary::-webkit-details-marker{display:none}
+#view .pzwi summary>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .pzwi summary b{font-size:15px}
+#view .pzwi summary svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;flex:none;transition:transform .2s}
+#view .pzwi[open] summary svg{transform:rotate(180deg)}
+#view .pzwi .wa{margin-top:8px;font-size:14px;line-height:1.5;color:var(--ink2)}
+</style>
 <style id="cf-wkp">
 /* Wettkampf-Planer */
 #view .wkp{display:flex;flex-direction:column;gap:12px}
@@ -3040,7 +3070,10 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 #view .wkp .wk-f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px}
 #view .wkp .wk-in{display:flex;flex-direction:column;gap:4px;min-width:0}
 #view .wkp .wk-in small{font-size:11.5px;font-weight:800;color:var(--mut)}
-#view .wkp .wk-in input{min-height:46px;box-sizing:border-box;width:100%;min-width:0;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:700 15px var(--f);padding:0 10px}
+#view .wkp .wk-in input{min-height:46px;box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:700 16px var(--f);padding:0 10px;-webkit-appearance:none;appearance:none;color-scheme:dark}
+#view .wkp .wk-in input[type=date],#view .wkp .wk-in input[type=time]{text-align:left;line-height:46px}
+#view .wkp .wk-in input::-webkit-date-and-time-value{text-align:left;margin:0}
+#view .wkp,#view .wkp .wk-blk,#view .wkp .wk-in{max-width:100%;overflow:hidden}
 #view .wkp .wk-own input{font:800 18px var(--d);text-align:center}
 #view .wkp .wk-cd{margin:0;font-size:13.5px;color:var(--ink2)}
 #view .wkp .wk-cd b{color:#f6d65e}
@@ -4071,7 +4104,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.a782471.js"></script>
+<script src="assets/app-0.27cf25c.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */

@@ -2932,6 +2932,36 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-pz2">
+/* Pausen-Modus: Zusatzkarten */
+#view .pzx{display:flex;flex-direction:column;gap:10px}
+#view .pzx .eyebrow{margin:0}
+#view .pzx .note2{margin:0}
+#view .pzx-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+#view .pzx-h>b{font-family:var(--d);font-size:18px;font-weight:900}
+#view .pzbar{display:block;height:10px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+#view .pzbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--ok),var(--warn))}
+#view .pzph{display:flex;flex-direction:column}
+#view .pzph>div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:9px 0;border-top:1px solid var(--line)}
+#view .pzph>div:first-child{border-top:0;padding-top:0}
+#view .pzph b{font-size:14px}
+#view .pzph b em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ok);margin-left:4px}
+#view .pzph small{font-size:12.5px;color:var(--ink2)}
+#view .pzph s{color:var(--mut)}
+#view .pzrc{display:flex;align-items:center;gap:12px}
+#view .pzrc .rf-ring{width:48px;height:48px;flex:none}
+#view .pzrc>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .pzrc>span b{font-size:14.5px}
+#view .pzrc>span small{font-size:12.5px;color:var(--ink2)}
+#view .pzrc .btn{min-height:44px;flex:none}
+#view .pzwi summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+#view .pzwi summary::-webkit-details-marker{display:none}
+#view .pzwi summary>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#view .pzwi summary b{font-size:15px}
+#view .pzwi summary svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;flex:none;transition:transform .2s}
+#view .pzwi[open] summary svg{transform:rotate(180deg)}
+#view .pzwi .wa{margin-top:8px;font-size:14px;line-height:1.5;color:var(--ink2)}
+</style>
 <style id="cf-wkp">
 /* Wettkampf-Planer */
 #view .wkp{display:flex;flex-direction:column;gap:12px}
@@ -2943,7 +2973,10 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 #view .wkp .wk-f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px}
 #view .wkp .wk-in{display:flex;flex-direction:column;gap:4px;min-width:0}
 #view .wkp .wk-in small{font-size:11.5px;font-weight:800;color:var(--mut)}
-#view .wkp .wk-in input{min-height:46px;box-sizing:border-box;width:100%;min-width:0;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:700 15px var(--f);padding:0 10px}
+#view .wkp .wk-in input{min-height:46px;box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:700 16px var(--f);padding:0 10px;-webkit-appearance:none;appearance:none;color-scheme:dark}
+#view .wkp .wk-in input[type=date],#view .wkp .wk-in input[type=time]{text-align:left;line-height:46px}
+#view .wkp .wk-in input::-webkit-date-and-time-value{text-align:left;margin:0}
+#view .wkp,#view .wkp .wk-blk,#view .wkp .wk-in{max-width:100%;overflow:hidden}
 #view .wkp .wk-own input{font:800 18px var(--d);text-align:center}
 #view .wkp .wk-cd{margin:0;font-size:13.5px;color:var(--ink2)}
 #view .wkp .wk-cd b{color:#f6d65e}
@@ -6214,7 +6247,23 @@ function pauseHTML(){const I=pauseInfo();const {p,days,weeks,missed,why}=I;const
   ${why.length?`<div class="pzwarn"><b>Candito würde hier neu starten,</b> weil ${why.join(' und ')}. Die Phase beginnt dann am nächsten Samstag wieder bei Woche 1 (vorher wird automatisch gesichert).</div>`:''}
   <button type="button" class="cta" data-pz="off"><span>Training fortsetzen</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   <button type="button" class="btn ${why.length?'':'ghost'} pzre" data-pz="restart">${S.ui.pzConfirm?'Wirklich neu starten? Nochmal tippen':'Phase stattdessen neu starten'}</button>
-  <ul class="hinw" style="margin-top:12px"><li><span><b>Candito:</b> Verpasst du ein paar Tage, mach einfach weiter und verschiebe den Rest gleichmäßig. Pack keine Einheiten zusammen – krank heißt leicht abtrainiert und zusätzlicher Stress.</span></li></ul></section>`}
+  <ul class="hinw" style="margin-top:12px"><li><span><b>Candito:</b> Verpasst du ein paar Tage, mach einfach weiter und verschiebe den Rest gleichmäßig. Pack keine Einheiten zusammen – krank heißt leicht abtrainiert und zusätzlicher Stress.</span></li></ul></section>
+  ${(()=>{try{return pauseMoreHTML(I)}catch(e){return ''}})()}`}
+/* Pausen-Modus: Neustart-Grenze, Phasen nach dem Fortsetzen, Erholung, Canditos Wissen – nur vorhandene Regeln und Daten */
+function pauseMoreHTML(I){const {p,days,weeks,why}=I;const LIM=11;const fm=t=>t.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit'});
+ const o=ORD(),i=o.indexOf(p.prog);const rows=i<0?[]:o.slice(i).map(id=>{const a=new Date(withProg(id,progStart)+'T12:00:00');const b=new Date(a);b.setDate(b.getDate()+weeks*7);return {id,a,b}});
+ const lim=why.length?'':`<section class="card pzx"><div class="pzx-h"><p class="eyebrow">Neustart-Grenze laut Candito</p><b>${days<LIM?'noch '+(LIM-days)+' Tag'+(LIM-days===1?'':'e'):'erreicht'}</b></div>
+  <span class="pzbar" role="img" aria-label="${days} von ${LIM} Tagen"><i style="width:${Math.min(100,days/LIM*100)}%"></i></span>
+  <p class="note2">Ab 1,5 Wochen Pause (${LIM} Tage) würde Candito die Phase neu starten. Bis dahin geht es einfach mit der nächsten Einheit weiter.</p></section>`;
+ const ph=rows.length?`<section class="card pzx"><div class="pzx-h"><p class="eyebrow">Deine Phasen, wenn du heute fortsetzt</p><span class="chip">${weeks?'+'+weeks+' Woche'+(weeks===1?'':'n'):'unverändert'}</span></div>
+  <div class="pzph">${rows.slice(0,3).map(r=>`<div><b>${esc(PROGS[r.id].name)}${r.id===p.prog?' <em>aktuell</em>':''}</b><small>${weeks?`<s>${fm(r.a)}</s> → `:''}${fm(r.b)}</small></div>`).join('')}${rows.length>3?`<div><small>und ${rows.length-3} weitere Phase${rows.length-3===1?'':'n'} bis ${fm(rows[rows.length-1].b)}</small></div>`:''}</div>
+  <p class="note2">Alle Phasen rücken gemeinsam nach hinten – die Abstände bleiben genau wie bei Candito.</p></section>`:'';
+ const td=isoD(new Date()),ro=(S.meta.rest||{})[td],sc=restScore(ro);
+ const rc=`<section class="card pzx"><div class="pzx-h"><p class="eyebrow">Erholung heute</p>${sc!=null?`<span class="chip" style="color:${rfCol(sc)};border-color:currentColor">${rfLbl(sc)}</span>`:''}</div>
+  <div class="pzrc">${rfRing(sc,rfCol(sc))}<span><b>${ro&&ro.feel?'Check-in erledigt':'Freiwilliger Erholungs-Check-in'}</b><small>Schlaf, Kalorien, Erholung, Muskelkater – zeigt dir, wann du wieder fit bist.</small></span><button type="button" class="btn sm ${ro?'':'primary'}" data-rdopen>${ro?'Bearbeiten':'Starten'}</button></div></section>`;
+ let wi=null;try{wisSecs().some(x=>x.items.some(it=>{if(/^Krank/.test(it.q)){wi=it;return true}}))}catch(e){}
+ const wk=wi?`<section class="card pzx"><details class="pzwi"><summary><span><p class="eyebrow">Candito · Wissen</p><b>${esc(wi.q)}</b></span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><div class="wa">${wi.a.map(t=>/^<(table|div|ol|ul)/.test(t)?t:`<p>${t}</p>`).join('')}</div></details></section>`:'';
+ return lim+ph+rc+wk}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-pz]');if(!b)return;const a=b.dataset.pz;if(a==='on')pauseOn();else if(a==='off')pauseResume();else if(a==='restart')pauseRestart()});
 /* ---------- 3RM + 10 Week vorziehen ---------- */
 function pullInfo(){const o=ORD();if(!o.includes('p3')||!o.includes('p10w'))return null;if(hasLogs('p3')||hasLogs('p10w'))return null;
