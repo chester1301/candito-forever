@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1826-60c3e2a";
+<script>window.CF_VERSION="2026.10.22-1905-9f51b29";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -4440,6 +4440,37 @@ html[data-theme=blue] #gym .gl-add{background:#13204f!important;border:1.5px sol
 html[data-theme=blue] #gym .gl-add.off{opacity:.55}
 /* bisheriger Gym-Modus (wählbar) behält die kompakte Schrift, damit er ohne Scrollen auf den Bildschirm passt */
 html[data-theme=blue] #gym .gym-in:not(.gl){--d:"Archivo","Manrope",system-ui,sans-serif;--f:"Manrope",-apple-system,system-ui,sans-serif;font-family:var(--f)}
+/* Design-Einstellungen (Einstellungen › Design) */
+html[data-theme=blue].glow-low body,html[data-theme=blue].glow-low header.top,html[data-theme=blue].glow-low body .gym,html[data-theme=blue].glow-low body .ckin,html[data-theme=blue].glow-low body .ck-in.fl{background:radial-gradient(80% 280px at 0% 0%,rgba(47,75,192,.55) 0%,rgba(34,55,154,.3) 30%,rgba(13,21,56,.18) 55%,transparent 80%) no-repeat,#000!important}
+html[data-theme=blue].glow-off body,html[data-theme=blue].glow-off header.top,html[data-theme=blue].glow-off body .gym,html[data-theme=blue].glow-off body .ckin,html[data-theme=blue].glow-off body .ck-in.fl{background:#000!important}
+html[data-theme=blue].glow-off body::before{background:#000!important}
+html[data-theme=blue].cards-grau{--jg-card:linear-gradient(180deg,#16171c,#0f1013);--jg-b:#26272e}
+html[data-theme=blue].cards-schwarz{--jg-card:#000;--jg-b:#2a2b30}
+html[data-theme=blue].cards-grau body #view .card.hero,html[data-theme=blue].cards-grau body #view .card.trh{background:linear-gradient(180deg,#191a20,#101115)!important;border-color:#2a2b32!important}
+html[data-theme=blue].cards-schwarz body #view .card.hero,html[data-theme=blue].cards-schwarz body #view .card.trh{background:#000!important;border-color:#2a2b30!important}
+html[data-theme=blue].dayc #view :is(h1,h2).disp span,html[data-theme=blue].dayc #view .home-t span{color:#6683ff!important;-webkit-text-fill-color:#6683ff!important}
+html[data-theme=blue].font-kompakt{--d:"Archivo","Manrope",system-ui,sans-serif;--f:"Manrope",-apple-system,system-ui,sans-serif}
+html[data-theme=blue].font-sportlich{--d:"Archivo","Manrope",system-ui,sans-serif;--f:"Archivo","Manrope",system-ui,sans-serif}
+html[data-theme=blue].font-kompakt body,html[data-theme=blue].font-sportlich body{font-family:var(--f)}
+html[data-theme=blue].dens-kompakt main{padding-top:10px!important}
+html[data-theme=blue].dens-kompakt #view{gap:10px!important}
+html[data-theme=blue].dens-kompakt body #view :is(.card,.ptile){padding-top:12px!important;padding-bottom:12px!important;border-radius:20px!important}
+html[data-theme=blue].dens-kompakt body #view .jx-jr .jr-num b{font-size:84px!important}
+html[data-theme=blue].dens-kompakt body #view .phead{margin-top:6px!important;margin-bottom:2px!important}
+html[data-theme=blue].gnum-gross #gym .gl-row .gl-v,html[data-theme=blue].gnum-gross #gym .gl-row .gl-d{font-size:20px!important}
+html[data-theme=blue].gnum-gross #gym .gl-row .gl-v b{font-size:23px!important;font-weight:700!important}
+html[data-theme=blue].gnum-gross #gym .gl-n{width:40px!important;height:36px!important;font-size:17px!important}
+html[data-theme=blue].gnum-gross #gym .gl-num input,html[data-theme=blue].gnum-gross #gym .gl-num b{font-size:60px!important}
+html[data-theme=blue].navl-aus body .nav button{font-size:0!important;gap:0!important}
+html[data-theme=blue].navl-aus body .nav button .ni svg{width:27px!important;height:27px!important}
+html[data-theme=blue].gymhy body .gym[data-hy="h"]{background:radial-gradient(90% 360px at 0% 0%,rgba(232,38,47,.85) 0%,rgba(150,24,32,.45) 32%,rgba(50,10,14,.25) 56%,transparent 80%) no-repeat,#000!important}
+html[data-theme=blue].gymhy body .gym[data-hy="m"]{background:radial-gradient(90% 360px at 0% 0%,rgba(245,154,69,.8) 0%,rgba(170,96,30,.42) 32%,rgba(60,30,10,.22) 56%,transparent 80%) no-repeat,#000!important}
+html[data-theme=blue].gymhy body .gym[data-hy="l"]{background:radial-gradient(90% 360px at 0% 0%,rgba(246,214,94,.7) 0%,rgba(160,130,40,.38) 32%,rgba(55,45,12,.2) 56%,transparent 80%) no-repeat,#000!important}
+.ds-ord{display:grid;gap:6px;margin:8px 0 0}
+.ds-ord li{display:grid;grid-template-columns:28px minmax(0,1fr) 44px 44px;align-items:center;gap:6px;padding:4px 6px 4px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);list-style:none}
+.ds-ord li>i{font-style:normal;color:var(--mut);font-weight:700}.ds-ord li>b{font-weight:600}
+.ds-ord button{height:40px;border-radius:12px;border:1px solid var(--line2);background:transparent;color:var(--ink);font-size:18px;cursor:pointer}
+.ds-ord button:disabled{opacity:.3}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4456,7 +4487,10 @@ button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer
 (function(){if((window.CF_THEME||'blue')!=='blue')return;
 function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2;if(mx!==mn){var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s,l]}
 function rgb(h,s,l){h/=360;function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p}var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return[f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(function(x){return Math.round(x*255)})}
-function map(r,g,b){if(r===60&&g===196&&b===106)return null;var c=hsl(r,g,b);if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
+var ACC={blue:null,cyan:188,violett:262,orange:22}[(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})()]||null;window.CF_ACC=ACC;
+function map(r,g,b){if(r===60&&g===196&&b===106)return null;if(r===74&&g===109&&b===245)return null;var c=hsl(r,g,b);
+ if(ACC!=null&&c[0]>=214&&c[0]<=246&&c[1]>=.3){return rgb(ACC,c[1],c[2])}
+ if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
 var RX=/#([0-9a-fA-F]{6})\b|#([0-9a-fA-F]{3})\b|(rgba?\()\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;
 function conv(t){return t.replace(RX,function(m,h6,h3,fn,a,b2,c){var r,g,b;if(h6){r=parseInt(h6.slice(0,2),16);g=parseInt(h6.slice(2,4),16);b=parseInt(h6.slice(4,6),16)}else if(h3){r=parseInt(h3[0]+h3[0],16);g=parseInt(h3[1]+h3[1],16);b=parseInt(h3[2]+h3[2],16)}else{r=+a;g=+b2;b=+c}
  var o=map(r,g,b);if(!o)return m;if(fn)return fn+o.join(',');return '#'+o.map(function(x){return('0'+x.toString(16)).slice(-2)}).join('')})}
@@ -4541,7 +4575,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.60c3e2a.js"></script>
+<script src="assets/app-0.9f51b29.js"></script>
 <script>/* Juggernaut-Ideen 1–11: Readiness-Bühne, Einheiten-Raster, Schlaf & Gewicht, Kraft-Kacheln, Gym-Liste (Streifen, Satzgruppe, Notiz je Übung, Titel-Pille), Fortsetzen-Pille, Monatskalender.
    Reine Anzeige aus vorhandenen Daten; einziges neues Feld: L.xn = {Block-Index: Notiz} (von Marcel freigegeben). */
 (function(){
@@ -4602,8 +4636,9 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-jxm],[data
 const R0=window.render;window.render=function(){const r=R0.apply(this,arguments);try{post()}catch(e){console.warn(e)}return r};
 function post(){document.body.classList.add('jx');const v=document.getElementById('view');const tab=S.ui.tab;
  if(tab==='home'&&!v.querySelector('.jx-grid')){const g=v.querySelector('.greet'),jr=v.querySelector('.card.jr'),hero=v.querySelector('.card.hero');
-  if(jr&&g){g.after(jr);if(!jr.classList.contains('jr-empty'))jr.classList.add('jx-jr')}
+  if(jr&&g){g.after(jr);if(!jr.classList.contains('jr-empty')&&(S.meta.ds||{}).jr!=='ring')jr.classList.add('jx-jr')}
   if(hero)hero.insertAdjacentHTML('afterend',gridHTML()+tilesHTML()+maxHTML());
+  if(g&&typeof homeOrd==='function'){const M={jr:v.querySelector('.card.jr'),hero:v.querySelector('.card.hero'),grid:v.querySelector('.jx-grid'),tiles:v.querySelector('.jx-two'),max:v.querySelector('.jx-max')};let an=g;homeOrd().forEach(k=>{if(k==='hero'){const rd=v.querySelector('.rday');if(rd){an.after(rd);an=rd}}const n=M[k];if(n){an.after(n);an=n}})}
   const pz=[...v.querySelectorAll('.phead')].find(h=>/^Zustand/.test(h.textContent.trim()));if(pz)pz.remove()}
  if(tab==='prog'&&S.ui.pd==='verlauf'&&!v.querySelector('.jx-cal')){const b=v.querySelector('.pdbody');const seg=b&&[...b.children].find(c=>/\b1W\b/.test(c.textContent)&&c.textContent.length<40);
   const tgt=seg||(b&&b.firstElementChild);if(tgt)tgt.insertAdjacentHTML(seg?'beforebegin':'afterend',calHTML())}
@@ -4612,6 +4647,7 @@ function post(){document.body.classList.add('jx');const v=document.getElementByI
 const G0=window.renderGymL;if(G0)window.renderGymL=function(){const r=G0.apply(this,arguments);try{gpost()}catch(e){console.warn(e)}return r};
 function noteBtn(b,t){return `<button type="button" class="jx-note" data-jxnote="${b}" aria-label="Notiz zur Übung ${t?'ändern':'hinzufügen'}"><b>Notizen</b>${t?`<span class="jx-nt">${esc(t)}</span>`:`<span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Notiz hinzufügen</span>`}</button>`}
 function gpost(){const g=document.getElementById('gym');const {w,d}=S.ui;const L=log(w,d,true);const xn=L.xn||{};
+ if((S.meta.ds||{}).gymhy){const day=P[w][d];g.dataset.hy=['h','m','l'].find(k=>day.b.some(bl=>bl.h===k))||''}
  g.querySelectorAll('.gl-ex').forEach(ex=>{if(ex.querySelector('.jx-note'))return;const b=+String(ex.id).replace('glx-','');
   const x=ex.querySelector('.gl-x');if(x&&!ex.querySelector('.jx-sg')){const m=x.textContent.match(/^(\d+)\s*[×x]\s*([\d–\-]+)/);if(m)x.insertAdjacentHTML('beforebegin',`<p class="jx-sg">${m[1]} ${m[1]==='1'?'Satz':'Sätze'} × ${m[2]} Wdh.</p>`)}
   ex.insertAdjacentHTML('beforeend',noteBtn(b,xn[b]))});

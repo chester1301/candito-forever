@@ -44,5 +44,17 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
       out.vis=[...document.querySelectorAll('.cgl')].filter(g=>getComputedStyle(g).display!=='none'&&+getComputedStyle(g).opacity>0).length;
       S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-shine="1"]').click();out.on=S.meta.shine===true&&!document.documentElement.classList.contains('noshine');return out});
     t.ok(sh.btn&&sh.meta===false&&sh.cls&&sh.vis===0&&sh.on,`${W}px: Glanz-Effekt in den Einstellungen aus- und wieder einschaltbar`);
+    // Design-Einstellungen
+    const ds=await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const out={rows:document.querySelectorAll('[data-ds]').length,ord:document.querySelectorAll('[data-dsord]').length};
+      ['glow|off','cards|schwarz','font|kompakt','dens|kompakt','gnum|gross','navl|aus','dayc|1','gymhy|1','jr|ring'].forEach(x=>document.querySelector(`[data-ds="${x}"]`).click());
+      document.querySelector('[data-dsord="max|-1"]').click();out.cls=document.documentElement.className;out.ord=(S.meta.ds||{}).ord;
+      S.ui.tab='home';S.ui.tdet={};render();const v=document.getElementById('view');out.ring=!v.querySelector('.jx-jr')&&!!v.querySelector('.card.jr');
+      const k=[...v.children].map(c=>c.className);out.seq=['jx-grid','jx-max','jx-two'].map(c=>k.findIndex(x=>x.includes(c)));
+      out.sw=document.documentElement.scrollWidth;
+      S.ui.w=0;S.ui.d=2;const L=log(0,2,true);L.flow=1;L.ck=1;openGym();renderGym();out.hy=document.getElementById('gym').dataset.hy;closeGym(true);
+      S.meta.ds={};saveMeta();applyView();out.reset=document.documentElement.className;return out});
+    t.ok(ds.rows>=25&&/glow-off/.test(ds.cls)&&/cards-schwarz/.test(ds.cls)&&/font-kompakt/.test(ds.cls)&&/dens-kompakt/.test(ds.cls)&&/gnum-gross/.test(ds.cls)&&/navl-aus/.test(ds.cls)&&/dayc/.test(ds.cls)&&/gymhy/.test(ds.cls),`${W}px: Design-Einstellungen setzen Leuchten, Karten, Schrift, Ansicht, Gym-Zahlen, Navigation, Tagesname, Hype-Hintergrund`);
+    t.ok(ds.ring&&ds.seq[0]<ds.seq[1]&&ds.seq[1]<ds.seq[2]&&JSON.stringify(ds.ord)===JSON.stringify(['jr','hero','grid','max','tiles'])&&ds.sw<=W+1,`${W}px: Readiness als Ring und eigene Reihenfolge der Heute-Bereiche`);
+    t.ok(['h','m','l'].includes(ds.hy)&&!/glow-|cards-|font-|gymhy/.test(ds.reset),`${W}px: Gym-Hintergrund nach Hype; Zurücksetzen entfernt alle Stile`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};
