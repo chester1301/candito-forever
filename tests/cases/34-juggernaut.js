@@ -83,5 +83,15 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
     await p.evaluate(()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-dspre="klassik"]').click()});await p.waitForTimeout(3500);
     const kl=await p.evaluate(()=>[S.ui.tab,(S.ui.tdet||{}).setup,window.CF_THEME]);await p.evaluate(()=>{localStorage.setItem('cf-theme','blue');S.meta.ds={};saveMeta()});
     t.eq(kl,['setup','design','classic'],`${W}px: nach „Klassik“ bleibt man im Design-Menü`);
+    // Sprachansage, Wie Vorgabe, Notizen-Verlauf, Zyklus-Vergleich, Suche
+    const nf2=await p.evaluate(async()=>{const o={};localStorage.setItem('cf-voice',JSON.stringify({on:true,lvl:'normal',rate:1}));S.ui.tab='setup';S.ui.tdet={setup:'timer'};render();o.vc=!!document.querySelector('[data-vcbox] .vc-sw[aria-pressed="true"]');
+      const said=[];const sp=speechSynthesis.speak.bind(speechSynthesis);speechSynthesis.speak=u=>said.push(u.text);S.ui.w=1;S.ui.d=0;startRest(35,{w:1,d:0,b:0,i:0});await new Promise(r=>setTimeout(r,900));stopRest();speechSynthesis.speak=sp;o.said=said.length>0;localStorage.removeItem('cf-voice');
+      const L0=log(0,0,true);L0.xn={0:'Test-Notiz Knie'};saveLog(key(0,0));S.ui.w=2;S.ui.d=1;const L=log(2,1,true);L.flow=1;L.ck=1;saveLog(key(2,1));openGym();G.b=0;G.i=0;G.sheet='set';renderGym();const a=document.querySelector('[data-glasis]');o.asis=!!a;if(a)a.click();const s=log(2,1).b[0][0];o.set=[s.kg!=null||s.r!=null,s.rpe==null];G.sheet=null;closeGym(true);
+      openEx(P[0][0].b[0].e);o.xn=[...document.querySelectorAll('#xsheet .xnh-i p')].some(p=>p.textContent==='Test-Notiz Knie');try{closeEx()}catch(e){}
+      S.ui.tab='prog';S.ui.pd='zyklen';render();o.cmp=!!document.querySelector('.cmp');S.ui.pd=null;S.ui.tab='home';render();
+      document.getElementById('srch').click();const q=document.getElementById('srq');q.value='Knie';q.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,250));o.sr=/Test-Notiz/.test(document.getElementById('srr').textContent);document.querySelector('[data-srclose]').click();return o});
+    t.ok(nf2.vc&&nf2.said,`${W}px: Sprachansage einschaltbar und spricht beim Pausenstart`);
+    t.ok(nf2.asis&&nf2.set[0]&&nf2.set[1],`${W}px: „Wie Vorgabe“ übernimmt Werte, RPE bleibt leer`);
+    t.ok(nf2.xn&&nf2.cmp&&nf2.sr,`${W}px: Notizen-Verlauf, Zyklus-Vergleich und Suche vorhanden`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};
