@@ -12,7 +12,7 @@ class T{
 const IGN=/ERR_TUNNEL_CONNECTION_FAILED|ERR_FAILED|ERR_NAME_NOT_RESOLVED|fonts\.g|net::ERR_/;
 
 // Seite mit Fehlersammlung öffnen. App ist nach ~3 s komplett (autoProg läuft bei 2,6 s).
-async function openPage(browser,port,{width=390,height=844,scale=2,wait=3000,fixedTime=null,cv=false}={}){
+async function openPage(browser,port,{width=390,height=844,scale=2,wait=3000,fixedTime=null,cv=false,gymList=false}={}){
   const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:scale,locale:'de-DE',timezoneId:'Europe/Berlin',...(fixedTime?{reducedMotion:'reduce'}:{})});
   if(fixedTime)await page.clock.setFixedTime(new Date(fixedTime));
   // Tests messen Layout auch außerhalb des Bildschirms: content-visibility dort abschalten (reine Render-Optimierung der App)
@@ -23,6 +23,8 @@ async function openPage(browser,port,{width=390,height=844,scale=2,wait=3000,fix
   await page.goto(`http://localhost:${port}/`);
   await page.waitForTimeout(wait);
   await page.evaluate(()=>{try{localStorage.setItem('cf-installhint','1')}catch(e){}const el=document.getElementById('cfbar');if(el){el.hidden=true}});
+  // Bestehende Gym-Tests prüfen den bisherigen Gym-Modus (weiter wählbar); die Liste (Standard) prüfen eigene Tests mit {gymList:true}
+  if(!gymList)await page.evaluate(()=>{try{if(S.meta.gymView!=='classic'){S.meta.gymView='classic';saveMeta()}}catch(e){}});
   return page;
 }
 

@@ -33,6 +33,10 @@ const VIEWS=[
   {n:'gym-rpe-planer',go:()=>{S.ui.w=0;S.ui.d=2;openGym();G.b=0;G.i=0;rpOpenGym();renderGym()},after:()=>{G.rpo=false;try{closeGym(true)}catch(e){}}},
   {n:'uebungs-info',go:()=>{openEx('pbb')},after:()=>{try{closeEx()}catch(e){}}},
   {n:'abschluss',go:()=>{endOpen(0,3)},after:()=>{try{endClose()}catch(e){}}},
+  {n:'start-ablauf',go:()=>{S.ui.tab='home';render();ckOpen(PROG,1,1,()=>{})},after:()=>{const e=document.getElementById('ckin');if(e)e.hidden=true;CK=null}},
+  {n:'gym-liste',go:()=>{S.meta.gymView='list';S.ui.w=0;S.ui.d=2;const L=log(0,2,true);L.done=false;L.start=Date.now();L.flow=1;L.ck=1;openGym();G.sheet=null;renderGym();$('#gym').scrollTop=0},after:()=>{try{closeGym(true)}catch(e){}S.meta.gymView='classic'}},
+  {n:'gym-liste-satz',go:()=>{S.meta.gymView='list';S.ui.w=0;S.ui.d=2;openGym();G.b=0;G.i=0;G.sheet='set';renderGym()},after:()=>{G.sheet=null;try{closeGym(true)}catch(e){}S.meta.gymView='classic'}},
+  {n:'gym-liste-pause',go:()=>{S.meta.gymView='list';S.ui.w=0;S.ui.d=2;openGym();G.sheet=null;startRest(240,{w:0,d:2,b:0,i:1});T.gmin=true;renderGym()},after:()=>{try{stopRest()}catch(e){}try{closeGym(true)}catch(e){}S.meta.gymView='classic'}},
 ];
 
 // Zwei PNGs im Browser vergleichen (ohne Zusatzpakete): Anteil abweichender Pixel + Differenzbild

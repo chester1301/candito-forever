@@ -2933,6 +2933,206 @@ body[data-tab="train"][data-tnav="prog"] #progsw button{flex:none!important;min-
 .gym[data-hy="m"] .strip span.c{background:#f08a3c!important}
 .gym[data-hy="l"] .strip span.c{background:#f3c969!important}
 </style>
+<style id="cf-gl">
+/* Gym als Liste – Aufbau wie Marcels Vorbilder, Farben/Schrift der App (Themen-Variablen) */
+#gym .gl{min-height:100%;box-sizing:border-box;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) 0 max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px;background:radial-gradient(130% 260px at 0% 0%,color-mix(in srgb,var(--brand) 55%,transparent),transparent 70%),var(--bg)}
+#gym .gl-top{display:flex;align-items:center;gap:8px}
+#gym .gl-cb{width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(0,0,0,.25);color:#fff;display:grid;place-items:center;flex:none;cursor:pointer}
+#gym .gl-cb.sm{width:44px;height:44px}
+#gym .gli{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#gym .gl-cb .gli{width:20px;height:20px}
+#gym [data-glsh="menu"] .gli{fill:currentColor;stroke:none}
+#gym .gl-chip{height:50px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.32);background:rgba(0,0,0,.25);color:#fff;display:inline-flex;align-items:center;gap:8px;font:700 15px var(--mono);cursor:pointer}
+#gym .gl-chip svg{width:16px;height:16px;fill:#fff}
+#gym .gl-chip.paused{border-color:var(--warn);color:var(--warn)}
+#gym .gl-hd{padding:0 6px}
+#gym .gl-hd h1{margin:0;font:900 28px/1.1 var(--d);color:#fff;text-wrap:balance}
+#gym .gl-hd p{margin:4px 0 0;font-size:14px;color:var(--ink2)}
+#gym .gl-hd .savest{margin:6px 0 0;justify-content:flex-start}
+#gym .gl-ex{position:relative;border-radius:26px;border:1px solid var(--line);background:var(--card);padding:16px 14px 12px 26px;display:flex;flex-direction:column;gap:6px}
+#gym .gl-ex::before{content:"";position:absolute;left:12px;top:20px;bottom:20px;width:4px;border-radius:2px;background:var(--brand)}
+#gym .gl-ex.done::before{background:var(--ok)}
+#gym .gl-eh{display:flex;align-items:flex-start;gap:2px}
+#gym .gl-en{flex:1;min-width:0;margin:0;font:900 21px/1.15 var(--d);color:#fff;text-wrap:balance}
+#gym .gl-en small{font:700 12px var(--f);color:var(--mut)}
+#gym .gl-ib{width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--ink2);display:grid;place-items:center;flex:none;cursor:pointer}
+#gym .gl-tags{display:flex;gap:12px;flex-wrap:wrap}
+#gym .gl-tg{font-size:12px;font-weight:700;color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
+#gym .gl-tg i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--mut)}
+#gym .gl-tg.hy-h i{background:#e8262f}#gym .gl-tg.hy-m i{background:#f59a45}#gym .gl-tg.hy-l i{background:#f6d65e}
+#gym .gl-tg.vo{color:#7fe0b4}#gym .gl-tg.vo i{background:var(--ok)}
+#gym .gl-tg.em{color:#f3c969}#gym .gl-tg.em i{background:#f3c969}
+#gym .gl-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:4px 0 2px}
+#gym .gl-tools button{min-height:58px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:#c9d4ff;font:700 11.5px var(--f);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:2px;cursor:pointer;text-align:center;line-height:1.15}
+#gym .gl-tools .gli{width:20px;height:20px}
+#gym .gl-tools .gli.wu{stroke:#ff8a5c}
+#gym .gl-tools button.ok{border-color:rgba(67,192,138,.5);color:#bff0d8}
+#gym .gl-x{margin:6px 0 0;font-size:14.5px;color:#e9e9ee;line-height:1.4}
+#gym .gl-row{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:52px;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left}
+#gym button.gl-row{cursor:pointer}
+#gym .gl-n{width:34px;height:30px;border-radius:9px;display:grid;place-items:center;font:800 14px var(--f);background:var(--raise);color:#e9e9ee}
+#gym .gl-row.cur .gl-n{background:var(--brand);color:#fff}
+#gym .gl-v{min-width:0;font-size:16px;color:#e9e9ee;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
+#gym .gl-v b{font-weight:700}
+#gym .gl-v small{color:var(--ink2);font-size:14px}
+#gym .gl-v .gl-tg{flex-basis:100%;margin-top:2px}
+#gym .gl-v.mut{color:var(--mut)}
+#gym .gl-d{font-size:15.5px;color:#e9e9ee;white-space:nowrap}
+#gym .gl-d i{font-style:normal;color:var(--brand);font-weight:800;margin-left:4px}
+#gym .gl-add{width:76px;height:44px;border-radius:999px;border:1.5px solid var(--brand);background:color-mix(in srgb,var(--brand) 28%,transparent);color:#fff;font:400 26px/1 var(--f);cursor:pointer}
+#gym .gl-add.off{background:color-mix(in srgb,var(--brand) 8%,transparent);border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--ink2)}
+#gym .gl-fin{min-height:58px;border-radius:999px;border:1px solid var(--line2);background:transparent;color:#fff;font:900 16px var(--d);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+#gym .gl-fin.on{border:0;background:linear-gradient(180deg,#4d72ff,#2f52e0);box-shadow:0 14px 30px -14px rgba(61,99,245,.9)}
+#gym .gl-pad{height:calc(150px + env(safe-area-inset-bottom,0px));flex:none}
+/* Pause unten */
+#gym .gl-tb{position:fixed;left:0;right:0;bottom:0;z-index:30;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#10142a,#0a0c16);border-top:1px solid var(--line2);box-shadow:0 -24px 50px -20px rgba(0,0,0,.9);padding:4px max(18px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:8px}
+#gym .gl-tbh{align-self:center;width:120px;height:24px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer}
+#gym .grip{display:block;width:44px;height:5px;border-radius:3px;background:#3a3f55}
+#gym .gl-tbr{display:flex;align-items:center;gap:10px}
+#gym .gl-tbt{flex:1;min-width:0;border:0;background:transparent;color:#fff;text-align:left;padding:0;cursor:pointer}
+#gym .gl-tbt b{display:block;font:300 52px/1 var(--f);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#gym .gl-tbt small{display:block;font-size:14px;color:var(--ink2);margin-top:4px}
+#gym .gl-tb.over .gl-tbt b{color:var(--hi)}
+#gym .gl-tr{width:60px;height:60px;border-radius:50%;font:800 15px var(--f);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center}
+#gym .gl-tr.p{border:1.5px solid #2f8f55;background:#0f2a1a}
+#gym .gl-tr.m{border:1.5px solid #8f2f35;background:#2a1013}
+#gym .gl-tr.s{border:1.5px solid #e07a7f;background:#7a3438}
+#gym .gl-tr.s svg{width:18px;height:18px;fill:#fff}
+#gym .gl-tbn{margin:0;font-size:13.5px;color:var(--ink2)}
+#gym .gl-tbn b{color:#fff}
+#gym .gl-tbl{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+#gym .gl-tbl i{display:block;height:100%;background:var(--brand)}
+/* Fenster */
+#gym .gls{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end}
+#gym .gls-bg{position:absolute;inset:0;background:rgba(2,3,8,.72)}
+#gym .gls-p{position:relative;max-height:92vh;display:flex;flex-direction:column;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#10142a,#0a0c16);border-top:1px solid var(--line2);box-shadow:0 -30px 60px -20px rgba(0,0,0,.9)}
+#gym .gls.full .gls-p{max-height:none;height:100%;border-radius:0;border-top:0;background:var(--bg)}
+#gym .gls-h{padding:calc(8px + env(safe-area-inset-top,0px)) 14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px}
+#gym .gls:not(.full) .gls-h{padding-top:8px}
+#gym .gls.full .gls-h .grip{display:none}
+#gym .gls-hr{width:100%;display:flex;align-items:center;gap:10px}
+#gym .gls-ht{flex:1;min-width:0}
+#gym .gls-ht small{display:block;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9fb3ff}
+#gym .gls-ht b{display:block;font:900 21px/1.15 var(--d);color:#fff}
+#gym .gls-sc{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px max(12px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+#gym .gl-vo{display:flex;align-items:center;gap:12px;padding:4px 6px}
+#gym .gl-vo>div{flex:1;min-width:0}
+#gym .gl-vo p{margin:2px 0 0;font-size:13px;color:var(--ink2);line-height:1.35}
+#gym .gl-vo>b{font-size:17px;white-space:nowrap}
+#gym .gl-c{border-radius:24px;border:1px solid var(--line);background:var(--card);padding:16px;display:flex;flex-direction:column;gap:12px}
+#gym .gl-c.row{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+#gym .gl-c h3{margin:0;font:900 18px var(--d);color:#fff}
+#gym .gl-c h3.lt{font:700 15px var(--f);color:var(--ink2);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+#gym .gl-c h3 small{font-weight:600;color:var(--mut);font-size:13px}
+#gym .gl-c.req{border-color:color-mix(in srgb,var(--brand) 60%,transparent)}
+#gym .gl-c.over{border-color:var(--hi)}
+#gym .gl-seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:14px;background:var(--raise)}
+#gym .gl-seg.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+#gym .gl-seg button{min-height:44px;border:0;border-radius:10px;background:transparent;color:var(--ink2);font:600 13.5px var(--f);cursor:pointer;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#gym .gl-seg.four button{min-height:62px;font:900 24px var(--d);display:flex;align-items:baseline;justify-content:center;gap:2px;padding-top:14px}
+#gym .gl-seg.four button small{font:700 12px var(--f);opacity:.8}
+#gym .gl-seg button[aria-pressed="true"]{background:var(--brand);color:#fff;font-weight:800}
+#gym .gl-bar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center}
+#gym .gl-pill{justify-self:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:#fff;font:800 15px var(--f);cursor:pointer}
+#gym .gl-pls{display:flex;justify-content:center;align-items:center;gap:6px;min-height:66px}
+#gym .gl-pl{min-width:26px;height:var(--h,40px);padding:0 3px;border-radius:8px;background:var(--p);color:#fff;display:grid;place-items:center;font:700 12.5px var(--f);text-shadow:0 1px 2px rgba(0,0,0,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+#gym .gl-pl0{font-size:14px;color:var(--ink2)}
+#gym .gl-plt{margin:0;text-align:center;font-size:15px;color:#e9e9ee}
+#gym .gl-hint{margin:0;text-align:center;font-size:12.5px;color:var(--ink2)}
+#gym .gl-hint.em{color:#f3c969}
+#gym .gl-stp{display:grid;grid-template-columns:60px minmax(0,1fr) 60px;align-items:center;gap:8px}
+#gym .gl-pm{width:60px;height:60px;border-radius:50%;border:1px solid var(--line2);background:transparent;color:#fff;font:300 30px/1 var(--f);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#gym .gl-pm.sm{width:44px;height:44px;font-size:24px}
+#gym .gl-pm:disabled{opacity:.35}
+#gym .gl-num{display:flex;align-items:baseline;justify-content:center;gap:8px;min-width:0}
+#gym .gl-num input{width:100%;min-width:0;max-width:170px;border:0;background:transparent;color:#fff;text-align:center;font:900 52px/1 var(--d);padding:0;-webkit-appearance:none;appearance:none}
+#gym .gl-num input:focus{outline:2px solid color-mix(in srgb,var(--brand) 60%,transparent);border-radius:12px}
+#gym .gl-num b{font:900 52px/1 var(--d);color:#fff}
+#gym .gl-num b.dim{color:#3a3f55}
+#gym .gl-num span{font-size:22px;color:var(--mut)}
+#gym .gl-tgl{display:flex;align-items:center;gap:12px;padding-top:6px;border-top:1px solid var(--line)}
+#gym .gl-tgl>div{flex:1;min-width:0}
+#gym .gl-tgl b{display:block;font-size:15px;color:#e9e9ee}
+#gym .gl-tgl small,#gym .gl-sm{display:block;font-size:13px;color:var(--mut);line-height:1.35;margin-top:2px}
+#gym .gl-sw{width:62px;height:44px;border:0;position:relative;flex:none;background:none;cursor:pointer;padding:0}
+#gym .gl-sw::before{content:"";position:absolute;left:0;right:0;top:5px;height:34px;border-radius:999px;background:#5b5c66;transition:background .18s}
+#gym .gl-sw i{position:absolute;top:8px;left:3px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .18s;z-index:1}
+#gym .gl-sw.on::before{background:var(--brand)}#gym .gl-sw.on i{left:31px}
+#gym .bl{font:900 17px var(--d);color:var(--brand)}
+#gym .bl2{font-size:15px;color:#e9e9ee}
+#gym .gl-at{display:flex;align-items:center;gap:4px}
+#gym .gl-at .gl-ib{color:var(--brand)}
+#gym .gl-rd{margin:0;text-align:center;font-size:14px;color:var(--ink2)}
+#gym .gl-rd.l{text-align:left}
+#gym .gl-rd b{color:#fff;font-family:var(--mono)}
+#gym .gl-link{align-self:center;min-height:44px;border:0;background:none;color:#9fb3ff;font:800 13.5px var(--f);cursor:pointer}
+#gym .gl-bands{display:flex;flex-wrap:wrap;gap:6px}
+#gym .gl-bands button{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:#e9e9ee;font:700 13.5px var(--f);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+#gym .gl-bands button i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+#gym .gl-bands button[aria-pressed="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 20%,transparent)}
+#gym .gl-bands .ed{border-style:dashed;color:#9fb3ff}
+#gym .gl-bands.big{flex-direction:column}
+#gym .gl-bands.big button{border-radius:14px;min-height:52px;justify-content:flex-start}
+#gym .gl-bands.big button b{flex:1;text-align:left}
+#gym .gl-bands.big button small{color:var(--ink2)}
+#gym .gl-kv{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--ink2)}
+#gym .gl-kv small{color:var(--mut)}
+#gym .gl-kv b{font:900 20px var(--d);color:#fff}
+#gym .gl-kv.tot{padding:10px 12px;border-radius:14px;background:rgba(67,192,138,.08);border:1px solid rgba(67,192,138,.35)}
+#gym .gl-act{display:flex;flex-direction:column;gap:10px;padding-top:4px}
+#gym .gl-act .bigbtn{width:100%}
+#gym .gl-rs{min-height:56px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:800 15px var(--d);letter-spacing:.03em;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+#gym .gli.rs{stroke:#f5a623}
+#gym .gl-act .savest{justify-content:center;margin:0}
+#gym .gl-prim{min-height:58px;border:0;border-radius:999px;background:linear-gradient(180deg,#4d72ff,#2f52e0);color:#fff;font:900 16px var(--d);box-shadow:0 14px 30px -14px rgba(61,99,245,.9);cursor:pointer}
+#gym .gl-sec{min-height:48px;border-radius:14px;border:1px solid var(--line2);background:transparent;color:#e9e9ee;font:800 14px var(--f);cursor:pointer}
+#gym .gl-ok{margin:0;padding:10px 12px;border-radius:14px;background:rgba(67,192,138,.08);border:1px solid rgba(67,192,138,.35);font-size:13.5px;color:#cfeee0}
+#gym .gl-ok .miss{color:var(--warn);font-weight:700}
+#gym .gl-inv{display:flex;flex-direction:column;gap:6px}
+#gym .gl-ir{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:52px;padding:2px 8px 2px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+#gym .gl-ir>i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+#gym .gl-ir b{font:800 16px var(--f);color:#fff}
+#gym .gl-ir b span{font-weight:600;color:var(--mut);font-size:14px;margin-left:3px}
+#gym .gl-ic{display:flex;align-items:center;gap:6px}
+#gym .gl-ic em{font-style:normal;min-width:26px;text-align:center;font:900 18px var(--d);color:#fff}
+#gym .gl-br{display:grid;grid-template-columns:14px minmax(0,1fr) 92px 44px;gap:8px;align-items:center;min-height:52px;padding:2px 4px 2px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+#gym .gl-br>i{width:14px;height:14px;border-radius:50%}
+#gym .gl-br input{min-height:44px;width:100%;min-width:0;box-sizing:border-box;border-radius:10px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:#fff;font:700 16px var(--f);padding:0 8px}
+#gym .gl-bk{display:flex;align-items:center;gap:4px}#gym .gl-bk span{font-size:13px;color:var(--mut)}
+#gym .gl-ms{margin:6px 4px 0;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#gym .gl-mi{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:60px;width:100%;padding:6px 14px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:#fff;font:inherit;text-align:left;cursor:pointer}
+#gym .gl-mic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 18%,transparent);color:#9fb3ff}
+#gym .gl-mi b{display:block;font-size:15px}
+#gym .gl-mi small{display:block;font-size:12.5px;color:var(--mut);font-weight:600}
+#gym .gl-mi>i{font-style:normal;font-weight:800;color:var(--brand);font-size:16px}
+#gym .gl-note{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+#gym .gl-note b{display:block;font-size:15px}#gym .gl-note small{font-size:12.5px;color:var(--mut)}
+#gym .gl-note textarea{min-height:60px;border-radius:12px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:#fff;font:500 16px var(--f);padding:10px;resize:vertical}
+#gym .rt-in .card{margin:0}
+body.glsheet #gym{overflow:hidden}
+#gym .glv-i svg{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+@media (max-width:359px){#gym .gl-seg button{font-size:12.5px;padding:0 2px;line-height:1.1}#gym .gl-tools{grid-template-columns:repeat(2,minmax(0,1fr))}#gym .gl-stp{grid-template-columns:52px minmax(0,1fr) 52px}#gym .gl-pm{width:52px;height:52px}#gym .gl-num input,#gym .gl-num b{font-size:44px}#gym .gl-tr{width:52px;height:52px}#gym .gl-tbt b{font-size:42px}#gym .gl-br{grid-template-columns:14px minmax(0,1fr) 78px 44px}}
+</style>
+<style id="cf-flow3">
+/* Ablauf-Übersicht vor dem Training */
+.fo .ck-sc{display:flex;flex-direction:column}
+.fo-e{margin:6px 2px 0;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9fb3ff}
+.fo-s{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:14px;align-items:center;width:100%;text-align:left;min-height:84px;padding:14px 16px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.fo-s:disabled{cursor:default;opacity:.62}
+.fo-n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:900 20px var(--d);background:color-mix(in srgb,var(--brand) 22%,transparent);color:#c9d4ff}
+.fo-n svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.6}
+.fo-s.done .fo-n{background:rgba(67,192,138,.2);color:#7fe0b4}
+.fo-s.open{border-color:color-mix(in srgb,var(--brand) 70%,transparent);box-shadow:0 18px 40px -22px var(--brand)}
+.fo-s.open .fo-n{background:var(--brand);color:#fff}
+.fo-t{min-width:0;display:flex;flex-direction:column;gap:3px}
+.fo-t b{font:900 18px var(--d)}
+.fo-t small{font-size:13px;color:var(--ink2);line-height:1.35}
+.fo-a{font-size:13px;font-weight:800;color:var(--ink2);white-space:nowrap}
+.fo-s.open .fo-a{color:#c9d4ff}.fo-s.done .fo-a{color:#7fe0b4}
+.fo-a svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.fo-l{align-self:center;width:2px;height:20px;margin:4px 0;background:var(--line2)}
+.fl-go:disabled{opacity:.55;filter:saturate(.6);cursor:default}
+</style>
 <style id="cf-pz2">
 /* Pausen-Modus: Zusatzkarten */
 #view .pzx{display:flex;flex-direction:column;gap:10px}
@@ -4246,7 +4446,7 @@ const PICK={'1-3-0':{r:5,rpe:7,m:'closest'},'2-3-0':{r:3,rpe:7.5,m:'closest'},'3
 // Empfehlungen rechnen mit dem Modernized Load/RIR Chart (RPE-Rechner); außerhalb der Tabelle Rückfall auf die alte Formel
 function e1L(kg,r,rpe){if(!kg||!r)return null;const p=lrcPct(r,rpe==null?10:rpe);return p?kg/(p/100):e1rm(kg,r,rpe)}
 const kgFor=(e1,r,rpe)=>{const p=lrcPct(r,rpe==null?10:rpe);return p?e1*p/100:e1/e1rm(1,r,rpe)};
-function e1OfL(s,bl){const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1L(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
+function e1OfL(s,bl){if(s&&(s.band||s.lt))return null;const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1L(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
 function kindOf(bl){if(bl.s===1||/in jedem Satz/.test(bl.x))return 'each';if(/ersten Satz/.test(bl.x))return 'first';if(/im Schnitt/.test(bl.x))return 'avg';if(/(letzten|\d\.) Satz/.test(bl.x))return 'last';return 'same'}
 function repsFor(w,d,b){const bl=P[w][d].b[b];
  if(/^\d+$/.test(bl.r))return {r:+bl.r,disp:bl.r};
@@ -4254,7 +4454,7 @@ function repsFor(w,d,b){const bl=P[w][d].b[b];
  if(bl.r==='9/13'){const r=pnum(setOf(1,1,5,0).r);if(r==null)return {r:9,disp:'9',why:'W2-AMRAP fehlt → 3×9 angesetzt'};return r<18?{r:9,disp:'9',why:`W2-AMRAP ${r} Wdh (unter 18) → 3×9`}:{r:13,disp:'13',why:`W2-AMRAP ${r} Wdh (18+) → 3×13`}}
  if(bl.r==='AMRAP')return {r:null,disp:'max',amrap:true,calc:bl.e==='idc'&&w===0?12:null};
  return {r:null,disp:bl.r}}
-function e1Of(s,bl){const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1rm(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
+function e1Of(s,bl){if(s&&(s.band||s.lt))return null;const kg=pnum(s.kg),r=pnum(s.r);if(!kg||!r)return null;return e1rm(kg,r,pnum(s.rpe)??bl.rpe??(r===1?9:10))}
 function estE1(ex,w,d,b,i){const L=log(w,d);
  if(L){let best=null;P[w][d].b.forEach((bl,B)=>{if(bl.e!==ex)return;(L.b[B]||[]).forEach((s,I)=>{if(B>b||(B===b&&I>=i))return;const e=e1OfL(s,bl);if(e)best={e1:e,src:'heute, Satz davor'}})});if(best)return best}
  for(let x=w*ND()+d-1;x>=0;x--){const W=Math.floor(x/ND()),D=x%ND();const L2=log(W,D);if(!L2)continue;let mx=null;
@@ -4680,15 +4880,15 @@ const GWU_UP=[['ubcc','Upper Back Cat/Cow','1 × 10 in beide Richtungen','Vierf�
 function wuAuto(w,d){let lo=0,up=0,first=null;P[w][d].b.forEach(bl=>{const g=(EX[bl.e]||{}).g;const n=bl.s||1;if(g==='sq'||g==='dl'){lo+=n;first=first||'lo'}else if(g==='bp'){up+=n;first=first||'up'}});return lo>up?'lo':up>lo?'up':(first||'lo')}
 function wuSide(w,d){const L=log(w,d);return (L&&L.gwus)||wuAuto(w,d)}
 function wuHTML(){const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const g=L.gwu||{};const side=wuSide(w,d),auto=wuAuto(w,d);const GWU=side==='up'?GWU_UP:GWU_LO;const n=GWU.filter(x=>g[x[0]]).length;
- return `<div class="ck-in fl"><div class="fl-top"><button type="button" class="fl-bk" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${n}/${GWU.length}</span></div>
+ return `<div class="ck-in fl"><div class="fl-top"><button type="button" class="fl-bk" ${CK.go?'data-ckov':'data-ckclose'} aria-label="${CK.go?'Zurück zur Übersicht':'Schließen'}"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(P[w][d].f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${n}/${GWU.length}</span></div>
  <div class="ck-sc"><h1 class="fl-h">Aufwärmen</h1><p class="fl-p">Mach diese Aktivierungsübungen vor dem Check-in. So spürst du deinen Körper schon und beantwortest die Fragen genauer.</p><div class="rpx-tabs wu-side"><button type="button" data-wuside="lo" aria-pressed="${side==='lo'}">Fokus Unterkörper</button><button type="button" data-wuside="up" aria-pressed="${side==='up'}">Fokus Oberkörper</button></div><p class="wu-auto">${side===auto?'Automatisch gewählt – heute liegt der Schwerpunkt auf dem '+(auto==='up'?'Oberkörper (Bankdrücken)':'Unterkörper (Kniebeuge/Kreuzheben)')+'.':'Von dir umgestellt · automatisch wäre „'+(auto==='up'?'Oberkörper':'Unterkörper')+'“.'}</p><p class="fl-tag">Allgemeines Aufwärmen · ergänzend, nicht Teil von Canditos Plan</p>
   ${GWU.map(([k,t,rx,info])=>`<div class="wuq ${g[k]?'ok':''} ${S.ui.wui===k?'open':''}"><div class="wuq-r"><div class="wuq-m"><b>${t}</b><small>${rx}</small></div><button type="button" class="wuq-i" data-wui="${k}" aria-label="Info zu ${esc(t)}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button><button type="button" class="wuq-c" data-wuck="${k}" aria-pressed="${!!g[k]}" aria-label="${esc(t)} erledigt"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>${S.ui.wui===k?`<p class="wuq-t">${info}</p>`:''}</div>`).join('')}
   <p class="ck-note" style="margin:12px 2px 0">Die übungsspezifischen Aufwärmsätze mit Gewicht findest du weiterhin im Gym-Modus (Flammen-Symbol).</p></div>
- <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckstep="1"><span><b>Weiter</b><small>zum Readiness-Check-in</small></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>`})}
+ <div class="fl-foot">${CK.wuOnly?'<button type="button" class="hbtn fl-go" data-ckclose><span><b>Fertig</b><small>zurück zum Gym</small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>':''}<button type="button" class="hbtn fl-go" ${CK.wuOnly?'hidden':''} data-ckstep="1" ${n<GWU.length?'disabled aria-disabled="true"':''}><span><b>${n<GWU.length?'Noch '+(GWU.length-n)+' von '+GWU.length+' abhaken':'Weiter'}</b><small>${n<GWU.length?'dann geht es zum Readiness-Check-in':'Schritt 2 · Readiness-Check-in'}</small></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>`})}
 document.addEventListener('click',e=>{if(!CK)return;const i=e.target.closest('[data-wui]');if(i){e.stopPropagation();S.ui.wui=S.ui.wui===i.dataset.wui?null:i.dataset.wui;ckRefresh();return}
  const sd=e.target.closest('[data-wuside]');if(sd){e.stopPropagation();const v=sd.dataset.wuside;ckSave(L=>{if(v===withProg(CK.pid,()=>wuAuto(CK.w,CK.d)))delete L.gwus;else L.gwus=v});ckRefresh();return}
  const c=e.target.closest('[data-wuck]');if(c){e.stopPropagation();ckSave(L=>{if(!L.gwu)L.gwu={};if(L.gwu[c.dataset.wuck])delete L.gwu[c.dataset.wuck];else L.gwu[c.dataset.wuck]=1});ckRefresh()}},true);
-function ckHTML(){if(CK.rest)return ckRestHTML();if(CK.go&&!CK.step)return wuHTML();const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
+function ckHTML(){if(CK.rest)return ckRestHTML();if(CK.wuOnly)return wuHTML();if(CK.go&&CK.ov)return ckOvHTML();if(CK.go&&!CK.step)return wuHTML();const {w,d}=CK;return withProg(CK.pid,()=>{const L=log(w,d,true);const f=L.feel||{};const wv=L.whoop||{};const bw=pnum(L.bw)??curBw();
  const card=(k,t,sub,lo,hi,neg)=>`<div class="ck-c ckqc"><p class="ckq">${CKQ[k]||t}</p>${sub&&!CKQ[k]?`<small class="ckqs">${sub}</small>`:''}${ckBlocks(k,f[k],neg,null,lo,hi)}</div>`;
  const nA=CKG.filter(q=>f[q[0]]!=null).length,nT=CKG.length;const inj=!!L.inj;const op=CK.opt||(CK.opt={});
  const ws=WF.map(([k,l,u,mn,mx])=>`<label class="ck-wf"><small>${l}${u?' · '+u:''}</small><input inputmode="decimal" data-ckw="${k}" value="${wv[k]!=null?nf(wv[k],1):''}" placeholder="–"></label>`).join('');
@@ -4703,8 +4903,26 @@ function ckHTML(){if(CK.rest)return ckRestHTML();if(CK.go&&!CK.step)return wuHTM
   <details class="ck-opt" data-ckopt="sore" ${op.sore?'open':''}><summary><b>Muskelkater</b><small>optional · ${CKS.filter(q=>f[q[0]]!=null).length?CKS.filter(q=>f[q[0]]!=null).length+'/'+CKS.length+' beantwortet':'5 Muskelgruppen'}</small></summary>${CKS.map(([k,t,sub])=>card(k,t,sub,'stark','keiner',1)).join('')}</details>
   <p class="ck-note" style="margin:10px 2px 0">Dein Readiness-Wert entsteht aus den vier Kernfragen. Reine Selbsteinschätzung – Programm, Vorgaben und Lasten bleiben unverändert.</p>
  </div>
- <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckgo><span><b>${CK.go?'Training starten':'Speichern'}</b><small>${nA}/${nT} beantwortet${CK.go?' · weiter in den Gym-Modus':''}</small></span><svg viewBox="0 0 24 24"><path d="${CK.go?'M8 5v14l11-7z':'M5 12.5l4.5 4.5L19 7'}"/></svg></button>${CK.go?'<button type="button" class="fl-skip" data-ckskip>Check-in überspringen</button>':''}</div></div>`})}
-function ckOpen(pid,w,d,go){CK={pid,w,d,go,step:0};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}
+ <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckgo ${CK.go&&nA<nT?'disabled aria-disabled="true"':''}><span><b>${CK.go?(nA<nT?'Noch '+(nT-nA)+' Frage'+(nT-nA===1?'':'n')+' beantworten':'Training starten'):'Speichern'}</b><small>${nA}/${nT} beantwortet${CK.go?' · Schritt 3 · Gym':''}</small></span><svg viewBox="0 0 24 24"><path d="${CK.go?'M8 5v14l11-7z':'M5 12.5l4.5 4.5L19 7'}"/></svg></button></div></div>`})}
+/* Ablauf vor dem Training: 1 Allgemeines Aufwärmen → 2 Readiness-Check-in → 3 Gym. Jeder Schritt erst nach dem vorherigen. */
+function ckFlowDone(){return withProg(CK.pid,()=>{const {w,d}=CK;const L=log(w,d,true);const g=L.gwu||{};const side=wuSide(w,d);const GWU=side==='up'?GWU_UP:GWU_LO;const f=L.feel||{};
+ const wn=GWU.filter(x=>g[x[0]]).length,cn=CKG.filter(q=>f[q[0]]!=null).length;return {wu:wn>=GWU.length,ck:wn>=GWU.length&&cn>=CKG.length,wn,wt:GWU.length,cn,ct:CKG.length}})}
+function ckOvHTML(){const {w,d}=CK;const F=ckFlowDone();return withProg(CK.pid,()=>{const day=P[w][d];
+ const st=(n,t,sub,done,open,act)=>`<button type="button" class="fo-s ${done?'done':open?'open':'lock'}" ${open||done?`data-ckovgo="${act}"`:'disabled aria-disabled="true"'}><span class="fo-n">${done?'<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>':n}</span><span class="fo-t"><b>${t}</b><small>${sub}</small></span><span class="fo-a">${done?'erledigt':open?'Starten ›':'<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/></svg>'}</span></button>`;
+ return `<div class="ck-in fl fo"><div class="fl-top"><button type="button" class="fl-bk" data-ckclose aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div><b>${esc(day.f)}</b><small>W${w+1} · ${DAYS[d].tag}</small></div><span class="fl-n">${(F.wu?1:0)+(F.ck?1:0)}/2</span></div>
+ <div class="ck-sc"><p class="fo-e">Training starten</p><h1 class="fl-h">So läuft es ab</h1>
+  ${st(1,'Allgemeines Aufwärmen',F.wu?F.wt+' von '+F.wt+' Übungen abgehakt':F.wn+' von '+F.wt+' Übungen · Aktivierung vor dem Check-in',F.wu,!F.wu,1)}
+  <span class="fo-l" aria-hidden="true"></span>
+  ${st(2,'Readiness-Check-in',F.ck?'alle '+F.ct+' Fragen beantwortet':F.wu?F.cn+' von '+F.ct+' Fragen beantwortet':'erst nach dem Aufwärmen',F.ck,F.wu&&!F.ck,2)}
+  <span class="fo-l" aria-hidden="true"></span>
+  ${st(3,'Gym',F.ck?'alle Übungen als Liste · los geht’s':'erst nach dem Check-in',false,F.ck,3)}
+  <p class="ck-note" style="margin:14px 2px 0">Allgemeines Aufwärmen ist ergänzend, nicht Teil von Canditos Plan. Der Check-in ist reine Selbsteinschätzung – Vorgaben und Lasten bleiben unverändert.</p></div>
+ <div class="fl-foot"><button type="button" class="hbtn fl-go" data-ckovgo="${F.ck?3:F.wu?2:1}"><span><b>${F.ck?'Zum Gym':F.wu?'Weiter mit Schritt 2':'Mit Schritt 1 starten'}</b><small>${F.ck?'Schritt 3 von 3':F.wu?'Readiness-Check-in':'Allgemeines Aufwärmen'}</small></span><svg viewBox="0 0 24 24"><path d="${F.ck?'M8 5v14l11-7z':'M5 12h14M13 6l6 6-6 6'}"/></svg></button></div></div>`})}
+document.addEventListener('click',e=>{if(!CK||!CK.go)return;const t=e.target.closest('#ckin [data-ckov],#ckin [data-ckovgo]');if(!t)return;e.stopPropagation();
+ if(t.dataset.ckov!=null){CK.ov=true;ckRefresh();return}const a=+t.dataset.ckovgo,F=ckFlowDone();
+ if(a===1){CK.ov=false;CK.step=0}else if(a===2&&F.wu){CK.ov=false;CK.step=1}else if(a===3&&F.ck){ckClose(true);return}else return;
+ const el=document.getElementById('ckin');el.innerHTML=ckHTML();const sc=el.querySelector('.ck-sc');if(sc)sc.scrollTop=0},true);
+function ckOpen(pid,w,d,go){CK={pid,w,d,go,step:0,ov:!!go};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();ckSteps(el);el.hidden=false;document.body.classList.add('ckopen')}
 function ckRefresh(){const el=document.getElementById('ckin');if(!el||!CK)return;const sc=el.querySelector('.ck-sc');const y=sc?sc.scrollTop:0;el.innerHTML=ckHTML();ckSteps(el);const s2=el.querySelector('.ck-sc');if(s2)s2.scrollTop=y}
 function ckSteps(el){return;const sc=el.querySelector('.ck-sc');if(!sc)return;const kids=[...sc.children];const groups=[];let cur=null;
  kids.forEach(k=>{if(k.matches('p.ck-h')||!cur){cur={t:k.matches('p.ck-h')?k.textContent.trim():'',els:[]};groups.push(cur)}cur.els.push(k)});
@@ -4722,7 +4940,7 @@ document.addEventListener('click',e=>{if(!CK)return;const t=e.target.closest('#c
  if(t.dataset.ck){const [k,v]=t.dataset.ck.split('|');ckSave(L=>{if(!L.feel)L.feel={};if(L.feel[k]===+v)delete L.feel[k];else L.feel[k]=+v});ckRefresh();return}
  if(t.dataset.ckbw){ckSave(L=>{const b=pnum(L.bw)??curBw()??pnum(S.meta.bw)??80;L.bw=nf(Math.max(30,b+ +t.dataset.ckbw),1)});ckRefresh();return}
  if(t.dataset.ckinj!=null){ckSave(L=>{if(+t.dataset.ckinj)L.inj=1;else delete L.inj});ckRefresh();return}
- if(t.dataset.ckgo!=null){ckClose(true);return}
+ if(t.dataset.ckgo!=null){if(CK.go&&!ckFlowDone().ck)return;ckClose(true);return}
  if(t.dataset.ckskip!=null||t.dataset.ckclose!=null){ckClose(t.dataset.ckskip!=null);return}});
 document.addEventListener('toggle',e=>{if(!CK)return;const d=e.target;if(d&&d.matches&&d.matches('details[data-ckopt]')){if(!CK.opt)CK.opt={};CK.opt[d.dataset.ckopt]=d.open}},true);
 document.addEventListener('change',e=>{if(!CK)return;const t=e.target;
@@ -5613,7 +5831,7 @@ function renderTrain(){const {w,d}=S.ui,day=P[w][d],D=DAYS[d],L=log(w,d),st=dayS
 
 /* ---------- Progress ---------- */
 function allSets(){const out=[];for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const L=log(w,d);if(!L)continue;
- P[w][d].b.forEach((bl,b)=>(L.b[b]||[]).forEach((s,i)=>{const kg=pnum(s.kg),r=pnum(s.r);if(kg&&r)out.push({w,d,b,i,e:bl.e,g:EX[bl.e].g,kg,r,rpe:pnum(s.rpe),trpe:bl.rpe,ok:!!s.ok,rest:s.rest,e1:e1rm(kg,r,pnum(s.rpe))})}))}return out}
+ P[w][d].b.forEach((bl,b)=>(L.b[b]||[]).forEach((s,i)=>{const kg=pnum(s.kg),r=pnum(s.r);if(kg&&r)out.push({w,d,b,i,e:bl.e,g:EX[bl.e].g,kg,r,rpe:pnum(s.rpe),trpe:bl.rpe,ok:!!s.ok,rest:s.rest,e1:s.band||s.lt?null:e1rm(kg,r,pnum(s.rpe))})}))}return out}
 /* ===================== Plan-Treue · RPE-Kalibrierung · Rekorde · Technik ===================== */
 const GN={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};
 function deDay(t){const M={Monday:'Montag',Tuesday:'Dienstag',Wednesday:'Mittwoch',Thursday:'Donnerstag',Friday:'Freitag',Saturday:'Samstag',Sunday:'Sonntag'};return String(t||'').replace(/\bDay\b/g,'Tag').replace(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/g,m=>M[m])}
@@ -7272,13 +7490,13 @@ async function openGym(){const {w,d}=S.ui;const L=log(w,d,true);
  try{if(navigator.wakeLock){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;setTimeout(async()=>{if(!$('#gym').hidden&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}},500)})}}catch(e){wake=null}}
 function closeGym(silent){try{const xi=document.getElementById('gxi');if(xi&&!xi.hidden){xi.hidden=true;document.body.classList.remove('gxiopen')}}catch(e){}if(typeof G!=='undefined'){G.plan=false;G.wu=false;G.rc=null;G.hi=false;G.rpo=false}$('#gym').hidden=true;document.body.classList.remove('gymopen');document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;if(!silent)render()}
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&!$('#gym').hidden&&navigator.wakeLock){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
-const PLS=[25,20,15,10,5,2.5,1.25,0.5,0.25];
+const PLS=[50,25,20,15,10,5,2.5,2,1.5,1.25,1,0.5,0.25,0.125];const PLS_NEW=new Set([50,2,1.5,1,0.125]);
 function invOf(){const v=S.meta.inv;return v&&Object.keys(v).length?v:null}
-function plates(kg){const bar=S.meta.bar||20;let side=(kg-bar)/2;if(!(side>0))return [];const inv=invOf();const out=[];for(const p of PLS){if(!inv&&p<1.25)continue;let n=inv?Math.floor((inv[p]||0)/2):99;while(n>0&&side>=p-1e-6){out.push(p);side-=p;n--}}if(side>1e-6)out.miss=Math.round(side*2*100)/100;return out}
+function plates(kg,bar0){const bar=bar0!=null?bar0:(S.meta.bar||20);let side=(kg-bar)/2;if(!(side>0))return [];const inv=invOf();const out=[];for(const p of PLS){if(!inv&&(p<1.25||PLS_NEW.has(p)))continue;let n=inv?Math.floor((inv[p]||0)/2):99;while(n>0&&side>=p-1e-6){out.push(p);side-=p;n--}}if(side>1e-6)out.miss=Math.round(side*2*100)/100;return out}
 function loadable(kg){const pl=plates(kg);return !pl.miss}
 function nearLoad(kg){const st=0.25;let lo=null,hi=null;for(let d=st;d<=12.5;d+=st){if(lo==null&&kg-d>=(S.meta.bar||20)&&loadable(Math.round((kg-d)*100)/100))lo=Math.round((kg-d)*100)/100;if(hi==null&&loadable(Math.round((kg+d)*100)/100))hi=Math.round((kg+d)*100)/100;if(lo!=null&&hi!=null)break}return {lo,hi}}
 function plMissHTML(kg,pl){if(!pl||!pl.miss)return '';const n=nearLoad(kg);return `<p class="gz-miss">Hinweis: mit deinen Scheiben nicht steckbar (es fehlen ${nf(pl.miss,2)} kg)${n.lo!=null||n.hi!=null?` · nächste steckbare Last: ${[n.lo,n.hi].filter(x=>x!=null).map(x=>nf(x,2)+' kg').join(' / ')}`:''}. Canditos Vorgabe bleibt unverändert – die App passt nichts an.</p>`}
-const PC={25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28],0.5:['#9aa0a8',24],0.25:['#7d838c',22]};
+const PC={50:['#1c1c1c',68],2:['#2b62c9',30],1.5:['#e2b21c',28],1:['#2f9a5a',26],0.125:['#7d838c',20],25:['#d8262c',64],20:['#2b62c9',64],15:['#e2b21c',56],10:['#2f9a5a',50],5:['#eeeeee',40],2.5:['#2a2a2a',34],1.25:['#b8bcc2',28],0.5:['#9aa0a8',24],0.25:['#7d838c',22]};
 function curVals(){const {w,d}=S.ui;const L=log(w,d,true);const s=L.b[G.b][G.i];const bl=P[w][d].b[G.b];const lt=lastTime(w,d,G.b);
  const sg=sugg(w,d,G.b,G.i);const kg=pnum(s.kg)??sg.kg??(lt?lt.kg:null);
  const r=pnum(s.r)??sg.r??(G.i>0?pnum(L.b[G.b][G.i-1].r):null);
@@ -7696,10 +7914,10 @@ function gxiDrag(el){const pn=el.querySelector('.gxi-p0'),sc=el.querySelector('.
 document.addEventListener('click',e=>{const o=e.target.closest('[data-exinfo]');if(o&&o.closest('#gym')){e.stopPropagation();exInfoOpen(o.dataset.exinfo||'v');return}
  if(e.target.closest('[data-gxiclose]')){exInfoClose();return}const t=e.target.closest('[data-gxitab]');if(t){GXI.tab=t.dataset.gxitab;exInfoRefresh();const sc=document.querySelector('#gxi .gxi-sc');if(sc)sc.scrollTop=0}},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const el=document.getElementById('gxi');if(el&&!el.hidden){e.stopImmediatePropagation();exInfoClose()}}},true);
-function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
+function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(day.b.length&&gymList()){renderGymL();return}if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
  const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e];$('#gym').dataset.hy=bl.h||'';const calm=L.b[G.b].slice(0,bl.s).some(x=>x.ok);
  const strip=day.b.map((x,b)=>{const all=L.b[b].slice(0,x.s).every(z=>z.ok);return `<span class="${b===G.b?'c':all?'d':''}"></span>`}).join('');
- const pl=kg?plates(kg):[];const allDone=day.b.every((x,b)=>L.b[b].slice(0,x.s).every(z=>z.ok));
+ const pl=kg?plates(kg,barFor(bl.e)):[];const allDone=day.b.every((x,b)=>L.b[b].slice(0,x.s).every(z=>z.ok));
  const wz=L.whoop&&L.whoop.rec!=null?WZ(L.whoop.rec):null;
  $('#gym').innerHTML=`<div class="gym-in ${calm?'calm':''}">
   <div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -7737,6 +7955,174 @@ function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(!day.b.length){$(
   </div></div>
  </div>${gymRestHTML()}`;if(G.slide){const dir=G.slide;G.slide=0;slideIn(dir)}else bbMount();gymPost()}
 
+
+/* ===================== Gym als Liste (Standard-Ansicht, freigegeben 22.10.2026) =====================
+   Alle Übungen untereinander, Satz antippen → Satz-Fenster. Bucht über denselben Weg wie der bisherige Gym-Modus
+   (data-g="log": Doppelbuchungsschutz, Bestwerte, Pausen-Timer). Neue, freiwillige Felder:
+   S.meta.gymView ('list'|'classic'), S.meta.plc (Scheibenrechner an/aus), S.meta.barEx {Übung: kg}, S.meta.bands [{id,n,kg,c}],
+   je Satz s.lt ('bw'|'band'), s.add (Zusatz-/Unterstützungs-kg), s.band (Band-ID). Bänder/Körpergewicht zählen nicht ins e1RM. */
+function gymList(){return S.meta.gymView!=='classic'}
+function barFor(e){const m=S.meta.barEx;return (m&&e&&m[e]!=null)?m[e]:(S.meta.bar||20)}
+const BANDS0=[{id:'micro',n:'Micro',kg:7,c:'#f6d65e'},{id:'mini',n:'Mini',kg:16,c:'#e8262f'},{id:'mmini',n:'Monster Mini',kg:23,c:'#2b62c9'},{id:'light',n:'Light',kg:30,c:'#2f9a5a'},{id:'avg',n:'Average',kg:45,c:'#9aa0a8'},{id:'strong',n:'Strong',kg:63,c:'#1c1c1c'}];
+function bandsOf(){return Array.isArray(S.meta.bands)&&S.meta.bands.length?S.meta.bands:BANDS0}
+const bandById=id=>bandsOf().find(x=>x.id===id);
+const GLI={info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',swap:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>',dots:'<circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/>',back:'<path d="M15 5l-7 7 7 7"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',
+ fire:'<path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-8z"/>',hist:'<path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5M12 8v4l3 2"/>',ana:'<path d="M4 19h16M7 15l3-4 3 2 5-7"/>',calc:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',body:'<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-4 7M12 13l4 7M6 10h12"/>',doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',plate:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>',
+ clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/>',note:'<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/>',view:'<path d="M4 7h16M4 12h10M4 17h7"/>',reset:'<path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/>',check:'<path d="M5 12.5l4.5 4.5L19 7"/>',lock:'<rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/>'};
+const gli=(k,cls)=>`<svg class="${cls||'gli'}" viewBox="0 0 24 24" aria-hidden="true">${GLI[k]}</svg>`;
+// Anzeige eines gespeicherten Satzes
+function glSetTxt(s){const r=pnum(s.r),rp=pnum(s.rpe);const tail=`${r!=null?' × '+nf(r):''}${rp!=null?' @ '+nf(rp):''}`;
+ if(s.lt==='bw'){const a=pnum(s.add);return `KG${a?(a>0?' + ':' − ')+nf(Math.abs(a),2)+' kg':''}${tail}`}
+ if(s.lt==='band'){const b=bandById(s.band);return `${b?esc(b.n):'Band'}${tail}`}
+ const kg=pnum(s.kg);return `${kg!=null?nf(kg,2)+' kg':'–'}${tail}${s.band&&bandById(s.band)?' + Band':''}`}
+function glTarget(w,d,b,i){const bl=P[w][d].b[b];const sg=sugg(w,d,b,i);const em=sg.kg!=null&&sg.t!=='v';
+ if(em)return {v:`≈ ${nf(sg.kg,2)} kg`,tag:'<span class="gl-tg em"><i></i>Empfehlung</span>',sg};
+ if(sg.kg!=null)return {v:`${nf(sg.kg,2)} kg`,tag:'<span class="gl-tg vo"><i></i>Vorgabe laut Plan</span>',sg};
+ return {v:bl.rpe!=null?(bl.rpeEst?'≈ ':'')+'RPE '+nf(bl.rpe):'Last frei',tag:'',sg}}
+function glRuleShort(bl){const R=setRule(bl);return R.mode==='none'?'Last vorgegeben · RPE optional':R.title}
+function glSessBtn(w,d,L){return !L.start&&!L.done?`<button type="button" class="gl-chip" data-sstart aria-label="Trainings-Timer starten"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Start</button>`:L.done?`<span class="gl-chip">${fmtHMS(sessEl(L))}</span>`:`<button type="button" class="gl-chip ${L.pausedAt?'paused':''}" data-sp aria-label="${L.pausedAt?'Trainings-Timer fortsetzen':'Trainings-Timer pausieren'}"><b data-sesst="${w}-${d}">${fmtHMS(sessEl(L))}</b></button>`}
+function renderGymL(){const {w,d}=S.ui,day=P[w][d];const L=log(w,d,true);
+ day.b.forEach((bl,b)=>{if(!L.b[b])L.b[b]=[];while(L.b[b].length<bl.s)L.b[b].push({})});
+ if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;
+ let jump=false;if(G.closeAt&&Date.now()-G.closeAt<2500){G.sheet=null;G.shFrom=null;jump=true;if(T.on&&!T.gmin){T.gmin=true;saveT()}}G.closeAt=0;G.slide=0;
+ const nx=nextOpen(w,d,0,-1);const tot=day.b.reduce((a,x)=>a+x.s,0),dn=day.b.reduce((a,x,b)=>a+L.b[b].slice(0,x.s).filter(z=>z.ok).length,0);
+ const allDone=dn>=tot;$('#gym').dataset.hy='';
+ const cards=day.b.map((bl,b)=>{const ex=EX[bl.e]||{n:bl.e};const kg0=(()=>{try{const sg=sugg(w,d,b,0);return pnum(L.b[b][0].kg)??sg.kg}catch(e){return null}})();
+  const wl=warmups(w,d,b,kg0);const wd=(L.wu&&L.wu[b])||[];const wn=wl?wl.filter((_,j)=>wd[j]).length:0;const sw=swOpts(bl.e0||bl.e);
+  const rows=Array.from({length:bl.s},(_,i)=>{const s=L.b[b][i]||{};const cur=nx&&nx.b===b&&nx.i===i;const T0=glTarget(w,d,b,i);
+   if(s.ok)return `<button type="button" class="gl-row ok" data-gls="${b}|${i}" aria-label="Satz ${i+1} ansehen oder ändern"><span class="gl-n">${i+1}</span><span class="gl-v mut">${T0.v}</span><span class="gl-d">${glSetTxt(s)} <i>›</i></span></button>`;
+   return `<div class="gl-row ${cur?'cur':''}"><span class="gl-n">${i+1}</span><span class="gl-v"><b>${T0.v}</b> <small>× ${esc(T0.sg.rdisp)}</small>${cur?T0.tag:''}</span><button type="button" class="gl-add ${cur?'':'off'}" data-gls="${b}|${i}" aria-label="Satz ${i+1} eintragen">+</button></div>`}).join('');
+  return `<section class="gl-ex ${allDoneB(L,bl,b)?'done':''}" id="glx-${b}">
+   <div class="gl-eh"><h2 class="gl-en">${esc(ex.n)}${bl.opt?' <small>optional</small>':''}</h2><button type="button" class="gl-ib" data-glb="${b}" data-exinfo aria-label="Übungsinfo ${esc(ex.n)}">${gli('info')}</button>${sw?`<button type="button" class="gl-ib" data-swap="${w}-${d}-${b}" aria-label="${esc(ex.n)} tauschen">${gli('swap')}</button>`:''}</div>
+   <div class="gl-tags">${bl.h?`<span class="gl-tg hy-${bl.h}"><i></i>Hype ${HYLV[bl.h]}</span>`:''}<span class="gl-tg">${esc(glRuleShort(bl))}</span>${bl.e0&&bl.e!==bl.e0?'<span class="gl-tg">getauscht</span>':''}</div>
+   <nav class="gl-tools" aria-label="Werkzeuge ${esc(ex.n)}">${wl?`<button type="button" data-glb="${b}" data-gwuopen class="${wl.length&&wn>=wl.length?'ok':''}">${gli('fire','gli wu')}<span>Aufwärmen${wl.length?' '+wn+'/'+wl.length:''}</span></button>`:''}<button type="button" data-glb="${b}" data-hiopen>${gli('hist')}<span>Verlauf</span></button><button type="button" data-glb="${b}" data-ex="${bl.e}">${gli('ana')}<span>Analyse</span></button><button type="button" data-glb="${b}" data-rcopen>${gli('calc')}<span>RPE-Planer</span></button></nav>
+   <p class="gl-x">${esc(bl.x)}</p>${rows}</section>`}).join('');
+ $('#gym').innerHTML=`<div class="gym-in gl">
+  <div class="gl-top"><button type="button" class="gl-cb" data-g="close" aria-label="Gym schließen">${gli('back')}</button><span style="flex:1"></span>${glSessBtn(w,d,L)}<button type="button" class="gl-cb" data-glsh="menu" aria-label="Menü der Einheit">${gli('dots')}</button></div>
+  <div class="gl-hd"><h1>${DAYS[d].tag} · ${esc(day.f)}</h1><p>W${w+1} · ${esc(WEEKS[w])} · ${dn} von ${tot} Sätzen</p>${saveHTML(key(w,d))}</div>
+  ${cards}
+  <button type="button" class="gl-fin ${allDone?'on':''}" data-g="finish">${gli('check')}${allDone?'Training abschließen':'Training beenden'}</button>
+  <div class="gl-pad"></div>
+ </div>${T.on?glTimerBar():''}${G.sheet?glSheet():''}${T.on&&!T.gmin?gymRestHTML():''}`;
+ document.body.classList.toggle('glsheet',!!G.sheet);if(jump)requestAnimationFrame(()=>{const n=nextOpen(w,d,0,-1);const el=document.getElementById('glx-'+(n?n.b:G.b));if(el){const g=$('#gym');g.scrollTop=Math.max(0,el.offsetTop-90)}});if(G.sheet==='set')requestAnimationFrame(()=>{const sc=document.querySelector('#gym .gls-sc');if(sc&&G.shY){sc.scrollTop=G.shY;G.shY=0}})}
+function allDoneB(L,bl,b){return L.b[b].slice(0,bl.s).every(z=>z.ok)}
+function glTimerBar(){const left=tLeft(),over=left<=0,f=T.total?Math.max(0,Math.min(1,left/T.total)):0;const ni=nextInfo();
+ const pl=ni&&ni.kg&&eqType(ni.bl.e)==='bb'?plates(ni.kg,barFor(ni.bl.e)):[];
+ return `<div class="gl-tb ${over?'over':''} ${T.paused?'paused':''}" role="region" aria-label="Satzpause"><button type="button" class="gl-tbh" data-t="gmax" aria-label="Pausen-Timer groß öffnen"><span class="grip" aria-hidden="true"></span></button>
+  <div class="gl-tbr"><button type="button" class="gl-tbt" data-t="gmax" aria-label="Pausen-Timer groß öffnen"><b data-tt>${(over?'+':'')+mmss(Math.abs(left))}</b><small><span data-tstate>${T.paused?'Pausiert':over?'Überzeit':'Restliche Pause'}</span> · von ${mmss(T.total)}</small></button>
+   <button type="button" class="gl-tr p" data-t="add" data-v="15" aria-label="15 Sekunden mehr">+15</button><button type="button" class="gl-tr m" data-t="add" data-v="-15" aria-label="15 Sekunden weniger">−15</button><button type="button" class="gl-tr s" data-t="skip" aria-label="Pause beenden"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button></div>
+  ${ni?`<p class="gl-tbn">Nächster: <b>${esc(ni.ex.n)} · Satz ${ni.c.i+1}</b>${ni.kg?' · '+nf(ni.kg,2)+' kg':''}${pl.length?' · je Seite '+pl.map(p=>nf(p,2)).join(' + '):''}</p>`:''}
+  <span class="gl-tbl"><i data-tlin style="width:${over?100:(1-f)*100}%"></i></span></div>`}
+function glSheet(){const k=G.sheet;const body=k==='set'?glSetHTML():k==='bar'?glBarHTML():k==='inv'?glInvHTML():k==='band'?glBandHTML():k==='rt'?glRtHTML():k==='menu'?glMenuHTML():'';
+ return `<div class="gls ${k==='set'?'full':''}" role="dialog" aria-modal="true"><div class="gls-bg" data-glx></div><div class="gls-p ${k}">${body}</div></div>`}
+const glSw=(on,attr,lbl)=>`<button type="button" class="gl-sw ${on?'on':''}" ${attr} role="switch" aria-checked="${on}" aria-label="${lbl}"><i></i></button>`;
+function glHead(eb,t,back){if(back)back=G.shFrom||'set';return `<div class="gls-h"><span class="grip" aria-hidden="true"></span><div class="gls-hr">${back?`<button type="button" class="gl-cb sm" data-glsh="${back}" aria-label="Zurück">${gli('back')}</button>`:''}<div class="gls-ht"><small>${eb}</small><b>${t}</b></div><button type="button" class="gl-cb sm" data-glx aria-label="Schließen">${gli('x')}</button></div></div>`}
+function glSetHTML(){const {w,d}=S.ui;const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e]||{n:bl.e};const T0=glTarget(w,d,G.b,G.i);const mode=s.lt||'w';const eq=eqType(bl.e);
+ const RL=setRule(bl);const need=RL.need(G.i);const over=RL.cap!=null&&rpe!=null&&rpe>RL.cap+1e-9;const inc=exInc(bl.e);
+ const bar=barFor(bl.e);const pl=mode==='w'&&eq==='bb'&&kg?plates(kg,bar):[];const plc=S.meta.plc!==false;
+ const ra=restAuto(w,d,G.b,rpe);const auto=S.meta.autoT!==false;
+ let wt='';
+ if(mode==='w'){wt=`${eq==='bb'?`<div class="gl-bar"><span></span><button type="button" class="gl-pill" data-glsh="bar">Stange: ${nf(bar,2)} kg ›</button><button type="button" class="gl-ib" data-glsh="inv" aria-label="Meine Scheiben einstellen">${gli('gear')}</button></div>`:''}
+   ${eq==='bb'&&plc&&kg?`<div class="gl-pls" role="img" aria-label="Je Seite ${pl.map(p=>nf(p,2)+' kg').join(', ')||'keine Scheiben'}">${pl.length?pl.map(p=>`<span class="gl-pl" style="--p:${(PC[p]||['#888'])[0]};--h:${Math.round(((PC[p]||[0,30])[1])*.9)}px">${nf(p,2)}</span>`).join(''):'<span class="gl-pl0">nur Stange</span>'}</div><p class="gl-plt">${nf(bar,2)} kg Stange + ${nf(Math.max(0,kg-bar),2)} kg${pl.length?' · je Seite '+pl.map(p=>nf(p,2)).join(' + '):''}</p>${plMissHTML(kg,pl)}`:eq==='db'?'<p class="gl-plt">Kurzhanteln · Gewicht je Hand</p>':eq!=='bb'?`<p class="gl-plt">${esc(EQN[eq]||'Gerät')}</p>`:''}
+   <div class="gl-stp"><button type="button" class="gl-pm" data-step="kg" data-v="-${inc}" aria-label="Gewicht verringern">−</button><label class="gl-num"><input id="g-kg" data-gf="kg" inputmode="decimal" value="${kg!=null?nf(kg,2):''}" placeholder="–" aria-label="Gewicht in kg"><span>kg</span></label><button type="button" class="gl-pm" data-step="kg" data-v="${inc}" aria-label="Gewicht erhöhen">+</button></div>
+   ${pnum(s.kg)==null&&sg.kg!=null&&sg.t!=='v'?'<p class="gl-hint em">Empfehlung · nur Orientierung, du wählst das Gewicht</p>':''}
+   <div class="gl-tgl"><div><b>Mit Bändern</b><small>Bandzug auf der Stange – wird notiert, zählt nicht ins e1RM</small></div>${glSw(!!s.band,'data-glbandon','Mit Bändern')}</div>
+   ${s.band?`<div class="gl-bands">${bandsOf().map(x=>`<button type="button" data-glband="${x.id}" aria-pressed="${s.band===x.id}" style="--c:${x.c||'#888'}"><i></i>${esc(x.n)}</button>`).join('')}<button type="button" class="ed" data-glsh="band">Bänder bearbeiten</button></div>`:''}`}
+ else if(mode==='bw'){const bw=curBw();const a=pnum(s.add)||0;const md=s.bwm||(a<0?'assist':a>0?'add':'');
+  wt=`<div class="gl-kv"><span>Dein Körpergewicht <small>· aus dem Check-in</small></span><b>${bw!=null?nf(bw,1)+' kg':'–'}</b></div>
+   <div class="gl-tgl"><div><b>Mit Unterstützung</b><small>Band oder Maschine nimmt Gewicht ab</small></div>${glSw(md==='assist','data-glbwm="assist"','Mit Unterstützung')}</div>
+   <div class="gl-tgl"><div><b>Mit Zusatzgewicht</b><small>Scheibe am Gürtel oder Kurzhantel</small></div>${glSw(md==='add','data-glbwm="add"','Mit Zusatzgewicht')}</div>
+   ${md?`<div class="gl-stp"><button type="button" class="gl-pm" data-gladd="-2.5" aria-label="weniger">−</button><span class="gl-num"><b>${md==='assist'?'−':'+'}${nf(Math.abs(a),2)}</b><span>kg</span></span><button type="button" class="gl-pm" data-gladd="2.5" aria-label="mehr">+</button></div>`:''}
+   ${bw!=null?`<div class="gl-kv tot"><span>Bewegt insgesamt</span><b>${nf(bw+a,1)} kg</b></div>`:''}`}
+ else{wt=`<div class="gl-bands big">${bandsOf().map(x=>`<button type="button" data-glband="${x.id}" aria-pressed="${s.band===x.id}" style="--c:${x.c||'#888'}"><i></i><b>${esc(x.n)}</b><small>≈ ${nf(x.kg,1)} kg</small></button>`).join('')}</div><button type="button" class="gl-link" data-glsh="band">Bänder bearbeiten</button>`}
+ const rpeV=rpe!=null?nf(rpe):'–';
+ return `${glHead(`Satz ${G.i+1} von ${bl.s}`,esc(ex.n))}<div class="gls-sc">
+  <div class="gl-vo"><div><small>${T0.tag||'<span class="gl-tg">Plan</span>'}</small><p>${esc(sg.why||bl.x)}${lt?` · Zuletzt ${nf(lt.kg,2)} × ${nf(lt.r)}${lt.rpe!=null?' @ '+nf(lt.rpe):''}`:''}</p></div><b>${T0.v} × ${esc(sg.rdisp)}</b></div>
+  ${testHTML(w,d,G.b)}${calibHint(ex.g,bl.rpe!=null&&!bl.rpeEst?bl.rpe:null)}${!s.ok&&eq==='bb'&&mode==='w'?loadHTML(w,d,kg):''}
+  <section class="gl-c"><h3>Gewicht</h3><div class="gl-seg" role="group" aria-label="Art der Last"><button type="button" data-gllt="w" aria-pressed="${mode==='w'}">Gewichte</button><button type="button" data-gllt="bw" aria-pressed="${mode==='bw'}">Körpergewicht</button><button type="button" data-gllt="band" aria-pressed="${mode==='band'}">Bänder</button></div>${wt}</section>
+  ${mode==='w'&&eq==='bb'?`<section class="gl-c row"><b class="bl">Scheibenrechner</b>${glSw(plc,'data-glplc','Scheibenrechner anzeigen')}</section>`:''}
+  <section class="gl-c"><h3 class="lt">Wiederholungen${bl.r==='AMRAP'?' · AMRAP':/^\d+$/.test(bl.r)?'':' · '+esc(bl.r)}</h3><div class="gl-stp"><button type="button" class="gl-pm" data-step="r" data-v="-1" aria-label="Wiederholungen verringern">−</button><label class="gl-num"><input id="g-r" data-gf="r" inputmode="numeric" value="${r!=null?nf(r):''}" placeholder="0" aria-label="Wiederholungen"></label><button type="button" class="gl-pm" data-step="r" data-v="1" aria-label="Wiederholungen erhöhen">+</button></div></section>
+  <section class="gl-c ${need?'req':''} ${over?'over':''}"><h3 class="lt">RPE <small>${need?`Satz ${G.i+1} eintragen${RL.cap!=null?' · Deckel '+nf(RL.cap):bl.rpe!=null?' · Soll '+(bl.rpeEst?'≈ ':'')+nf(bl.rpe):''}`:'optional'}</small></h3>
+   <div class="gl-stp"><button type="button" class="gl-pm" data-glrpe="-0.5" aria-label="RPE verringern" ${rpe==null?'disabled':''}>−</button><span class="gl-num"><b class="${rpe==null?'dim':''}">${rpeV}</b></span><button type="button" class="gl-pm" data-glrpe="0.5" aria-label="RPE erhöhen">+</button></div>
+   <p class="gl-rd">${over?'<b>über dem Deckel</b> · Last für den nächsten Satz senken':rpe!=null?esc(RPED[rpe]||''):'Noch nicht bewertet · + startet bei 6'}</p>${rpe!=null?'<button type="button" class="gl-link" data-glrpe="clear">RPE entfernen</button>':''}</section>
+  <section class="gl-c"><div class="gl-at"><b class="bl">Auto-Timer</b><button type="button" class="gl-ib" data-glsh="rt" aria-label="Pausenzeiten nach Candito">${gli('clock')}</button><span style="flex:1"></span>${glSw(auto,'data-glauto','Auto-Timer')}</div><p class="gl-rd l">Danach <b>${mmss(ra.s)}</b> Pause · ${esc(ra.src||'Candito: volle Erholung')}</p></section>
+  ${s.ok?adhLine(setAdh(w,d,G.b,G.i)):''}
+  <div class="gl-act">${(()=>{const show=!s.ok&&kg!=null&&r!=null;const nd=rpeNeed(bl,G.i);const noR=show&&rpe==null&&nd;const ICK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',INX='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+   return `<button type="button" class="bigbtn hb2 ${s.ok?'okb':''} ${show?'plan':''} ${noR?'nor':''}" data-g="log"><span class="hb-ic">${s.ok?INX:ICK}</span><span class="hb-tx"><b>${s.ok?'Fertig':'Satz speichern'}</b>${show?`<span class="hb-m"><i>${mode==='w'?nf(kg,2)+' kg':mode==='bw'?'KG':esc((bandById(s.band)||{n:'Band'}).n)}</i><i>× ${nf(r)}</i>${rpe!=null?`<i class="rpv">RPE ${nf(rpe)}</i>`:nd?'<i class="miss"><em></em>RPE fehlt</i>':''}</span>`:s.ok?`<span class="hb-m"><i>${glSetTxt(s)}</i></span>`:`<span class="hb-m"><i class="dim">Gewicht und Wdh. eintragen</i></span>`}</span></button>`})()}
+   <button type="button" class="gl-rs" data-glreset>${gli('reset','gli rs')}${s.ok?'Satz zurücknehmen':'Satz zurücksetzen'}</button>${saveHTML(key(w,d))}</div>
+ </div>`}
+function glBarHTML(){const {w,d}=S.ui;const bl=P[w][d].b[G.b];const e=bl.e;const m=S.meta.barEx||{};const per=G.bd&&G.bd.ex!=null?G.bd.ex:m[e]!=null;
+ const v=G.bd&&G.bd.v!=null?G.bd.v:barFor(e);const L={10:'Technik-Stange',15:'Frauen-Stange',20:'Standard- und Wettkampfstange',25:'z. B. Safety Squat Bar'};const std=[10,15,20,25].includes(v);
+ return `${glHead('Gewicht · Stange','Welche Stange?','set')}<div class="gls-sc">
+  <section class="gl-c"><div class="gl-seg four" role="radiogroup" aria-label="Stangengewicht">${[10,15,20,25].map(x=>`<button type="button" role="radio" data-glbar="${x}" aria-checked="${x===v}" aria-pressed="${x===v}">${x}<small>kg</small></button>`).join('')}</div><p class="gl-rd">${std?L[v]:'Eigenes Gewicht: '+nf(v,2)+' kg'}</p></section>
+  <section class="gl-c"><h3 class="lt">Eigenes Gewicht</h3><div class="gl-stp"><button type="button" class="gl-pm" data-glbars="-0.5" aria-label="weniger">−</button><span class="gl-num"><b class="${std?'dim':''}">${std?'–':nf(v,2)}</b><span>kg</span></span><button type="button" class="gl-pm" data-glbars="0.5" aria-label="mehr">+</button></div></section>
+  <section class="gl-c row"><div><b class="bl2">Nur für diese Übung</b><small class="gl-sm">${esc(EX[e].n)} · sonst gilt sie für alle Langhantel-Übungen</small></div>${glSw(per,'data-glbarper','Nur für diese Übung')}</section>
+  <button type="button" class="gl-prim" data-glbarok>Übernehmen · ${nf(v,2)} kg</button></div>`}
+const PLS_ALL=[50,25,20,15,10,5,2.5,2,1.5,1.25,1,0.5,0.25,0.125];
+function glInvHTML(){const inv=S.meta.inv||{};const {w,d}=S.ui;const bl=P[w][d].b[G.b];const cv=curVals();const kg=cv.kg;const bar=barFor(bl.e);const pl=kg?plates(kg,bar):[];
+ return `${glHead('Gym · Ausrüstung','Meine Scheiben','set')}<div class="gls-sc">
+  ${kg?`<p class="gl-ok">So steckst du <b>${nf(kg,2)} kg</b>: ${pl.length?pl.map(p=>nf(p,2)).join(' + ')+' je Seite':'nur Stange'}${pl.miss?` · <span class="miss">${nf(pl.miss,2)} kg fehlen</span>`:''}</p>`:''}
+  <p class="gl-sm" style="margin:0 4px">Anzahl insgesamt (ein Paar = 2). Leer = unbegrenzt, dann rechnet die App wie bisher mit 25 bis 1,25 kg.</p>
+  <div class="gl-inv">${PLS_ALL.map(p=>{const n=inv[p]||0;return `<div class="gl-ir"><i style="background:${(PC[p]||['#888'])[0]}"></i><b>${nf(p,3)}<span>kg</span></b><div class="gl-ic"><button type="button" class="gl-pm sm" data-glinv="${p}|-2" aria-label="${nf(p,3)} kg: 2 weniger" ${n?'':'disabled'}>−</button><em>${n||'–'}</em><button type="button" class="gl-pm sm" data-glinv="${p}|2" aria-label="${nf(p,3)} kg: 2 mehr">+</button></div></div>`}).join('')}</div>
+  ${Object.keys(inv).length?'<button type="button" class="gl-sec" data-glinvreset>Zurück auf „unbegrenzt“</button>':''}
+  <p class="gl-sm" style="margin:4px">Gleiche Liste wie in Einstellungen → Hantel &amp; Rundung.</p></div>`}
+function glBandHTML(){const B=bandsOf();return `${glHead('Gym · Ausrüstung','Meine Bänder','set')}<div class="gls-sc">
+  <p class="gl-sm" style="margin:0 4px">Name und ungefähre Zugkraft deiner Bänder. Gespeichert wird beim Satz nur das Band – es zählt nicht ins e1RM.</p>
+  ${B.map(x=>`<div class="gl-br"><i style="background:${x.c||'#888'}"></i><input aria-label="Name" value="${esc(x.n)}" data-glbn="${x.id}" maxlength="24"><label class="gl-bk"><input aria-label="Zugkraft in kg" inputmode="decimal" value="${nf(x.kg,1)}" data-glbk="${x.id}"><span>kg</span></label><button type="button" class="gl-ib" data-glbdel="${x.id}" aria-label="${esc(x.n)} entfernen">${gli('x')}</button></div>`).join('')}
+  <button type="button" class="gl-sec" data-glbadd>+ Band hinzufügen</button></div>`}
+function glRtHTML(){return `${glHead('Gym · Pausen','Auto-Timer nach Candito','set')}<div class="gls-sc rt-in">${rtHTML()}</div>`}
+function glMenuHTML(){const {w,d}=S.ui;const L=log(w,d,true);const day=P[w][d];const f=L.feel||{};const cn=CKG.filter(q=>f[q[0]]!=null).length;const side=wuSide(w,d);const GWU=side==='up'?GWU_UP:GWU_LO;const wn=GWU.filter(x=>(L.gwu||{})[x[0]]).length;
+ const it=(ic,t,sub,attr)=>`<button type="button" class="gl-mi" ${attr}><span class="gl-mic">${gli(ic)}</span><span><b>${t}</b><small>${sub}</small></span><i>›</i></button>`;
+ return `${glHead('Menü · ganze Einheit',`W${w+1} · ${DAYS[d].tag} · ${esc(day.f)}`)}<div class="gls-sc">
+  <p class="gl-ms">Vor dem Training</p>
+  ${it('heart','Readiness-Check-in',cn+'/'+CKG.length+' beantwortet · ansehen oder ändern','data-glck')}
+  ${it('body','Allgemeines Aufwärmen',(side==='up'?'Oberkörper':'Unterkörper')+' · '+wn+'/'+GWU.length+' erledigt','data-glgwu')}
+  <p class="gl-ms">Einheit</p>
+  ${it('doc','Tagesplan &amp; Hinweise · Candito','Alle Übungen mit Soll-Werten','data-gplan="1"')}
+  ${it('plate','Stange &amp; Scheiben',nf(S.meta.bar||20,2)+' kg · '+(invOf()?'eigener Bestand':'unbegrenzt'),'data-glsh="inv"')}
+  ${it('clock','Pausen &amp; Auto-Timer',(S.meta.autoT!==false?'nach Candito':'feste Zeiten')+' · Ton '+(S.meta.sound?'an':'aus'),'data-glsh="rt"')}
+  <label class="gl-note"><span><b>Notiz zur Einheit</b><small>wie im Training-Tab</small></span><textarea data-glnote rows="2" placeholder="Gedanken zur Einheit …">${esc(L.note||'')}</textarea></label>
+  ${it('view','Ansicht: bisheriger Gym-Modus','Eine Übung pro Bildschirm · jederzeit zurück','data-glview="classic"')}
+  <button type="button" class="gl-prim" data-g="finish">Training abschließen</button></div>`}
+// Satz-Fenster öffnen; Werkzeuge an einer Übung beziehen sich auf diese Übung
+document.addEventListener('click',e=>{if($('#gym').hidden||!gymList())return;const t=e.target.closest('#gym [data-glb],#gym [data-gls]');if(!t)return;
+ if(t.dataset.gls!=null){const [b,i]=t.dataset.gls.split('|').map(Number);G.b=b;G.i=i;G.sheet='set';G.rpeOpen=null;e.stopPropagation();renderGym();return}
+ const b=+t.dataset.glb;if(b!==G.b){G.b=b;const L=log(S.ui.w,S.ui.d,true);const f=(L.b[b]||[]).findIndex(z=>!z.ok);G.i=f>=0?f:0}},true);
+// Nach dem Speichern zurück zur Liste (Pause unten als Leiste)
+document.addEventListener('click',e=>{if($('#gym').hidden||!gymList()||G.sheet!=='set')return;if(e.target.closest('#gym [data-g="log"]'))G.closeAt=Date.now()},true);
+$('#gym').addEventListener('click',e=>{if(!gymList())return;const t=e.target.closest('button,[data-glx]');if(!t)return;const {w,d}=S.ui;const D=t.dataset;
+ const sv=()=>{const L=log(w,d,true);saveLog(key(w,d));return L};const cur=()=>log(w,d,true).b[G.b][G.i];
+ if(D.glx!=null){G.sheet=null;G.bd=null;G.shFrom=null;renderGym();return}
+ if(D.glsh){if(['bar','inv','band','rt'].includes(D.glsh)&&(G.sheet==='set'||G.sheet==='menu'))G.shFrom=G.sheet;if(D.glsh==='set'||D.glsh==='menu')G.shFrom=null;if(G.sheet==='set'){const sc=document.querySelector('#gym .gls-sc');G.shY=sc?sc.scrollTop:0}G.sheet=D.glsh;if(D.glsh==='bar')G.bd=null;renderGym();return}
+ if(D.gllt){const s=cur();if(s.ok)return;const v=D.gllt;if(v==='w'){delete s.lt;delete s.add;delete s.bwm;if(s.kg==='0')s.kg=null}else{s.lt=v;s.kg='0';delete s.add;delete s.bwm;if(v==='band'&&!s.band)s.band=null;if(v==='bw')delete s.band}sv();renderGym();return}
+ if(D.glbandon!=null){const s=cur();if(s.band)delete s.band;else s.band=(bandsOf()[0]||{}).id;sv();renderGym();return}
+ if(D.glband){const s=cur();s.band=D.glband;sv();renderGym();return}
+ if(D.glbwm){const s=cur();s.bwm=s.bwm===D.glbwm?null:D.glbwm;if(!s.bwm)delete s.add;else{const a=Math.abs(pnum(s.add)||0);s.add=nf(s.bwm==='assist'?-a:a,2)}sv();renderGym();return}
+ if(D.gladd){const s=cur();const a=Math.abs(pnum(s.add)||0);const n=Math.max(0,a+ +D.gladd);s.add=nf(s.bwm==='assist'?-n:n,2);sv();renderGym();return}
+ if(D.glplc!=null){S.meta.plc=S.meta.plc===false;saveMeta();renderGym();return}
+ if(D.glauto!=null){S.meta.autoT=S.meta.autoT===false;saveMeta();renderGym();return}
+ if(D.glrpe){const s=cur();if(D.glrpe==='clear'){gWrite('rpe',null);renderGym();return}const v=pnum(s.rpe);const n=v==null?(+D.glrpe>0?6:null):Math.max(5,Math.min(10,v+ +D.glrpe));if(n!=null)gWrite('rpe',n);renderGym();return}
+ if(D.glreset!=null){const s=cur();const was=!!s.ok;if(s.ok){s.ok=false;delete s.t}else{['kg','r','rpe','lt','add','bwm','band'].forEach(k=>delete s[k])}sv();toast(was?'Satz zurückgenommen – Werte bleiben stehen':'Satz zurückgesetzt');renderGym();return}
+ if(D.glbar){G.bd=Object.assign({},G.bd||{},{v:+D.glbar});renderGym();return}
+ if(D.glbars){const b0=G.bd&&G.bd.v!=null?G.bd.v:barFor(P[w][d].b[G.b].e);G.bd=Object.assign({},G.bd||{},{v:Math.max(0,Math.round((b0+ +D.glbars)*100)/100)});renderGym();return}
+ if(D.glbarper!=null){const e0=P[w][d].b[G.b].e;const m=S.meta.barEx||{};const cur0=G.bd&&G.bd.ex!=null?G.bd.ex:m[e0]!=null;G.bd=Object.assign({},G.bd||{},{ex:!cur0});renderGym();return}
+ if(D.glbarok!=null){const e0=P[w][d].b[G.b].e;const v=G.bd&&G.bd.v!=null?G.bd.v:barFor(e0);const per=G.bd&&G.bd.ex!=null?G.bd.ex:!!(S.meta.barEx&&S.meta.barEx[e0]!=null);
+  if(per){S.meta.barEx=Object.assign({},S.meta.barEx||{},{[e0]:v})}else{S.meta.bar=v;if(S.meta.barEx){delete S.meta.barEx[e0]}}saveMeta();SG.clear();G.bd=null;G.sheet=G.shFrom||'set';G.shFrom=null;toast('Stange '+nf(v,2)+' kg'+(per?' für '+EX[e0].n:''));renderGym();return}
+ if(D.glinv){const [p,dv]=D.glinv.split('|');if(!S.meta.inv)S.meta.inv={};const n=Math.max(0,(S.meta.inv[p]||0)+ +dv);if(n)S.meta.inv[p]=n;else delete S.meta.inv[p];saveMeta();SG.clear();renderGym();return}
+ if(D.glinvreset!=null){S.meta.inv={};saveMeta();SG.clear();renderGym();return}
+ if(D.glbadd!=null){const B=bandsOf().map(x=>Object.assign({},x));B.push({id:'b'+Date.now().toString(36),n:'Neues Band',kg:10,c:'#7f98ff'});S.meta.bands=B;saveMeta();renderGym();return}
+ if(D.glbdel){const B=bandsOf().filter(x=>x.id!==D.glbdel).map(x=>Object.assign({},x));S.meta.bands=B;saveMeta();renderGym();return}
+ if(D.glck!=null){G.sheet=null;ckOpen(PROG,w,d,null);return}
+ if(D.glgwu!=null){G.sheet=null;CK={pid:PROG,w,d,go:null,step:0,wuOnly:true};let el=document.getElementById('ckin');if(!el){el=document.createElement('div');el.id='ckin';el.className='ckin';document.body.appendChild(el)}el.innerHTML=ckHTML();el.hidden=false;document.body.classList.add('ckopen');return}
+ if(D.glview){S.meta.gymView=D.glview;saveMeta();G.sheet=null;renderGym();toast(D.glview==='classic'?'Bisheriger Gym-Modus':'Gym als Liste');return}});
+$('#gym').addEventListener('change',e=>{if(!gymList())return;const t=e.target;const D=t.dataset||{};
+ if(D.glbn||D.glbk){const id=D.glbn||D.glbk;const B=bandsOf().map(x=>Object.assign({},x));const x=B.find(y=>y.id===id);if(!x)return;if(D.glbn)x.n=t.value.trim()||x.n;else{const v=pnum(t.value);if(v!=null&&v>=0)x.kg=v}S.meta.bands=B;saveMeta()}
+ if(D.glnote!=null){const {w,d}=S.ui;const L=log(w,d,true);L.note=t.value;saveLog(key(w,d))}});
+// Bisheriger Gym-Modus: Knopf zurück zur Liste
+setTimeout(()=>{const _rg3=renderGym;renderGym=function(){_rg3.apply(this,arguments);try{if(!gymList()){const nav=document.querySelector('#gym nav.gq');if(nav&&!nav.querySelector('[data-glview]'))nav.insertAdjacentHTML('beforeend','<button type="button" class="gq-b" data-glview="list" aria-label="Gym als Liste anzeigen"><span class="gico gq-i glv-i"><svg class="gis" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14"/></svg></span><small>Liste</small></button>')}}catch(e){}}},0);
+document.addEventListener('click',e=>{const t=e.target.closest('#gym [data-glview="list"]');if(!t||gymList())return;e.stopPropagation();S.meta.gymView='list';saveMeta();G.sheet=null;renderGym();toast('Gym als Liste')},true);
 
 /* ---------- Gym kompakt 2: Klappbereiche, Dock ---------- */
 G.fold=G.fold||{};

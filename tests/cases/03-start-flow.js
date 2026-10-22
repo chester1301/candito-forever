@@ -5,7 +5,13 @@ module.exports={name:'Start-Ablauf – Aufwärmen, Check-in, Gym',async run({pag
   await p.waitForTimeout(500);
   t.ok(await p.$('[data-sstart]'),'Start-Knopf im Gym sichtbar');
   await p.click('[data-sstart]');await p.waitForTimeout(500);
-  t.eq(await p.evaluate(()=>document.querySelector('#ckin .fl-h')?.textContent),'Aufwärmen','Aufwärmen erscheint zuerst');
+  // Übersicht „So läuft es ab“: 1 Aufwärmen → 2 Check-in → 3 Gym, jeder Schritt erst nach dem vorherigen
+  t.eq(await p.evaluate(()=>document.querySelector('#ckin .fl-h')?.textContent),'So läuft es ab','Übersicht erscheint zuerst');
+  t.eq(await p.evaluate(()=>[...document.querySelectorAll('#ckin .fo-s')].map(b=>b.disabled)),[false,true,true],'Schritt 2 und 3 gesperrt');
+  t.ok(await p.evaluate(()=>!document.querySelector('#ckin [data-ckskip]')),'Kein Überspringen im Ablauf');
+  await p.click('#ckin [data-ckovgo="1"]');await p.waitForTimeout(300);
+  t.eq(await p.evaluate(()=>document.querySelector('#ckin .fl-h')?.textContent),'Aufwärmen','Schritt 1: Aufwärmen');
+  t.ok(await p.evaluate(()=>document.querySelector('#ckin [data-ckstep="1"]').disabled),'Weiter erst, wenn alles abgehakt ist');
   // Oberkörper-Tag → Oberkörper-Routine automatisch
   const side=await p.evaluate(()=>{const b=document.querySelector('#ckin [data-wuside][aria-pressed="true"]');return b?b.dataset.wuside:null});
   t.eq(side,'up','Oberkörper-Routine automatisch gewählt (Tag 4 = Bank-Tag)');
@@ -17,6 +23,7 @@ module.exports={name:'Start-Ablauf – Aufwärmen, Check-in, Gym',async run({pag
   t.eq(await p.evaluate(()=>document.querySelector('#ckin .fl-h')?.textContent),'Readiness-Check-in','Check-in folgt');
   t.eq(await p.evaluate(()=>[...document.querySelectorAll('#ckin .ck-sc > .ckqc .ckq')].map(x=>x.textContent)),
     ['Wie lange hast du letzte Nacht geschlafen?','Wie motiviert bist du fürs Training?','Kalorienaufnahme in den letzten 24 Stunden?','Wie ist dein Kraft- & Erholungslevel?'],'Vier Kernfragen');
+  t.ok(await p.evaluate(()=>document.querySelector('#ckin [data-ckgo]').disabled),'Training starten erst nach allen 4 Kernfragen');
   for(const v of ['sleeph|3','energy|4','food|3','strength|4']){await p.click(`#ckin [data-ck="${v}"]`);await p.waitForTimeout(80)}
   t.eq(await p.evaluate(()=>document.querySelector('#ckin .fl-n')?.textContent),'4/4','Zähler 4/4');
   t.eq(await p.evaluate(()=>log(0,3).feel),{sleeph:3,energy:4,food:3,strength:4},'Antworten gespeichert');
