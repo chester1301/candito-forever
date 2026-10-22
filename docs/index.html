@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-1809-fd2fc9f";
+<script>window.CF_VERSION="2026.10.22-1826-60c3e2a";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -3967,6 +3967,7 @@ body.svopen{overflow:hidden}
 .cgl{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:3;overflow:hidden;background:linear-gradient(105deg,transparent calc(var(--x,50%) - 24%),rgba(160,190,255,.16) var(--x,50%),transparent calc(var(--x,50%) + 24%))}
 .cgl::after{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(195,212,255,.95) var(--x,50%),transparent)}
 html:not([data-theme=blue]) .cgl{display:none}
+html.noshine .cgl{display:none!important}
 @media (prefers-reduced-motion:reduce){.cgl{display:none}}
 /* Übungs-Info im Juggernaut-Stil */
 html #xsheet .sheet-in.xs{overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
@@ -4540,7 +4541,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.fd2fc9f.js"></script>
+<script src="assets/app-0.60c3e2a.js"></script>
 <script>/* Juggernaut-Ideen 1–11: Readiness-Bühne, Einheiten-Raster, Schlaf & Gewicht, Kraft-Kacheln, Gym-Liste (Streifen, Satzgruppe, Notiz je Übung, Titel-Pille), Fortsetzen-Pille, Monatskalender.
    Reine Anzeige aus vorhandenen Daten; einziges neues Feld: L.xn = {Block-Index: Notiz} (von Marcel freigegeben). */
 (function(){

@@ -3870,6 +3870,7 @@ body.svopen{overflow:hidden}
 .cgl{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:3;overflow:hidden;background:linear-gradient(105deg,transparent calc(var(--x,50%) - 24%),rgba(160,190,255,.16) var(--x,50%),transparent calc(var(--x,50%) + 24%))}
 .cgl::after{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(195,212,255,.95) var(--x,50%),transparent)}
 html:not([data-theme=blue]) .cgl{display:none}
+html.noshine .cgl{display:none!important}
 @media (prefers-reduced-motion:reduce){.cgl{display:none}}
 /* Übungs-Info im Juggernaut-Stil */
 html #xsheet .sheet-in.xs{overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
@@ -5300,7 +5301,7 @@ try{new MutationObserver(()=>{const g=document.getElementById('gym');if(g&&!g.hi
 
 /* ---------- Karten-Glanz beim Scrollen ---------- */
 (function(){const SEL='main .card,main .ptile,main .hs-c,main .hs-t,main .hs-go,main .pgrid>button';let raf=0,lastY=scrollY,lt=performance.now(),e=0,vis=[];
- const mount=()=>{if(document.documentElement.dataset.theme!=='blue'){vis=[];return}const H=innerHeight;vis=[];document.querySelectorAll(SEL).forEach(c=>{const r=c.getBoundingClientRect();if(r.bottom<-50||r.top>H+50)return;let g=c.querySelector(':scope>.cgl');if(!g){g=document.createElement('i');g.className='cgl';g.setAttribute('aria-hidden','true');c.appendChild(g);if(getComputedStyle(c).position==='static')c.style.position='relative'}vis.push([c,g])})};
+ const mount=()=>{if(document.documentElement.dataset.theme!=='blue'||(window.S&&S.meta&&S.meta.shine===false)){vis=[];return}const H=innerHeight;vis=[];document.querySelectorAll(SEL).forEach(c=>{const r=c.getBoundingClientRect();if(r.bottom<-50||r.top>H+50)return;let g=c.querySelector(':scope>.cgl');if(!g){g=document.createElement('i');g.className='cgl';g.setAttribute('aria-hidden','true');c.appendChild(g);if(getComputedStyle(c).position==='static')c.style.position='relative'}vis.push([c,g])})};
  const frame=t=>{raf=0;const y=scrollY,v=(y-lastY)/Math.max(8,t-lt);lastY=y;lt=t;e=Math.max(e*.92,Math.min(1,Math.abs(v)/1.4));const H=innerHeight;
   vis.forEach(([c,g])=>{const r=c.getBoundingClientRect();const p=Math.max(0,Math.min(1,r.top/H));g.style.setProperty('--x',(12+p*76).toFixed(1)+'%');g.style.opacity=e.toFixed(3)});
   if(e>.01)raf=requestAnimationFrame(frame);else{vis.forEach(([c,g])=>g.style.opacity=0);vis=[]}};
@@ -7070,7 +7071,8 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
  ${shiftHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Design</h2></div><p class="note2" style="margin-top:0">Farbthema der App. Die Signalfarben (Grün/Gelb/Rot, Lift-Farben) bleiben in beiden Varianten gleich.</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:10px 0 0"><button type="button" data-theme="blue" aria-pressed="${(window.CF_THEME||'blue')==='blue'}">Midnight Blue</button><button type="button" data-theme="classic" aria-pressed="${window.CF_THEME==='classic'}">Classic Rot/Gold</button></div><p class="note2" style="margin:12px 0 0">Bewegter Hintergrund & schimmernde Navigation</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-motion="1" aria-pressed="${S.meta.motion!==false}">An</button><button type="button" data-motion="0" aria-pressed="${S.meta.motion===false}">Aus</button></div>
  <p class="note2" style="margin:14px 0 0">Textgröße (ganze App, im Gym-Modus besonders deutlich)</p><div class="seg" style="grid-template-columns:repeat(3,1fr);margin:6px 0 0"><button type="button" data-fs="s" aria-pressed="${!S.meta.fs||S.meta.fs==='s'}">Standard</button><button type="button" data-fs="m" aria-pressed="${S.meta.fs==='m'}">Groß</button><button type="button" data-fs="l" aria-pressed="${S.meta.fs==='l'}">Sehr groß</button></div>
- <p class="note2" style="margin:14px 0 0">Gym-Modus in reinem Schwarz (OLED – spart Akku, blendet weniger)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-oled="1" aria-pressed="${!!S.meta.oled}">An</button><button type="button" data-oled="0" aria-pressed="${!S.meta.oled}">Aus</button></div></section>
+ <p class="note2" style="margin:14px 0 0">Gym-Modus in reinem Schwarz (OLED – spart Akku, blendet weniger)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-oled="1" aria-pressed="${!!S.meta.oled}">An</button><button type="button" data-oled="0" aria-pressed="${!S.meta.oled}">Aus</button></div>
+ <p class="note2" style="margin:14px 0 0">Glanz-Effekt beim Scrollen (Lichtstreifen über die Karten)</p><div class="seg" style="grid-template-columns:repeat(2,1fr);margin:6px 0 0"><button type="button" data-shine="1" aria-pressed="${S.meta.shine!==false}">An</button><button type="button" data-shine="0" aria-pressed="${S.meta.shine===false}">Aus</button></div></section>
  ${rtHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Hantel & Rundung</h2></div>
   <div class="fgrid"><label class="fld">Stangengewicht<span class="in"><input id="set-bar" inputmode="decimal" data-meta="bar" value="${nf(m.bar,2)}"><i>kg</i></span></label>
@@ -7228,8 +7230,8 @@ function bkText(){const a=bkAge();return a==null?'Noch keine iCloud-Sicherung':a
 function bkDot(){if(!window.CF_PWA)return;const g=document.getElementById('gear');if(!g)return;let d=g.querySelector('.bkdot');if(!d){d=document.createElement('i');d.className='bkdot';g.appendChild(d)}d.className='bkdot '+bkLevel();g.setAttribute('aria-label','Menü und Einstellungen · '+bkText())}
 window.addEventListener('cf-exported',()=>{bkDot();render()});setInterval(bkDot,60000);
 // 3/4 Anzeige: Textgröße & OLED
-function applyView(){const b=document.body;b.classList.remove('fs-m','fs-l');if(S.meta.fs==='m'||S.meta.fs==='l')b.classList.add('fs-'+S.meta.fs);b.classList.toggle('oled',!!S.meta.oled)}
-document.addEventListener('click',e=>{const f=e.target.closest('[data-fs]');if(f){S.meta.fs=f.dataset.fs;saveMeta();applyView();render();return}const o=e.target.closest('[data-oled]');if(o){S.meta.oled=o.dataset.oled==='1';saveMeta();applyView();render()}});
+function applyView(){const b=document.body;b.classList.remove('fs-m','fs-l');if(S.meta.fs==='m'||S.meta.fs==='l')b.classList.add('fs-'+S.meta.fs);b.classList.toggle('oled',!!S.meta.oled);document.documentElement.classList.toggle('noshine',S.meta.shine===false)}
+document.addEventListener('click',e=>{const f=e.target.closest('[data-fs]');if(f){S.meta.fs=f.dataset.fs;saveMeta();applyView();render();return}const o=e.target.closest('[data-oled]');if(o){S.meta.oled=o.dataset.oled==='1';saveMeta();applyView();render();return}const sh=e.target.closest('[data-shine]');if(sh){S.meta.shine=sh.dataset.shine==='1';saveMeta();document.documentElement.classList.toggle('noshine',S.meta.shine===false);render()}});
 setTimeout(()=>{applyView();bkDot()},0);
 // 6 Prognose zur Testwoche (Schätzung, keine Vorgabe)
 function e1Forecast(k){const c=CMP[k],lim=Date.now()-63*864e5;const by={};

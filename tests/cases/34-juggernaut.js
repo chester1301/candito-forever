@@ -38,5 +38,11 @@ module.exports={name:'Juggernaut-Design – Heute, Gym-Liste, Notiz je Übung, K
     const col=await p.evaluate(()=>{S.ui.tab='train';S.ui.w=0;S.ui.d=0;S.ui.pd=null;render();const ok=getComputedStyle(document.documentElement).getPropertyValue('--ok').trim();
       S.ui.tab='home';render();const jr=document.querySelector('.card.jr');return {ok,zc:jr?jr.style.getPropertyValue('--zc'):null,theme:document.documentElement.dataset.theme}});
     t.ok(col.theme!=='blue'||(col.ok.toLowerCase()==='#5aaee8'&&/3cc46a/i.test(col.zc||'')),`${W}px: „erledigt“ in Hellblau, Readiness bleibt grün`);
+    // Glanz-Effekt beim Scrollen abschaltbar (Einstellungen › Design)
+    const sh=await p.evaluate(async()=>{S.ui.tab='setup';S.ui.tdet={setup:'design'};render();const out={};const off=document.querySelector('[data-shine="0"]');out.btn=!!off;if(!off)return out;off.click();
+      out.meta=S.meta.shine;out.cls=document.documentElement.classList.contains('noshine');S.ui.tab='home';render();scrollTo(0,300);dispatchEvent(new Event('scroll'));await new Promise(r=>setTimeout(r,200));
+      out.vis=[...document.querySelectorAll('.cgl')].filter(g=>getComputedStyle(g).display!=='none'&&+getComputedStyle(g).opacity>0).length;
+      S.ui.tab='setup';S.ui.tdet={setup:'design'};render();document.querySelector('[data-shine="1"]').click();out.on=S.meta.shine===true&&!document.documentElement.classList.contains('noshine');return out});
+    t.ok(sh.btn&&sh.meta===false&&sh.cls&&sh.vis===0&&sh.on,`${W}px: Glanz-Effekt in den Einstellungen aus- und wieder einschaltbar`);
     t.eq(p.errors,[],`${W}px: keine Fehler`);await p.close()}
 }};
