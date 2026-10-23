@@ -4,7 +4,7 @@ Dieses Repository ist Marcels Candito-Forever-App (PWA für das iPhone) – eine
 „Candito Forever Programm“ (Artifact https://claude.ai/artifact/BEbYNKfhLTv7Vkdwse19Z6). Antworten immer auf Deutsch.
 
 ## Arbeitsweise
-- Quelltext der App: `source/src.html` (+ `source/data.js`, `source/data_sq.js`). Die PWA-Schicht liegt in `src/`.
+- Quelltext der App: `source/src.html` (+ `source/data.js`, `source/data_sq.js`, `source/bib.js` = Programmbibliothek). Die PWA-Schicht liegt in `src/`.
 - Nach jeder Änderung: `python3 build.py`, dann `node tests/run.js` (komplette Suite, startet den Server selbst; `tests/README.md`).
   Scheitert `Plan-Daten – Snapshot`, wurde der Plan geändert: nur nach Abgleich mit Canditos Original `--update-golden`.
   Scheitert `Optik – Screenshots`, Differenzbilder in `tests/visual/_out/` ansehen; nur gewollte Änderungen mit

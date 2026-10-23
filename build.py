@@ -4,7 +4,7 @@ import hashlib,json,re,shutil,sys,datetime,os
 ROOT=os.path.dirname(os.path.abspath(__file__))
 S=os.path.join(ROOT,'source')
 rd=lambda f:open(os.path.join(S,f),encoding='utf-8').read()
-app=rd('src.html').replace('/*__DATA__*/',rd('data.js')+'\n'+rd('data_sq.js'))
+app=rd('src.html').replace('/*__DATA__*/',rd('data.js')+'\n'+rd('data_sq.js')).replace('/*__BIB__*/',rd('bib.js'))
 if '/*__DATA__*/' in app or len(app)<500000: sys.exit('Quelltext unvollständig')
 # Claude-Version (für das Artifact auf claude.ai) zusätzlich ablegen
 os.makedirs(os.path.join(ROOT,'build'),exist_ok=True)

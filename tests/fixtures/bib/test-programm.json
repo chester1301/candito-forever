@@ -1,0 +1,69 @@
+{
+ "format": "candito-bib",
+ "v": 1,
+ "programs": [
+  {
+   "name": "Testprogramm C",
+   "variants": [
+    {
+     "name": "Standard"
+    },
+    {
+     "name": "Kurz"
+    }
+   ],
+   "blocks": [
+    {
+     "name": "Aufbau",
+     "variant": "Standard",
+     "weeks": [
+      {
+       "n": 1,
+       "name": "Start",
+       "days": [
+        {
+         "n": 1,
+         "name": "Tag 1",
+         "focus": "Beine",
+         "notes": "Testnotiz",
+         "ex": [
+          {
+           "name": "Comp Squat",
+           "sets": 3,
+           "reps": "5",
+           "rpe": 7
+          },
+          {
+           "name": "Paused Deadlift",
+           "rx": "2 x 3 at RPE 8"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Kurz-Block",
+     "variant": "Kurz",
+     "weeks": [
+      {
+       "n": 1,
+       "days": [
+        {
+         "n": 1,
+         "ex": [
+          {
+           "name": "Comp Squat",
+           "sets": 2
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

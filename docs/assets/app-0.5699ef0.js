@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-0651-ce9eb69</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1015-5699ef0</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -2599,7 +2599,7 @@ const TNQ=['Gute Einheit','Schlecht geschlafen','Viel Energie','Starke Leistung'
 const tnHas=(t,q)=>new RegExp('(^|\\n|· )'+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|\\n| ·)').test(t||'');
 /* ===== Trainingsbereich: Tageshinweise-Karte & kompakte Kopfleiste beim Scrollen ===== */
 // Einstellungen: Kacheln und Karten nur optisch in vier Bereiche gliedern (alle Einträge bleiben, Reihenfolge innerhalb gleich)
-const SETG=[['Athlet & Trainingsplanung','Körpergewicht, Phasen, Hantel',['athlet','plan','shift','hantel']],['Gym & Timer','Pausen, Ton, Vibration',['.rt']],['Darstellung','Farbthema, Schrift, Bewegung',['design']],['Daten & System','Regeln, Sicherung, Export, Abgleich',['rechnet','backup','export','sheet','.errlog']]];
+const SETG=[['Athlet & Trainingsplanung','Körpergewicht, Phasen, Hantel, Programme',['athlet','plan','shift','hantel','bib']],['Gym & Timer','Pausen, Ton, Vibration',['.rt']],['Darstellung','Farbthema, Schrift, Bewegung',['design']],['Daten & System','Regeln, Sicherung, Export, Abgleich',['rechnet','backup','export','sheet','.errlog']]];
 function setupGroups(v){const g=v.querySelector('.tgrid');if(!g||v.querySelector('.setg'))return;const used=new Set();const frag=document.createDocumentFragment();
  SETG.forEach(([t,sub,ks])=>{const items=[];ks.forEach(k=>{const e=k[0]==='.'?v.querySelector(':scope>'+k):g.querySelector(`[data-tdk="${k}"]`);if(e&&!used.has(e)){used.add(e);items.push(e)}});if(!items.length)return;
   const hd=document.createElement('div');hd.className='phead hsec setg';hd.innerHTML=`<h2 class="sect" style="margin:0">${t}</h2><span class="phs">${sub}</span>`;frag.appendChild(hd);
@@ -3193,6 +3193,7 @@ const TCFG={
  setup:{keep:'',list:[
   {k:'athlet',m:/^Athlet/,t:'Athlet',ic:'user',c:'#e2b04a',val:()=>curBw()?nf(curBw(),1)+' kg':'offen',sub:()=>(curBw()?'':'Körpergewicht eintragen · ')+(S.meta.sex==='w'?'Frauen-Formeln':'Männer-Formeln')},
   {k:'plan',m:/^Zeitplan/,t:'Zeitplan',ic:'cal',c:'#43c08a',val:()=>{const d=new Date(S.meta.start+'T12:00:00');return isNaN(d)?'–':d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})},sub:()=>'Startdaten aller Phasen'},
+  {k:'bib',m:/^Programmbibliothek/,t:'Programmbibliothek',ic:'book',c:'#6f8cff',val:()=>{let n=0;try{n=BIB.builtin().length+BIB.load().progs.length}catch(e){}return n+' Programme'},sub:()=>{let i=0;try{i=BIB.load().progs.length}catch(e){}return i?i+' importiert · Import PDF, JSON, CSV':'Candito-Programme · Import PDF, JSON, CSV'}},
   {k:'shift',m:/^Phasen verschieben/,t:'Verschieben',ic:'shift',c:'#7fa8ff',val:()=>{const n=nextTest();return n?'Test '+n.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'–'},sub:()=>'Phasen bei Urlaub, Krankheit oder Stress verschieben'},
   {k:'design',m:/^Design/,t:'Design',ic:'palette',c:'#3d63f5',val:()=>(window.CF_THEME||'blue')==='blue'?'Blau':'Classic',sub:()=>'Farbthema der App'},
   {k:'hantel',m:/^Hantel/,t:'Hantel & Rundung',ic:'plate',c:'#e8484f',val:()=>nf(S.meta.bar||20,2)+' kg',sub:()=>'Rundung '+nf(S.meta.round||2.5,2)+' kg'},
@@ -3654,6 +3655,7 @@ function renderSetup(){const m=S.meta;const ov=Object.keys(m.restEx||{});const a
   ${ORD().filter(id=>id!=='intro').map(id=>`<label class="fld">Start ${esc(PROGS[id].name)} (Samstag = Tag 1)<span class="in"><input type="date" id="set-${SKEY[id]}" data-meta="${SKEY[id]}" value="${esc(m[SKEY[id]]||withProg(id,progStart))}"></span></label>`).join('')}</div>
   <p class="note2">Tag 1 Samstag · Tag 2 Sonntag · Tag 3 Dienstag · Tag 4 Donnerstag. Die Daten der Einheiten werden daraus berechnet.</p></section>
  ${shiftHTML()}
+ <section class="card"><div class="ct"><h2 class="h2">Programmbibliothek</h2></div><p class="note2" style="margin-top:0">Alle Candito-Programme mit Varianten, Wochen, Tagen und Übungen – plus eigene Importe (PDF, JSON, CSV).</p><button type="button" class="btn primary" data-bibopen>Bibliothek öffnen</button></section>
  ${dsCardHTML()}
  ${rtHTML()}
  <section class="card"><div class="ct"><h2 class="h2">Hantel & Rundung</h2></div>
