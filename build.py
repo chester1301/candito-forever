@@ -4,7 +4,7 @@ import hashlib,json,re,shutil,sys,datetime,os
 ROOT=os.path.dirname(os.path.abspath(__file__))
 S=os.path.join(ROOT,'source')
 rd=lambda f:open(os.path.join(S,f),encoding='utf-8').read()
-app=rd('src.html').replace('/*__DATA__*/',rd('data.js')+'\n'+rd('data_sq.js')).replace('/*__BIB__*/',rd('bib.js'))
+app=rd('src.html').replace('/*__DATA__*/',rd('data.js')+'\n'+rd('data_sq.js')).replace('/*__BIB__*/',rd('bib-core.js')+'\n'+rd('bib.js'))
 if '/*__DATA__*/' in app or len(app)<500000: sys.exit('Quelltext unvollständig')
 # Claude-Version (für das Artifact auf claude.ai) zusätzlich ablegen
 os.makedirs(os.path.join(ROOT,'build'),exist_ok=True)
@@ -83,4 +83,13 @@ open(os.path.join(site,'sw.js'),'w',encoding='utf-8').write(open(os.path.join(RO
 shutil.copy(os.path.join(ROOT,'src/manifest.webmanifest'),os.path.join(site,'manifest.webmanifest'))
 open(os.path.join(site,'version.json'),'w').write(json.dumps({'version':VERSION}))
 open(os.path.join(site,'.nojekyll'),'w').write('')
+# Mac-Importer (Programmbibliothek): gemeinsamer Parser-Kern + Werkzeug als ZIP zum Herunterladen aus der App
+import zipfile
+TD=os.path.join(ROOT,'tools','mac-importer')
+shutil.copy(os.path.join(S,'bib-core.js'),os.path.join(TD,'bib-core.js'))
+os.makedirs(os.path.join(site,'tools'),exist_ok=True)
+with zipfile.ZipFile(os.path.join(site,'tools','Programmbibliothek-Mac-Importer.zip'),'w',zipfile.ZIP_DEFLATED) as z:
+    for n in ['Programmbibliothek-Import.command','importer.js','bib-core.js','LIESMICH.txt']:
+        zi=zipfile.ZipInfo('Programmbibliothek-Mac-Importer/'+n,date_time=(2026,1,1,0,0,0));zi.compress_type=zipfile.ZIP_DEFLATED
+        zi.external_attr=((0o100755 if n.endswith('.command') else 0o100644)<<16);z.writestr(zi,open(os.path.join(TD,n),'rb').read())
 print('PWA gebaut:',VERSION,len(out)//1024,'KB Seite +',len(ASSETS),'Dateien',sum(os.path.getsize(os.path.join(site,a)) for a in ASSETS)//1024,'KB')

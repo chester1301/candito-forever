@@ -18,7 +18,7 @@ module.exports={name:'Programmbibliothek – Hierarchie, Import, Parser, Markier
       o.cr=document.querySelectorAll('#bibv .bb-cr button').length;c('[data-bbcr="root"]');o.root=!!document.querySelector('#bibv [data-bbp="bi-intro"]');return o});
     t.ok(h.var===4&&h.ex===h.plan&&h.kv&&!h.gym&&h.cr===3&&h.root,`${W}px: Hierarchie Programm › Variante › Woche › Tag › Übungen (eingebaut nur lesen)`);
     // Import über die echte Dateiauswahl
-    const imp=async(n,type)=>{await p.evaluate(()=>{const r=document.querySelector('#bibv [data-bbcr="root"]');if(r)r.click()});await p.setInputFiles('#bbfile',{name:n,mimeType:type,buffer:fx(n)});await p.waitForTimeout(400);return p.evaluate(()=>({h:(document.querySelector('#bibv .bb-ph h2')||{}).textContent,err:(document.querySelector('#bibv .bb-err')||{}).textContent||'',ok:!!document.querySelector('#bibv [data-bbok]')}))};
+    const imp=async(n,type)=>{await p.evaluate(()=>{const r=document.querySelector('#bibv [data-bbcr="root"]');if(r)r.click()});await p.setInputFiles('#bbfile',{name:n,mimeType:type,buffer:fx(n)});await p.waitForFunction(()=>{const h=document.querySelector('#bibv .bb-ph h2');return h&&h.textContent!=='Import läuft'},null,{timeout:20000});return p.evaluate(()=>({h:(document.querySelector('#bibv .bb-ph h2')||{}).textContent,err:(document.querySelector('#bibv .bb-err')||{}).textContent||'',ok:!!document.querySelector('#bibv [data-bbok]')}))};
     const pd=await imp('test-programm.pdf','application/pdf');t.ok(pd.ok&&pd.h==='Import prüfen',`${W}px: Text-PDF wird gelesen (${pd.err||pd.h})`);
     await p.evaluate(()=>document.querySelector('#bibv [data-bbok]').click());
     const pr=await p.evaluate(()=>{const L=BIB.load();const x=L.progs[L.progs.length-1];const W1=x.blocks[0].weeks[0],D1=W1.days[0],D2=W1.days[1];const sq=D1.ex[0],dl=D1.ex[1],cu=D2.ex[1];
@@ -38,7 +38,7 @@ module.exports={name:'Programmbibliothek – Hierarchie, Import, Parser, Markier
     // JSON mit Varianten und Blöcken
     await p.evaluate(()=>{document.querySelector('#bibv [data-bbcr="root"]')?.click()});
     const js=await imp('test-programm.json','application/json');t.ok(js.ok,`${W}px: JSON wird gelesen`);await p.evaluate(()=>document.querySelector('#bibv [data-bbok]').click());
-    const jr=await p.evaluate(()=>{const v=document.querySelectorAll('#bibv [data-bbv]').length;document.querySelector('#bibv [data-bbv="1"]').click();const bl=document.querySelector('#bibv [data-bbb][aria-pressed="true"]');
+    const jr=await p.evaluate(()=>{const v=document.querySelectorAll('#bibv [data-bbv]').length;document.querySelector('#bibv [data-bbv="1"]').click();const bl={textContent:[...document.querySelectorAll('#bibv .bb-l')].map(x=>x.textContent).find(t=>/· Wochen$/.test(t)).replace(' · Wochen','')};
       const x=BIB.load().progs.find(p=>p.name==='Testprogramm C');return {v,b:bl&&bl.textContent,rx:[x.blocks[0].weeks[0].days[0].ex[1].sets,x.blocks[0].weeks[0].days[0].ex[1].rpe],kurz:x.blocks[1].weeks[0].days[0].ex[0].flags.includes('Wiederholungen fehlen')}});
     t.eq(jr,{v:2,b:'Kurz-Block',rx:[2,8],kurz:true},`${W}px: JSON mit Varianten, Blöcken und markierter Lücke`);
     // Eingefügter Text + Gym-Schnittstelle (nur Vorschau, nichts gespeichert)
@@ -48,7 +48,7 @@ module.exports={name:'Programmbibliothek – Hierarchie, Import, Parser, Markier
     const g=await p.evaluate(()=>{const c=s=>document.querySelector('#bibv '+s)?.click();c('[data-bbw="1"]');c('[data-bbd="2"]');const btn=!!document.querySelector('#bibv [data-bbgym]');c('[data-bbgym]');
       const gx=document.querySelectorAll('#bibv .bb-gx').length,err=(document.querySelector('#bibv .bb-err')||{}).textContent||'';const x=BIB.load().progs.find(p=>p.name==='Eingefügt');const R=BIB.toGymDay(x.blocks[0].weeks[0].days[1]);
       return {btn,gx,err:/Fantasie Curl/.test(err),ok:R.ok,live:R.live,b:R.day.b.map(b=>[b.e,b.s,b.r,b.rpe])}});
-    t.ok(g.btn&&g.gx===1&&g.err&&g.ok===false&&g.live===false&&JSON.stringify(g.b)===JSON.stringify([['pbb',4,'6',8]]),`${W}px: Gym-Schnittstelle prüft, wandelt und zeigt nur eine Vorschau (Übernahme gesperrt)`);
+    t.ok(g.btn&&g.gx===1&&g.err&&g.ok===false&&g.live===true&&JSON.stringify(g.b)===JSON.stringify([['pbb',4,'6',8]]),`${W}px: Gym-Schnittstelle prüft und wandelt; unvollständiger Tag ist nicht trainierbar (ok=false)`);
     // Löschen mit Nachfrage
     const dl=await p.evaluate(()=>{document.querySelector('#bibv [data-bbgymx]')?.click();document.querySelector('#bibv [data-bbcr="p"]')?.click();const n0=BIB.load().progs.length;const b=document.querySelector('#bibv [data-bbdel]');b.click();const armed=!!document.querySelector('#bibv .bb-del.armed');document.querySelector('#bibv [data-bbdel]').click();return {armed,d:n0-BIB.load().progs.length}});
     t.eq(dl,{armed:true,d:1},`${W}px: Löschen fragt erst nach`);

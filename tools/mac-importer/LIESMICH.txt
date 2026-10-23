@@ -1,0 +1,29 @@
+Candito Forever – Programmbibliothek · Mac-Importer
+====================================================
+
+Wozu?
+  Bild-PDFs (z. B. Screenshots aus Superset, mit PDF24 zusammengefügt) enthalten keinen Text.
+  Dieses Werkzeug erkennt den Text lokal auf deinem Mac (macOS-Texterkennung „Vision“ – keine Cloud,
+  nichts wird hochgeladen, keine Installation nötig) und erzeugt EINE Datei für die App.
+
+So geht's
+  1. Alle PDFs in einen Ordner legen (beliebig viele, z. B. 3RM_Woche_1.pdf … 8_Woche_7.pdf).
+  2. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten (beim ersten Mal fragt macOS nach,
+     weil das Skript aus dem Internet stammt) und den PDF-Ordner wählen.
+  3. Im PDF-Ordner entstehen:
+       Programmbibliothek-Import-<Datum>.json      → in die App importieren
+       Programmbibliothek-Import-<Datum>-Bericht.txt  → Prüfbericht (Zuordnung, Lücken, Qualität)
+       Programmbibliothek-Import-<Datum>-Text.txt     → erkannter Rohtext (zur Kontrolle)
+  4. Die .json-Datei per AirDrop oder iCloud Drive aufs iPhone bringen:
+     App › Einstellungen › Programmbibliothek › „Dateien importieren“.
+
+Was passiert automatisch
+  - Gleiche Dateien (identischer Inhalt) werden übersprungen.
+  - Programme und Varianten werden aus den Tagesköpfen erkannt („Day 1 - Monday (W5, 3 RM, V2)“),
+    Wochen und Tage zugeordnet, mehrere Wochen-PDFs desselben Programms zusammengeführt.
+  - Fehlende Wochen und Trainingstage stehen im Bericht und in der App.
+  - Unsichere Angaben (gekürzt, schlecht lesbar, Tag nicht eindeutig) werden markiert. In der App sind solche
+    Tage gesperrt, bis du sie mit dem Original verglichen hast. Es wird nichts ergänzt oder geschätzt.
+
+Voraussetzung
+  macOS 11 (Big Sur) oder neuer. Nur eigene oder zur Nutzung freigegebene Dateien verwenden.

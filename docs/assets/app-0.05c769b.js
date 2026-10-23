@@ -1083,7 +1083,7 @@ function withProg(id,fn){const o=PROG,ow=S.ui.w,od=S.ui.d;if(o===id)return fn();
 const NW=()=>P.length,NS=()=>P.length*ND(),ND=()=>DAYS.length,TW=()=>PROGS[PROG].test[0],TD=()=>PROGS[PROG].test[1];
 const TWg=g=>{const t=PROGS[PROG].tl;return t&&t[g]?t[g][0]:TW()},TDg=g=>{const t=PROGS[PROG].tl;return t&&t[g]?t[g][1]:TD()};
 const AMI=g=>{const c={sq:'csq',bp:'pbb',dl:'cdl'}[g];return P[TWg(g)][TDg(g)].b.findIndex(bl=>bl.e===c)};
-function phaseStart(id){if(isSQ(id))return sqStart(id);const add=(iso,n)=>{const t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10)};
+function phaseStart(id){if(isSQ(id))return sqStart(id);if(PROGS[id]&&PROGS[id].lib)return BIB.startOf(id);const add=(iso,n)=>{const t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10)};
  let prev=null,pw=0;for(const p of ORD()){const s0=p==='intro'?(S.meta.start||'2026-10-17'):(S.meta[SKEY[p]]||add(prev,pw*7));if(p===id)return s0;prev=s0;pw=PROGS[p].P.length}return S.meta.start}
 function progStart(){return phaseStart(PROG)}
 const key=(w,d)=>`${PROGS[PROG].pre}w${w+1}d${d+1}`;
@@ -1145,7 +1145,7 @@ function scheduleBackup(){clearTimeout(BK.t);BK.t=setTimeout(writeBackup,4000)}
 function writeBackup(){if(!db)return;const ok=totalOk();if(!ok&&!Object.values(S.logs).some(L=>L&&(L.whoop||L.note)))return;
  let id=bkId();if(BK.max[id]!=null&&ok<BK.max[id]){const t=new Date();id+=':'+String(t.getMinutes()).padStart(2,'0')}
  BK.max[id]=Math.max(BK.max[id]||0,ok);
- const body=JSON.parse(JSON.stringify({at:new Date().toISOString(),ok,logs:S.logs,meta:S.meta,schema:'intro-zyklus.backup/1'}));
+ const body=JSON.parse(JSON.stringify({at:new Date().toISOString(),ok,logs:S.logs,meta:S.meta,bib:bibDump(),schema:'intro-zyklus.backup/1'}));
  db.doc('backup/'+id).set(body).then(()=>{BK.last=Date.now();try{localStorage.setItem('intro-zyklus-bk',String(BK.last))}catch(e){}}).catch(()=>{})}
 try{BK.last=+localStorage.getItem('intro-zyklus-bk')||null}catch(e){}
 function watchBackups(){if(!db||BK.unsub)return;try{BK.unsub=db.collection('backup').onSnapshot(sn=>{BK.list=sn.docs.map(x=>({id:x.id,d:x.data()})).sort((a,b)=>a.id<b.id?1:-1);if(S.ui.tab==='setup')softRender()},()=>{})}catch(e){}}
@@ -1179,25 +1179,31 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1015-5699ef0</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1128-05c769b</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
-function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
+// Programmbibliothek gehört zur Sicherung (Programme + Zuordnung der Trainingsdaten über S.meta.lib)
+function bibDump(){try{const b=BIB.dump();return b.progs.length?b:undefined}catch(e){return undefined}}
+function bibRestore(j){let n=0;try{if(j&&j.bib)n=BIB.restore(j.bib);if(j&&j.meta&&j.meta.lib&&typeof j.meta.lib==='object'){const M=S.meta.lib||(S.meta.lib={act:null,st:{},rm:{}});M.st=Object.assign({},j.meta.lib.st||{},M.st||{});M.rm=Object.assign({},j.meta.lib.rm||{},M.rm||{});if(!M.act&&j.meta.lib.act)M.act=j.meta.lib.act}BIB.register()}catch(e){}return n}
+function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta,bib:bibDump()},null,1);
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Download hier nicht verfügbar');return}const d=new Date().toISOString().slice(0,10);await dl.save({filename:`intro-zyklus-sicherung-${d}.json`,data:body});toast('Sicherung gespeichert')}catch(e){toast('Download abgebrochen')}})()}
 document.addEventListener('change',e=>{const t=e.target;if(t.id!=='bkfile'||!t.files||!t.files[0])return;const f=t.files[0];t.value='';
- f.text().then(tx=>{const j=JSON.parse(tx);if(!j||!j.logs)throw 0;const fresh=totalOk()===0;const n=fillFrom(j.logs);if(fresh&&j.meta){const keep={restEx:S.meta.restEx};Object.assign(S.meta,j.meta);if(!S.meta.restEx)S.meta.restEx=keep.restEx||{};saveMeta();if(S.meta.prog&&PROGS[S.meta.prog]&&S.meta.prog!==PROG)setProg(S.meta.prog);toast(`${n} Sätze und deine Einstellungen übernommen`);render();return}toast(n?`${n} Sätze aus der Sicherung ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()}).catch(()=>toast('Datei ist keine gültige Sicherung'))});
+ f.text().then(tx=>{const j=JSON.parse(tx);if(!j||!j.logs)throw 0;const fresh=totalOk()===0;
+  // Reihenfolge: erst Bibliothek + Programmzuordnung, damit die Trainingsdaten der Bibliotheksprogramme ihr Programm finden
+  const nb=bibRestore(j);const pb=nb?` · ${nb} ${nb===1?'Bibliotheksprogramm':'Bibliotheksprogramme'}`:'';const n=fillFrom(j.logs);if(fresh&&j.meta){const keep={restEx:S.meta.restEx,lib:S.meta.lib};Object.assign(S.meta,j.meta);if(keep.lib)S.meta.lib=keep.lib;if(!S.meta.restEx)S.meta.restEx=keep.restEx||{};saveMeta();try{BIB.register()}catch(e){}if(S.meta.prog&&PROGS[S.meta.prog]&&S.meta.prog!==PROG)setProg(S.meta.prog);toast(`${n} Sätze und deine Einstellungen übernommen${pb}`);render();return}if(nb)saveMeta();toast(n||nb?`${n} Sätze aus der Sicherung ergänzt${pb}`:'Nichts zu ergänzen – alles schon vorhanden');render()}).catch(()=>toast('Datei ist keine gültige Sicherung'))});
 document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('[data-bkeach]')){S.meta.bkEach=t.checked;saveMeta();toast(t.checked?'Sicherung wird nach jeder Einheit angeboten':'Sicherung nur noch über „Heute“ und Einstellungen')}});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-bkfill],[data-act="bkdl"],[data-act="bkup"]');if(!t)return;
  if(t.dataset.act==='bkdl'){downloadBackup();return}if(t.dataset.act==='bkup'){document.getElementById('bkfile')?.click();return}
- const x=(BK.list||[]).find(z=>z.id===t.dataset.bkfill);if(!x)return;const n=fillFrom(x.d.logs);toast(n?`${n} Sätze ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()});
+ const x=(BK.list||[]).find(z=>z.id===t.dataset.bkfill);if(!x)return;const nb=bibRestore(x.d);if(nb)saveMeta();const n=fillFrom(x.d.logs)+nb;toast(n?`${n} Sätze ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()});
 async function initDb(){
  let tries=0; while(!(window.claude&&window.claude.use)&&tries<20){await new Promise(r=>setTimeout(r,150));tries++}
  if(!(window.claude&&window.claude.use)){syncState('nur dieses Gerät');return}
  try{db=await window.claude.use('db')}catch(e){db=null}
  if(!db){syncState('nur dieses Gerät');return}
  syncState('iPhone-Speicher','on');
+ try{BIB.dbSync(db)}catch(e){}
  let first=true;
  db.collection('logs').onSnapshot(snap=>{
   const seen=new Set();
@@ -1238,7 +1244,7 @@ function e1rm(kg,r,rpe){if(!kg||!r)return null;const p=(typeof LRC_INT!=='undefi
 function e1rmRTS(kg,r,rpe){if(!kg||!r)return null;const n=r+(10-(rpe==null?10:rpe));
  if(n<=1)return kg; if(n<=12){const lo=Math.floor(n),f=n-lo;const p=RTS[lo-1]+(lo<12?(RTS[lo]-RTS[lo-1])*f:0);return kg/(p/100)}
  return kg*(1+n/30)}
-function refKg(r){if(isSQ(PROG))return sq1rm(PROGS[PROG].sq,r);if(PROG!=='intro'){const g={SQ:'csq',BP:'pbb',DL:'cdl'}[r];if(!g)return null;let e=null;for(const pid of prevOf(PROG)){const v=withProg(pid,()=>{let m=null;allSets().forEach(s=>{const e0=e1rmRTS(s.kg,s.r,s.rpe);if(s.g===EX[g].g&&EX[s.e].m&&e0&&(m==null||e0>m))m=e0});return m});if(v!=null&&(e==null||v>e))e=v}return e?Math.round(e*.955*10)/10:null}
+function refKg(r){if(isSQ(PROG))return sq1rm(PROGS[PROG].sq,r);if(PROGS[PROG].lib)return BIB.rm(PROG,r);if(PROG!=='intro'){const g={SQ:'csq',BP:'pbb',DL:'cdl'}[r];if(!g)return null;let e=null;for(const pid of prevOf(PROG)){const v=withProg(pid,()=>{let m=null;allSets().forEach(s=>{const e0=e1rmRTS(s.kg,s.r,s.rpe);if(s.g===EX[g].g&&EX[s.e].m&&e0&&(m==null||e0>m))m=e0});return m});if(v!=null&&(e==null||v>e))e=v}return e?Math.round(e*.955*10)/10:null}
  const R=REFS[r];return R?pnum(setOf(R.w,R.d,R.b,0).kg):null}
 const REFLBL=()=>PROG==='intro'?'W1-Single':'Vorher';
 function firstKg(w,d,b){const L=log(w,d);if(!L||!L.b[b])return null;for(const s of L.b[b]){const k=pnum(s.kg);if(k)return k}return null}
@@ -1307,7 +1313,7 @@ function suggCalc(w,d,b,i){const bl=P[w][d].b[b],L=log(w,d),k3=(PROG==='intro'?'
    if(bl.minus)return out(top-bl.minus,`Top-Satz ${nf(top,2)} kg − ${bl.minus} kg`,tt);
    if(bl.plus)return out(top+bl.plus,`Satz davor ${nf(top,2)} kg + ${nf(bl.plus,2)} kg`,tt);
    const p=bl.pct??100;return out(top*p/100,p===100?`gleiche Last wie ${nf(top,2)} kg`:`${nf(p)} % vom Top-Satz (${nf(top,2)} kg)`,tt)}
-  const base=refKg(bl.ref);if(!base&&isSQ(PROG))return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – im Side-Quest-Tab eintragen`);if(!base)return out(null,`Referenz fehlt: ${REFS[bl.ref].n} aus W1`);
+  const base=refKg(bl.ref);if(!base&&isSQ(PROG))return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – im Side-Quest-Tab eintragen`);if(!base&&PROGS[PROG].lib)return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – in der Programmbibliothek beim Programm eintragen`);if(!base)return out(null,`Referenz fehlt: ${REFS[bl.ref].n} aus W1`);
   if(Array.isArray(bl.pct)){const pk=PICK[k3];const opts=bl.pct.map(p=>({p,kg:rnd(base*p/100)}));let ch=opts[0],why=`${nf(ch.p)} %`;
    const e=pk?estE1(bl.e,w,d,b,i):null;
    if(pk&&e){const ideal=kgFor(e.e1,pk.r,pk.rpe);
@@ -1398,7 +1404,7 @@ function unqueue(k){if(!db)return;delete S.out[k];db.doc('cockpit_outbox/'+k).de
 let anaCtl=null,anaLive=null;
 function setLine(s){const kg=pnum(s.kg),r=pnum(s.r),rp=pnum(s.rpe);if(!kg&&!r)return null;return `${kg!=null?nf(kg,2)+' kg':'? kg'} × ${r??'?'}${rp!=null?' @ RPE '+nf(rp):' (RPE fehlt)'}${s.rest?' · Pause '+mmss(s.rest):''}${s.ok?' ✓':' (nicht abgehakt)'}`}
 function anaPrompt(w){const lines=[];
- lines.push(`Du bist ein erfahrener Powerlifting-Coach. Analysiere die Trainingswoche W${w+1} („${WEEKS[w]}“) eines Powerlifting-Programms (${PROGS[PROG].name}, ${NW()} Wochen). Trainingstage: ${DAYS.map(x=>x.tag+' '+x.wdl).join(', ')}.${PROG==='intro'?' Woche 4 ist eine Testwoche mit AMRAPs an Tag 3.':` Testwoche ist W${TW()+1}.`}`);
+ lines.push(`Du bist ein erfahrener Powerlifting-Coach. Analysiere die Trainingswoche W${w+1} („${WEEKS[w]}“) eines Powerlifting-Programms (${PROGS[PROG].name}, ${NW()} Wochen). Trainingstage: ${DAYS.map(x=>x.tag+' '+x.wdl).join(', ')}.${PROG==='intro'?' Woche 4 ist eine Testwoche mit AMRAPs an Tag 3.':PROGS[PROG].lib?' Importiertes Programm aus der Programmbibliothek.':` Testwoche ist W${TW()+1}.`}`);
  lines.push(`Antworte auf Deutsch in Markdown mit genau diesen Abschnitten: "## Kurzfazit" (2–3 Sätze), "## Kniebeuge", "## Bankdrücken", "## Kreuzheben", "## RPE-Treffsicherheit" (Ist vs. Soll, Tendenz zu leicht/schwer), "## Auffälligkeiten" (Pausen, Hype, Notizen, Ausreißer), "## Für nächste Woche" (konkrete Hinweise in kg im Rahmen der Planvorgaben, z. B. welche %-Option, wo Last anpassen). Höchstens 380 Wörter, kurze Stichpunkte. Bleib innerhalb des Programms, erfinde keine Daten, keine medizinischen Diagnosen. Wo Daten fehlen, sag es kurz.`);
  lines.push(`Hinweis zu RPE: RPE 10 = keine Wdh mehr möglich, RPE 8 = 2 Wdh im Tank. e1RM ist aus Gewicht, Wdh und RPE geschätzt.`);
  lines.push(PROG==='intro'?`\nReferenz-Singles aus W1: Paused Squat ${nf(refKg('SQ'),2)} kg, Paused Deadlift ${nf(refKg('DL'),2)} kg, 3 s Pause Bench ${nf(refKg('BP'),2)} kg.`:isSQ(PROG)?`\nEingetragene 1RMs: Kniebeuge ${nf(refKg('SQ'),2)} kg, Bankdrücken ${nf(refKg('BP'),2)} kg, Kreuzheben ${nf(refKg('DL'),2)} kg.`:`\nReferenzwerte (e1RM aus dem Vorprogramm × 95,5 %): Kniebeuge ${nf(refKg('SQ'),2)} kg, Bankdrücken ${nf(refKg('BP'),2)} kg, Kreuzheben ${nf(refKg('DL'),2)} kg.`);
@@ -2563,8 +2569,8 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function applyDay(){const r=document.documentElement.style;r.setProperty('--day',DAYCOL[S.ui.d]);r.setProperty('--day-soft',DAYSOFT[S.ui.d])}
 
-function progDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')n++;return n})}
-function renderHead(){const ps=$('#progsw');if(ps)ps.innerHTML=[...ORD(),...(sqActive()?[sqActive()]:[])].map(id=>{const g=PROGS[id],n=progDone(id),t=g.P.length*g.DAYS.length;return `<button type="button" data-prog="${id}" aria-pressed="${PROG===id}"><b>${g.short}</b><small>${n}/${t}</small><i style="--v:${Math.round(n/t*100)}%"></i></button>`}).join('');const ab=ps&&ps.querySelector('[aria-pressed="true"]');if(ab&&ps.scrollWidth>ps.clientWidth)ps.scrollLeft=ab.offsetLeft-ps.clientWidth/2+ab.offsetWidth/2;renderTL()}
+function progDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(!P[w][d].lock&&dayStatus(w,d)==='done')n++;return n})}
+function renderHead(){const ps=$('#progsw');if(ps)ps.innerHTML=[...ORD(),...xActs()].map(id=>{const g=PROGS[id],n=progDone(id),t=g.P.length*g.DAYS.length-lockN(id);return `<button type="button" data-prog="${id}" aria-pressed="${PROG===id}"><b>${g.short}</b><small>${n}/${t}</small><i style="--v:${Math.round(n/t*100)}%"></i></button>`}).join('');const ab=ps&&ps.querySelector('[aria-pressed="true"]');if(ab&&ps.scrollWidth>ps.clientWidth)ps.scrollLeft=ab.offsetLeft-ps.clientWidth/2+ab.offsetWidth/2;renderTL()}
 function switchProg(id){switchProg.manual=1;if(!PROGS[id]||id===PROG)return;let hint=null;try{const cur=autoProg();if(cur&&cur!==id&&PROGS[cur]){const a=phaseRange(id).a;const td=new Date();td.setHours(0,0,0,0);const st=a?new Date(a):null;if(st&&st>td)hint=`${PROGS[id].name} beginnt planmäßig am ${st.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})} – zum Ansehen geöffnet. Aktuell dran: ${PROGS[cur].short}.`}}catch(e){}
  S.meta.prog=id;saveMeta();setProg(id);S.ui.openB={};S.ui.w=0;S.ui.d=0;renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render();window.scrollTo({top:0});toast(hint||PROGS[id].name+' aktiv',hint?5200:undefined)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-prog]');if(b){switchProg(b.dataset.prog)}});
@@ -3150,7 +3156,7 @@ function sqDetail(fam){const F=SQF[fam],vs=sqVs(fam);if(!S.ui.sqv||!vs.includes(
 function sqTcb(){const el=tcbEnsure();const fam=S.ui.sqd,act=sqActive();const sub=fam&&SQF[fam]?SQF[fam].t:act?'aktiv: '+SQF[PROGS[act].sq].t:'';
  el.innerHTML=`<div class="tcb-in"><span class="tcb-wm"><b>CANDITO<i>FOREVER</i></b><small>${sub?esc(sub):'Side Quests'}</small></span><button type="button" class="tcb-go" data-tcbtop aria-label="Zum Seitenanfang mit vollständigem Kopf"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span>Oben</span></button><button type="button" class="tcb-go tcb-gear" data-tcbgear aria-label="Menü und Einstellungen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>`;tcbAria()}
 document.addEventListener('click',e=>{if(e.target.closest('[data-tcbgear]')){const g=document.getElementById('gear');if(g)g.click()}});
-function sqBegin(id){if(!S.meta.sqStart)S.meta.sqStart={};if(!S.meta.sqStart[id])S.meta.sqStart[id]=sqStart(id);S.meta.sqActive=id;saveMeta();S.ui.sqd=null;switchProg(id);S.ui.tab='train';pickToday();render();window.scrollTo({top:0})}
+function sqBegin(id){if(S.meta.lib&&S.meta.lib.act)S.meta.lib.act=null;if(!S.meta.sqStart)S.meta.sqStart={};if(!S.meta.sqStart[id])S.meta.sqStart[id]=sqStart(id);S.meta.sqActive=id;saveMeta();S.ui.sqd=null;switchProg(id);S.ui.tab='train';pickToday();render();window.scrollTo({top:0})}
 function sqEnd(){S.meta.sqActive=null;saveMeta();switchProg.manual=0;const a=autoProg();S.ui.sqd=null;if(a&&a!==PROG)switchProg(a);else render();toast('Side Quest beendet – zurück im Jahresplan')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-sqd],[data-sqback],[data-sqv],[data-sqgo],[data-sqend],[data-sqstartgo]');if(!t||!$('#view').contains(t))return;
  if(t.dataset.sqd){S.ui.sqd=t.dataset.sqd;S.ui.sqv=null;render();window.scrollTo({top:0});const v=$('#view');v.classList.remove('pdin','pdout');void v.offsetWidth;v.classList.add('pdin');return}
@@ -3252,9 +3258,9 @@ document.addEventListener('input',e=>{if(e.target.matches('[data-wq]')){S.ui.wq=
 const SKEY={intro:'start',p8:'start8',p10:'start10',p8b:'start8b',p10b:'start10b',p8c:'start8c',p10c:'start10c',p3:'start3',p10w:'start10w',p10d:'start10d'};
 const isoD2=d=>{const x=new Date(d);x.setHours(12,0,0,0);return x.toISOString().slice(0,10)};
 function phaseRange(id){return withProg(id,()=>{const a=dayDate(0,0),b=dayDate(NW()-1,3);return {a,b}})}
-function phaseDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')n++;return {n,t:NS()}})}
+function phaseDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(!P[w][d].lock&&dayStatus(w,d)==='done')n++;return {n,t:NS()-lockN(id)}})}
 function autoProg(){const today=new Date();today.setHours(0,0,0,0);
- {const a=sqActive();if(a){const pd=phaseDone(a),r=sqRange(a);const e=r.b?new Date(r.b):null;if(e)e.setHours(23,59,0,0);if(pd.n<pd.t&&(!e||e>=today))return a}}
+ for(const a of xActs()){const pd=phaseDone(a),r=sqRange(a);const e=r.b?new Date(r.b):null;if(e)e.setHours(23,59,0,0);if(pd.n<pd.t&&(!e||e>=today))return a}
  for(const id of ORD()){const {b}=phaseRange(id);if(!b)continue;const e=new Date(b);e.setHours(23,59,0,0);const pd=phaseDone(id);if(e>=today&&pd.n<pd.t)return id}
  return ORD()[ORD().length-1]}
 // 2) Verschieben
@@ -3472,7 +3478,7 @@ function progData(){const A=allSets();
  const series=['sq','bp','dl'].map(k=>({c:GC[k],n:names[k],v:[...Array(NW()).keys()].map(w=>bestOf(comp[k],w))}));
  const tw=[...Array(NW()).keys()].map(w=>{const vals={};A.filter(s=>s.w===w).forEach(s=>vals[s.g]=(vals[s.g]||0)+s.kg*s.r);return{label:'W'+(w+1),vals}});
  const prs={};A.forEach(s=>{if(!s.e1)return;if(!prs[s.e]||s.e1>prs[s.e].e1)prs[s.e]=s});
- const amrap=P[TW()][TD()].b.filter(bl=>PROG==='intro'||['csq','pbb','cdl'].includes(bl.e)).map((bl,b)=>{const s=setOf(TW(),TD(),b,0);const kg=pnum(s.kg),r=pnum(s.r);const rk=refKg(bl.ref);
+ const amrap=PROGS[PROG].lib?[]:P[TW()][TD()].b.filter(bl=>PROG==='intro'||['csq','pbb','cdl'].includes(bl.e)).map((bl,b)=>{const s=setOf(TW(),TD(),b,0);const kg=pnum(s.kg),r=pnum(s.r);const rk=refKg(bl.ref);
   return {bl,kg,r,e1:e1rm(kg,r,pnum(s.rpe)),ref:rk,refE:rk?e1rm(rk,1,9):null}});
  const ttl=k=>`W${k}`;
  const sec={
@@ -3714,7 +3720,7 @@ function testPlanHTML(w,d){const ks=testLifts(w,d);if(!ks.length)return '';
 // --- Kalender & Serie ---
 function dayTonMap(){const m={};rfAllLogs().forEach(x=>{let t=0,n=0;(x.L.b||[]).forEach(a=>(a||[]).forEach(z=>{if(z&&z.ok){n++;t+=(pnum(z.kg)||0)*(pnum(z.r)||0)}}));if(!n)return;const k=isoD(x.dt);m[k]=(m[k]||0)+Math.max(t,1)});return m}
 function streakWeeks(){const today=new Date();today.setHours(0,0,0,0);const wk={};
- ORD().concat(sqActive()?[sqActive()]:[]).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(!dt)continue;const x=new Date(dt);x.setHours(0,0,0,0);if(x>=today)continue;
+ ORD().concat(xActs()).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(!dt)continue;const x=new Date(dt);x.setHours(0,0,0,0);if(x>=today)continue;
   const mo=new Date(x);mo.setDate(mo.getDate()-((mo.getDay()+6)%7));const k=isoD(mo);wk[k]=wk[k]||{p:0,ok:0};wk[k].p++;if(dayStatus(w,d)==='done')wk[k].ok++}}));
  const ks=Object.keys(wk).sort().reverse();let n=0;for(const k of ks){const v=wk[k];if(v.ok>=v.p)n++;else break}return {n,weeks:ks.length}}
 function calHTML(){const sig=isoD(new Date())+'|'+Object.keys(S.logs).length+'|'+JSON.stringify(Object.keys(S.logs).map(k=>(S.logs[k].u||0)));if(calHTML.sig===sig)return calHTML.c;calHTML.sig=sig;const r=calHTML0();calHTML.c=r;return r}
@@ -3740,7 +3746,7 @@ function liftVolHTML(){const G3=['sq','bp','dl'];const C=(window.CF_THEME||'blue
   <p class="note2" style="margin:6px 0 0">Umriss = geplante Sätze laut Candito (inkl. Varianten der jeweiligen Lift-Gruppe), Füllung = erledigt.</p></section>`}
 
 // --- Wochenrückblick ---
-function weekPlanned(st,end){let p=0;ORD().concat(sqActive()?[sqActive()]:[]).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt&&dt>=st&&dt<=end)p++}}));return p}
+function weekPlanned(st,end){let p=0;ORD().concat(xActs()).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt&&dt>=st&&dt<=end)p++}}));return p}
 function weekRecap(){const now=new Date();const dw=now.getDay();const show=(dw===0&&now.getHours()>=17)||dw===1;if(!show)return null;
  const end=new Date(now);end.setHours(23,59,59,999);if(dw===1)end.setDate(end.getDate()-1);const st=new Date(end);st.setDate(st.getDate()-6);st.setHours(0,0,0,0);
  let ses=0,sets=0,ton=0,best=null;const rec=[];
@@ -4515,7 +4521,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   <div class="gp-leg"><span class="v">Vorgabe laut Plan</span><span class="e">≈ Empfehlung</span><span class="f">frei / nach RPE</span></div>
   ${L.mind?`<section class="gp-info" style="border-color:rgba(240,160,102,.4);background:rgba(240,160,102,.07)"><h3 style="color:#f0a066">Mein Vorsatz</h3><p>„${esc(L.mind)}“</p></section>`:''}
   ${info.length?`<section class="gp-info"><h3>Infos zum Tag</h3>${info.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`:''}
-  ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
+  ${day.b.length?rows:day.lock?`<p class="gp-t">Gesperrt – ${esc(day.lock)}. ${esc(day.d||'')}</p>`:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
 function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)return;const {w,d}=S.ui;const L=log(w,d);const bb=g.querySelector('.bigbtn');if(!bb||!L||L.done||nextOpen(w,d,0,-1)){return}
  if(bb.dataset.fin)return;bb.dataset.fin='1';delete bb.dataset.sl;bb.classList.remove('slide');bb.classList.add('finb');bb.removeAttribute('data-g');bb.removeAttribute('data-act');bb.innerHTML='<span class="hb-ic">✓</span><span class="hb-tx"><b>Training abschließen</b><span class="hb-m"><i>Alle Sätze erledigt</i></span></span>';
@@ -4695,7 +4701,7 @@ function renderTL(){const today=new Date();
  const dn=wDone(vw);
  const card=`<div class="tncard"><div class="tnc-t"><small>${esc(g.name)}</small><b>Woche ${vw+1} · ${esc(WEEKS[vw]||'')}</b></div><span class="tnc-r" aria-label="${dn} von ${nd} Einheiten">${ringSVG(nd?dn/nd:0,'#43c08a',40,4)}<em>${dn}/${nd}</em></span></div>`;
  const tabs=`<div class="tnweeks" role="group" aria-label="Woche" style="--nw:${Math.min(nw,5)}">${[...Array(nw).keys()].map(w=>`<button type="button" data-navw="${w}" aria-pressed="${w===vw}" class="${wDone(w)===nd?'done':''}${w===S.ui.w?' hasel':''}">W${w+1}</button>`).join('')}</div>`;
- const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD();
+ const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD()&&!PROGS[PROG].lib;
    return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${test?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}${st==='done'?' · erledigt':''}"><span class="tld"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b></span><span class="tls ${st||'plan'}">${st==='done'?IC.done:st==='part'?IC.part:test?IC.test:IC.plan}</span><i></i></button>`}).join('')+`</div></div>`;
  const weeks=`<div class="tnwl">${[...Array(nw).keys()].map(w=>{const n=wDone(w),a=dayDate(w,0),z=dayDate(w,nd-1),fd=x=>x?x.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'';return `<button type="button" class="tnwr ${w===S.ui.w?'cur':''} ${n===nd?'done':''}" data-navw="${w}" data-navday="1"><em>W${w+1}</em><span><b>${esc(WEEKS[w]||'')}</b><small>${fd(a)} – ${fd(z)}</small></span><i class="tlp"><b style="width:${nd?n/nd*100:0}%"></b></i><small class="tnwn">${n}/${nd}</small></button>`}).join('')}</div>`;
  const tl=$('#tl');tl.dataset.mode=mode;tl.innerHTML=seg+card+(mode==='day'?tabs+days:mode==='week'?weeks:'');
@@ -4821,7 +4827,7 @@ function gxiDrag(el){const pn=el.querySelector('.gxi-p0'),sc=el.querySelector('.
 document.addEventListener('click',e=>{const o=e.target.closest('[data-exinfo]');if(o&&o.closest('#gym')){e.stopPropagation();exInfoOpen(o.dataset.exinfo||'v');return}
  if(e.target.closest('[data-gxiclose]')){exInfoClose();return}const t=e.target.closest('[data-gxitab]');if(t){GXI.tab=t.dataset.gxitab;exInfoRefresh();const sc=document.querySelector('#gxi .gxi-sc');if(sc)sc.scrollTop=0}},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const el=document.getElementById('gxi');if(el&&!el.hidden){e.stopImmediatePropagation();exInfoClose()}}},true);
-function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(day.b.length&&gymList()){renderGymL();return}if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
+function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(day.b.length&&gymList()){renderGymL();return}if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card">${day.lock?`<h2 class="h2">Gesperrt</h2><p class="note2">${esc(day.lock)}: ${esc(day.d||'')}</p><p class="note2">Unvollständige oder unsichere Vorgaben werden nicht als Einheit angelegt. Prüfe sie in Einstellungen › Programmbibliothek.</p>`:`<h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>`}${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
  const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e];$('#gym').dataset.hy=bl.h||'';const calm=L.b[G.b].slice(0,bl.s).some(x=>x.ok);
  const strip=day.b.map((x,b)=>{const all=L.b[b].slice(0,x.s).every(z=>z.ok);return `<span class="${b===G.b?'c':all?'d':''}"></span>`}).join('');
  const pl=kg?plates(kg,barFor(bl.e)):[];const allDone=day.b.every((x,b)=>L.b[b].slice(0,x.s).every(z=>z.ok));
@@ -5078,6 +5084,567 @@ let tt;function toast(m,ms){const t=$('#toast');t.textContent=m;t.hidden=false;c
 function pickToday(){const now=new Date();now.setHours(0,0,0,0);let best=null;
  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(!dt)continue;dt.setHours(0,0,0,0);if(dt>=now&&dayStatus(w,d)!=='done'){if(!best||dt<best.dt)best={w,d,dt}}}
  if(best){S.ui.w=best.w;S.ui.d=best.d}}
+/* ===================== Programmbibliothek – Kern (ohne Oberfläche) =====================
+   Gemeinsamer Kern für die App UND den Mac-Batch-Importer (tools/mac-importer): Parser für Text/OCR, CSV, JSON,
+   PDF-Leser (Text und eingebettete Seitenbilder, ohne Fremdbibliothek), Zusammenführen mehrerer Importe,
+   Lücken-/Qualitätsprüfung und die Prüfung, ob ein Tag trainierbar ist.
+   Regeln: Nichts wird erfunden – fehlende Angaben bleiben leer und werden markiert. Keine Abhängigkeit von window/document. */
+var BIBCORE=(function(){
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var norm=function(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9%., ]+/g,' ').replace(/\s+/g,' ').trim()};
+var num=function(v){if(v==null||v==='')return null;var n=parseFloat(String(v).replace(',','.'));return isNaN(n)?null:n};
+var uid=function(){return 'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+var CAT=function(){return typeof EX!=='undefined'?EX:null};
+
+/* ---------- Übungen dem Katalog zuordnen ---------- */
+var ALIAS={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench':'pbb','competition bench':'pbb','comp squat':'csq','competition squat':'csq','comp deadlift':'cdl','competition deadlift':'cdl','paused squat':'psq','paused deadlift':'pdl'};
+function matchEx(name){var n=norm(name);if(!n)return null;if(ALIAS[n])return ALIAS[n];var E=CAT();if(!E)return null;var best=null,bs=0;var tn=new Set(n.split(' '));
+ Object.keys(E).forEach(function(k){if(bs>=2)return;var en=norm(E[k].n);if(en===n){best=k;bs=2;return}var te=en.split(' ');var hit=te.filter(function(t){return tn.has(t)}).length;var sc=hit/Math.max(te.length,tn.size);if(sc>bs&&sc>=.75){bs=sc;best=k}});return best}
+
+/* ---------- Satz-/Lastvorgabe aus Text ---------- */
+function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]\)(?=\s|$)/g,' ').replace(/(\d)\s*[xX×]{2}\s*(\d)/g,'$1 x $2').replace(/(\d)\s*[Xx×]\s*(?=\d)/g,'$1 x ');var o={sets:null,reps:null,amrap:false,rpe:null,rpeTxt:null,load:null,hype:null,kind:null};var m;
+ if((m=s.match(/(\d{1,2})\s*[x×]\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?|AMRAP|max)/i))){o.sets=+m[1];if(/amrap|max/i.test(m[2])){o.amrap=true;o.reps='AMRAP'}else o.reps=m[2].replace(/\s+/g,'').replace('-','–')}
+ else if((m=s.match(/(\d{1,2})\s*(?:sets?|sätze|saetze)\s*(?:of|à|a|mit)?\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)\s*(?:reps?|wdh|wiederholungen)/i))){o.sets=+m[1];o.reps=m[2].replace(/\s+/g,'')}
+ else if((m=s.match(/(?:^|[^\d])(\d{1,2})\s*singles?\b/i))){o.sets=+m[1];o.reps='1'}
+ else if(/\bAMRAP\b/i.test(s)){o.amrap=true;o.reps='AMRAP';var k=s.match(/(\d)\s*(?:set|satz)/i);o.sets=k?+k[1]:1}
+ if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)/i)))o.rpeTxt=String(num(m[1])).replace('.',',')+'–'+String(num(m[2])).replace('.',',');
+ else if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)/i))||(m=s.match(/@\s*(\d{1,2}(?:[.,]\d)?)(?!\s*%)/))){var r=num(m[1]);if(r!=null&&r>=1&&r<=10)o.rpe=r;else o.rpeBad=m[1]}
+ if(/\d\s*[x×]\s*\d[^.;]{0,40}\bOR\b\s*\d\s*[x×]\s*\d|\bODER\b\s*\d\s*[x×]|\d(?:[.,]\d+)?\s*%\s*(?:OR|ODER)\s*\d/i.test(s))o.alt=true;
+ if(o.rpe!=null||o.rpeTxt){if(/on (?:the )?last set|last set|letzten satz/i.test(s))o.kind='im letzten Satz';else if(/on (?:each|every) set|each set|every set|jedem satz/i.test(s))o.kind='in jedem Satz';else if(/on average|im schnitt|average/i.test(s))o.kind='im Schnitt';else if(/on the first set|first set|ersten satz/i.test(s))o.kind='im ersten Satz';else if((m=s.match(/on the (\d)(?:st|nd|rd|th) set/i)))o.kind=m[1]+'. Satz'}
+ if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*(?:[-–]\s*(\d{2,3}(?:[.,]\d+)?))?\s*%\s*(?:load\s*)?(?:of|des|der|vom|von)?\s*([^.;,\n)]{0,60})?/i)))o.load={pct:m[2]?null:num(m[1]),text:(m[0]||'').replace(/\s*(?:--|—|w\/?\s*(?:low|moderate|high)|\b(?:low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*\w+\s*)?hype|hype).*$/i,'').trim().slice(0,60)};
+ else if((m=s.match(/(\d{1,3}(?:\s*[-–]\s*\d{1,3})?)\s*(lbs?|kg)\s*in\s*reserve/i)))o.load={text:m[1].replace(/\s+/g,'').replace('-','–')+' '+m[2].replace(/^l/i,'l')+' in Reserve'};
+ else if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*kg/i)))o.load={kg:num(m[1]),text:m[0]};
+ else if(/no\s*%\s*prescription|keine\s*%-?vorgabe|by\s*feel|nach\s*gef[uü]hl/i.test(s))o.load={text:'keine %-Vorgabe (nach RPE)'};
+ else if((m=s.match(/\b((?:the\s+)?(?:same|heaviest|lighter|heavier)\s+load(?:ing)?\b[^.;\n]{0,50})/i)))o.load={text:m[1].replace(/\s*(?:--|—).*$/,'').trim()};
+ if((m=s.match(/\b(low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*(?:low|moderate|high)\s*)?hype|hype\s*[:\-]?\s*(low|moderate|high|niedrig|moderat|hoch)/i))){var h=(m[1]||m[2]).toLowerCase();o.hype={low:'Niedrig',niedrig:'Niedrig',moderate:'Moderat',moderat:'Moderat',high:'Hoch',hoch:'Hoch'}[h]}
+ return o}
+var OCRBAD=/[|©®°“”«»~^]|\b[a-z]{1}[A-Z]/;
+/* Symbole der App-Oberfläche im Screenshot (Info-Knopf „=)“, „©}“ …) sind kein Lesefehler im Text */
+var ocrClean=function(r){return String(r||'').replace(/\b[xX]{2}\b/g,'x').replace(/[©®]\s*[}\])]?|[=i]\s*[)}]|\s\|(?=\s|$)|[“”]\s*$/g,' ')};
+function flagEx(x,src){var f=[];if(x.sets==null)f.push('Satzanzahl fehlt');if(x.reps==null)f.push('Wiederholungen fehlen');
+ if(x.rpe==null&&!x.rpeTxt&&!x.load&&!x.amrap)f.push('Keine Last- oder RPE-Vorgabe gefunden');if(!x.eid)f.push('Übung nicht im Übungskatalog – Name prüfen');
+ if(x.cut&&!x.ok)f.push('Nur aus der Tagesübersicht gelesen – Vorgabe evtl. gekürzt');
+ if(x.amb&&!x.ok)f.push('Tag-Zuordnung unsicher – Detailseite ohne Eintrag in der Tagesübersicht');
+ if(x.rpeBad&&!x.ok)f.push('RPE nicht lesbar („'+x.rpeBad+'“)');if(x.alt&&!x.ok)f.push('Mehrere Optionen („OR“) – bitte die gewählte eintragen');
+ if(src==='ocr'&&!x.ok&&OCRBAD.test(ocrClean(x.raw)))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
+
+/* ---------- Kopfzeile „Day 1 - Monday (W4, 3 RM, V2)“ ---------- */
+var WD={monday:0,montag:0,mon:0,mo:0,tuesday:1,dienstag:1,tue:1,di:1,wednesday:2,mittwoch:2,wed:2,mi:2,thursday:3,donnerstag:3,thu:3,do:3,friday:4,freitag:4,fri:4,fr:4,saturday:5,samstag:5,sat:5,sa:5,sunday:6,sonntag:6,sun:6,so:6};
+function headInfo(inner){var o={w:null,prog:'',variant:''};if(!inner)return o;var parts=inner.split(/\s*,\s*/).map(function(s){return s.trim()}).filter(Boolean);var rest=[];
+ parts.forEach(function(p){var m=p.match(/^W(?:eek)?\s*(\d{1,2})$/i);if(m&&o.w==null){o.w=+m[1];return}if(/^V\s*\d+(?:[.,]\d+)?$/i.test(p)&&!o.variant){o.variant=p.replace(/\s+/g,'').toUpperCase();return}rest.push(p)});
+ o.prog=rest.join(', ').replace(/\s+/g,' ').trim();return o}
+function weekFromName(n){var m=String(n||'').match(/(?:woche|week|wk)[\s_\-]*(\d{1,2})(?!\d)/i)||String(n||'').match(/(?:^|[\s_\-])W(\d{1,2})(?!\d)/);return m?+m[1]:null}
+function baseName(nm){return String(nm||'').replace(/\.[a-z0-9]+$/i,'').replace(/^[0-9a-f]{8}-/,'').replace(/_/g,' ').replace(/\s+/g,' ').trim()}
+
+/* ---------- Text-Parser (PDF-Text, OCR, eingefügter Text) ---------- */
+var NOISE=/^(\d{1,2}:\d{2}\b.*|close description|description|start workout|workout incomplete|exercises|hide tips.*|<?\s*hide tips.*|finish.*|show tips.*|\W{0,3})$/i;
+var cleanNm=function(l){var L=l.trim();for(var i=0;i<3;i++)L=L.replace(/\s+(?:x{1,2}|×|-{2,}|—+|[|>»]+)$/i,'').trim();return L};
+function isExName(l){var L=cleanNm(l);if(/[=;!?'’]|:\)|\(\s*$/.test(L)&&!/\(\s*[A-Z]/.test(L))return false;var letters=L.replace(/[^A-Za-zÄÖÜäöü]/g,'');if(letters.length<5||L.length>48)return false;var up=L.replace(/[^A-ZÄÖÜ]/g,'').length;return up/letters.length>.85&&!/^(DAY|TAG|WEEK|WOCHE)\b/i.test(L)}
+var pretty=function(s){return s.toLowerCase().replace(/\b\w/g,function(c){return c.toUpperCase()})};
+var FOCUSW='(?:legs?|chest|back|arms?|shoulders?|upper(?: body)?|lower(?: body)?|full ?body|push|pull|core|beine|brust|rücken|arme|schultern|oberkörper|unterkörper|ganzkörper)';
+var FOCUSL=new RegExp('^(?:focus:\\s*|[A-Za-z]{1,2}\\s+)?('+FOCUSW+'(?:\\s*[,;&/]\\s*'+FOCUSW+')*)\\s*\\S{0,2}$','i');
+var RXSTART=/^(?:\(optional\)\s*)?\d{1,2}\s*(?:[xX×]|sets?\b|singles?\b|sätze)|^\d{1,2}\s*[xX×]\s*AMRAP/i;
+/* Übungsname in der Tagesübersicht: kurz, überwiegend groß geschriebene Wörter, kein Satz */
+function isOvName(l){if(l.length>64||/[?!]|[a-z]\.\s*$/.test(l)||RXSTART.test(l))return false;var w=l.split(/\s+/).filter(function(x){return /^[A-Za-zÄÖÜäöü]{3,}/.test(x)});if(!w.length)return false;var up=w.filter(function(x){return /^[A-ZÄÖÜ]/.test(x)}).length;return up/w.length>=.6&&/^[A-Za-zÄÖÜäöü0-9(]/.test(l)}
+var stripJunk=function(l){var i=l.lastIndexOf(' | ');return i>=0&&i<l.length-4?l.slice(i+3).trim():l};
+var rxKey=function(r){var s=norm(String(r||'').replace(/(\.\.\.|…)\s*$/,'')).replace(/^[^\d(]*/,'').replace(/\(optional\)\s*/,'').replace(/\s+/g,'');return s};
+var tokSim=function(a,b){var A=norm(a).split(' ').filter(function(t){return t.length>1&&t!=='w'}),B=new Set(norm(b).split(' ').filter(function(t){return t.length>1&&t!=='w'}));if(!A.length||!B.size)return 0;var hit=A.filter(function(t){return B.has(t)}).length;return hit/Math.min(A.length,B.size)};
+var cpre=function(a,b){var n=Math.min(a.length,b.length),i=0;while(i<n&&a[i]===b[i])i++;return i};
+function rxMatch(ov,det){var a=rxKey(ov),b=rxKey(det);if(!a||!b)return 0;var c=cpre(a,b);var need=Math.min(14,Math.floor(a.length*.7));return c>=Math.max(6,need)?c:0}
+/* Zwei Bildschirm-Ausschnitte derselben Übersicht zusammensetzen (Überlappung beim Scrollen) */
+function mergeSeq(a,b){var k=function(o){return norm(o.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(o.rx).slice(0,10)};var ka=a.map(k),kb=b.map(k);
+ for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(ka[a.length-n+i]!==kb[i]){ok=false;break}if(ok)return a.concat(b.slice(n))}
+ var j=0;while(j<ka.length&&j<kb.length&&ka[j]===kb[j])j++;if(j>0)return a.concat(b.slice(j));
+ return a.concat(b.filter(function(o,i){return ka.indexOf(kb[i])<0}))}
+function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||'').replace(/\r/g,'').replace(/\f/g,'\n\f\n').split('\n').map(function(l){return l==='\f'?l:l.replace(/\s+/g,' ').trim()});
+ var prog={id:uid(),src:'import',name:o.name||'',sub:'',file:o.file||'',fmt:o.fmt||'text',ocr:src==='ocr',at:Date.now(),variants:[{id:'v1',name:'Standard'}],blocks:[{name:'Block 1',weeks:[]}],unparsed:[]};
+ var B=prog.blocks[0],wk=null,day=null,ex=null,mode=null,hp=null,hv=null,orphan=0;var fw=weekFromName(o.file||o.fallback);var det=[],ovs=[],ev=[],curL=null;
+ var newL=function(cont){curL={items:[],day:day,at:ev.length,cont:!!cont};ovs.push(curL);ev.push({t:'ov',L:curL})};
+ var getW=function(n){var w=B.weeks.find(function(x){return x.n===n});if(!w){w={n:n,name:'',days:[]};B.weeks.push(w);B.weeks.sort(function(a,b){return a.n-b.n})}return w};
+ var getD=function(w,n){var d=w.days.find(function(x){return x.n===n});if(!d){d={n:n,name:'Tag '+n,wd:'',focus:'',notes:'',hints:[],ex:[]};w.days.push(d);w.days.sort(function(a,b){return a.n-b.n})}return d};
+ var endEx=function(){if(ex){ex.notes=ex.noteL.join(' ').trim();delete ex.noteL;ex=null}};
+ var addNote=function(l){if(day.notes.indexOf(l)>=0)return;day.notes=(day.notes?day.notes+' ':'')+l};
+ for(var i=0;i<lines.length;i++){var l=lines[i];if(!l)continue;var m;
+  /* Seitenwechsel (\f) bzw. Statuszeile eines Screenshots („16:06 …“): eine Detailseite endet hier, eine gescrollte Übersicht beginnt neu */
+  if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex')mode=null;continue}
+  if(mode!=='desc'&&(m=l.match(/^(?:week|woche)\s*(\d{1,2})\s*(?:[-–—:]+\s*(.*))?$/i))){endEx();day=null;wk=getW(+m[1]);if(m[2]&&!wk.name)wk.name=m[2].trim();mode=null;orphan=0;continue}
+  if((m=l.match(/^(?:day|tag)\s*(\d{1,2})\s*(?:[-–—:]\s*([A-Za-zÄÖÜäöü]+))?\s*(?:\(([^)]*)\)?)?/i))&&(m[2]||m[3]!=null||/^(?:day|tag)\s*\d{1,2}\s*$/i.test(l))){endEx();var H=headInfo(m[3]);var wn=H.w!=null?H.w:(wk?wk.n:(fw||1));wk=getW(wn);day=getD(wk,+m[1]);if(m[2])day.wd=m[2];
+   if(H.prog&&!hp)hp=H.prog;if(H.variant&&!hv)hv=H.variant;mode='afterDay';orphan=0;ev.push({t:'day',day:day});continue}
+  if(!day){if(NOISE.test(l))continue;var f0=l.match(FOCUSL);if(f0)continue;prog.unparsed.push(l);continue}
+  if(mode==='afterDay'){var f=l.match(FOCUSL);if(f){if(!day.focus)day.focus=f[1];mode=null;continue}}
+  else if(FOCUSL.test(l)&&mode!=='desc'&&!isExName(l)){/* Tagesseite ohne sichtbaren Kopf (beim Scrollen abgeschnitten) – nicht dem falschen Tag zuordnen */endEx();orphan=1;mode=null;continue}
+  if(/^close description$/i.test(l)){mode=null;continue}
+  if(/^description$/i.test(l)){endEx();mode='desc';continue}
+  if(/^exercises$/i.test(l)){endEx();mode='ovw';if(!orphan)newL(false);else curL=null;continue}
+  if(/^(start workout|workout incomplete|finish workout)$/i.test(l)&&mode==='ovw'&&curL)curL.complete=true;
+  if(NOISE.test(l))continue;
+  if(mode==='desc'){if(!orphan)addNote(l);continue}
+  if(mode==='ovw'&&!isExName(l)){if(orphan||!curL)continue;var L=curL.items;var last=L[L.length-1];var ll=stripJunk(l);
+   if(last&&!last.rx&&RXSTART.test(ll)){last.rx=ll;continue}
+   if(isOvName(ll)){if(last&&!last.rx){if(!/[A-Za-zÄÖÜäöü]{4}/.test(last.name))last.name=ll;else last.name=(last.name+' '+ll).replace(/\s+/g,' ')}else L.push({name:ll,rx:''});continue}
+   continue}
+  if(isExName(l)&&ex&&!ex.rxLine&&!ex.noteL.length){ex.name=(ex.name+' '+pretty(cleanNm(l))).replace(/\s+/g,' ');continue}
+  if(isExName(l)){endEx();mode='ex';orphan=0;var nm=cleanNm(l).replace(/\s+/g,' ').trim();ex={name:pretty(nm),raw:'',rxLine:'',noteL:[],w:wk,d:day};det.push(ex);ev.push({t:'det'});continue}
+  if(ex){if(!ex.rxLine&&/\d\s*[xX×]{1,2}\s*(\d|amrap)|\bAMRAP\b|\d\s*(?:sets?|sätze)|\d\s*singles?\b/i.test(l)){ex.rxLine=l;ex.raw=l;continue}
+   if(ex.rxLine&&ex.noteL.length===0&&/^(--|—|w\/|at |@|mit |with |hype|moderate|low|high)/i.test(l)){ex.rxLine+=' '+l;ex.raw+=' '+l;continue}ex.noteL.push(l);continue}
+  if(!orphan)addNote(l)}
+ endEx();
+ /* Zusammensetzen: Tagesübersicht ist maßgeblich für Reihenfolge; Detailseiten liefern die vollständige Vorgabe */
+ /* Übersichtslisten den Tagen zuordnen: eine Liste ohne jede Überschneidung mit der bisherigen Übersicht des Tages stammt
+    von einer Seite, deren Kopf abgeschnitten war → sie gehört zum nächsten Tageskopf (unsicher, wenn dazwischen Detailseiten lagen) */
+ var okey=function(x){return norm(x.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(x.rx).slice(0,10)};var dl=new Map(),prevD=null;
+ ovs.forEach(function(L){var D=L.day;if(L.cont&&prevD)D=prevD;if(!L.items.some(function(x){return x.rx})){prevD=D;return}var have=dl.get(D)||[];var hk=new Set();have.forEach(function(h){h.items.forEach(function(x){hk.add(okey(x))})});
+  if(have.length&&!L.cont&&!L.items.some(function(x){return hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
+  if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D});
+ var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var x={name:d0?d0.name:ovItem.name,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
+   opt:/\(optional\)/i.test(rx||'')||(ovItem&&/\(optional\)/i.test(ovItem.rx)),cut:!d0&&/(\.\.\.|…)\s*$/.test(ovItem.rx||'')};
+  if(amb||(ovItem&&ovItem.amb))x.amb=true;if(!x.rpeBad)delete x.rpeBad;if(!x.alt)delete x.alt;x.eid=matchEx(x.name)||(ovItem?matchEx(ovItem.name):null);if(!x.eid&&d0&&ovItem&&tokSim(ovItem.name,d0.name)<.99)x.eid=matchEx(ovItem.name);x.flags=flagEx(x,src);return x};
+ var sr=function(t){var R=parseRx(t);return R.sets!=null&&R.reps!=null?R.sets+'x'+R.reps:''};
+ B.weeks.forEach(function(W){var pool=det.filter(function(x){return x.w===W});var used=new Set();var dayOv=new Map();
+  W.days.forEach(function(D){var Ls=dl.get(D)||[];var ov=Ls.map(function(L){return L.items}).filter(function(x){return x.length}).reduce(function(a,b){return a.length?mergeSeq(a,b):b.slice()},[]);
+   D.hasOv=ov.some(function(x){return x.rx});D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
+   ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6}))return;var best=null,bs=0;
+    pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
+    if(best)used.add(best);var e=mk(best,best&&!it.rx?{name:it.name,rx:best.rxLine}:it,false);e._ov=it;e._d=!!best;D.ex.push(e)})});
+  /* 2. Durchgang: nur aus der Übersicht gelesene Einträge mit einer übrigen Detailseite gleicher Übung und gleichem Satz×Wdh.-Schema ergänzen (auch tagübergreifend) */
+  W.days.forEach(function(D){D.ex.forEach(function(e,k){if(e._d||!e._ov||!e._ov.rx)return;var key=sr(e._ov.rx);if(!key)return;
+   var c=pool.filter(function(x){return !used.has(x)&&x.rxLine&&tokSim(e._ov.name,x.name)>=.8&&sr(x.rxLine)===key});if(c.length!==1)return;used.add(c[0]);var n=mk(c[0],e._ov,false);n._ov=e._ov;n._d=true;D.ex[k]=n})});
+  /* übrige Detailseiten: doppelte Aufnahmen verwerfen, Seiten ohne Vorgabe als nicht zugeordnet führen, sonst dem Tag in Lesereihenfolge zuordnen.
+     Unsicher ist die Zuordnung, wenn die Übersicht dieses Tages vollständig sichtbar war oder ein anderer Tag die Übung in seiner Übersicht führt. */
+  pool.forEach(function(x){if(used.has(x)||!x.d)return;var dupe=pool.some(function(y){return y!==x&&used.has(y)&&tokSim(y.name,x.name)>=.8&&rxKey(y.rxLine).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(dupe)return;
+   var D=x.d;if(!x.rxLine&&D.hasOv){prog.unparsed.push('Detailseite ohne lesbare Vorgabe: '+x.name);return}var same=D.ex.find(function(e){return tokSim(e.name,x.name)>=.8&&rxKey(e.raw).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(same){if(!same.notes&&x.notes)same.notes=x.notes;return}
+   var else_=W.days.some(function(o){return o!==D&&(dayOv.get(o)||[]).some(function(it){return tokSim(it.name,x.name)>=.8})});var inOwn=(dayOv.get(D)||[]).some(function(it){return tokSim(it.name,x.name)>=.8});
+   used.add(x);D.ex.push(mk(x,null,D.hasOv&&(D.ovDone||(else_&&!inOwn))))})});
+ B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone})});
+ B.weeks.forEach(function(W){W.days.forEach(function(D){delete D.hasOv})});
+ B.weeks=B.weeks.filter(function(W){if(W.days.length)return true;prog.unparsed.push('Woche '+W.n+(W.name?' – '+W.name:'')+' (ohne erkannte Tage)');return false});
+ if(!prog.name)prog.name=hp||(o.fallback?String(o.fallback).replace(/(?:^|[\s_-])(?:woche|week|wk)[\s_-]*\d{1,2}\b.*$/i,'').replace(/[\s_-]+$/,'').trim():'')||o.fallback||'Importiertes Programm';if(hv)prog.variants=[{id:'v1',name:hv}];
+ if(!B.weeks.length)prog.flags=['Keine Wochen/Tage erkannt – Format nicht lesbar'];return finish(prog)}
+function finish(p){var n=0,f=0;(p.blocks||[]).forEach(function(b){(b.weeks||[]).forEach(function(w){(w.days||[]).forEach(function(d){if(!d.ex.length)d.flags=['Keine Übungen erkannt'];else if(d.flags&&d.flags[0]==='Keine Übungen erkannt')delete d.flags;(d.ex||[]).forEach(function(x){n++;if(x.flags&&x.flags.length)f++})})})});p.stats={ex:n,flagged:f};return p}
+
+/* ---------- Mehrere Dateien in einem Text („=== Datei: name.pdf ===“, z. B. aus dem iPhone-Kurzbefehl) ---------- */
+function splitMulti(text){var parts=[],cur=null;String(text||'').replace(/\r/g,'').split('\n').forEach(function(l){var m=l.match(/^\s*={3,}\s*(?:datei|file)\s*:\s*(.+?)\s*={3,}\s*$/i);if(m){cur={file:m[1].trim(),text:''};parts.push(cur);return}if(!cur){cur={file:'',text:''};parts.push(cur)}cur.text+=l+'\n'});
+ return parts.filter(function(p){return p.text.trim()})}
+
+/* ---------- CSV ---------- */
+var COLS={prog:['programm','program','programme'],variant:['variante','variant'],block:['block','phase'],week:['woche','week','wk'],weekName:['wochenname','week name','weekname'],day:['tag','day'],dayName:['tagesname','day name','fokus','focus'],
+ ex:['uebung','übung','exercise','lift'],sets:['saetze','sätze','sets'],reps:['wdh','wiederholungen','reps'],load:['last','load','prozent','percent','%'],rpe:['rpe'],hype:['hype'],notes:['hinweis','hinweise','notes','note','coaching'],opt:['optional']};
+function csvSplit(line,sep){var out=[],cur='',q=false;for(var i=0;i<line.length;i++){var c=line[i];if(q){if(c==='"'){if(line[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}else if(c==='"')q=true;else if(c===sep){out.push(cur);cur=''}else cur+=c}out.push(cur);return out.map(function(s){return s.trim()})}
+function parseCSV(text,o){o=o||{};var lines=String(text||'').replace(/^﻿/,'').split(/\r?\n/).filter(function(l){return l.trim()});if(!lines.length)return {error:'Datei ist leer'};
+ var sep=(lines[0].match(/;/g)||[]).length>=(lines[0].match(/,/g)||[]).length?';':',';var head=csvSplit(lines[0],sep).map(function(h){return norm(h)});
+ var idx={};Object.keys(COLS).forEach(function(k){var an=COLS[k].map(norm);var i=head.findIndex(function(h){return an.indexOf(h)>=0});if(i>=0)idx[k]=i});
+ var miss=['week','day','ex'].filter(function(k){return idx[k]==null});if(miss.length)return {error:'Spalten fehlen: '+miss.map(function(k){return {week:'Woche',day:'Tag',ex:'Übung'}[k]}).join(', ')+'. Erwartet z. B.: Programm;Woche;Tag;Übung;Sätze;Wdh;Last;RPE;Hype;Hinweis'};
+ var progs={};lines.slice(1).forEach(function(l,ri){var c=csvSplit(l,sep);var g=function(k){return idx[k]!=null?(c[idx[k]]||'').trim():''};var pn=g('prog')||o.name||'CSV-Import';
+  var P=progs[pn]||(progs[pn]={id:uid(),src:'import',name:pn,sub:'',file:o.file||'',fmt:'csv',at:Date.now(),variants:[],blocks:[],unparsed:[]});
+  var vn=g('variant')||'Standard';if(!P.variants.some(function(v){return v.name===vn}))P.variants.push({id:'v'+(P.variants.length+1),name:vn});
+  var bn=(g('variant')&&P.variants.length>1?vn+' · ':'')+(g('block')||'Block 1');var Bk=P.blocks.find(function(b){return b.name===bn});if(!Bk){Bk={name:bn,variant:vn,weeks:[]};P.blocks.push(Bk)}
+  var wn=parseInt(g('week'),10),dn=parseInt(g('day'),10);if(!wn||!dn||!g('ex')){P.unparsed.push('Zeile '+(ri+2)+': '+l);return}
+  var W=Bk.weeks.find(function(x){return x.n===wn});if(!W){W={n:wn,name:g('weekName'),days:[]};Bk.weeks.push(W);Bk.weeks.sort(function(a,b){return a.n-b.n})}
+  var D=W.days.find(function(x){return x.n===dn});if(!D){D={n:dn,name:'Tag '+dn,wd:'',focus:g('dayName'),notes:'',hints:[],ex:[]};W.days.push(D);W.days.sort(function(a,b){return a.n-b.n})}
+  var ld=g('load');var R=parseRx([g('sets')&&g('reps')?g('sets')+'x'+g('reps'):'',ld?(/%|kg/i.test(ld)?ld:ld+' %'):'',g('rpe')?'RPE '+g('rpe'):'',g('hype')?g('hype')+' hype':''].join(' '));
+  var x={name:g('ex'),eid:matchEx(g('ex')),sets:num(g('sets'))!=null?num(g('sets')):R.sets,reps:g('reps')||R.reps,amrap:/amrap/i.test(g('reps')),rpe:num(g('rpe')),load:ld?(/%/.test(ld)||/^[\d.,]+$/.test(ld)?{pct:num(ld.replace('%','')),text:ld.indexOf('%')>=0?ld:ld+' %'}:/kg/i.test(ld)?{kg:num(ld),text:ld}:{text:ld}):null,hype:R.hype||(g('hype')||null),notes:g('notes'),opt:/^(ja|yes|x|1|true)$/i.test(g('opt')),raw:l};
+  x.flags=flagEx(x,'csv');D.ex.push(x)});return {progs:Object.keys(progs).map(function(k){return finish(progs[k])})}}
+
+/* ---------- JSON (eigenes Format, Export der App, Mac-Importer) ---------- */
+function parseJSON(text,o){var j;try{j=JSON.parse(text)}catch(e){return {error:'Kein gültiges JSON: '+e.message}}
+ var list=Array.isArray(j)?j:j&&Array.isArray(j.programs)?j.programs:j&&j.blocks?[j]:null;if(!list)return {error:'Unbekanntes JSON-Format. Erwartet: {"programs":[{"name":…,"blocks":[{"weeks":[{"n":1,"days":[{"n":1,"ex":[…]}]}]}]}]}'};
+ var src0=j&&j.source?j.source:null;
+ var progs=list.map(function(p){var ocr=!!(p.ocr||(src0&&src0.ocr));var src=ocr?'ocr':'json';
+  var P={id:uid(),src:'import',key:p.key?String(p.key):undefined,name:String(p.name||'JSON-Import'),sub:String(p.sub||''),file:(o&&o.file)||p.file||'',fmt:'json',ocr:ocr,at:Date.now(),variants:Array.isArray(p.variants)&&p.variants.length?p.variants.map(function(v,i){return {id:'v'+(i+1),name:String(v.name||v)}}):[{id:'v1',name:'Standard'}],unparsed:Array.isArray(p.unparsed)?p.unparsed.map(String):[],
+  files:Array.isArray(p.files)?p.files.filter(function(f){return f&&f.sha}).map(function(f){return {name:String(f.name||''),sha:String(f.sha),pages:+f.pages||0}}):[],
+  blocks:(p.blocks||[]).map(function(b){return {name:String(b.name||'Block'),variant:b.variant||null,weeks:(b.weeks||[]).map(function(w,wi){return {n:+w.n||wi+1,name:String(w.name||''),days:(w.days||[]).map(function(d,di){return {n:+d.n||di+1,name:String(d.name||('Tag '+(+d.n||di+1))),wd:String(d.wd||''),focus:String(d.focus||''),notes:String(d.notes||''),hints:Array.isArray(d.hints)?d.hints.map(String):[],
+   ex:(d.ex||d.exercises||[]).map(function(x){var R=x.rx?parseRx(x.rx):{};var e={name:String(x.name||''),eid:x.eid||matchEx(x.name),sets:x.sets!=null?num(x.sets):(R.sets!=null?R.sets:null),reps:x.reps!=null?String(x.reps):(R.reps!=null?R.reps:null),amrap:!!(x.amrap||/amrap/i.test(String(x.reps||''))),rpe:x.rpe!=null?num(x.rpe):(R.rpe!=null?R.rpe:null),
+    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
+
+/* ---------- PDF lesen (Bytes, ohne Fremdbibliothek): Textinhalt + eingebettete Seitenbilder ---------- */
+function bfind(u8,pat,from){var f=pat.charCodeAt(0),n=pat.length;var i=u8.indexOf(f,from||0);while(i>=0&&i<=u8.length-n){var k=1;while(k<n&&u8[i+k]===pat.charCodeAt(k))k++;if(k===n)return i;i=u8.indexOf(f,i+1)}return -1}
+function blast(u8,pat,before,min){var i=before;var f=pat.charCodeAt(0),n=pat.length;for(;i>=min;i--){if(u8[i]!==f)continue;var k=1;while(k<n&&u8[i+k]===pat.charCodeAt(k))k++;if(k===n)return i}return -1}
+function lat(u8,a,b){var s='';for(var i=a;i<b;i+=8192)s+=String.fromCharCode.apply(null,u8.subarray(i,Math.min(b,i+8192)));return s}
+function objText(u8,num0){var pat=num0+' 0 obj';var i=0;while((i=bfind(u8,pat,i))>=0){var pre=i?u8[i-1]:10;if(pre===10||pre===13||pre===32){var e=bfind(u8,'endobj',i);return lat(u8,i+pat.length,e<0?Math.min(u8.length,i+3000):Math.min(e,i+3000))}i+=pat.length}return ''}
+function dictVal(u8,dict,key){var m=dict.match(new RegExp('/'+key+'\\s+(\\d+)\\s+0\\s+R'));if(m)return objText(u8,m[1]).trim();m=dict.match(new RegExp('/'+key+'\\s*(<<[\\s\\S]*?>>|\\[[^\\]]*\\]|/[A-Za-z0-9]+|-?[\\d.]+)'));return m?m[1]:''}
+function scanPdf(buf){var u8=buf instanceof Uint8Array?buf:new Uint8Array(buf);if(lat(u8,0,Math.min(8,u8.length)).indexOf('%PDF')!==0)throw new Error('Keine PDF-Datei');
+ var out=[],pos=0;while((pos=bfind(u8,'stream',pos))>=0){var st=pos+6;if(u8[st]===13)st++;if(u8[st]!==10){pos+=6;continue}st++;
+  var ob=blast(u8,'obj',pos,Math.max(0,pos-6000));if(ob<0){pos=st;continue}if(u8[pos-1]===100&&u8[pos-2]===110){pos=st;continue}/* „endstream“ */
+  var dict=lat(u8,ob+3,pos);var len=parseInt(dictVal(u8,dict,'Length'),10);var end=(!isNaN(len)&&len>0&&st+len<=u8.length)?st+len:bfind(u8,'endstream',st);if(end<0)break;
+  out.push({dict:dict,start:st,end:end});pos=end}return {u8:u8,streams:out}}
+async function inflate(u8){if(typeof DecompressionStream==='undefined')throw new Error('Entpacken wird von diesem Browser nicht unterstützt');var fmts=['deflate','deflate-raw'];for(var i=0;i<fmts.length;i++){try{var ds=new DecompressionStream(fmts[i]);var r=new Response(new Blob([u8]).stream().pipeThrough(ds));return new Uint8Array(await r.arrayBuffer())}catch(e){}}throw new Error('Datenstrom nicht lesbar')}
+function pdfStr(s){return s.replace(/\\(\d{1,3})/g,function(m,o){return String.fromCharCode(parseInt(o,8))}).replace(/\\n/g,'\n').replace(/\\r/g,'').replace(/\\t/g,' ').replace(/\\([()\\])/g,'$1')}
+function hexStr(h){h=h.replace(/\s+/g,'');var o='';if(h.length%4===0&&/^00|^feff/i.test(h)){for(var i=0;i<h.length;i+=4)o+=String.fromCharCode(parseInt(h.substr(i,4),16))}else for(var k=0;k<h.length;k+=2)o+=String.fromCharCode(parseInt(h.substr(k,2),16));return o}
+function textOps(c){var out='',line='';var flush=function(){if(line.trim())out+=line.trim()+'\n';line=''};
+ var re=/\[((?:\\.|[^\]])*)\]\s*TJ|\(((?:\\.|[^\\)])*)\)\s*(?:Tj|'|")|<([0-9a-fA-F\s]+)>\s*Tj|(T\*|ET|BT)|(-?[\d.]+)\s+(-?[\d.]+)\s+T[dD]|[\d.\-\s]+Tm/g;var m;
+ while((m=re.exec(c))){if(m[1]!=null){var parts=m[1].match(/\(((?:\\.|[^\\)])*)\)|<([0-9a-fA-F\s]+)>|-?\d+(?:\.\d+)?/g)||[];parts.forEach(function(p){if(p[0]==='(')line+=pdfStr(p.slice(1,-1));else if(p[0]==='<')line+=hexStr(p.slice(1,-1));else if(+p<-200)line+=' '})}
+  else if(m[2]!=null)line+=pdfStr(m[2]);else if(m[3]!=null)line+=hexStr(m[3]);else if(m[4])flush();else if(m[6]!=null){if(Math.abs(+m[6])>.5)flush();else line+=' '}else flush()}flush();return out}
+/* Liefert Text + Liste der Seitenbilder (noch nicht entpackt – erst bei Bedarf, Bild für Bild, damit große PDFs den Speicher schonen) */
+async function pdfRead(buf){var S=scanPdf(buf),u8=S.u8;var text='',images=[];
+ for(var i=0;i<S.streams.length;i++){var s=S.streams[i],dict=s.dict;
+  if(/\/Subtype\s*\/Image/.test(dict)){var w=+dictVal(u8,dict,'Width'),h=+dictVal(u8,dict,'Height');if(/\/ImageMask\s+true/.test(dict)||w*h<4000)continue;images.push({w:w,h:h,dict:dict,start:s.start,end:s.end});continue}
+  if(/\/Type\s*\/(XRef|ObjStm|Metadata)/.test(dict)||/\/Length1|\/Subtype\s*\/(Type1C|CIDFontType0C|OpenType)/.test(dict))continue;
+  var data=u8.subarray(s.start,s.end);try{if(/\/FlateDecode/.test(dict))data=await inflate(data);else if(/\/Filter/.test(dict))continue}catch(e){continue}
+  if(data.length>4e6)continue;var str=lat(data,0,data.length);if(/\bBT\b/.test(str))text+=textOps(str)+'\n'}
+ try{text=decodeURIComponent(escape(text))}catch(e){}return {text:text.trim(),images:images,u8:u8}}
+function unpredict(d,cols,colors,bpc){var bpp=Math.max(1,colors*bpc/8),rl=cols*bpp,rows=Math.floor(d.length/(rl+1));var out=new Uint8Array(rows*rl);var prev=new Uint8Array(rl);
+ for(var r=0;r<rows;r++){var t=d[r*(rl+1)],src=d.subarray(r*(rl+1)+1,(r+1)*(rl+1)),cur=out.subarray(r*rl,(r+1)*rl);
+  for(var i=0;i<rl;i++){var a=i>=bpp?cur[i-bpp]:0,b=prev[i],c=i>=bpp?prev[i-bpp]:0,x=src[i];
+   if(t===1)x+=a;else if(t===2)x+=b;else if(t===3)x+=(a+b)>>1;else if(t===4){var p=a+b-c,pa=Math.abs(p-a),pb=Math.abs(p-b),pc=Math.abs(p-c);x+=(pa<=pb&&pa<=pc)?a:(pb<=pc?b:c)}cur[i]=x&255}prev=cur}return out}
+/* Ein Seitenbild entpacken → {kind:'jpeg',bytes} oder {kind:'rgba',w,h,data} */
+async function pdfImage(R,im){var u8=R.u8,dict=im.dict,raw=u8.subarray(im.start,im.end);
+ if(/\/DCTDecode/.test(dict))return {kind:'jpeg',bytes:raw,w:im.w,h:im.h};
+ if(!/\/FlateDecode/.test(dict)||/\/Filter\s*\[/.test(dict)&&!/\[\s*\/FlateDecode\s*\]/.test(dict))throw new Error('Bildformat nicht unterstützt');
+ var bpc=+dictVal(u8,dict,'BitsPerComponent')||8;if(bpc!==8)throw new Error('Bildtiefe nicht unterstützt');
+ var cs=dictVal(u8,dict,'ColorSpace');var colors=3;if(/DeviceGray|CalGray/.test(cs))colors=1;else if(/DeviceCMYK/.test(cs))colors=4;else if(/ICCBased/.test(cs)){var rr=cs.match(/(\d+)\s+0\s+R/);var nn=(rr?objText(u8,rr[1]):'').match(/\/N\s+(\d)/);if(nn)colors=+nn[1]}else if(/Indexed/.test(cs))throw new Error('Farbpalette nicht unterstützt');
+ var d=await inflate(raw);var dp=dictVal(u8,dict,'DecodeParms');var pr=+((dp.match(/\/Predictor\s+(\d+)/)||[])[1]||1);
+ if(pr>=10)d=unpredict(d,+((dp.match(/\/Columns\s+(\d+)/)||[])[1]||im.w),+((dp.match(/\/Colors\s+(\d+)/)||[])[1]||colors),bpc);
+ var n=im.w*im.h,rgba=new Uint8ClampedArray(n*4);for(var p=0,q=0;p<n;p++,q+=colors){var o=p*4;if(colors===1){rgba[o]=rgba[o+1]=rgba[o+2]=d[q]}else if(colors===4){var k=255-d[q+3];rgba[o]=(255-d[q])*k/255;rgba[o+1]=(255-d[q+1])*k/255;rgba[o+2]=(255-d[q+2])*k/255}else{rgba[o]=d[q];rgba[o+1]=d[q+1];rgba[o+2]=d[q+2]}rgba[o+3]=255}
+ return {kind:'rgba',w:im.w,h:im.h,data:rgba}}
+/* Erkannte Textblöcke (mit Rahmen) zu Zeilen in Lesereihenfolge ordnen */
+function linesFromBoxes(items){var it=items.filter(function(x){return x&&x.text&&String(x.text).trim()}).map(function(x){return {t:String(x.text).trim(),x:x.x||0,y:x.y||0,h:x.h||10}}).sort(function(a,b){return a.y-b.y||a.x-b.x});
+ var out=[],cur=null;it.forEach(function(x){if(cur&&Math.abs(x.y-cur.y)<Math.max(4,Math.min(x.h,cur.h)*.5)){cur.a.push(x)}else{cur={y:x.y,h:x.h,a:[x]};out.push(cur)}});
+ return out.map(function(l){return l.a.sort(function(a,b){return a.x-b.x}).map(function(x){return x.t}).join(' ')}).join('\n')}
+
+/* ---------- Kontrollierte Gym-Schnittstelle: Ist ein Tag eindeutig und vollständig genug zum Trainieren? ---------- */
+function toGymDay(day){var issues=[];var b=[];(day.ex||[]).forEach(function(x,i){var need=[];if(!x.eid)need.push('Übung nicht im Katalog');if(x.sets==null||!(x.sets>0))need.push('Satzanzahl fehlt');if(x.reps==null||x.reps==='')need.push('Wiederholungen fehlen');
+  if(!x.ok&&(x.flags||[]).some(function(f){return /unsicher|gekürzt|nicht lesbar|Optionen/.test(f)}))need.push('unsicher gelesen – bitte prüfen');
+  if(need.length){issues.push({i:i,name:x.name,need:need});return}
+  var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:''].join(' ').replace(/\s+/g,' ').trim()};
+  if(x.rpe!=null)bl.rpe=x.rpe;if(x.hype){var hk={Niedrig:'l',Moderat:'m',Hoch:'h'}[x.hype];if(hk)bl.h=hk}if(x.opt)bl.opt=1;b.push(bl)});
+ if(!(day.ex||[]).length)issues.push({i:-1,name:'Tag',need:['keine Übungen erkannt']});
+ return {ok:!issues.length&&b.length>0,day:{f:day.focus||day.name,d:day.notes||'',b:b},issues:issues}}
+
+/* ---------- Zusammenführen: mehrere Importe → Bibliothek (nie überschreiben) ---------- */
+var daySig=function(D){return JSON.stringify((D.ex||[]).map(function(x){return [norm(x.name),x.sets,String(x.reps||''),x.rpe,x.load&&x.load.text||'']}))};
+function progKey(p){return norm(p.name).replace(/\s+/g,'')}
+function variantOf(p){return (p.variants&&p.variants[0]&&p.variants[0].name)||'Standard'}
+/* lib: {v:1,progs:[]}. inc: Liste geparster Programme (je Datei). Rückgabe: Bericht je Datei/Programm. Bestehende Tage bleiben unverändert. */
+function merge(lib,inc,file){var rep=[];inc.forEach(function(p){var key=progKey(p);var tgt=lib.progs.find(function(x){return x.src!=='builtin'&&(x.key||progKey(x))===key});var row={file:file||p.file||'',prog:p.name,variant:variantOf(p),weeks:[],added:0,same:0,conflict:[],status:''};
+  if(!tgt){p.key=key;lib.progs.push(p);p.files=(p.files||[]).slice();row.status='neu';row.target=p.id;(p.blocks||[]).forEach(function(b){b.weeks.forEach(function(w){row.weeks.push(w.n);row.added+=w.days.length})});rep.push(row);return}
+  row.target=tgt.id;(p.variants||[]).forEach(function(v){if(!tgt.variants.some(function(t){return t.name===v.name})){tgt.variants.push({id:'v'+(tgt.variants.length+1),name:v.name})}});
+  if(tgt.variants.length>1)tgt.blocks.forEach(function(b){if(!b.variant)b.variant=tgt.variants[0].name});
+  (p.blocks||[]).forEach(function(b){var vn=b.variant||(tgt.variants.length>1||p.variants.length?variantOf(p):null);
+   var tb=tgt.blocks.find(function(x){return x.name===b.name&&(!vn||!x.variant||x.variant===vn)&&(tgt.variants.length<2||x.variant===vn)});
+   if(!tb){tb={name:b.name,variant:tgt.variants.length>1?vn:null,weeks:[]};if(tgt.variants.length>1&&tgt.blocks.some(function(x){return x.name===b.name}))tb.name=b.name+' · '+vn;tgt.blocks.push(tb)}
+   b.weeks.forEach(function(w){row.weeks.push(w.n);var tw=tb.weeks.find(function(x){return x.n===w.n});if(!tw){tb.weeks.push(w);tb.weeks.sort(function(a,c){return a.n-c.n});row.added+=w.days.length;return}
+    if(!tw.name&&w.name)tw.name=w.name;
+    w.days.forEach(function(d){var td=tw.days.find(function(x){return x.n===d.n});if(!td){tw.days.push(d);tw.days.sort(function(a,c){return a.n-c.n});row.added++;return}
+     if(daySig(td)===daySig(d)){row.same++;return}
+     if(!td.ex.length&&d.ex.length){var keep=td;tw.days[tw.days.indexOf(keep)]=d;row.added++;return}
+     row.conflict.push('W'+w.n+' Tag '+d.n)})})});
+  (p.unparsed||[]).forEach(function(u){if((tgt.unparsed||(tgt.unparsed=[])).indexOf(u)<0)tgt.unparsed.push(u)});
+  tgt.files=(tgt.files||[]).concat(p.files||[]);finish(tgt);
+  row.status=row.added?'ergänzt':row.conflict.length?'Konflikt':'bereits vorhanden';rep.push(row)});return rep}
+
+/* ---------- Lücken und Datenqualität ---------- */
+function blocksOf(p,vname){var multi=(p.variants||[]).length>1;return (p.blocks||[]).filter(function(b){return !multi||!b.variant||b.variant===vname})}
+function quality(p,vname){vname=vname||variantOf(p);var bl=blocksOf(p,vname);var q={weeks:[],missingWeeks:[],missingDays:[],days:0,ok:0,locked:0,ex:0,exOk:0,flagged:0,lockedList:[]};
+ bl.forEach(function(b){var ns=b.weeks.map(function(w){return w.n});var mx=ns.length?Math.max.apply(null,ns):0;var dmax=0;b.weeks.forEach(function(w){w.days.forEach(function(d){if(d.n>dmax)dmax=d.n})});
+  for(var n=1;n<=mx;n++){if(ns.indexOf(n)<0)q.missingWeeks.push((bl.length>1?b.name+' ':'')+'W'+n)}
+  b.weeks.forEach(function(w){q.weeks.push(w.n);for(var dn=1;dn<=dmax;dn++){if(!w.days.some(function(d){return d.n===dn}))q.missingDays.push('W'+w.n+' Tag '+dn)}
+   w.days.forEach(function(d){q.days++;var g=toGymDay(d);if(g.ok)q.ok++;else{q.locked++;q.lockedList.push({w:w.n,d:d.n,issues:g.issues})}(d.ex||[]).forEach(function(x){q.ex++;if(x.flags&&x.flags.length)q.flagged++;else q.exOk++})})})});
+ q.score=q.ex?Math.round(q.exOk/q.ex*100):0;return q}
+
+return {esc:esc,norm:norm,num:num,uid:uid,matchEx:matchEx,parseRx:parseRx,flagEx:flagEx,headInfo:headInfo,weekFromName:weekFromName,baseName:baseName,parseText:parseText,splitMulti:splitMulti,finish:finish,
+ parseCSV:parseCSV,parseJSON:parseJSON,pdfRead:pdfRead,pdfImage:pdfImage,unpredict:unpredict,linesFromBoxes:linesFromBoxes,textOps:textOps,toGymDay:toGymDay,merge:merge,progKey:progKey,variantOf:variantOf,daySig:daySig,quality:quality,blocksOf:blocksOf,WD:WD}})();
+if(typeof module!=='undefined'&&module.exports)module.exports=BIBCORE;
+
+/* ===================== Programmbibliothek – App-Anbindung =====================
+   Übersicht aller Programme: Programm › Variante › Block › Woche › Tag › Übung (Kern: bib-core.js).
+   - Eingebaute Candito-Programme werden NUR gelesen (aus PROGS/P) – keine Änderung an Plan oder Regeln.
+   - Importierte Programme (PDF mit Text, Bild-PDF mit Texterkennung, JSON, CSV, Text; mehrere Dateien auf einmal) liegen nur auf
+     diesem Gerät (localStorage „cf-bib“, Spiegel in IndexedDB „bib/lib“, in jeder Sicherung enthalten).
+   - Gym-Übernahme (freigegeben): Ein importiertes Programm wird je Variante zu einem eigenen Trainingsprogramm „lb…“ übersetzt
+     (eigener Speicher-Präfix → eigene Trainingsdaten). Nur vollständige und eindeutige Tage sind trainierbar; alle anderen Tage
+     sind gesperrt, bis sie in der Bibliothek geprüft wurden. Zustand in S.meta.lib = {act, st:{id:Start-Montag W1}, rm:{id:{SQ,BP,DL}}}.
+   - Nichts wird erfunden; Lasten werden nicht automatisch angepasst; RPE wird nie vorbelegt. */
+const BIB_KEY='cf-bib',BIB_GYM_LIVE=true;
+const BIB=(function(){
+const C=BIBCORE,esc3=C.esc,norm=C.norm;
+
+/* ---------- Speicher (nur Gerät, getrennt von Trainingsdaten) ---------- */
+function load(){try{const o=JSON.parse(localStorage.getItem(BIB_KEY)||'null');return o&&o.v===1&&Array.isArray(o.progs)?o:{v:1,progs:[]}}catch(e){return {v:1,progs:[]}}}
+function save(o){o.u=Date.now();let ok=true;try{localStorage.setItem(BIB_KEY,JSON.stringify(o))}catch(e){ok=false}mirror(o);return ok}
+function mirror(o){try{if(typeof db!=='undefined'&&db)db.doc('bib/lib').set({at:new Date().toISOString(),u:o.u||Date.now(),data:JSON.parse(JSON.stringify(o))}).catch(()=>{})}catch(e){}}
+/* Zusammenführen zweier Bibliotheksstände ohne Verlust: fehlende Programme werden ergänzt, vorhandene nie überschrieben */
+function union(a,b){const out={v:1,progs:a.progs.slice()};let n=0;(b&&Array.isArray(b.progs)?b.progs:[]).forEach(p=>{if(p&&p.id&&!out.progs.some(x=>x.id===p.id)){out.progs.push(p);n++}});return {lib:out,added:n}}
+function dbSync(d){try{d.doc('bib/lib').get().then(s=>{const loc=load();const rem=s&&s.exists?(s.data()||{}).data:null;
+  if(rem&&Array.isArray(rem.progs)){const u=union(loc,rem);if(u.added){try{localStorage.setItem(BIB_KEY,JSON.stringify(u.lib))}catch(e){}register();try{if(typeof render==='function')render()}catch(e){}}
+   if(u.lib.progs.length>rem.progs.length)mirror(u.lib)}else if(loc.progs.length)mirror(loc)}).catch(()=>{})}catch(e){}}
+
+/* ---------- Eingebaute Programme (nur lesen) ---------- */
+const BASE=[['intro',['intro']],['p8',['p8','p8b','p8c']],['p10',['p10','p10b','p10c','p10d']],['p3',['p3']],['p10w',['p10w']]];
+const HYN={l:'Niedrig',m:'Moderat',h:'Hoch'};
+function builtin(){const out=[];BASE.forEach(([base,ids])=>{const have=ids.filter(id=>typeof PROGS!=='undefined'&&PROGS[id]);if(!have.length)return;const g=PROGS[have[0]];
+ const weeks=g.P.map((wk,w)=>({n:w+1,name:g.WEEKS[w]||'',days:wk.map((day,d)=>({n:d+1,name:(g.DAYS[d]&&g.DAYS[d].tag)||('Tag '+(d+1)),wd:(g.DAYS[d]&&g.DAYS[d].wdl)||'',focus:day.f||'',notes:day.d||'',hints:(g.INFO&&g.INFO[w+'-'+d])||[],
+  ex:day.b.map(bl=>({eid:bl.e,name:(EX[bl.e]||{n:bl.e}).n,sets:bl.s,reps:bl.r,amrap:/AMRAP/i.test(String(bl.r)),rpe:bl.rpe!=null?bl.rpe:null,rpeEst:!!bl.rpeEst,
+   load:bl.pct!=null?{pct:bl.pct,ref:bl.ref||null,text:bl.pct+' % '+(bl.ref==='TOP'?'der Top-Satz-Last':bl.ref?'der '+bl.ref+'-Referenz':'')}:bl.test?{text:'Test-Satz ('+bl.test+')'}:null,
+   hype:bl.h?HYN[bl.h]:null,opt:!!bl.opt,notes:bl.x||'',flags:[]}))}))}));
+ out.push({id:'bi-'+base,src:'builtin',name:g.name.replace(/ · Zyklus \d+$/,''),sub:g.sub,variants:have.map((id,i)=>({id,name:have.length>1?'Zyklus '+(i+1):'Standard',label:PROGS[id].name})),blocks:[{name:'Gesamtphase',weeks}]})});return out}
+
+/* ---------- Texterkennung für Bild-PDFs (nur lokal auf dem Gerät) ----------
+   Nutzt die Texterkennung des Browsers (Shape-Detection-API „TextDetector“, in Safari auf Apples Vision-Framework gestützt),
+   sofern sie verfügbar ist. Keine Cloud, keine Fremdbibliothek. Sonst: Mac-Importer oder iPhone-Kurzbefehl. */
+function ocrEngine(){if(window.__cfOcrEngine)return window.__cfOcrEngine;try{if('TextDetector' in window){const td=new window.TextDetector();return {name:'Safari-Texterkennung',detect:b=>td.detect(b)}}}catch(e){}return null}
+async function toBitmap(img){if(img.kind==='jpeg')return createImageBitmap(new Blob([img.bytes],{type:'image/jpeg'}));return createImageBitmap(new ImageData(img.data,img.w,img.h))}
+async function ocrPages(R,eng,onProg){const pages=[];for(let i=0;i<R.images.length;i++){if(onProg)onProg(`Texterkennung Seite ${i+1} von ${R.images.length} …`);
+  let img=await C.pdfImage(R,R.images[i]);const bm=await toBitmap(img);img=null;let res=[];try{res=await eng.detect(bm,i)}finally{try{bm.close&&bm.close()}catch(e){}}
+  pages.push(C.linesFromBoxes((res||[]).map(t=>{const b=t.boundingBox||t;return {text:t.rawValue!=null?t.rawValue:t.text,x:b.x||0,y:b.y||0,h:b.height||b.h||10}})))}return pages}
+
+/* ---------- Eine Datei lesen ---------- */
+const MAXPDF=220e6;
+async function sha(f){try{const b=await f.arrayBuffer();const h=await crypto.subtle.digest('SHA-256',b);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return ''}}
+async function parseFile(file,onProg){const nm=file.name||'Datei';const base=C.baseName(nm);const ext=(nm.split('.').pop()||'').toLowerCase();
+ if(ext==='json'||file.type==='application/json')return C.parseJSON(await file.text(),{file:nm});
+ if(ext==='csv'||file.type==='text/csv')return C.parseCSV(await file.text(),{file:nm,name:base});
+ if(ext==='txt'||file.type==='text/plain'){const tx=await file.text();const parts=C.splitMulti(tx);const multi=parts.length>1||parts.some(p=>p.file);
+  return {progs:parts.map(p=>C.parseText(p.text,{file:p.file||nm,fallback:C.baseName(p.file||nm),fmt:'text',src:multi?'ocr':'text'}))}}
+ if(ext==='pdf'||file.type==='application/pdf'){if(file.size>MAXPDF)return {error:`Die PDF ist sehr groß (${Math.round(file.size/1e6)} MB) – das ist für das iPhone zu viel auf einmal. Bitte mit dem Mac-Importer umwandeln (Hilfe: „Bild-PDFs umwandeln“).`,imageOnly:true};
+  let R;try{if(onProg)onProg('PDF wird gelesen …');R=await C.pdfRead(await file.arrayBuffer())}catch(e){return {error:'PDF nicht lesbar: '+e.message}}
+  if(R.text.replace(/\s/g,'').length>=40)return {progs:[C.parseText(R.text,{file:nm,fallback:base,fmt:'pdf'})]};
+  if(!R.images.length)return {error:'In der PDF wurde kein auslesbarer Text gefunden.'};
+  const eng=ocrEngine();
+  if(!eng)return {error:`Diese PDF enthält nur Bilder (${R.images.length} Bildseiten, z. B. Screenshots) und keinen auslesbaren Text. Die Texterkennung ist in diesem Browser nicht verfügbar – nutze den Mac-Importer (mehrere PDFs auf einmal) oder den iPhone-Kurzbefehl. Hilfe: „Bild-PDFs umwandeln“.`,imageOnly:true,pages:R.images.length};
+  let pages;try{pages=await ocrPages(R,eng,onProg)}catch(e){return {error:'Texterkennung fehlgeschlagen: '+(e&&e.message||e)+' – bitte den Mac-Importer nutzen.',imageOnly:true}}
+  const p=C.parseText(pages.join('\n\f\n'),{file:nm,fallback:base,fmt:'pdf-ocr',src:'ocr'});p.ocrBy=eng.name||'Texterkennung';p.pages=pages.length;return {progs:[p],pages:pages.length}}
+ return {error:'Dateityp nicht unterstützt. Erlaubt: PDF, JSON, CSV, TXT.'}}
+/* Kompatibel zur ersten Version: eine Datei → {progs}|{error} */
+async function importFile(file){return parseFile(file)}
+
+/* ---------- Mehrfachimport: alle Dateien → Vorschau (Kopie der Bibliothek), erst „Übernehmen“ speichert ---------- */
+async function importFiles(files,onProg){const lib=JSON.parse(JSON.stringify(load()));const seen=new Map();lib.progs.forEach(p=>(p.files||[]).forEach(f=>{if(f.sha)seen.set(f.sha,p.name)}));
+ const rows=[];let i=0;for(const f of files){i++;const pre=t=>onProg&&onProg(`Datei ${i} von ${files.length}: ${f.name} · ${t}`);pre('prüfen …');
+  const h=await sha(f);if(h&&seen.has(h)){rows.push({file:f.name,status:'Dublette',msg:`gleiche Datei bereits ${seen.get(h)===true?'in dieser Auswahl':'importiert ('+seen.get(h)+')'}`});continue}
+  let R;try{R=await parseFile(f,pre)}catch(e){R={error:String(e&&e.message||e)}}
+  if(R.error){rows.push({file:f.name,status:R.imageOnly?'Nur Bilder':'Fehler',msg:R.error});continue}
+  if(!R.progs.length){rows.push({file:f.name,status:'Fehler',msg:'Keine Programme erkannt'});continue}
+  R.progs.forEach(p=>{if(h&&!(p.files||[]).length)p.files=[{name:f.name,sha:h,pages:R.pages||p.pages||0}]});
+  R.progs.forEach(p=>{const lbl=p.file&&p.file!==f.name?f.name+' › '+p.file:f.name;C.merge(lib,[p],lbl).forEach(r=>rows.push(r))});
+  if(h)seen.set(h,true);R.progs.forEach(p=>(p.files||[]).forEach(x=>{if(x.sha&&!seen.has(x.sha))seen.set(x.sha,true)}))}
+ const ids=[...new Set(rows.filter(r=>r.target).map(r=>r.target))];return {rows,lib,ids}}
+
+/* ---------- Übersetzung in ein trainierbares Programm ---------- */
+const h8=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,'0')};
+const cidOf=(p,v)=>'lb'+h8(p.id+'|'+v.id);
+const WDL=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'],WDS=['Mo','Di','Mi','Do','Fr','Sa','So'];
+const DEFOFF={1:[0],2:[0,3],3:[0,2,4],4:[0,1,3,4],5:[0,1,3,4,5],6:[0,1,2,3,4,5],7:[0,1,2,3,4,5,6]};
+const LM=()=>{if(!S.meta.lib||typeof S.meta.lib!=='object')S.meta.lib={act:null,st:{},rm:{}};if(!S.meta.lib.st)S.meta.lib.st={};if(!S.meta.lib.rm)S.meta.lib.rm={};return S.meta.lib};
+const lockDay=(why,detail,f)=>({f:'Gesperrt · '+why,d:detail||why,b:[],lock:why,f0:f||''});
+const isPctRef=(x,g)=>x.load&&x.load.pct!=null&&(x.load.ref&&/^(SQ|BP|DL)$/.test(x.load.ref)||['sq','bp','dl'].includes(g)&&/\b1\s*-?\s*rm\b|\be1rm\b|\bmax\b|maximum/i.test(x.load.text||''));
+function compile(p,vi,cid){const v=p.variants[vi]||p.variants[0];const bl=C.blocksOf(p,v.name).filter(b=>b.weeks.length);let nd=0;bl.forEach(b=>b.weeks.forEach(W=>W.days.forEach(D=>{if(D.n>nd)nd=D.n})));nd=Math.max(1,Math.min(7,nd));
+ const wds=[];for(let d=1;d<=nd;d++){let wd=null;bl.forEach(b=>b.weeks.forEach(W=>{const D=W.days.find(x=>x.n===d);if(wd==null&&D&&D.wd){const k=norm(D.wd).split(' ')[0];if(C.WD[k]!=null)wd=C.WD[k]}}));wds.push(wd)}
+ const inc=wds.every((x,i)=>x!=null&&(i===0||x>wds[i-1]));const offs=inc?wds.map(x=>x-wds[0]):DEFOFF[nd];const w0=inc?wds[0]:0;
+ const DAYS=offs.map((o,i)=>({tag:'Tag '+(i+1),wd:WDS[(w0+o)%7],wdl:WDL[(w0+o)%7],off:o}));
+ const P=[],WEEKS=[],INFO={},wmap=[];let locked=0;
+ bl.forEach(b=>{const mx=Math.max(...b.weeks.map(W=>W.n));for(let n=1;n<=mx;n++){const W=b.weeks.find(x=>x.n===n);const w=P.length;wmap.push({b:b.name,n});
+  WEEKS.push(W?((bl.length>1?b.name+(W.name?' · ':''):'')+(W.name||(bl.length>1?'':'Woche '+n))):'fehlt im Import');const row=[];
+  for(let d=1;d<=nd;d++){const D=W&&W.days.find(x=>x.n===d);
+   if(!W){row.push(lockDay('Woche fehlt im Import','Diese Woche ist in den importierten Dateien nicht enthalten. Importiere sie, dann wird der Tag trainierbar.'));locked++;continue}
+   if(!D){row.push(lockDay('Tag fehlt im Import','Dieser Trainingstag ist in den importierten Dateien nicht enthalten.'));locked++;continue}
+   const g=C.toGymDay(D);
+   if(!g.ok){row.push(lockDay('Vorgaben unvollständig','Gesperrt, bis die Angaben in der Programmbibliothek geprüft sind: '+g.issues.map(i=>i.name+' ('+i.need.join(', ')+')').join('; '),D.focus));locked++;continue}
+   const blocks=g.day.b.map((bk,i)=>{const x=D.ex[i];const o=Object.assign({},bk);const gg=EX[o.e]&&EX[o.e].g;if(isPctRef(x,gg)){o.pct=x.load.pct;o.ref=x.load.ref&&/^(SQ|BP|DL)$/.test(x.load.ref)?x.load.ref:gg.toUpperCase()}return o});
+   const hints=(D.hints||[]).slice();D.ex.forEach(x=>{if(x.notes)hints.push((EX[x.eid]?EX[x.eid].n:x.name)+': '+x.notes)});if(hints.length)INFO[w+'-'+(d-1)]=hints;
+   row.push({f:D.focus||D.name||('Tag '+d),d:D.notes||'',b:blocks})}
+  P.push(row)}});
+ if(!P.length){P.push([lockDay('Keine Wochen erkannt','Das Programm enthält keine lesbaren Wochen.')]);WEEKS.push('Woche 1');locked++}
+ let tw=P.length-1,td=0;outer:for(let w=P.length-1;w>=0;w--)for(let d=P[w].length-1;d>=0;d--)if(P[w][d].b.length){tw=w;td=d;break outer}
+ const nm=p.name+(p.variants.length>1?' · '+v.name:'');
+ return {P,WEEKS,REFS:{SQ:{n:'Kniebeuge-1RM'},BP:{n:'Bank-1RM'},DL:{n:'Kreuzheben-1RM'}},DAYS,INFO,ORIG:DAYS.map(x=>x.wdl),name:nm,short:nm.length>14?nm.slice(0,13)+'…':nm,sub:P.length+' Wochen · Bibliothek',pre:cid+'-',test:[tw,td],
+  lib:{pid:p.id,vid:v.id,vname:v.name,wmap,locked,days:P.length*nd-locked}}}
+function variantsAll(){const L=load();const out=[];L.progs.forEach(p=>p.variants.forEach((v,vi)=>out.push({p,v,vi,cid:cidOf(p,v)})));return out}
+/* Registriert alle je gestarteten Bibliotheksprogramme in PROGS – vor dem ersten Anzeigen (boot) und nach jeder Änderung */
+function register(){const M=S.meta.lib;if(!M)return 0;const want=new Set(Object.keys(M.st||{}));if(M.act)want.add(M.act);if(!want.size)return 0;let n=0;
+ variantsAll().forEach(o=>{if(want.has(o.cid)){try{PROGS[o.cid]=compile(o.p,o.vi,o.cid);n++}catch(e){}}});
+ try{if(PROGS[PROG]&&PROGS[PROG].lib)setProg(PROG)}catch(e){}try{SG.clear();rfAllLogs.gen=(rfAllLogs.gen||0)+1}catch(e){}return n}
+function active(){const M=S.meta.lib;return M&&M.act&&PROGS[M.act]?M.act:null}
+const isoMon=t=>{const d=new Date(t);d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return isoD(d)};
+const firstW=g=>{for(let w=0;w<g.P.length;w++)if(g.P[w].some(x=>x.b.length))return w;return 0};
+function startOf(cid,g0){const M=S.meta.lib;if(M&&M.st&&M.st[cid])return M.st[cid];const g=g0||PROGS[cid];const t=new Date(nextMonday()+'T12:00:00');if(g)t.setDate(t.getDate()-firstW(g)*7);return isoD(t)}
+function rm(cid,r){const M=S.meta.lib;const v=M&&M.rm&&M.rm[cid]&&M.rm[cid][r];return v?pnum(v):null}
+function hasLogsCid(cid){const pre=cid+'-';return Object.keys(S.logs).some(k=>k.startsWith(pre)&&(()=>{const L=S.logs[k];return L&&(L.done||(L.b||[]).some(a=>(a||[]).some(z=>z&&(z.ok||pnum(z.kg)))))})())}
+function ensure(o){if(!PROGS[o.cid])PROGS[o.cid]=compile(o.p,o.vi,o.cid);return PROGS[o.cid]}
+function begin(cid,startIso){const M=LM();const o=variantsAll().find(x=>x.cid===cid);if(!o)return false;PROGS[cid]=compile(o.p,o.vi,cid);
+ const g=PROGS[cid];if(!g.lib.days){toast('Noch kein Tag trainierbar – bitte zuerst die markierten Angaben prüfen');return false}
+ if(startIso||!M.st[cid]){const mon=isoMon(new Date((startIso||startOf(cid,g))+'T12:00:00'));const t=new Date(mon+'T12:00:00');if(startIso)t.setDate(t.getDate()-firstW(g)*7);M.st[cid]=isoD(t)}
+ M.act=cid;S.meta.sqActive=null;saveMeta();if(window.bibClose)bibClose();switchProg(cid);S.ui.tab='train';pickToday();render();window.scrollTo({top:0});toast(g.name+' gestartet – eigene Trainingsdaten, nichts Bestehendes wird verändert');return true}
+function end(){const M=LM();M.act=null;saveMeta();switchProg.manual=0;const a=autoProg();if(a&&a!==PROG)switchProg(a);else render();toast('Bibliotheksprogramm beendet – Einträge bleiben gespeichert')}
+function dump(){return load()}
+/* Wiederherstellen aus einer Sicherung: ergänzt fehlende Programme, nichts wird überschrieben */
+function restore(b){if(!b||!Array.isArray(b.progs))return 0;const u=union(load(),b);if(u.added)save(u.lib);return u.added}
+
+return {load,save,builtin,parseText:C.parseText,parseCSV:C.parseCSV,parseJSON:C.parseJSON,parseRx:C.parseRx,pdfRead:C.pdfRead,importFile,importFiles,parseFile,toGymDay:d=>Object.assign(C.toGymDay(d),{live:BIB_GYM_LIVE}),
+ matchEx:C.matchEx,norm,esc:esc3,compile,register,active,startOf,rm,cidOf,variantsAll,hasLogsCid,begin,end,dump,restore,union,dbSync,ocrEngine,ensure,quality:C.quality,merge:C.merge,firstW,isoMon}})();
+window.BIB=BIB;
+
+/* Anbindung an die bestehende Programmlogik (nur für Bibliotheksprogramme; eingebaute Programme bleiben unberührt) */
+function libActive(){return BIB.active()}
+function xActive(){return sqActive()||libActive()}
+function xActs(){const a=[];if(sqActive())a.push(sqActive());if(libActive())a.push(libActive());return a}
+function lockN(id){const g=PROGS[id];if(!g||!g.lib)return 0;let n=0;g.P.forEach(wk=>wk.forEach(x=>{if(x.lock)n++}));return n}
+
+/* ===================== Programmbibliothek – Oberfläche ===================== */
+(function(){const E=BIB.esc,norm=BIB.norm;let ST={};const ST0=()=>({p:null,v:0,b:0,w:null,d:null,imp:null,paste:false,del:null,gym:null,edit:null,help:false,busy:null});ST=ST0();
+function all(){return BIB.builtin().concat(BIB.load().progs)}
+function cnt(p){let w=0,d=0,x=0,f=0;(p.blocks||[]).forEach(b=>(b.weeks||[]).forEach(W=>{w++;(W.days||[]).forEach(D=>{d++;(D.ex||[]).forEach(X=>{x++;if(X.flags&&X.flags.length)f++})})}));return {w,d,x,f}}
+const ICO={back:'<path d="M15 6l-6 6 6 6"/>',up:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',warn:'<path d="M12 4 2 20h20L12 4z"/><path d="M12 10v4M12 17h.01"/>',chev:'<path d="m9 6 6 6-6 6"/>',lib:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l3.5-.8 3 15.6-3.5.8z"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ play:'<path d="M7 5v14l12-7z"/>',ok:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h.01"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICO[k]}</svg>`;
+function flagsHTML(f){return f&&f.length?`<p class="bb-fl">${ic('warn')}<span>${f.map(E).join(' · ')}</span></p>`:''}
+function exHTML(x,i,canEdit){const load=x.load?(x.load.text||(x.load.pct!=null?x.load.pct+' %':x.load.kg!=null?x.load.kg+' kg':'')):'';
+ return `<article class="bb-ex${x.flags&&x.flags.length?' warn':''}"><div class="bb-exh"><b>${E(x.name||'–')}</b>${x.eid?'':'<span class="bb-tag w">nicht im Katalog</span>'}${x.opt?'<span class="bb-tag">optional</span>':''}${x.ok?'<span class="bb-tag ok">geprüft</span>':''}</div>
+ ${x.eid&&EX[x.eid]&&norm(EX[x.eid].n)!==norm(x.name)?`<p class="bb-raw">Katalog: ${E(EX[x.eid].n)}</p>`:''}
+ <dl class="bb-kv"><div><dt>Sätze</dt><dd>${x.sets!=null?E(x.sets):'<i>fehlt</i>'}</dd></div><div><dt>Wdh.</dt><dd>${x.reps!=null?E(x.reps):'<i>fehlt</i>'}</dd></div><div><dt>RPE</dt><dd>${x.rpe!=null?E(String(x.rpe).replace('.',','))+(x.rpeEst?' (Schätzung)':''):x.rpeTxt?E(x.rpeTxt):x.rpeBad?'<i>unlesbar</i>':'–'}${x.kind&&(x.rpe!=null||x.rpeTxt)?`<small class="bb-k">${E(x.kind)}</small>`:''}</dd></div><div><dt>Last</dt><dd>${load?E(load):'–'}</dd></div>${x.hype?`<div><dt>Hype</dt><dd>${E(x.hype)}</dd></div>`:''}</dl>
+ ${x.notes?`<p class="bb-nt">${E(x.notes)}</p>`:''}${flagsHTML(x.flags)}${x.raw&&x.flags&&x.flags.length?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}
+ ${canEdit?`<button type="button" class="bb-btn s sm" data-bbedit="${i}">${ic('edit')}Angaben prüfen / korrigieren</button>`:''}</article>`}
+function crumbs(p){const c=[['Bibliothek','root']];if(p){c.push([p.name,'p']);if(ST.w!=null)c.push(['Woche '+ST.w,'w']);if(ST.d!=null)c.push(['Tag '+ST.d,'d'])}return `<nav class="bb-cr" aria-label="Pfad">${c.map(([t,k],i)=>i<c.length-1?`<button type="button" data-bbcr="${k}">${E(t)}</button><span>›</span>`:`<b>${E(t)}</b>`).join('')}</nav>`}
+const cur=()=>{const P=all();return ST.p?P.find(x=>x.id===ST.p):null};
+const blkOf=p=>p.blocks[ST.b]||p.blocks[0];
+function vo(p){const v=p.variants[ST.v]||p.variants[0];return {p,v,vi:p.variants.indexOf(v),cid:BIB.cidOf(p,v)}}
+/* Tage, für die schon trainiert wurde, sind für Korrekturen gesperrt (Trainingsdaten dürfen nicht überschrieben werden) */
+function dayLogged(p,bname,wn,dn){return p.variants.some(v=>{const cid=BIB.cidOf(p,v);let g=PROGS[cid];if(!g){const o=BIB.variantsAll().find(x=>x.cid===cid);if(!o)return false;try{g=BIB.compile(o.p,o.vi,cid)}catch(e){return false}}
+ const w=g.lib.wmap.findIndex(m=>m.b===bname&&m.n===wn);if(w<0)return false;const L=S.logs[cid+'-w'+(w+1)+'d'+dn];return !!(L&&(L.done||(L.b||[]).some(a=>(a||[]).some(z=>z&&(z.ok||pnum(z.kg))))))})}
+function qualHTML(p,vn){const q=BIB.quality(p,vn);const pct=q.score;
+ return `<section class="bb-q"><div class="bb-qh"><b>Datenqualität</b><span class="bb-tag ${q.locked||q.missingWeeks.length||q.missingDays.length?'w':'ok'}">${pct} % vollständig</span></div>
+ <div class="bb-qbar"><i style="width:${pct}%"></i></div>
+ <dl class="bb-kv"><div><dt>Wochen</dt><dd>${q.weeks.length}</dd></div><div><dt>Tage</dt><dd>${q.days}</dd></div><div><dt>Trainierbar</dt><dd>${q.ok}</dd></div><div><dt>Gesperrt</dt><dd class="${q.locked?'w':''}">${q.locked}</dd></div><div><dt>Übungen</dt><dd>${q.ex}</dd></div><div><dt>Markiert</dt><dd class="${q.flagged?'w':''}">${q.flagged}</dd></div></dl>
+ ${q.missingWeeks.length?`<p class="bb-fl">${ic('warn')}<span>Fehlende Wochen: ${E(q.missingWeeks.join(', '))}</span></p>`:''}
+ ${q.missingDays.length?`<p class="bb-fl">${ic('warn')}<span>Fehlende Trainingstage: ${E(q.missingDays.slice(0,24).join(', '))}${q.missingDays.length>24?' …':''}</span></p>`:''}</section>`}
+function trainHTML(p){const o=vo(p);const g=PROGS[o.cid]||BIB.compile(o.p,o.vi,o.cid);const act=libActive()===o.cid,sqa=sqActive(),la=libActive();const st=PROGS[o.cid]&&S.meta.lib&&S.meta.lib.st&&S.meta.lib.st[o.cid];
+ const fw=BIB.firstW(g);const sd=new Date(BIB.startOf(o.cid,g)+'T12:00:00');sd.setDate(sd.getDate()+fw*7);const needRm=[...new Set(g.P.flat().flatMap(x=>x.b.filter(b=>b.ref).map(b=>b.ref)))];
+ const RN={SQ:'Kniebeuge-1RM',BP:'Bank-1RM',DL:'Kreuzheben-1RM'};
+ return `<section class="bb-tr${act?' on':''}"><div class="bb-qh"><b>Als Trainingsprogramm</b>${act?'<span class="bb-tag ok">aktiv</span>':st?'<span class="bb-tag">gestartet</span>':''}</div>
+ <p class="bb-note">${g.lib.days} von ${g.lib.days+g.lib.locked} Trainingstagen trainierbar${g.lib.locked?` · ${g.lib.locked} gesperrt (fehlend oder unvollständig – werden nicht als Einheit angelegt)`:''}. Eigene Trainingsdaten, getrennt von deinem Jahresplan.</p>
+ ${act?`<div class="bb-imp"><button type="button" class="bb-btn" data-bbgo="${o.cid}">${ic('play')}Zum Training</button><button type="button" class="bb-btn s" data-bbend>Beenden</button></div>`:
+ `${st&&BIB.hasLogsCid(o.cid)?`<p class="bb-note">Bereits trainiert – Start bleibt beim gespeicherten Datum (Woche ${fw+1} ab ${sd.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})}), damit deine Einträge ihren Tagen zugeordnet bleiben.</p>`:`<label class="bb-l" for="bbstart">Start: Montag der Woche ${fw+1}</label><input type="date" id="bbstart" class="bb-in" value="${isoD(sd)}">`}
+ ${needRm.length?`<p class="bb-note">Einige Vorgaben sind Prozent vom 1RM. Trage dafür dein 1RM ein (nur für dieses Programm):</p><div class="bb-rm">${needRm.map(r=>`<label class="bb-l">${RN[r]}<input class="bb-in" inputmode="decimal" data-bbrm="${o.cid}|${r}" value="${BIB.rm(o.cid,r)!=null?E(String(BIB.rm(o.cid,r))):''}" placeholder="kg"></label>`).join('')}</div>`:''}
+ <button type="button" class="bb-btn" data-bbstartgo="${o.cid}" ${g.lib.days?'':'disabled'}>${ic('play')}${st&&BIB.hasLogsCid(o.cid)?'Fortsetzen':sqa||la?'Wechseln & starten':'Programm starten'}</button>
+ ${sqa||la?`<p class="bb-note">Aktiv ist gerade: ${E(PROGS[sqa||la].name)}. Beim Start wird es pausiert – alle Einträge bleiben gespeichert.</p>`:''}`}</section>`}
+function rootHTML(){const P=all();const bi=P.filter(x=>x.src==='builtin'),im=P.filter(x=>x.src!=='builtin');const la=libActive();
+ const card=x=>{const c=cnt(x);let q=null;if(x.src!=='builtin')q=BIB.quality(x);return `<button type="button" class="bb-card" data-bbp="${x.id}"><span class="bb-ct"><b>${E(x.name)}</b><small>${x.src==='builtin'?'Eingebaut · nur lesen':'Importiert'+(x.files&&x.files.length?' · '+x.files.length+' '+(x.files.length===1?'Datei':'Dateien'):x.file?' · '+E(x.file):'')} · ${x.variants.length} ${x.variants.length===1?'Variante':'Varianten'} · ${c.w} Wochen · ${c.d} Tage · ${c.x} Übungen</small>${c.f?`<em class="bb-tag w">${c.f} unvollständig</em>`:''}${q?`<em class="bb-tag ${q.locked?'w':'ok'}">${q.ok}/${q.days} Tage trainierbar</em>`:''}</span>${ic('chev')}</button>`};
+ return `${la?`<section class="bb-tr on"><div class="bb-qh"><b>Aktives Bibliotheksprogramm</b><span class="bb-tag ok">aktiv</span></div><p class="bb-note">${E(PROGS[la].name)}</p><div class="bb-imp"><button type="button" class="bb-btn" data-bbgo="${la}">${ic('play')}Zum Training</button><button type="button" class="bb-btn s" data-bbend>Beenden</button></div></section>`:''}
+ <div class="bb-imp"><label class="bb-btn"><input type="file" id="bbfile" multiple accept=".pdf,.json,.csv,.txt,application/pdf,application/json,text/csv,text/plain" hidden>${ic('up')}Dateien importieren</label><button type="button" class="bb-btn s" data-bbpaste>Text einfügen</button></div>
+ <button type="button" class="bb-btn s" data-bbhelp>${ic('help')}Bild-PDFs umwandeln (Mac · iPhone)</button>
+ <p class="bb-note">Mehrere Dateien auf einmal: PDF, JSON (auch vom Mac-Importer), CSV oder TXT. Programme, Varianten, Wochen und Tage werden automatisch zugeordnet, doppelte Dateien übersprungen. Nur eigene oder zur Nutzung freigegebene Dateien importieren – die Bibliothek liest ausschließlich Dateien, die du selbst auswählst, und ruft keine Inhalte aus Apps oder Diensten (z. B. Superset) ab.</p>
+ <h3 class="bb-h">Eingebaute Candito-Programme</h3>${bi.map(card).join('')}<h3 class="bb-h">Importiert</h3>${im.length?im.map(card).join(''):'<p class="bb-e">Noch nichts importiert.</p>'}`}
+function progHTML(p){const c=cnt(p);const blk=blkOf(p);const imp=p.src!=='builtin';const o=imp?vo(p):null;const logs=imp&&p.variants.some(v=>BIB.hasLogsCid(BIB.cidOf(p,v)));const isAct=imp&&p.variants.some(v=>libActive()===BIB.cidOf(p,v));
+ const vbl=imp?BIBCORE.blocksOf(p,o.v.name):p.blocks;
+ return `${crumbs(p)}<header class="bb-ph"><h2>${E(p.name)}</h2><p>${p.src==='builtin'?'Eingebaut · Canditos Vorgaben, nur lesen':'Importiert'+(p.file?' aus '+E(p.file):'')+(p.ocr?' · Texterkennung':'')} · ${c.x} Übungen${c.f?` · <b class="w">${c.f} unvollständig</b>`:''}</p></header>
+  ${p.variants.length>1?`<p class="bb-l">Variante</p><div class="seg bb-seg" style="grid-template-columns:repeat(${Math.min(4,p.variants.length)},1fr)">${p.variants.map((v,i)=>`<button type="button" data-bbv="${i}" aria-pressed="${ST.v===i}">${E(v.name)}</button>`).join('')}</div>${p.src==='builtin'?'<p class="bb-note">Die Zyklen nutzen denselben Plan von Candito; sie unterscheiden sich nur in deinen Trainingsdaten.</p>':''}`:''}
+  ${imp?qualHTML(p,o.v.name)+trainHTML(p):''}
+  ${imp?`<details class="bb-un"><summary>${ic('edit')} Programm umbenennen</summary><div class="bb-rm" style="margin-top:6px"><input id="bbrn" class="bb-in" value="${E(p.name)}" aria-label="Programmname"><button type="button" class="bb-btn s sm" data-bbren="${p.id}">Name speichern</button></div><p class="bb-note">Der Name dient nur der Anzeige. Die Zuordnung deiner Trainingsdaten bleibt unverändert.</p></details>`:''}
+  ${vbl.length>1?`<p class="bb-l">Block</p><div class="seg bb-seg" style="grid-template-columns:repeat(${Math.min(3,vbl.length)},1fr)">${vbl.map(b=>{const i=p.blocks.indexOf(b);return `<button type="button" data-bbb="${i}" aria-pressed="${ST.b===i}">${E(b.name)}</button>`}).join('')}</div>`:''}
+  <p class="bb-l">${E(blk.name)} · Wochen</p>${blk.weeks.map(W=>{const f=W.days.reduce((a,D)=>a+D.ex.filter(x=>x.flags&&x.flags.length).length+(D.flags?1:0),0);const lk=imp?W.days.filter(D=>!BIBCORE.toGymDay(D).ok).length:0;return `<button type="button" class="bb-card" data-bbw="${W.n}"><span class="bb-ct"><b>Woche ${W.n}${W.name?' · '+E(W.name):''}</b><small>${W.days.length} Tage · ${W.days.reduce((a,D)=>a+D.ex.length,0)} Übungen</small>${f?`<em class="bb-tag w">${f} unvollständig</em>`:''}${lk?`<em class="bb-tag w">${lk} ${lk===1?'Tag':'Tage'} gesperrt</em>`:''}</span>${ic('chev')}</button>`}).join('')||'<p class="bb-e">Keine Wochen erkannt.</p>'}
+  ${p.unparsed&&p.unparsed.length?`<details class="bb-un"><summary>${ic('warn')} ${p.unparsed.length} Zeilen nicht zugeordnet</summary><pre>${E(p.unparsed.slice(0,80).join('\n'))}</pre></details>`:''}
+  ${p.files&&p.files.length?`<details class="bb-un"><summary>${ic('lib')} Quelle: ${p.files.length} ${p.files.length===1?'Datei':'Dateien'}</summary><pre>${E(p.files.map(f=>f.name+(f.pages?' · '+f.pages+' S.':'')).join('\n'))}</pre></details>`:''}
+  ${imp?(logs||isAct?`<p class="bb-note">${ic('lock')} Löschen gesperrt: ${isAct?'Programm ist aktiv':'zu diesem Programm gibt es Trainingseinträge'} – dein Verlauf bleibt vollständig erhalten.</p>`:ST.del===p.id?`<button type="button" class="bb-del armed" data-bbdel="${p.id}">Wirklich löschen? Nochmal tippen</button>`:`<button type="button" class="bb-del" data-bbdel="${p.id}">Aus Bibliothek löschen</button>`)+`<button type="button" class="bb-btn s" data-bbexp="${p.id}" style="margin-top:8px">Als JSON exportieren</button>`:''}`}
+function body(){const p=cur();
+ if(ST.busy)return `<header class="bb-ph"><h2>Import läuft</h2><p class="bb-prog" aria-live="polite">${E(ST.busy)}</p></header><div class="bb-spin" aria-hidden="true"></div>`;
+ if(ST.help)return helpHTML();if(ST.imp)return importPreview();if(ST.paste)return pasteHTML();if(ST.gym)return gymPrev();if(ST.edit)return editHTML();
+ if(!p)return rootHTML();
+ if(ST.w==null)return progHTML(p);
+ const blk=blkOf(p);const W=blk.weeks.find(x=>x.n===ST.w);if(!W){ST.w=null;return body()}const imp=p.src!=='builtin';
+ if(ST.d==null)return `${crumbs(p)}<header class="bb-ph"><h2>Woche ${W.n}${W.name?' · '+E(W.name):''}</h2></header>${W.days.map(D=>{const g=imp?BIBCORE.toGymDay(D):null;return `<button type="button" class="bb-card" data-bbd="${D.n}"><span class="bb-ct"><b>${E(D.name)}${D.wd?' · '+E(D.wd):''}${D.focus?' · '+E(D.focus):''}</b><small>${D.ex.length} Übungen${D.ex.length?' · '+E(D.ex.slice(0,3).map(x=>x.name).join(', '))+(D.ex.length>3?' …':''):''}</small>${g?(g.ok?'<em class="bb-tag ok">trainierbar</em>':'<em class="bb-tag w">gesperrt – prüfen</em>'):D.flags||D.ex.some(x=>x.flags&&x.flags.length)?'<em class="bb-tag w">prüfen</em>':''}</span>${ic('chev')}</button>`}).join('')}`;
+ const D=W.days.find(x=>x.n===ST.d);if(!D){ST.d=null;return body()}
+ const g=imp?BIBCORE.toGymDay(D):null;const logged=imp&&dayLogged(p,blk.name,W.n,D.n);
+ return `${crumbs(p)}<header class="bb-ph"><h2>${E(D.name)}${D.wd?' · '+E(D.wd):''}</h2><p>Woche ${W.n}${D.focus?' · '+E(D.focus):''} · ${D.ex.length} Übungen</p></header>
+ ${g?(g.ok?`<p class="bb-okl">${ic('ok')}<span>Trainierbar – alle Übungen eindeutig und vollständig.</span></p>`:`<p class="bb-err">${ic('lock')}<span>Gesperrt für das Training: ${g.issues.map(i=>E(i.name)+' ('+i.need.map(E).join(', ')+')').join('; ')}. Prüfe die Angaben unten.</span></p>`):''}
+ ${logged?`<p class="bb-note">${ic('lock')} Für diesen Tag gibt es schon Trainingseinträge – die Vorgaben sind deshalb schreibgeschützt.</p>`:''}
+ ${D.notes?`<section class="bb-co"><b>Coaching-Hinweise</b><p>${E(D.notes)}</p>${(D.hints||[]).map(h=>`<p>${E(h)}</p>`).join('')}</section>`:(D.hints||[]).length?`<section class="bb-co"><b>Coaching-Hinweise</b>${D.hints.map(h=>`<p>${E(h)}</p>`).join('')}</section>`:''}
+ ${flagsHTML(D.flags)}${imp&&!logged&&D.ex.some(x=>(x.flags||[]).some(f=>/unsicher|gekürzt/.test(f))&&!x.rpeBad&&!x.alt)?`<button type="button" class="bb-btn s" data-bbcday>${ic('ok')}Mit dem Original verglichen – unsichere Lesungen dieses Tages bestätigen</button><p class="bb-note">Bestätigt nur unsicher gelesene oder gekürzte Angaben. Fehlende Sätze/Wiederholungen, unlesbare RPE-Werte und ODER-Optionen musst du einzeln eintragen.</p>`:''}${D.ex.map((x,i)=>exHTML(x,i,imp&&!logged)).join('')}
+ ${imp?`<button type="button" class="bb-btn" data-bbgym>${ic('eye')}Im Gym-Layout ansehen</button><p class="bb-note">Vorschau über die kontrollierte Gym-Schnittstelle – hier wird nichts gespeichert. Trainiert wird über „Als Trainingsprogramm“ im Programm.</p>`:''}`}
+function rowStat(r){const k={neu:'ok','ergänzt':'ok','bereits vorhanden':'','Dublette':'','Konflikt':'w','Fehler':'w','Nur Bilder':'w'}[r.status];return `<li class="bb-fr"><span><b>${E(r.file)}</b><small>${r.prog?E(r.prog)+(r.variant&&r.variant!=='Standard'?' · '+E(r.variant):'')+(r.weeks&&r.weeks.length?' · W'+[...new Set(r.weeks)].join(', W'):''):''}${r.added?' · '+r.added+' Tage neu':''}${r.same?' · '+r.same+' Tage schon vorhanden':''}${r.conflict&&r.conflict.length?' · abweichend, nicht überschrieben: '+E(r.conflict.join(', ')):''}${r.msg?E(r.msg):''}</small></span><em class="bb-tag ${k||''}">${E(r.status)}</em></li>`}
+function importPreview(){const R=ST.imp;if(R.error)return `<header class="bb-ph"><h2>Import nicht möglich</h2></header><p class="bb-err">${ic('warn')}<span>${E(R.error)}</span></p><button type="button" class="bb-btn s" data-bbimpx>Zurück</button>${R.imageOnly?'<button type="button" class="bb-btn" data-bbhelp style="margin-top:8px">Bild-PDFs umwandeln</button><button type="button" class="bb-btn s" data-bbpaste style="margin-top:8px">Text einfügen</button>':''}`;
+ const progs=R.ids.map(id=>R.lib.progs.find(p=>p.id===id)).filter(Boolean);const ok=progs.length>0;
+ return `<header class="bb-ph"><h2>Import prüfen</h2><p>${R.rows.length} ${R.rows.length===1?'Eintrag':'Einträge'} aus ${R.files} ${R.files===1?'Datei':'Dateien'} · ${progs.length} ${progs.length===1?'Programm':'Programme'} betroffen – bitte vor dem Übernehmen kontrollieren.</p></header>
+ <section class="bb-sum"><b>Importstatus je Datei</b><ul class="bb-fl2">${R.rows.map(rowStat).join('')}</ul></section>
+ ${progs.map(p=>{const c=cnt(p);return `<section class="bb-sum"><b>${E(p.name)}</b><small class="bb-note">${p.variants.map(v=>E(v.name)).join(' · ')}${p.ocr?' · aus Texterkennung':''}</small>
+  <dl class="bb-kv"><div><dt>Wochen</dt><dd>${c.w}</dd></div><div><dt>Tage</dt><dd>${c.d}</dd></div><div><dt>Übungen</dt><dd>${c.x}</dd></div><div><dt>Unvollständig</dt><dd class="${c.f?'w':''}">${c.f}</dd></div></dl>
+  ${p.variants.map(v=>{const q=BIB.quality(p,v.name);return `<p class="bb-note"><b>${E(v.name)}:</b> ${q.ok}/${q.days} Tage trainierbar · Qualität ${q.score} %${q.missingWeeks.length?' · fehlende Wochen: '+E(q.missingWeeks.join(', ')):''}${q.missingDays.length?' · fehlende Tage: '+E(q.missingDays.slice(0,12).join(', '))+(q.missingDays.length>12?' …':''):''}</p>`}).join('')}
+  ${p.flags?flagsHTML(p.flags):''}${p.unparsed&&p.unparsed.length?`<p class="bb-note">${p.unparsed.length} Zeilen konnten keinem Tag zugeordnet werden – sie bleiben sichtbar unter „nicht zugeordnet“.</p>`:''}
+  ${(p.blocks[0]&&p.blocks[0].weeks.slice(0,1).flatMap(W=>W.days.slice(0,1)).map(D=>`<p class="bb-l">Beispiel: Woche ${p.blocks[0].weeks[0].n} · ${E(D.name)}</p>${D.ex.slice(0,3).map(x=>exHTML(x)).join('')}`).join(''))||''}</section>`}).join('')}
+ <div class="bb-imp">${ok?'<button type="button" class="bb-btn" data-bbok>In Bibliothek übernehmen</button>':''}<button type="button" class="bb-btn s" data-bbimpx>${ok?'Verwerfen':'Zurück'}</button></div>`}
+function pasteHTML(){return `<header class="bb-ph"><h2>Text einfügen</h2><p>Zum Beispiel per „Live Text“ aus Screenshots kopiert oder vom iPhone-Kurzbefehl. Erkannt werden Zeilen wie „Week 4 -- Test Week“, „Day 1 - Monday (W4, INTRO)“, Übungsnamen in GROSSBUCHSTABEN und „3 x 3 at RPE 8“. Mehrere Dateien: Abschnitte mit „=== Datei: Name ===“ trennen.</p></header>
+ <label class="bb-l" for="bbname">Programmname</label><input id="bbname" class="bb-in" placeholder="z. B. Candito 3RM-Phase (eigene Notizen)"><label class="bb-l" for="bbtxt">Text</label><textarea id="bbtxt" class="bb-in" rows="12" placeholder="Week 1 -- …&#10;Day 1 - Monday (W1, …)&#10;COMP SQUAT&#10;3 x 3 at RPE 8"></textarea>
+ <div class="bb-imp"><button type="button" class="bb-btn" data-bbparse>Auswerten</button><button type="button" class="bb-btn s" data-bbimpx>Abbrechen</button></div>`}
+function gymPrev(){const g=ST.gym;return `<header class="bb-ph"><h2>Gym-Vorschau</h2><p>Nur ansehen – nichts wird gespeichert. ${g.ok?'Dieser Tag ist trainierbar.':'Dieser Tag ist gesperrt, bis die markierten Angaben geprüft sind.'}</p></header>
+ ${g.issues.length?`<p class="bb-err">${ic('warn')}<span>${g.issues.length} ${g.issues.length===1?'Übung kann':'Übungen können'} nicht ins Gym übernommen werden: ${g.issues.map(i=>E(i.name)+' ('+i.need.join(', ')+')').join('; ')}</span></p>`:''}
+ <div class="bb-gym">${g.day.b.map((bl,i)=>`<section class="bb-gx"><b>${E((EX[bl.e]||{n:bl.e}).n)}</b><p>${E(bl.x)}</p>${Array.from({length:bl.s},(_,k)=>`<div class="bb-gr"><span>${k+1}</span><em>× ${E(bl.r)}${bl.rpe!=null?' @ RPE '+String(bl.rpe).replace('.',','):''}</em><i>+</i></div>`).join('')}</section>`).join('')||'<p class="bb-e">Keine übernehmbaren Übungen.</p>'}</div>
+ <button type="button" class="bb-btn s" data-bbgymx>Zurück zum Tag</button>`}
+function exOpts(sel){const g={sq:'Kniebeuge',bp:'Bankdrücken',dl:'Kreuzheben'};const ks=Object.keys(EX).sort((a,b)=>EX[a].n.localeCompare(EX[b].n,'de'));
+ const grp=k=>g[EX[k].g]||'Weitere Übungen';const by={};ks.forEach(k=>{(by[grp(k)]=by[grp(k)]||[]).push(k)});
+ return `<option value="">– nicht zugeordnet –</option>`+['Kniebeuge','Bankdrücken','Kreuzheben','Weitere Übungen'].filter(n=>by[n]).map(n=>`<optgroup label="${n}">${by[n].map(k=>`<option value="${E(k)}"${k===sel?' selected':''}>${E(EX[k].n)}</option>`).join('')}</optgroup>`).join('')}
+function editHTML(){const p=cur();const blk=blkOf(p);const W=blk.weeks.find(x=>x.n===ST.w);const D=W.days.find(x=>x.n===ST.d);const x=D.ex[ST.edit.i];const ld=x.load?(x.load.text||(x.load.pct!=null?x.load.pct+' %':x.load.kg!=null?x.load.kg+' kg':'')):'';
+ return `<header class="bb-ph"><h2>Angaben prüfen</h2><p>${E(x.name)} · Woche ${W.n} · ${E(D.name)}</p></header>
+ ${x.raw?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}${flagsHTML(x.flags)}
+ <label class="bb-l" for="bbe-ex">Übung im Katalog</label><select id="bbe-ex" class="bb-in">${exOpts(x.eid)}</select>
+ <div class="bb-rm"><label class="bb-l">Sätze<input id="bbe-s" class="bb-in" inputmode="numeric" value="${x.sets!=null?E(x.sets):''}"></label><label class="bb-l">Wdh.<input id="bbe-r" class="bb-in" value="${x.reps!=null?E(x.reps):''}" placeholder="z. B. 5, 6-8, AMRAP"></label><label class="bb-l">RPE<input id="bbe-rpe" class="bb-in" inputmode="decimal" value="${x.rpe!=null?E(String(x.rpe).replace('.',',')):x.rpeTxt?E(x.rpeTxt):''}" placeholder="z. B. 7,5 oder 8–8,5"></label></div>
+ ${W.days.length>1?`<label class="bb-l" for="bbe-day">Gehört zu Tag</label><select id="bbe-day" class="bb-in">${W.days.map(d=>`<option value="${d.n}"${d.n===D.n?' selected':''}>${E(d.name)}${d.wd?' · '+E(d.wd):''}${d.focus?' · '+E(d.focus):''}</option>`).join('')}</select>`:''}
+ <label class="bb-l" for="bbe-l">Lastvorgabe (wie im Original, z. B. „75 % of 1RM“)</label><input id="bbe-l" class="bb-in" value="${E(ld)}">
+ <label class="bb-l" for="bbe-n">Hinweis</label><textarea id="bbe-n" class="bb-in" rows="3">${E(x.notes||'')}</textarea>
+ <label class="bb-chk"><input type="checkbox" id="bbe-opt" ${x.opt?'checked':''}> Optionale Übung</label>
+ <label class="bb-chk"><input type="checkbox" id="bbe-ok" ${x.ok?'checked':''}> Mit dem Original verglichen – Angaben stimmen</label>
+ <p class="bb-note">Nur übernehmen, was im Original steht – nichts ergänzen oder schätzen. Erst mit dem Haken „verglichen“ wird ein unsicher gelesener Eintrag trainierbar.</p>
+ <div class="bb-imp"><button type="button" class="bb-btn" data-bbesave>Speichern</button><button type="button" class="bb-btn s" data-bbex>Abbrechen</button></div>`}
+function helpHTML(){const eng=BIB.ocrEngine();const pwa=typeof PWA!=='undefined'&&PWA;
+ return `<header class="bb-ph"><h2>Bild-PDFs umwandeln</h2><p>Screenshots-PDFs (z. B. aus PDF24) enthalten keinen Text. Drei lokale Wege – keine Cloud:</p></header>
+ <section class="bb-co"><b>1 · Direkt in der App</b><p>${eng?'Texterkennung ist in diesem Browser verfügbar ('+E(eng.name)+'): Bild-PDFs einfach über „Dateien importieren“ auswählen.':'In diesem Browser ist keine Texterkennung verfügbar. Safari hat sie nur als experimentelle Funktion („Shape Detection API“ unter Einstellungen › Apps › Safari › Erweitert › Feature Flags). Ob sie in der Home-Bildschirm-App greift, hängt von der iOS-Version ab – der Mac-Importer ist der zuverlässige Weg.'}</p></section>
+ <section class="bb-co"><b>2 · Mac-Importer (empfohlen, viele PDFs auf einmal)</b><p>Nutzt die Texterkennung von macOS (Vision) direkt auf deinem Mac.</p>
+  <p>1. ${pwa?'<a href="./tools/Programmbibliothek-Mac-Importer.zip" download>Mac-Importer laden</a>':'Mac-Importer laden (Datei „Programmbibliothek-Mac-Importer.zip“ aus der App-Installation, Ordner tools)'} und entpacken.<br>2. Alle PDFs in einen Ordner legen.<br>3. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten und den Ordner wählen.<br>4. Die entstandene Datei „Programmbibliothek-Import-….json“ per AirDrop oder iCloud Drive aufs iPhone und hier über „Dateien importieren“ auswählen.</p>
+  <p>Gleiche Dateien werden übersprungen, Programme, Varianten, Wochen und Tage zugeordnet, und ein Prüfbericht liegt daneben.</p></section>
+ <section class="bb-co"><b>3 · iPhone-Kurzbefehl (ohne Mac)</b><p>Einmal in der App „Kurzbefehle“ anlegen: <br>1. „Im Share-Sheet anzeigen“ für PDFs aktivieren.<br>2. „Wiederholen mit jedem“ Objekt in der Kurzbefehl-Eingabe.<br>3. Darin: Text „=== Datei: [Name] ===“ (Variable „Name“ des Objekts), dann „Bild aus PDF-Seite erstellen“, dann „Wiederholen mit jedem“ Bild › „Text aus Bild extrahieren“.<br>4. Nach den Schleifen: „Text kombinieren“ (neue Zeilen) › „Datei sichern“ als „Programme.txt“ in iCloud Drive.<br>Dann PDFs in „Dateien“ markieren › Teilen › Kurzbefehl, und „Programme.txt“ hier importieren.</p></section>
+ <button type="button" class="bb-btn s" data-bbhelpx>Zurück</button>`}
+function render(){let el=document.getElementById('bibv');if(!el){el=document.createElement('div');el.id='bibv';el.className='bibv';document.body.appendChild(el)}
+ el.innerHTML=`<div role="dialog" aria-modal="true" aria-label="Programmbibliothek"><div class="bb-top"><button type="button" class="bb-x" data-bbback aria-label="Zurück">${ic('back')}</button><div><small>Einstellungen</small><h1>Programmbibliothek</h1></div></div><div class="bb-sc">${body()}</div></div>`;el.hidden=false;document.body.classList.add('bibopen')}
+function open(){ST=ST0();render()}
+function close(){const el=document.getElementById('bibv');if(el)el.hidden=true;document.body.classList.remove('bibopen')}
+function go(f){f();render();const s=document.querySelector('#bibv .bb-sc');if(s)s.scrollTop=0}
+window.bibOpen=open;window.bibClose=close;BIB.ui={open,close,state:()=>ST};
+const prog=t=>{ST.busy=t;const el=document.querySelector('#bibv .bb-prog');if(el)el.textContent=t;else render()};
+async function runImport(files){ST.imp=null;ST.paste=false;ST.help=false;prog('Dateien werden gelesen …');let R;try{R=await BIB.importFiles(files,prog)}catch(e){R={error:String(e&&e.message||e)}}ST.busy=null;
+ if(!R.error){R.files=files.length;if(!R.ids.length){const bad=R.rows.filter(r=>/Fehler|Nur Bilder/.test(r.status));if(R.rows.length===1&&bad.length===1)R={error:bad[0].msg,imageOnly:bad[0].status==='Nur Bilder'};}}
+ go(()=>ST.imp=R)}
+BIB.ui.runImport=runImport;
+function commitImport(){const R=ST.imp;const ok=BIB.save(R.lib);BIB.register();const id=R.ids[0];go(()=>{ST.imp=null;ST.p=ok&&R.ids.length===1?id:null;ST.v=0;ST.b=0;ST.w=null;ST.d=null});if(typeof toast==='function')toast(ok?`${R.ids.length} ${R.ids.length===1?'Programm':'Programme'} in der Bibliothek gespeichert`:'Speichern fehlgeschlagen – Speicher voll?')}
+function saveEdit(){const L=BIB.load();const p=L.progs.find(x=>x.id===ST.p);if(!p)return;const blk=p.blocks[ST.b]||p.blocks[0];const W=blk.weeks.find(x=>x.n===ST.w);const D=W.days.find(x=>x.n===ST.d);const x=D.ex[ST.edit.i];
+ if(dayLogged(p,blk.name,W.n,D.n)){toast('Für diesen Tag gibt es schon Trainingseinträge – Vorgaben bleiben unverändert');return}
+ const v=id=>document.getElementById(id);const n=BIBCORE.num;const s=n(v('bbe-s').value),rp=n(v('bbe-rpe').value),r=v('bbe-r').value.trim(),lt=v('bbe-l').value.trim();
+ x.eid=v('bbe-ex').value||null;x.sets=s!=null&&s>0?Math.round(s):null;x.reps=r?(/amrap|max/i.test(r)?'AMRAP':r.replace(/\s+/g,'').replace('-','–')):null;x.amrap=/amrap/i.test(r);
+ const rv=v('bbe-rpe').value.trim();const rr=rv.match(/^(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)$/);if(rr){x.rpe=null;x.rpeTxt=rr[1].replace('.',',')+'–'+rr[2].replace('.',',')}else{x.rpe=rp!=null&&rp>=1&&rp<=10?rp:null;delete x.rpeTxt}if(rv)delete x.rpeBad;
+ if(lt){const R=BIBCORE.parseRx(lt);x.load=R.load&&R.load.pct!=null?{pct:R.load.pct,text:lt}:R.load&&R.load.kg!=null?{kg:R.load.kg,text:lt}:{text:lt}}else x.load=null;
+ x.notes=v('bbe-n').value.trim();x.opt=v('bbe-opt').checked;x.ok=v('bbe-ok').checked;if(x.ok){delete x.amb;delete x.alt;x.cut=false}x.flags=BIBCORE.flagEx(x,p.ocr?'ocr':'json');
+ const nd=v('bbe-day')?+v('bbe-day').value:D.n;let moved='';if(nd!==D.n){const T=W.days.find(d=>d.n===nd);if(T&&!dayLogged(p,blk.name,W.n,nd)){D.ex.splice(ST.edit.i,1);T.ex.push(x);moved=' · verschoben zu '+T.name;ST.d=nd}else if(T){toast('Ziel-Tag hat schon Trainingseinträge – nicht verschoben');return}}
+ BIBCORE.finish(p);BIB.save(L);BIB.register();go(()=>ST.edit=null);toast('Angaben gespeichert'+moved)}
+function confirmDay(){const L=BIB.load();const p=L.progs.find(x=>x.id===ST.p);if(!p)return;const blk=p.blocks[ST.b]||p.blocks[0];const W=blk.weeks.find(x=>x.n===ST.w);const D=W.days.find(x=>x.n===ST.d);
+ if(dayLogged(p,blk.name,W.n,D.n))return;let n=0;D.ex.forEach(x=>{if((x.flags||[]).some(f=>/unsicher|gekürzt/.test(f))&&!x.rpeBad&&!x.alt){x.ok=true;delete x.amb;x.cut=false;x.flags=BIBCORE.flagEx(x,p.ocr?'ocr':'json');n++}});BIBCORE.finish(p);BIB.save(L);BIB.register();render();toast(n?`${n} ${n===1?'Angabe':'Angaben'} als geprüft markiert`:'Nichts zu bestätigen')}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tdk="bib"],[data-bibopen]');if(t){e.preventDefault();e.stopPropagation();open()}},true);
+document.addEventListener('click',e=>{const el=document.getElementById('bibv');if(!el||el.hidden||!el.contains(e.target))return;const t=e.target.closest('button');if(!t||ST.busy)return;const d=t.dataset;
+ if(d.bbback!=null){if(ST.help){go(()=>ST.help=false);return}if(ST.edit){go(()=>ST.edit=null);return}if(ST.gym){go(()=>ST.gym=null);return}if(ST.imp||ST.paste){go(()=>{ST.imp=null;ST.paste=false});return}if(ST.d!=null)go(()=>ST.d=null);else if(ST.w!=null)go(()=>ST.w=null);else if(ST.p)go(()=>ST.p=null);else close();return}
+ if(d.bbp)go(()=>{ST.p=d.bbp;ST.v=0;ST.b=0;ST.w=null;ST.d=null;ST.del=null;const p=cur();if(p&&p.src!=='builtin'){const la=libActive();const vi=la?p.variants.findIndex(v=>BIB.cidOf(p,v)===la):-1;if(vi>0)ST.v=vi;const bl=BIBCORE.blocksOf(p,p.variants[ST.v].name)[0];if(bl)ST.b=p.blocks.indexOf(bl)}});
+ else if(d.bbv!=null){ST.v=+d.bbv;const p=cur();if(p&&p.blocks.length>1){const vn=p.variants[ST.v].name;const bi=p.blocks.findIndex(b=>b.variant===vn);if(bi>=0)ST.b=bi}render()}
+ else if(d.bbb!=null){ST.b=+d.bbb;render()}
+ else if(d.bbw)go(()=>ST.w=+d.bbw);else if(d.bbd)go(()=>ST.d=+d.bbd);
+ else if(d.bbcr){go(()=>{if(d.bbcr==='root'){ST.p=null;ST.v=0;ST.b=0;ST.w=null;ST.d=null}else if(d.bbcr==='p'){ST.w=null;ST.d=null}else if(d.bbcr==='w')ST.d=null})}
+ else if(d.bbpaste!=null)go(()=>{ST.imp=null;ST.help=false;ST.paste=true});
+ else if(d.bbhelp!=null)go(()=>{ST.imp=null;ST.help=true});else if(d.bbhelpx!=null)go(()=>ST.help=false);
+ else if(d.bbparse!=null){const tx=document.getElementById('bbtxt').value,nm=document.getElementById('bbname').value.trim();const parts=BIBCORE.splitMulti(tx);const multi=parts.length>1||parts.some(x=>x.file);
+  const progs=parts.map((x,i)=>BIB.parseText(x.text,{name:nm?(multi&&parts.length>1?nm+' '+(i+1):nm):undefined,file:x.file||'',fallback:x.file?BIBCORE.baseName(x.file):undefined,fmt:'text',src:'ocr'}));
+  const lib=JSON.parse(JSON.stringify(BIB.load()));const rows=[];progs.forEach((p,i)=>BIB.merge(lib,[p],parts[i].file||'Eingefügter Text').forEach(r=>rows.push(r)));
+  go(()=>{ST.paste=false;ST.imp={rows,lib,ids:[...new Set(rows.map(r=>r.target).filter(Boolean))],files:parts.length}})}
+ else if(d.bbimpx!=null)go(()=>{ST.imp=null;ST.paste=false});
+ else if(d.bbok!=null)commitImport();
+ else if(d.bbdel){const p=BIB.load().progs.find(x=>x.id===d.bbdel);if(p&&p.variants.some(v=>BIB.hasLogsCid(BIB.cidOf(p,v))||libActive()===BIB.cidOf(p,v))){toast('Löschen gesperrt – zu diesem Programm gibt es Trainingseinträge');return}
+  if(ST.del!==d.bbdel){ST.del=d.bbdel;render();return}const L=BIB.load();L.progs=L.progs.filter(p=>p.id!==d.bbdel);BIB.save(L);go(()=>{ST.del=null;ST.p=null});if(typeof toast==='function')toast('Aus der Bibliothek gelöscht')}
+ else if(d.bbexp){const p=BIB.load().progs.find(x=>x.id===d.bbexp);if(!p)return;const body=JSON.stringify({format:'candito-bib',v:1,programs:[p]},null,1);const fn=(p.name||'programm').replace(/[^\wäöüÄÖÜß -]+/g,'')+'.json';
+  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(dl){await dl.save({filename:fn,data:body});return}}catch(e){}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([body],{type:'application/json'}));a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)})()}
+ else if(d.bbgym!=null){const p=cur();const W=blkOf(p).weeks.find(x=>x.n===ST.w);const D=W.days.find(x=>x.n===ST.d);go(()=>ST.gym=BIB.toGymDay(D))}
+ else if(d.bbgymx!=null)go(()=>ST.gym=null);
+ else if(d.bbren){const nm=(document.getElementById('bbrn')||{}).value;if(!nm||!nm.trim())return;const L=BIB.load();const p=L.progs.find(x=>x.id===d.bbren);if(!p)return;p.name=nm.trim().slice(0,80);BIB.save(L);BIB.register();render();toast('Name gespeichert')}
+ else if(d.bbcday!=null)confirmDay();else if(d.bbedit!=null)go(()=>ST.edit={i:+d.bbedit});else if(d.bbex!=null)go(()=>ST.edit=null);else if(d.bbesave!=null)saveEdit();
+ else if(d.bbstartgo){const v=(document.getElementById('bbstart')||{}).value;BIB.begin(d.bbstartgo,v||undefined)}
+ else if(d.bbgo){close();if(PROG!==d.bbgo)switchProg(d.bbgo);S.ui.tab='train';pickToday();render();window.scrollTo({top:0})}
+ else if(d.bbend!=null){close();BIB.end()}});
+document.addEventListener('change',async e=>{const t=e.target;
+ if(t.dataset&&t.dataset.bbrm){const [cid,r]=t.dataset.bbrm.split('|');const M=S.meta.lib||(S.meta.lib={act:null,st:{},rm:{}});if(!M.rm)M.rm={};if(!M.rm[cid])M.rm[cid]={};const v=pnum(t.value);if(v)M.rm[cid][r]=v;else delete M.rm[cid][r];saveMeta();try{SG.clear()}catch(x){}toast('1RM gespeichert');return}
+ if(t.id!=='bbfile')return;const fs=t.files?[...t.files]:[];t.value='';if(!fs.length)return;runImport(fs)});
+})();
+
 /* ===================== Start ===================== */
 // Die einzige Stelle, an der die App hochfährt. Alles davor sind Definitionen; Reihenfolge hier ist verbindlich.
 /* Mindestschrift in skalierten SVG-Diagrammen: Beschriftungen auf ≥ 11 px Bildschirmgröße ausgleichen */
@@ -5089,6 +5656,7 @@ let _smt=0;function svgMinSoon(){if(_smt)return;_smt=requestAnimationFrame(()=>{
 try{new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.tagName==='svg'||n.querySelector&&n.querySelector('svg')))))svgMinSoon()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('resize',svgMinSoon)}catch(e){}
 function boot(){
  loadState();                                   // 1. Gerätespeicher (localStorage) → S.logs, S.meta, S.ui
+ try{BIB.register()}catch(e){}                   // 2a. gestartete Bibliotheksprogramme in PROGS eintragen (eigene Speicher-Präfixe)
  setProg(S.meta.prog||'intro');                 // 2. aktives Programm (Side Quests sind oben bereits in PROGS registriert)
  try{autoClosePast()}catch(e){}                 // 3. liegen gebliebene Einheiten (>12 h) abschließen
  pickToday();edgeLayout();                      // 4. heutige/nächste Einheit wählen

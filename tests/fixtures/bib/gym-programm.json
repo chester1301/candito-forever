@@ -1,0 +1,35 @@
+{
+ "format": "candito-bib",
+ "v": 1,
+ "programs": [
+  {
+   "name": "Testprogramm Gym",
+   "variants": [{"name": "Standard"}],
+   "blocks": [
+    {
+     "name": "Block 1",
+     "weeks": [
+      {"n": 1, "name": "Testaufbau", "days": [
+        {"n": 1, "wd": "Monday", "focus": "Beine", "notes": "Testbeschreibung Tag 1.", "hints": ["Testhinweis A"], "ex": [
+          {"name": "Comp Squat", "rx": "3 x 5 at RPE 7.0 on the last set -- Moderate hype", "notes": "Testnotiz Kniebeuge"},
+          {"name": "Paused Barbell Bench Press", "sets": 3, "reps": "6", "rpe": 8, "load": {"pct": 75, "ref": "BP", "text": "75 % of 1RM"}}
+        ]},
+        {"n": 2, "wd": "Thursday", "focus": "Rücken", "ex": [
+          {"name": "Comp Deadlift", "sets": 2, "reps": "3", "rpe": 8},
+          {"name": "Unbekannte Testübung", "sets": 3, "reps": "10"}
+        ]}
+      ]},
+      {"n": 3, "name": "Testwoche", "days": [
+        {"n": 1, "wd": "Monday", "focus": "Beine", "ex": [
+          {"name": "Comp Squat", "rx": "1 x AMRAP at RPE 9"}
+        ]},
+        {"n": 2, "wd": "Thursday", "focus": "Rücken", "ex": [
+          {"name": "Comp Deadlift", "rx": "3 x 2 at RPE 7"}
+        ]}
+      ]}
+     ]
+    }
+   ]
+  }
+ ]
+}

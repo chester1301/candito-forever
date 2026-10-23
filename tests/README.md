@@ -27,6 +27,10 @@ eine Prüfung scheitert.
 - `25-responsive-themes` – alle Ansichten bei 320/375/390/430 px, Classic Rot/Gold und Textgröße „Sehr groß“.
 - `26-gym-kernwerkzeuge` – Doppelbuchungsschutz, RPE leer, Warm-up, RPE-Planer, Timer, Info, Verlauf, Abschluss.
 - `27-sicherung-wiederherstellen` – Sicherung in einer frischen Testkopie einspielen, ungültige Datei, CSV.
+- `35-programmbibliothek` – Hierarchie, Import PDF/CSV/JSON/TXT, Parser, Markierungen (synthetische Testdaten in `tests/fixtures/bib`).
+- `36-bibliothek-gym-sicherung` – Gym-Übernahme (gesperrte Tage, 1RM-Bezug, Warm-up, Timer, Verlauf), Programmwechsel ohne
+  Überschreiben, Candito-Berechnungen unverändert, Korrektur, Mehrfachimport (Dubletten, Lücken), Bild-PDF mit Test-Texterkennung,
+  Mac-Importer-Kern, Sicherung mit Bibliothek und Wiederherstellung in einer frischen Testkopie.
 - Neu schreiben (nur bewusst!): `node tests/run.js berechnung inventur --update-golden`.
 
 ### Performance

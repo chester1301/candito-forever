@@ -4480,6 +4480,21 @@ html[data-acc="navy"]:not(.gymhy):not(.stripe-hype):not(.stripe-lift) #gym .gl-e
 .bb-gx b{font:800 20px var(--d)}.bb-gx p{margin:4px 0 6px;color:#c9cad1;font-size:14px}
 .bb-gr{display:grid;grid-template-columns:32px minmax(0,1fr) 64px;align-items:center;gap:10px;min-height:46px}.bb-gr span{height:28px;border-radius:8px;background:#2a2c33;display:grid;place-items:center;font-weight:600}.bb-gr em{font-style:normal}.bb-gr i{height:38px;border-radius:999px;border:1.5px solid var(--brand);display:grid;place-items:center;font-style:normal;opacity:.5}
 body.bibopen{overflow:hidden}
+.bb-tag.ok{background:rgba(90,170,240,.16);color:#9fd0ff}
+.bb-btn.sm{min-height:44px;font-size:14px}.bb-btn[disabled]{opacity:.45;cursor:default}
+.bb-q,.bb-tr{padding:14px;border-radius:20px;border:1px solid var(--jg-b,var(--line));background:var(--jg-card,var(--card));display:grid;gap:10px}
+.bb-tr.on{border-color:color-mix(in srgb,var(--brand) 70%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 35%,transparent)}
+.bb-qh{display:flex;align-items:center;justify-content:space-between;gap:8px}.bb-qh b{font:800 17px var(--d)}
+.bb-qbar{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}.bb-qbar i{display:block;height:100%;background:var(--brand);border-radius:3px}
+.bb-rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}.bb-rm .bb-l{display:grid;gap:4px;margin:0}
+.bb-chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14.5px;color:#fff}.bb-chk input{width:22px;height:22px;accent-color:var(--brand)}
+.bb-okl{margin:0;display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(90,170,240,.1);border:1px solid rgba(90,170,240,.35);color:#cfe6ff;font-size:13.5px}.bb-okl svg{flex:none}
+.bb-fl2{list-style:none;margin:0;padding:0;display:grid;gap:8px}.bb-fr{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line)}.bb-fr:first-child{border-top:0}
+.bb-fr span{display:grid;gap:2px;min-width:0}.bb-fr b{font-size:14px;overflow-wrap:anywhere}.bb-fr small{color:var(--mut);font-size:12.5px;overflow-wrap:anywhere}.bb-fr .bb-tag{flex:none}
+.bb-co a{color:var(--brand)}
+.bb-spin{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:var(--brand);animation:bbspin 1s linear infinite;margin:20px auto}@keyframes bbspin{to{transform:rotate(360deg)}}
+select.bb-in{appearance:auto;min-height:48px}
+.bb-k{display:block;font-weight:500;font-size:11.5px;color:var(--mut)}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4639,7 +4654,7 @@ function withProg(id,fn){const o=PROG,ow=S.ui.w,od=S.ui.d;if(o===id)return fn();
 const NW=()=>P.length,NS=()=>P.length*ND(),ND=()=>DAYS.length,TW=()=>PROGS[PROG].test[0],TD=()=>PROGS[PROG].test[1];
 const TWg=g=>{const t=PROGS[PROG].tl;return t&&t[g]?t[g][0]:TW()},TDg=g=>{const t=PROGS[PROG].tl;return t&&t[g]?t[g][1]:TD()};
 const AMI=g=>{const c={sq:'csq',bp:'pbb',dl:'cdl'}[g];return P[TWg(g)][TDg(g)].b.findIndex(bl=>bl.e===c)};
-function phaseStart(id){if(isSQ(id))return sqStart(id);const add=(iso,n)=>{const t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10)};
+function phaseStart(id){if(isSQ(id))return sqStart(id);if(PROGS[id]&&PROGS[id].lib)return BIB.startOf(id);const add=(iso,n)=>{const t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10)};
  let prev=null,pw=0;for(const p of ORD()){const s0=p==='intro'?(S.meta.start||'2026-10-17'):(S.meta[SKEY[p]]||add(prev,pw*7));if(p===id)return s0;prev=s0;pw=PROGS[p].P.length}return S.meta.start}
 function progStart(){return phaseStart(PROG)}
 const key=(w,d)=>`${PROGS[PROG].pre}w${w+1}d${d+1}`;
@@ -4701,7 +4716,7 @@ function scheduleBackup(){clearTimeout(BK.t);BK.t=setTimeout(writeBackup,4000)}
 function writeBackup(){if(!db)return;const ok=totalOk();if(!ok&&!Object.values(S.logs).some(L=>L&&(L.whoop||L.note)))return;
  let id=bkId();if(BK.max[id]!=null&&ok<BK.max[id]){const t=new Date();id+=':'+String(t.getMinutes()).padStart(2,'0')}
  BK.max[id]=Math.max(BK.max[id]||0,ok);
- const body=JSON.parse(JSON.stringify({at:new Date().toISOString(),ok,logs:S.logs,meta:S.meta,schema:'intro-zyklus.backup/1'}));
+ const body=JSON.parse(JSON.stringify({at:new Date().toISOString(),ok,logs:S.logs,meta:S.meta,bib:bibDump(),schema:'intro-zyklus.backup/1'}));
  db.doc('backup/'+id).set(body).then(()=>{BK.last=Date.now();try{localStorage.setItem('intro-zyklus-bk',String(BK.last))}catch(e){}}).catch(()=>{})}
 try{BK.last=+localStorage.getItem('intro-zyklus-bk')||null}catch(e){}
 function watchBackups(){if(!db||BK.unsub)return;try{BK.unsub=db.collection('backup').onSnapshot(sn=>{BK.list=sn.docs.map(x=>({id:x.id,d:x.data()})).sort((a,b)=>a.id<b.id?1:-1);if(S.ui.tab==='setup')softRender()},()=>{})}catch(e){}}
@@ -4740,20 +4755,26 @@ function backupHTML(){watchBackups();const L=BK.list;
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
   <div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-act="bkdl">Sicherung herunterladen</button><button type="button" class="btn" data-act="bkup">Sicherung einspielen</button><input type="file" id="bkfile" accept="application/json,.json" hidden></div></section>`}
-function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta},null,1);
+// Programmbibliothek gehört zur Sicherung (Programme + Zuordnung der Trainingsdaten über S.meta.lib)
+function bibDump(){try{const b=BIB.dump();return b.progs.length?b:undefined}catch(e){return undefined}}
+function bibRestore(j){let n=0;try{if(j&&j.bib)n=BIB.restore(j.bib);if(j&&j.meta&&j.meta.lib&&typeof j.meta.lib==='object'){const M=S.meta.lib||(S.meta.lib={act:null,st:{},rm:{}});M.st=Object.assign({},j.meta.lib.st||{},M.st||{});M.rm=Object.assign({},j.meta.lib.rm||{},M.rm||{});if(!M.act&&j.meta.lib.act)M.act=j.meta.lib.act}BIB.register()}catch(e){}return n}
+function downloadBackup(){const body=JSON.stringify({schema:'intro-zyklus.backup/1',at:new Date().toISOString(),ok:totalOk(),logs:S.logs,meta:S.meta,bib:bibDump()},null,1);
  (async()=>{try{const dl=await window.claude?.use?.('downloads');if(!dl){toast('Download hier nicht verfügbar');return}const d=new Date().toISOString().slice(0,10);await dl.save({filename:`intro-zyklus-sicherung-${d}.json`,data:body});toast('Sicherung gespeichert')}catch(e){toast('Download abgebrochen')}})()}
 document.addEventListener('change',e=>{const t=e.target;if(t.id!=='bkfile'||!t.files||!t.files[0])return;const f=t.files[0];t.value='';
- f.text().then(tx=>{const j=JSON.parse(tx);if(!j||!j.logs)throw 0;const fresh=totalOk()===0;const n=fillFrom(j.logs);if(fresh&&j.meta){const keep={restEx:S.meta.restEx};Object.assign(S.meta,j.meta);if(!S.meta.restEx)S.meta.restEx=keep.restEx||{};saveMeta();if(S.meta.prog&&PROGS[S.meta.prog]&&S.meta.prog!==PROG)setProg(S.meta.prog);toast(`${n} Sätze und deine Einstellungen übernommen`);render();return}toast(n?`${n} Sätze aus der Sicherung ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()}).catch(()=>toast('Datei ist keine gültige Sicherung'))});
+ f.text().then(tx=>{const j=JSON.parse(tx);if(!j||!j.logs)throw 0;const fresh=totalOk()===0;
+  // Reihenfolge: erst Bibliothek + Programmzuordnung, damit die Trainingsdaten der Bibliotheksprogramme ihr Programm finden
+  const nb=bibRestore(j);const pb=nb?` · ${nb} ${nb===1?'Bibliotheksprogramm':'Bibliotheksprogramme'}`:'';const n=fillFrom(j.logs);if(fresh&&j.meta){const keep={restEx:S.meta.restEx,lib:S.meta.lib};Object.assign(S.meta,j.meta);if(keep.lib)S.meta.lib=keep.lib;if(!S.meta.restEx)S.meta.restEx=keep.restEx||{};saveMeta();try{BIB.register()}catch(e){}if(S.meta.prog&&PROGS[S.meta.prog]&&S.meta.prog!==PROG)setProg(S.meta.prog);toast(`${n} Sätze und deine Einstellungen übernommen${pb}`);render();return}if(nb)saveMeta();toast(n||nb?`${n} Sätze aus der Sicherung ergänzt${pb}`:'Nichts zu ergänzen – alles schon vorhanden');render()}).catch(()=>toast('Datei ist keine gültige Sicherung'))});
 document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('[data-bkeach]')){S.meta.bkEach=t.checked;saveMeta();toast(t.checked?'Sicherung wird nach jeder Einheit angeboten':'Sicherung nur noch über „Heute“ und Einstellungen')}});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-bkfill],[data-act="bkdl"],[data-act="bkup"]');if(!t)return;
  if(t.dataset.act==='bkdl'){downloadBackup();return}if(t.dataset.act==='bkup'){document.getElementById('bkfile')?.click();return}
- const x=(BK.list||[]).find(z=>z.id===t.dataset.bkfill);if(!x)return;const n=fillFrom(x.d.logs);toast(n?`${n} Sätze ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()});
+ const x=(BK.list||[]).find(z=>z.id===t.dataset.bkfill);if(!x)return;const nb=bibRestore(x.d);if(nb)saveMeta();const n=fillFrom(x.d.logs)+nb;toast(n?`${n} Sätze ergänzt`:'Nichts zu ergänzen – alles schon vorhanden');render()});
 async function initDb(){
  let tries=0; while(!(window.claude&&window.claude.use)&&tries<20){await new Promise(r=>setTimeout(r,150));tries++}
  if(!(window.claude&&window.claude.use)){syncState('nur dieses Gerät');return}
  try{db=await window.claude.use('db')}catch(e){db=null}
  if(!db){syncState('nur dieses Gerät');return}
  syncState('verbunden','on');
+ try{BIB.dbSync(db)}catch(e){}
  let first=true;
  db.collection('logs').onSnapshot(snap=>{
   const seen=new Set();
@@ -4794,7 +4815,7 @@ function e1rm(kg,r,rpe){if(!kg||!r)return null;const p=(typeof LRC_INT!=='undefi
 function e1rmRTS(kg,r,rpe){if(!kg||!r)return null;const n=r+(10-(rpe==null?10:rpe));
  if(n<=1)return kg; if(n<=12){const lo=Math.floor(n),f=n-lo;const p=RTS[lo-1]+(lo<12?(RTS[lo]-RTS[lo-1])*f:0);return kg/(p/100)}
  return kg*(1+n/30)}
-function refKg(r){if(isSQ(PROG))return sq1rm(PROGS[PROG].sq,r);if(PROG!=='intro'){const g={SQ:'csq',BP:'pbb',DL:'cdl'}[r];if(!g)return null;let e=null;for(const pid of prevOf(PROG)){const v=withProg(pid,()=>{let m=null;allSets().forEach(s=>{const e0=e1rmRTS(s.kg,s.r,s.rpe);if(s.g===EX[g].g&&EX[s.e].m&&e0&&(m==null||e0>m))m=e0});return m});if(v!=null&&(e==null||v>e))e=v}return e?Math.round(e*.955*10)/10:null}
+function refKg(r){if(isSQ(PROG))return sq1rm(PROGS[PROG].sq,r);if(PROGS[PROG].lib)return BIB.rm(PROG,r);if(PROG!=='intro'){const g={SQ:'csq',BP:'pbb',DL:'cdl'}[r];if(!g)return null;let e=null;for(const pid of prevOf(PROG)){const v=withProg(pid,()=>{let m=null;allSets().forEach(s=>{const e0=e1rmRTS(s.kg,s.r,s.rpe);if(s.g===EX[g].g&&EX[s.e].m&&e0&&(m==null||e0>m))m=e0});return m});if(v!=null&&(e==null||v>e))e=v}return e?Math.round(e*.955*10)/10:null}
  const R=REFS[r];return R?pnum(setOf(R.w,R.d,R.b,0).kg):null}
 const REFLBL=()=>PROG==='intro'?'W1-Single':'Vorher';
 function firstKg(w,d,b){const L=log(w,d);if(!L||!L.b[b])return null;for(const s of L.b[b]){const k=pnum(s.kg);if(k)return k}return null}
@@ -4863,7 +4884,7 @@ function suggCalc(w,d,b,i){const bl=P[w][d].b[b],L=log(w,d),k3=(PROG==='intro'?'
    if(bl.minus)return out(top-bl.minus,`Top-Satz ${nf(top,2)} kg − ${bl.minus} kg`,tt);
    if(bl.plus)return out(top+bl.plus,`Satz davor ${nf(top,2)} kg + ${nf(bl.plus,2)} kg`,tt);
    const p=bl.pct??100;return out(top*p/100,p===100?`gleiche Last wie ${nf(top,2)} kg`:`${nf(p)} % vom Top-Satz (${nf(top,2)} kg)`,tt)}
-  const base=refKg(bl.ref);if(!base&&isSQ(PROG))return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – im Side-Quest-Tab eintragen`);if(!base)return out(null,`Referenz fehlt: ${REFS[bl.ref].n} aus W1`);
+  const base=refKg(bl.ref);if(!base&&isSQ(PROG))return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – im Side-Quest-Tab eintragen`);if(!base&&PROGS[PROG].lib)return out(null,`${REFS[bl.ref]?REFS[bl.ref].n:'1RM'} fehlt – in der Programmbibliothek beim Programm eintragen`);if(!base)return out(null,`Referenz fehlt: ${REFS[bl.ref].n} aus W1`);
   if(Array.isArray(bl.pct)){const pk=PICK[k3];const opts=bl.pct.map(p=>({p,kg:rnd(base*p/100)}));let ch=opts[0],why=`${nf(ch.p)} %`;
    const e=pk?estE1(bl.e,w,d,b,i):null;
    if(pk&&e){const ideal=kgFor(e.e1,pk.r,pk.rpe);
@@ -4954,7 +4975,7 @@ function unqueue(k){if(!db)return;delete S.out[k];db.doc('cockpit_outbox/'+k).de
 let anaCtl=null,anaLive=null;
 function setLine(s){const kg=pnum(s.kg),r=pnum(s.r),rp=pnum(s.rpe);if(!kg&&!r)return null;return `${kg!=null?nf(kg,2)+' kg':'? kg'} × ${r??'?'}${rp!=null?' @ RPE '+nf(rp):' (RPE fehlt)'}${s.rest?' · Pause '+mmss(s.rest):''}${s.ok?' ✓':' (nicht abgehakt)'}`}
 function anaPrompt(w){const lines=[];
- lines.push(`Du bist ein erfahrener Powerlifting-Coach. Analysiere die Trainingswoche W${w+1} („${WEEKS[w]}“) eines Powerlifting-Programms (${PROGS[PROG].name}, ${NW()} Wochen). Trainingstage: ${DAYS.map(x=>x.tag+' '+x.wdl).join(', ')}.${PROG==='intro'?' Woche 4 ist eine Testwoche mit AMRAPs an Tag 3.':` Testwoche ist W${TW()+1}.`}`);
+ lines.push(`Du bist ein erfahrener Powerlifting-Coach. Analysiere die Trainingswoche W${w+1} („${WEEKS[w]}“) eines Powerlifting-Programms (${PROGS[PROG].name}, ${NW()} Wochen). Trainingstage: ${DAYS.map(x=>x.tag+' '+x.wdl).join(', ')}.${PROG==='intro'?' Woche 4 ist eine Testwoche mit AMRAPs an Tag 3.':PROGS[PROG].lib?' Importiertes Programm aus der Programmbibliothek.':` Testwoche ist W${TW()+1}.`}`);
  lines.push(`Antworte auf Deutsch in Markdown mit genau diesen Abschnitten: "## Kurzfazit" (2–3 Sätze), "## Kniebeuge", "## Bankdrücken", "## Kreuzheben", "## RPE-Treffsicherheit" (Ist vs. Soll, Tendenz zu leicht/schwer), "## Auffälligkeiten" (Pausen, Hype, Notizen, Ausreißer), "## Für nächste Woche" (konkrete Hinweise in kg im Rahmen der Planvorgaben, z. B. welche %-Option, wo Last anpassen). Höchstens 380 Wörter, kurze Stichpunkte. Bleib innerhalb des Programms, erfinde keine Daten, keine medizinischen Diagnosen. Wo Daten fehlen, sag es kurz.`);
  lines.push(`Hinweis zu RPE: RPE 10 = keine Wdh mehr möglich, RPE 8 = 2 Wdh im Tank. e1RM ist aus Gewicht, Wdh und RPE geschätzt.`);
  lines.push(PROG==='intro'?`\nReferenz-Singles aus W1: Paused Squat ${nf(refKg('SQ'),2)} kg, Paused Deadlift ${nf(refKg('DL'),2)} kg, 3 s Pause Bench ${nf(refKg('BP'),2)} kg.`:isSQ(PROG)?`\nEingetragene 1RMs: Kniebeuge ${nf(refKg('SQ'),2)} kg, Bankdrücken ${nf(refKg('BP'),2)} kg, Kreuzheben ${nf(refKg('DL'),2)} kg.`:`\nReferenzwerte (e1RM aus dem Vorprogramm × 95,5 %): Kniebeuge ${nf(refKg('SQ'),2)} kg, Bankdrücken ${nf(refKg('BP'),2)} kg, Kreuzheben ${nf(refKg('DL'),2)} kg.`);
@@ -6119,8 +6140,8 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function applyDay(){const r=document.documentElement.style;r.setProperty('--day',DAYCOL[S.ui.d]);r.setProperty('--day-soft',DAYSOFT[S.ui.d])}
 
-function progDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')n++;return n})}
-function renderHead(){const ps=$('#progsw');if(ps)ps.innerHTML=[...ORD(),...(sqActive()?[sqActive()]:[])].map(id=>{const g=PROGS[id],n=progDone(id),t=g.P.length*g.DAYS.length;return `<button type="button" data-prog="${id}" aria-pressed="${PROG===id}"><b>${g.short}</b><small>${n}/${t}</small><i style="--v:${Math.round(n/t*100)}%"></i></button>`}).join('');const ab=ps&&ps.querySelector('[aria-pressed="true"]');if(ab&&ps.scrollWidth>ps.clientWidth)ps.scrollLeft=ab.offsetLeft-ps.clientWidth/2+ab.offsetWidth/2;renderTL()}
+function progDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(!P[w][d].lock&&dayStatus(w,d)==='done')n++;return n})}
+function renderHead(){const ps=$('#progsw');if(ps)ps.innerHTML=[...ORD(),...xActs()].map(id=>{const g=PROGS[id],n=progDone(id),t=g.P.length*g.DAYS.length-lockN(id);return `<button type="button" data-prog="${id}" aria-pressed="${PROG===id}"><b>${g.short}</b><small>${n}/${t}</small><i style="--v:${Math.round(n/t*100)}%"></i></button>`}).join('');const ab=ps&&ps.querySelector('[aria-pressed="true"]');if(ab&&ps.scrollWidth>ps.clientWidth)ps.scrollLeft=ab.offsetLeft-ps.clientWidth/2+ab.offsetWidth/2;renderTL()}
 function switchProg(id){switchProg.manual=1;if(!PROGS[id]||id===PROG)return;let hint=null;try{const cur=autoProg();if(cur&&cur!==id&&PROGS[cur]){const a=phaseRange(id).a;const td=new Date();td.setHours(0,0,0,0);const st=a?new Date(a):null;if(st&&st>td)hint=`${PROGS[id].name} beginnt planmäßig am ${st.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})} – zum Ansehen geöffnet. Aktuell dran: ${PROGS[cur].short}.`}}catch(e){}
  S.meta.prog=id;saveMeta();setProg(id);S.ui.openB={};S.ui.w=0;S.ui.d=0;renderTL.done=false;pickToday();if(S.ui.w>=NW())S.ui.w=0;render();window.scrollTo({top:0});toast(hint||PROGS[id].name+' aktiv',hint?5200:undefined)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-prog]');if(b){switchProg(b.dataset.prog)}});
@@ -6706,7 +6727,7 @@ function sqDetail(fam){const F=SQF[fam],vs=sqVs(fam);if(!S.ui.sqv||!vs.includes(
 function sqTcb(){const el=tcbEnsure();const fam=S.ui.sqd,act=sqActive();const sub=fam&&SQF[fam]?SQF[fam].t:act?'aktiv: '+SQF[PROGS[act].sq].t:'';
  el.innerHTML=`<div class="tcb-in"><span class="tcb-wm"><b>CANDITO<i>FOREVER</i></b><small>${sub?esc(sub):'Side Quests'}</small></span><button type="button" class="tcb-go" data-tcbtop aria-label="Zum Seitenanfang mit vollständigem Kopf"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span>Oben</span></button><button type="button" class="tcb-go tcb-gear" data-tcbgear aria-label="Menü und Einstellungen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>`;tcbAria()}
 document.addEventListener('click',e=>{if(e.target.closest('[data-tcbgear]')){const g=document.getElementById('gear');if(g)g.click()}});
-function sqBegin(id){if(!S.meta.sqStart)S.meta.sqStart={};if(!S.meta.sqStart[id])S.meta.sqStart[id]=sqStart(id);S.meta.sqActive=id;saveMeta();S.ui.sqd=null;switchProg(id);S.ui.tab='train';pickToday();render();window.scrollTo({top:0})}
+function sqBegin(id){if(S.meta.lib&&S.meta.lib.act)S.meta.lib.act=null;if(!S.meta.sqStart)S.meta.sqStart={};if(!S.meta.sqStart[id])S.meta.sqStart[id]=sqStart(id);S.meta.sqActive=id;saveMeta();S.ui.sqd=null;switchProg(id);S.ui.tab='train';pickToday();render();window.scrollTo({top:0})}
 function sqEnd(){S.meta.sqActive=null;saveMeta();switchProg.manual=0;const a=autoProg();S.ui.sqd=null;if(a&&a!==PROG)switchProg(a);else render();toast('Side Quest beendet – zurück im Jahresplan')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-sqd],[data-sqback],[data-sqv],[data-sqgo],[data-sqend],[data-sqstartgo]');if(!t||!$('#view').contains(t))return;
  if(t.dataset.sqd){S.ui.sqd=t.dataset.sqd;S.ui.sqv=null;render();window.scrollTo({top:0});const v=$('#view');v.classList.remove('pdin','pdout');void v.offsetWidth;v.classList.add('pdin');return}
@@ -6808,9 +6829,9 @@ document.addEventListener('input',e=>{if(e.target.matches('[data-wq]')){S.ui.wq=
 const SKEY={intro:'start',p8:'start8',p10:'start10',p8b:'start8b',p10b:'start10b',p8c:'start8c',p10c:'start10c',p3:'start3',p10w:'start10w',p10d:'start10d'};
 const isoD2=d=>{const x=new Date(d);x.setHours(12,0,0,0);return x.toISOString().slice(0,10)};
 function phaseRange(id){return withProg(id,()=>{const a=dayDate(0,0),b=dayDate(NW()-1,3);return {a,b}})}
-function phaseDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(dayStatus(w,d)==='done')n++;return {n,t:NS()}})}
+function phaseDone(id){return withProg(id,()=>{let n=0;for(let w=0;w<NW();w++)for(let d=0;d<ND();d++)if(!P[w][d].lock&&dayStatus(w,d)==='done')n++;return {n,t:NS()-lockN(id)}})}
 function autoProg(){const today=new Date();today.setHours(0,0,0,0);
- {const a=sqActive();if(a){const pd=phaseDone(a),r=sqRange(a);const e=r.b?new Date(r.b):null;if(e)e.setHours(23,59,0,0);if(pd.n<pd.t&&(!e||e>=today))return a}}
+ for(const a of xActs()){const pd=phaseDone(a),r=sqRange(a);const e=r.b?new Date(r.b):null;if(e)e.setHours(23,59,0,0);if(pd.n<pd.t&&(!e||e>=today))return a}
  for(const id of ORD()){const {b}=phaseRange(id);if(!b)continue;const e=new Date(b);e.setHours(23,59,0,0);const pd=phaseDone(id);if(e>=today&&pd.n<pd.t)return id}
  return ORD()[ORD().length-1]}
 // 2) Verschieben
@@ -7028,7 +7049,7 @@ function progData(){const A=allSets();
  const series=['sq','bp','dl'].map(k=>({c:GC[k],n:names[k],v:[...Array(NW()).keys()].map(w=>bestOf(comp[k],w))}));
  const tw=[...Array(NW()).keys()].map(w=>{const vals={};A.filter(s=>s.w===w).forEach(s=>vals[s.g]=(vals[s.g]||0)+s.kg*s.r);return{label:'W'+(w+1),vals}});
  const prs={};A.forEach(s=>{if(!s.e1)return;if(!prs[s.e]||s.e1>prs[s.e].e1)prs[s.e]=s});
- const amrap=P[TW()][TD()].b.filter(bl=>PROG==='intro'||['csq','pbb','cdl'].includes(bl.e)).map((bl,b)=>{const s=setOf(TW(),TD(),b,0);const kg=pnum(s.kg),r=pnum(s.r);const rk=refKg(bl.ref);
+ const amrap=PROGS[PROG].lib?[]:P[TW()][TD()].b.filter(bl=>PROG==='intro'||['csq','pbb','cdl'].includes(bl.e)).map((bl,b)=>{const s=setOf(TW(),TD(),b,0);const kg=pnum(s.kg),r=pnum(s.r);const rk=refKg(bl.ref);
   return {bl,kg,r,e1:e1rm(kg,r,pnum(s.rpe)),ref:rk,refE:rk?e1rm(rk,1,9):null}});
  const ttl=k=>`W${k}`;
  const sec={
@@ -7270,7 +7291,7 @@ function testPlanHTML(w,d){const ks=testLifts(w,d);if(!ks.length)return '';
 // --- Kalender & Serie ---
 function dayTonMap(){const m={};rfAllLogs().forEach(x=>{let t=0,n=0;(x.L.b||[]).forEach(a=>(a||[]).forEach(z=>{if(z&&z.ok){n++;t+=(pnum(z.kg)||0)*(pnum(z.r)||0)}}));if(!n)return;const k=isoD(x.dt);m[k]=(m[k]||0)+Math.max(t,1)});return m}
 function streakWeeks(){const today=new Date();today.setHours(0,0,0,0);const wk={};
- ORD().concat(sqActive()?[sqActive()]:[]).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(!dt)continue;const x=new Date(dt);x.setHours(0,0,0,0);if(x>=today)continue;
+ ORD().concat(xActs()).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(!dt)continue;const x=new Date(dt);x.setHours(0,0,0,0);if(x>=today)continue;
   const mo=new Date(x);mo.setDate(mo.getDate()-((mo.getDay()+6)%7));const k=isoD(mo);wk[k]=wk[k]||{p:0,ok:0};wk[k].p++;if(dayStatus(w,d)==='done')wk[k].ok++}}));
  const ks=Object.keys(wk).sort().reverse();let n=0;for(const k of ks){const v=wk[k];if(v.ok>=v.p)n++;else break}return {n,weeks:ks.length}}
 function calHTML(){const sig=isoD(new Date())+'|'+Object.keys(S.logs).length+'|'+JSON.stringify(Object.keys(S.logs).map(k=>(S.logs[k].u||0)));if(calHTML.sig===sig)return calHTML.c;calHTML.sig=sig;const r=calHTML0();calHTML.c=r;return r}
@@ -7296,7 +7317,7 @@ function liftVolHTML(){const G3=['sq','bp','dl'];const C=(window.CF_THEME||'blue
   <p class="note2" style="margin:6px 0 0">Umriss = geplante Sätze laut Candito (inkl. Varianten der jeweiligen Lift-Gruppe), Füllung = erledigt.</p></section>`}
 
 // --- Wochenrückblick ---
-function weekPlanned(st,end){let p=0;ORD().concat(sqActive()?[sqActive()]:[]).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt&&dt>=st&&dt<=end)p++}}));return p}
+function weekPlanned(st,end){let p=0;ORD().concat(xActs()).forEach(pid=>withProg(pid,()=>{for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){if(!P[w][d].b.length)continue;const dt=dayDate(w,d);if(dt&&dt>=st&&dt<=end)p++}}));return p}
 function weekRecap(){const now=new Date();const dw=now.getDay();const show=(dw===0&&now.getHours()>=17)||dw===1;if(!show)return null;
  const end=new Date(now);end.setHours(23,59,59,999);if(dw===1)end.setDate(end.getDate()-1);const st=new Date(end);st.setDate(st.getDate()-6);st.setHours(0,0,0,0);
  let ses=0,sets=0,ton=0,best=null;const rec=[];
@@ -8071,7 +8092,7 @@ function gymPlanHTML(w,d){const day=P[w][d],L=log(w,d)||{b:[]},info=INFO[w+'-'+d
   <div class="gp-leg"><span class="v">Vorgabe laut Plan</span><span class="e">≈ Empfehlung</span><span class="f">frei / nach RPE</span></div>
   ${L.mind?`<section class="gp-info" style="border-color:rgba(240,160,102,.4);background:rgba(240,160,102,.07)"><h3 style="color:#f0a066">Mein Vorsatz</h3><p>„${esc(L.mind)}“</p></section>`:''}
   ${info.length?`<section class="gp-info"><h3>Infos zum Tag</h3>${info.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`:''}
-  ${day.b.length?rows:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
+  ${day.b.length?rows:day.lock?`<p class="gp-t">Gesperrt – ${esc(day.lock)}. ${esc(day.d||'')}</p>`:'<p class="gp-t">Ruhetag – laut Programm kein Training.</p>'}
   <button type="button" class="gp-close" data-gplan="0">Zurück zum Training</button></div></div>`}
 function gymFinBtn(){const g=document.getElementById('gym');if(!g||g.hidden)return;const {w,d}=S.ui;const L=log(w,d);const bb=g.querySelector('.bigbtn');if(!bb||!L||L.done||nextOpen(w,d,0,-1)){return}
  if(bb.dataset.fin)return;bb.dataset.fin='1';delete bb.dataset.sl;bb.classList.remove('slide');bb.classList.add('finb');bb.removeAttribute('data-g');bb.removeAttribute('data-act');bb.innerHTML='<span class="hb-ic">✓</span><span class="hb-tx"><b>Training abschließen</b><span class="hb-m"><i>Alle Sätze erledigt</i></span></span>';
@@ -8251,7 +8272,7 @@ function renderTL(){const today=new Date();
  const dn=wDone(vw);
  const card=`<div class="tncard"><div class="tnc-t"><small>${esc(g.name)}</small><b>Woche ${vw+1} · ${esc(WEEKS[vw]||'')}</b></div><span class="tnc-r" aria-label="${dn} von ${nd} Einheiten">${ringSVG(nd?dn/nd:0,'#43c08a',40,4)}<em>${dn}/${nd}</em></span></div>`;
  const tabs=`<div class="tnweeks" role="group" aria-label="Woche" style="--nw:${Math.min(nw,5)}">${[...Array(nw).keys()].map(w=>`<button type="button" data-navw="${w}" aria-pressed="${w===vw}" class="${wDone(w)===nd?'done':''}${w===S.ui.w?' hasel':''}">W${w+1}</button>`).join('')}</div>`;
- const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD();
+ const days=`<div class="tlw cur tndays" style="--n:${Math.min(nd,4)}"><div class="tlr">`+[...Array(nd).keys()].map(d=>{const w=vw,st=dayStatus(w,d),sel=S.ui.w===w&&S.ui.d===d,dt=dayDate(w,d),test=w===TW()&&d===TD()&&!PROGS[PROG].lib;
    return `<button type="button" class="tlc ${st} ${sel?'sel':''} ${sameDay(dt,today)?'today':''} ${test?'test':''}" style="--c:${DAYCOL[d]}" data-tw="${w}" data-td="${d}" aria-pressed="${sel}" aria-label="W${w+1} ${DAYS[d].tag} ${DAYS[d].wdl}${st==='done'?' · erledigt':''}"><span class="tld"><small>${DAYS[d].wd}</small><b>${dt?dt.getDate()+'.':''}</b></span><span class="tls ${st||'plan'}">${st==='done'?IC.done:st==='part'?IC.part:test?IC.test:IC.plan}</span><i></i></button>`}).join('')+`</div></div>`;
  const weeks=`<div class="tnwl">${[...Array(nw).keys()].map(w=>{const n=wDone(w),a=dayDate(w,0),z=dayDate(w,nd-1),fd=x=>x?x.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):'';return `<button type="button" class="tnwr ${w===S.ui.w?'cur':''} ${n===nd?'done':''}" data-navw="${w}" data-navday="1"><em>W${w+1}</em><span><b>${esc(WEEKS[w]||'')}</b><small>${fd(a)} – ${fd(z)}</small></span><i class="tlp"><b style="width:${nd?n/nd*100:0}%"></b></i><small class="tnwn">${n}/${nd}</small></button>`}).join('')}</div>`;
  const tl=$('#tl');tl.dataset.mode=mode;tl.innerHTML=seg+card+(mode==='day'?tabs+days:mode==='week'?weeks:'');
@@ -8377,7 +8398,7 @@ function gxiDrag(el){const pn=el.querySelector('.gxi-p0'),sc=el.querySelector('.
 document.addEventListener('click',e=>{const o=e.target.closest('[data-exinfo]');if(o&&o.closest('#gym')){e.stopPropagation();exInfoOpen(o.dataset.exinfo||'v');return}
  if(e.target.closest('[data-gxiclose]')){exInfoClose();return}const t=e.target.closest('[data-gxitab]');if(t){GXI.tab=t.dataset.gxitab;exInfoRefresh();const sc=document.querySelector('#gxi .gxi-sc');if(sc)sc.scrollTop=0}},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const el=document.getElementById('gxi');if(el&&!el.hidden){e.stopImmediatePropagation();exInfoClose()}}},true);
-function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(day.b.length&&gymList()){renderGymL();return}if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card"><h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
+function renderGym(){tick.k="";const {w,d}=S.ui,day=P[w][d];if(day.b.length&&gymList()){renderGymL();return}if(!day.b.length){$('#gym').innerHTML=`<div class="gym-in"><div class="gtop"><button type="button" class="iconbtn" data-g="close" aria-label="Gym-Modus schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><span class="lbl">W${w+1} · ${DAYS[d].tag} · ${DAYS[d].wd}</span><span></span></div><section class="card">${day.lock?`<h2 class="h2">Gesperrt</h2><p class="note2">${esc(day.lock)}: ${esc(day.d||'')}</p><p class="note2">Unvollständige oder unsichere Vorgaben werden nicht als Einheit angelegt. Prüfe sie in Einstellungen › Programmbibliothek.</p>`:`<h2 class="h2">Ruhetag</h2><p class="note2">Laut Programm ist heute kein Training vorgesehen.</p>`}${(INFO[w+'-'+d]||[]).map(t=>`<p class="note2">${esc(t)}</p>`).join('')}</section></div>`;return}if(G.b>=day.b.length)G.b=day.b.length-1;if(G.b<0)G.b=0;if(G.i>=day.b[G.b].s||G.i<0)G.i=0;{const L0=log(w,d,true);if(!L0.b[G.b])L0.b[G.b]=[];while(L0.b[G.b].length<day.b[G.b].s)L0.b[G.b].push({})}
  const {kg,r,rpe,s,bl,L,sg,lt}=curVals();const ex=EX[bl.e];$('#gym').dataset.hy=bl.h||'';const calm=L.b[G.b].slice(0,bl.s).some(x=>x.ok);
  const strip=day.b.map((x,b)=>{const all=L.b[b].slice(0,x.s).every(z=>z.ok);return `<span class="${b===G.b?'c':all?'d':''}"></span>`}).join('');
  const pl=kg?plates(kg,barFor(bl.e)):[];const allDone=day.b.every((x,b)=>L.b[b].slice(0,x.s).every(z=>z.ok));
@@ -8634,6 +8655,7 @@ let tt;function toast(m,ms){const t=$('#toast');t.textContent=m;t.hidden=false;c
 function pickToday(){const now=new Date();now.setHours(0,0,0,0);let best=null;
  for(let w=0;w<NW();w++)for(let d=0;d<ND();d++){const dt=dayDate(w,d);if(!dt)continue;dt.setHours(0,0,0,0);if(dt>=now&&dayStatus(w,d)!=='done'){if(!best||dt<best.dt)best={w,d,dt}}}
  if(best){S.ui.w=best.w;S.ui.d=best.d}}
+/*__BIB__*/
 /* ===================== Start ===================== */
 // Die einzige Stelle, an der die App hochfährt. Alles davor sind Definitionen; Reihenfolge hier ist verbindlich.
 /* Mindestschrift in skalierten SVG-Diagrammen: Beschriftungen auf ≥ 11 px Bildschirmgröße ausgleichen */
@@ -8645,6 +8667,7 @@ let _smt=0;function svgMinSoon(){if(_smt)return;_smt=requestAnimationFrame(()=>{
 try{new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.tagName==='svg'||n.querySelector&&n.querySelector('svg')))))svgMinSoon()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('resize',svgMinSoon)}catch(e){}
 function boot(){
  loadState();                                   // 1. Gerätespeicher (localStorage) → S.logs, S.meta, S.ui
+ try{BIB.register()}catch(e){}                   // 2a. gestartete Bibliotheksprogramme in PROGS eintragen (eigene Speicher-Präfixe)
  setProg(S.meta.prog||'intro');                 // 2. aktives Programm (Side Quests sind oben bereits in PROGS registriert)
  try{autoClosePast()}catch(e){}                 // 3. liegen gebliebene Einheiten (>12 h) abschließen
  pickToday();edgeLayout();                      // 4. heutige/nächste Einheit wählen
@@ -8913,5 +8936,4 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-sropen],[d
 /* Such-Knopf im Kopf neben dem Zahnrad */
 {const g=document.getElementById('gear');if(g&&!document.getElementById('srch')){g.insertAdjacentHTML('beforebegin','<button type="button" class="iconbtn srbtn" id="srch" data-sropen aria-label="Suchen"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>')}}
 })();</script>
-<script>/*__BIB__*/</script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
