@@ -1,7 +1,7 @@
 /* Candito Forever – Service Worker. Version wird beim Bauen eingesetzt. */
-const VERSION='2026.10.23-1502-a4fe576';
+const VERSION='2026.10.23-1526-741a4b1';
 const CACHE='cf-app-'+VERSION, FONTS='cf-fonts';
-const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/favicon-64.png',"./assets/app-0.a4fe576.js","./assets/app-1.a4fe576.js","./assets/app-2.a4fe576.js"];
+const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/favicon-64.png',"./assets/app-0.741a4b1.js","./assets/app-1.741a4b1.js","./assets/app-2.741a4b1.js"];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting()));

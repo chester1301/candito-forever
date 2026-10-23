@@ -34,10 +34,11 @@ module.exports={name:'Programmbibliothek – Erkennung aus Screenshots, Zuordnun
     const D=P.blocks[0].weeks[0].days;const x=D[mv.d].ex.find(e=>e.eid===mv.bl.e&&e.sets===mv.bl.s&&e.rpe===mv.bl.rpe&&e.moved);
     /* Tage, deren eingebaute Vorgaben vollständig im Testtext stehen, sind trainierbar; Tage mit ausgelassener Vorgabe (ohne RPE) widersprechen dem eingebauten Plan → gesperrt */
     const full=W.map(day=>day.b.every(ok));const st=D.map((d,i)=>[BIB.toGymDay(d).ok,full[i],/Weicht vom eingebauten/.test(d.chk||'')]);
-    const fi=D.findIndex(d=>BIB.toGymDay(d).ok);const D2=D[fi];D2.ex.push(Object.assign(JSON.parse(JSON.stringify(D2.ex[D2.ex.length-1])),{opt:false}));delete D2.chk;BIB.autoVerify(lib);const dup=/doppelt/.test(D2.chk||'')&&!BIB.toGymDay(D2).ok;
+    const fi=D.findIndex(d=>BIB.toGymDay(d).ok);const D2=D[fi];const n0=D2.ex.length;D2.ex.push(Object.assign(JSON.parse(JSON.stringify(D2.ex[D2.ex.length-1])),{opt:false}));delete D2.chk;BIB.autoVerify(lib);const dupGone=D2.ex.length===n0&&BIB.toGymDay(D2).ok;
+    const fx=Object.assign(JSON.parse(JSON.stringify(D2.ex[0])),{eid:'lext',name:'Leg Extension',opt:false});D2.ex.push(fx);delete D2.chk;BIB.autoVerify(lib);const dup=dupGone&&/zusätzlich gelesen/.test(D2.chk||'')&&!BIB.toGymDay(D2).ok;
     return {before,n,moved:!!x,ref:x&&x.ref,amb:D.flatMap(d=>d.ex).filter(e=>e.amb).length,trainable:st.every(([o,f,c])=>o===f&&c===!f),someLocked:full.includes(false),dup}});
   t.ok(v.before===1&&v.moved&&v.amb===0&&v.trainable&&v.someLocked,`Abgleich mit eingebautem 3RM-Programm: unsicher einsortierte Übung bestätigt und verschoben (${v.ref}); Tage mit fehlender Vorgabe gesperrt`);
-  t.ok(v.dup,'Zusätzlich gelesene Pflichtübung (doppelt) sperrt den Tag – nichts wird zweimal trainiert');
+  t.ok(v.dup,'Doppelt gelesene gleiche Vorgabe wird zusammengefasst; eine zusätzliche fremde Pflichtübung sperrt den Tag');
   // Nichts darf stillschweigend verloren gehen: vermischte Übersichtszeilen („Find 10 RM …“, „(Optional) - 3 x …“, doppelter Name) und Tage ohne Tagesübersicht bleiben gesperrt
   const lost=await p.evaluate(()=>{const pg=[['09:41','Day 1 - Monday (W1, TESTPROGRAMM L, V1)','Exercises','Paused Barbell Bench Press','Find 10 RM - Anywhere from RPE 8.5-...','Paused Barbell Bench Press','3 x 5 at RPE 5.0 on average w/ low...','Standing Cable Ab Crunch','(Optional) - 3 x 12-15 at RPE 7.0 on...','Feet Up Bench Press','Feet Up Bench Press','2 x 12 at RPE 7.0 on each set w/ low...','Start workout'],
      ['09:42','PAUSED BARBELL BENCH PRESS x','3 x 5 at RPE 5.0 on average w/ low hype.'],['09:43','FEET UP BENCH PRESS x','2 x 12 at RPE 7.0 on each set w/ low hype.'],
@@ -61,5 +62,11 @@ module.exports={name:'Programmbibliothek – Erkennung aus Screenshots, Zuordnun
     const R1=await BIBCORE.pdfRead(u(a));const i1=await BIBCORE.pdfImage(R1,R1.images[0]);const R2=await BIBCORE.pdfRead(u(b));const i2=await BIBCORE.pdfImage(R2,R2.images[0]);
     return {n1:R1.images.length,dark:px(i1,100,90),light:px(i1,10,10),n2:R2.images.length,d2:px(i2,100,110),l2:px(i2,10,10)}},[fx('bild-16bit.pdf'),fx('bild-abgeschnitten.pdf')]);
   t.eq(pr,{n1:1,dark:0,light:255,n2:2,d2:0,l2:255},'PDF-Leser: 16-Bit-Bilder und beschädigte Datei (ohne Querverweise) werden korrekt gelesen');
+  // Übungstausch: Original + Candito-Alternative mit gleicher Vorgabe = EINE Übung, im Gym über den Übungstausch wählbar
+  const sw=await p.evaluate(()=>{const pg=[['11:00','Day 1 - Monday (W1, TESTPROGRAMM T, V1)','Exercises','Comp Squat','3 x 5 at RPE 7.0 on the last set w/ low...','Barbell Bulgarian Split Squat','3 x 9-12 at RPE 7.0 on average w/ low...','Start workout'],
+     ['11:01','COMP SQUAT x','3 x 5 at RPE 7.0 on the last set w/ low hype.'],['11:02','LEG PRESS x','3 x 9-12 at RPE 7.0 on average w/ low hype.'],['11:03','BARBELL BULGARIAN SPLIT SQUAT x','3 x 9-12 at RPE 7.0 on average w/ low hype.']].map(x=>x.join('\n')).join('\n\f\n');
+    const P=BIB.parseText(pg,{src:'ocr',fmt:'pdf-ocr'});const lib={v:1,progs:[P],ex:{}};const before=P.blocks[0].weeks[0].days[0].ex.length;BIB.autoEx(lib);BIB.autoVerify(lib);const D=P.blocks[0].weeks[0].days[0];const g=BIB.toGymDay(D);
+    const x=D.ex.find(e=>e.sw);return {before,after:D.ex.length,e:x&&x.eid,sw:x&&x.sw,ok:g.ok,blk:g.day.b.some(b=>b.e===(x&&x.eid)&&b.sw===(x&&x.sw))}});
+  t.ok(sw.before===3&&sw.after===2&&sw.e==='bbss'&&sw.sw==='lp'&&sw.ok&&sw.blk,`Original und Alternative zu einer Übung mit Übungstausch zusammengefasst (ohne eingebauten Plan: Übung der Tagesübersicht als Vorgabe, ${sw.before}→${sw.after} Einträge)`);
   t.eq(p.errors,[],'Keine Skriptfehler');
 }};
