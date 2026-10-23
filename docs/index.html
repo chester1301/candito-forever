@@ -32,7 +32,7 @@
 #cfbar .sh{font-weight:800;color:#f5f5f6}
 body.gymopen #cfbar{bottom:calc(14px + env(safe-area-inset-bottom))}
 </style>
-<script>window.CF_VERSION="2026.10.22-2056-fc9c866";
+<script>window.CF_VERSION="2026.10.23-0651-ce9eb69";
 /* Candito Forever – PWA-Schicht.
    Ersetzt die claude.ai-Laufzeit (window.claude.use) durch lokale Gegenstücke:
    - 'db'        → Datenbank im Gerätespeicher (IndexedDB), gleiche Schnittstelle wie in der Claude-Version
@@ -4532,6 +4532,11 @@ html[data-theme=blue] .ds-pv[style*="--pvg"]{background:radial-gradient(90% 200p
 html.gnum-gross .ds-pvex .ds-pvb{font-size:20px;font-weight:700}
 .ds-pv.oled,.ds-pv.oled .ds-mini{background:#000!important}
 .ds-pv .hype.l .hic{background:#f6d65e!important}.ds-pv .hype.h .hic{background:#e8262f!important}
+/* Akzent Nachtblau (#04055f): Flächen tief dunkelblau, mit hellerem Rand, damit sie sich vom Schwarz abheben */
+html[data-acc="navy"] :is(.seg [aria-pressed="true"],.tnseg [aria-pressed="true"],.tnseg .on,.jx-vt [aria-pressed="true"],#gym .gl-row.cur .gl-n,.ds-pre [aria-pressed="true"]){box-shadow:inset 0 0 0 1.5px #3a3fc4!important}
+html[data-acc="navy"] #gym .gl-add,html[data-acc="navy"] .ds-pvp{border-color:#3a3fc4!important}
+html[data-acc="navy"] .mtred .mt2{color:#7a7fff!important}
+html[data-acc="navy"]:not(.gymhy):not(.stripe-hype):not(.stripe-lift) #gym .gl-ex::before{background:#3a3fc4!important}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4548,8 +4553,9 @@ button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer
 (function(){if((window.CF_THEME||'blue')!=='blue')return;
 function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2;if(mx!==mn){var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s,l]}
 function rgb(h,s,l){h/=360;function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p}var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return[f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(function(x){return Math.round(x*255)})}
-var ACCN=(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})();var ACC={blue:null,cyan:188,violett:262,orange:22,gelb:46}[ACCN]||null;window.CF_ACC=ACC;document.documentElement.dataset.acc=ACCN;
+var ACCN=(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})();var ACC={blue:null,cyan:188,violett:262,orange:22,gelb:46,navy:239}[ACCN]||null;window.CF_ACC=ACC;document.documentElement.dataset.acc=ACCN;
 function map(r,g,b){if(r===60&&g===196&&b===106)return null;if(r===74&&g===109&&b===245)return null;var c=hsl(r,g,b);
+ if(ACCN==='navy'&&c[0]>=214&&c[0]<=246&&c[1]>=.3){var L=c[2];return rgb(239,Math.max(.9,c[1]),L>=.66?Math.min(.86,L+.04):L>=.36?.2+(L-.36)*.12:Math.max(.06,L*.55))}
  if(ACC!=null&&c[0]>=214&&c[0]<=246&&c[1]>=.3){return rgb(ACC,c[1],c[2])}
  if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
 var RX=/#([0-9a-fA-F]{6})\b|#([0-9a-fA-F]{3})\b|(rgba?\()\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;
@@ -4636,8 +4642,8 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 <svg class="edge" id="edge" hidden aria-hidden="true"><rect id="edgeR" pathLength="1" fill="none" stroke-width="5" stroke-linecap="round"/></svg>
 <div class="tipbox" id="tipbox" hidden role="status"></div>
 
-<script src="assets/app-0.fc9c866.js"></script>
-<script src="assets/app-1.fc9c866.js"></script>
+<script src="assets/app-0.ce9eb69.js"></script>
+<script src="assets/app-1.ce9eb69.js"></script>
 <style id="cf-ideas2">
 /* 1 Notizen-Verlauf */
 .xnh{display:grid;gap:8px}
@@ -4687,7 +4693,7 @@ sv.querySelectorAll('textPath').forEach(function(t){t.textContent=t.textContent.
 .sr-g mark{background:color-mix(in srgb,var(--brand) 40%,transparent);color:#fff;border-radius:4px;padding:0 2px}
 .sr-e{color:var(--mut);text-align:center;margin:30px 0 0}
 </style>
-<script src="assets/app-2.fc9c866.js"></script>
+<script src="assets/app-2.ce9eb69.js"></script>
 <script>(function(){function fit(){const b=document.querySelector('.marke b.mtred');if(!b)return;b.style.fontSize='';const p=b.parentElement;const f0=parseFloat(getComputedStyle(b).fontSize),sw=b.scrollWidth,cw=p.clientWidth;if(sw<=cw+1)return;let f=Math.max(15,f0-.5*Math.max(0,Math.floor((f0-f0*cw/sw)/.5))),n=0;b.style.fontSize=f+'px';while(b.scrollWidth>p.clientWidth+1&&f>15&&n++<6){f-=.5;b.style.fontSize=f+'px'}}addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);setTimeout(fit,50);setTimeout(fit,1200)})();</script>
 <script>
 /* Candito Forever – App-Rahmen: Offline/Updates, Sicherungs-Erinnerung, Installationshinweis */

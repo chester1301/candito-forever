@@ -4435,6 +4435,11 @@ html[data-theme=blue] .ds-pv[style*="--pvg"]{background:radial-gradient(90% 200p
 html.gnum-gross .ds-pvex .ds-pvb{font-size:20px;font-weight:700}
 .ds-pv.oled,.ds-pv.oled .ds-mini{background:#000!important}
 .ds-pv .hype.l .hic{background:#f6d65e!important}.ds-pv .hype.h .hic{background:#e8262f!important}
+/* Akzent Nachtblau (#04055f): Flächen tief dunkelblau, mit hellerem Rand, damit sie sich vom Schwarz abheben */
+html[data-acc="navy"] :is(.seg [aria-pressed="true"],.tnseg [aria-pressed="true"],.tnseg .on,.jx-vt [aria-pressed="true"],#gym .gl-row.cur .gl-n,.ds-pre [aria-pressed="true"]){box-shadow:inset 0 0 0 1.5px #3a3fc4!important}
+html[data-acc="navy"] #gym .gl-add,html[data-acc="navy"] .ds-pvp{border-color:#3a3fc4!important}
+html[data-acc="navy"] .mtred .mt2{color:#7a7fff!important}
+html[data-acc="navy"]:not(.gymhy):not(.stripe-hype):not(.stripe-lift) #gym .gl-ex::before{background:#3a3fc4!important}
 /* Notiz je Übung */
 button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer;gap:12px}
 .jx-note .jx-nt{display:block;flex:1;min-width:0;color:#c9cad1;font-weight:500;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -4451,8 +4456,9 @@ button.jx-note{width:100%;font:inherit;color:#fff;text-align:left;cursor:pointer
 (function(){if((window.CF_THEME||'blue')!=='blue')return;
 function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2;if(mx!==mn){var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s,l]}
 function rgb(h,s,l){h/=360;function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p}var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return[f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(function(x){return Math.round(x*255)})}
-var ACCN=(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})();var ACC={blue:null,cyan:188,violett:262,orange:22,gelb:46}[ACCN]||null;window.CF_ACC=ACC;document.documentElement.dataset.acc=ACCN;
+var ACCN=(function(){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}})();var ACC={blue:null,cyan:188,violett:262,orange:22,gelb:46,navy:239}[ACCN]||null;window.CF_ACC=ACC;document.documentElement.dataset.acc=ACCN;
 function map(r,g,b){if(r===60&&g===196&&b===106)return null;if(r===74&&g===109&&b===245)return null;var c=hsl(r,g,b);
+ if(ACCN==='navy'&&c[0]>=214&&c[0]<=246&&c[1]>=.3){var L=c[2];return rgb(239,Math.max(.9,c[1]),L>=.66?Math.min(.86,L+.04):L>=.36?.2+(L-.36)*.12:Math.max(.06,L*.55))}
  if(ACC!=null&&c[0]>=214&&c[0]<=246&&c[1]>=.3){return rgb(ACC,c[1],c[2])}
  if(c[0]<95||c[0]>172||c[1]<.25)return null;var l=c[2];return rgb(205,Math.max(.72,c[1]),l>.3?Math.max(.6,l):l)}
 var RX=/#([0-9a-fA-F]{6})\b|#([0-9a-fA-F]{3})\b|(rgba?\()\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;
@@ -7323,7 +7329,7 @@ function bkDot(){if(!window.CF_PWA)return;const g=document.getElementById('gear'
 window.addEventListener('cf-exported',()=>{bkDot();render()});setInterval(bkDot,60000);
 // 3/4 Anzeige: Textgröße & OLED
 function applyView(){const b=document.body;b.classList.remove('fs-m','fs-l');if(S.meta.fs==='m'||S.meta.fs==='l')b.classList.add('fs-'+S.meta.fs);b.classList.toggle('oled',!!S.meta.oled);document.documentElement.classList.toggle('noshine',S.meta.shine===false);dsApply()}
-const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue','Blau'],['cyan','Cyan'],['violett','Violett'],['orange','Orange'],['gelb','Gelb']]],
+const DSL={acc:['Akzentfarbe (Knöpfe, Navigation, Streifen, Leuchten)',[['blue','Blau'],['navy','Nachtblau'],['cyan','Cyan'],['violett','Violett'],['orange','Orange'],['gelb','Gelb']]],
  glow:['Leuchten oben links',[['kraeftig','Kräftig'],['low','Dezent'],['off','Aus']]],
  cards:['Kartenstil',[['navy','Nachtblau'],['grau','Grau'],['schwarz','Schwarz']]],
  dayc:['Tagesname im Titel',[['0','Weiß'],['1','Farbig']]],
@@ -7339,7 +7345,7 @@ const HOME_BL=[['jr','Readiness'],['hero','Nächstes Training'],['grid','Einheit
 function dsVal(k){const m=S.meta.ds||{};if(k==='acc'){try{return localStorage.getItem('cf-accent')||'blue'}catch(e){return 'blue'}}if(k==='dayc'||k==='gymhy')return m[k]?'1':'0';if(k==='hl')return m.hl===false?'0':'1';return m[k]||DSL[k][1][0][0]}
 function homeOrd(){const o=((S.meta.ds||{}).ord||[]).filter(k=>HOME_BL.some(b=>b[0]===k));HOME_BL.forEach(b=>{if(!o.includes(b[0]))o.push(b[0])});return o}
 function dsReload(){try{sessionStorage.setItem('cf-ret',JSON.stringify({open:S.ui.dsOpen||{},pv:S.ui.dsPv||'heute',y:scrollY}))}catch(e){}location.reload()}
-function dsRow(k){const [t,o]=DSL[k];const v=dsVal(k);return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${o.length},1fr);margin:6px 0 0">${o.map(([x,l])=>`<button type="button" data-ds="${k}|${x}" aria-pressed="${v===x}">${l}</button>`).join('')}</div>`}
+function dsRow(k){const [t,o]=DSL[k];const v=dsVal(k);return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${o.length>4?3:o.length},1fr);margin:6px 0 0">${o.map(([x,l])=>`<button type="button" data-ds="${k}|${x}" aria-pressed="${v===x}">${l}</button>`).join('')}</div>`}
 function dsSeg(t,attr,opts){return `<p class="note2" style="margin:14px 0 0">${t}</p><div class="seg" style="grid-template-columns:repeat(${opts.length},1fr);margin:6px 0 0">${opts.map(([v,l,on])=>`<button type="button" ${attr}="${v}" aria-pressed="${!!on}">${l}</button>`).join('')}</div>`}
 const DSP=[['jugg','Juggernaut','Blau, Leuchten, Nachtblau'],['minimal','Minimal','Schwarz, ruhig, kompakt'],['nacht','Gym-Nacht','OLED, dezent, große Zahlen'],['klassik','Klassik','Rot/Gold-Thema']];
 function dsGroup(id,t,body){const open=(S.ui.dsOpen||{})[id];return `<details class="ds-grp" data-dsgrp="${id}"${open?' open':''}><summary><b>${t}</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ds-gb">${body}</div></details>`}
