@@ -155,7 +155,7 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  var okey=function(x){return norm(x.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(x.rx).slice(0,10)};var dl=new Map(),prevD=null;
  ovs.forEach(function(L){var D=L.day;if(L.cont&&prevD)D=prevD;if(!L.items.some(function(x){return x.rx})){prevD=D;return}var have=dl.get(D)||[];var hk=new Set();have.forEach(function(h){h.items.forEach(function(x){hk.add(okey(x))})});
   var nk=function(x){return norm(cleanEx(x.name).name).replace(/\s+/g,'')};var top=have.length&&have[0].items[0];var rescan=top&&L.items[0]&&nk(top)===nk(L.items[0])&&(!top.rx||!L.items[0].rx||okey(top)===okey(L.items[0])||(function(a,b){var A=parseRx(a),Bx=parseRx(b);return A.sets!=null&&A.sets===Bx.sets&&String(A.reps)===String(Bx.reps)})(top.rx,L.items[0].rx));
-  if(have.length&&!L.cont&&!rescan&&!L.items.some(function(x){return x.rx&&hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
+  if(have.length&&!L.cont&&!rescan&&!L.items.some(function(x){return x.rx&&hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}else L.foreign=1}
   if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D;if(o.debug)(prog._dbg=prog._dbg||[]).push({from:L.day&&L.day.n,to:D&&D.n,cont:L.cont,items:L.items.map(function(x){return x.name+' | '+x.rx})})});
  /* Vollständigkeit einer gekürzten Übersichtszeile: Sätze×Wdh. und RPE/Last stehen vollständig vor dem „…“ */
  var cutOk=function(rx,R){var t=String(rx||'').replace(/(\.\.\.|…)\s*$/,'');if(R.sets==null||R.reps==null)return false;if(R.amrap&&!R.fail)return true;if(R.rpe==null&&!R.rpeTxt&&!(R.load&&R.load.text))return false;
@@ -180,7 +180,7 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  var sr=function(t){var R=parseRx(t);return R.sets!=null&&R.reps!=null?R.sets+'x'+R.reps:''};
  B.weeks.forEach(function(W){var pool=det.filter(function(x){return x.w===W});var used=new Set();var dayOv=new Map();
   W.days.forEach(function(D){var Ls=dl.get(D)||[];var ov=Ls.map(function(L){return L.items}).filter(function(x){return x.length}).reduce(function(a,b){return a.length?mergeSeq(a,b):b.slice()},[]);
-   D.hasOv=ov.some(function(x){return x.rx});D.ovN=ov.filter(function(x){return x.rx}).length;D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
+   D.hasOv=ov.some(function(x){return x.rx});if(Ls.some(function(L){return L.foreign})&&!D.chk)D.chk='Zweite, abweichende Tagesübersicht gefunden – evtl. Übungen eines anderen Tages enthalten';D.ovN=ov.filter(function(x){return x.rx}).length;D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
    ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6})&&!RXNAME.test(it.name))return;var best=null,bs=0;
     pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D&&x.rxLine?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
     if(best)used.add(best);var e=mk(best,best&&!it.rx?{name:it.name,rx:best.rxLine}:it,false);e._ov=it;e._d=!!best;D.ex.push(e)})});
