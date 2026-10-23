@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1202-958053d</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1240-49271c5</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -5103,7 +5103,7 @@ var ALIAS0={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench'
  'db preacher curl on inclined bench':'pcurl','db preacher curl on incline bench':'pcurl','3 second pause bench press':'pb3','3 sec pause bench press':'pb3','3 second pause bench':'pb3','3 second eccentric bench press':'ecc','3 sec eccentric bench press':'ecc',
  'rdl w aggressive tempo':'rdlt','rdl aggressive tempo':'rdlt','rdl w 3 second eccentric':'rdle','rdl w 3 sec eccentric':'rdle','db bulgarian split squat glute bias':'bss','single leg press glute bias':'slp',
  'neutral grip db bench press':'ndb','incline dumbbell bench press':'idb','close grip bench':'cgb','dumbbell lateral raise':'dlr','cable chest press around':'dbf','feet up bench':'fub','feet up bench press w comp grip width':'fub',
- 'conventional stance snatch grip deadlift':'sgdl','super squat belt squat pendulum squat or hack squat':'mach','belt squat pendulum squat or hack squat':'mach','dumbbell lateral delt raise':'dlr','db lateral raise':'dlr','seated good morning':'sgm','neutral grip lat pulldown':'nlat','wide grip lat pulldown':'wlat','iliac lat pulldown':'ilat','incline db bench press':'idb'};
+ 'conventional stance snatch grip deadlift':'sgdl','super squat belt squat pendulum squat or hack squat':'mach','2 second pause spoto press':'spoto','2 second pause spoto':'spoto','wide grip lat pulldown overhand grip':'wlat','standing cable ab crunch':'cab','belt squat pendulum squat or hack squat':'mach','dumbbell lateral delt raise':'dlr','db lateral raise':'dlr','seated good morning':'sgm','neutral grip lat pulldown':'nlat','wide grip lat pulldown':'wlat','iliac lat pulldown':'ilat','incline db bench press':'idb'};
 var STOPW={w:1,with:1,the:1,a:1,an:1,of:1,on:1};
 var tokKey=function(t){return norm(t).replace(/[().,%]/g,' ').split(' ').filter(function(x){return x&&!STOPW[x]}).join(' ')};
 var ALIAS={};Object.keys(ALIAS0).forEach(function(k){ALIAS[tokKey(k)]=ALIAS0[k]});
@@ -5122,7 +5122,7 @@ function cleanEx(n){var s=String(n||'').replace(/[§|~©®«»“”\[\]{}]/g,' 
  s=s.replace(/-{2,}.*$/,'').trim();var o=(s.match(/\(/g)||[]).length,c=(s.match(/\)/g)||[]).length;if(o>c)s+=')';
  var ww=s.split(' ');if(ww.length%2===0&&ww.length>=4){var h=ww.length/2;if(norm(ww.slice(0,h).join(' '))===norm(ww.slice(h).join(' ')))s=ww.slice(0,h).join(' ')}
  return {name:s,cond:cond,home:home,hint:hint}}
-function cleanName(n){var w=n.split(' ').filter(Boolean);return w.length>=1&&w.every(function(x){return /^[A-Za-zÄÖÜäöü0-9()\/'’&+-]+$/.test(x)&&(x.replace(/[^A-Za-zÄÖÜäöü]/g,'').length>=2||/^w\/$/i.test(x)||/^\d+$/.test(x)||/^[()\/&+-]+$/.test(x))})&&n.replace(/[^A-Za-z]/g,'').length>=4&&n.length<=60}
+function cleanName(n){var w=n.split(' ').filter(Boolean);if(/\(\s|\s\)|\(\)|\(\W*\w{0,2}\)/.test(n))return false;return w.length>=1&&w.every(function(x){return /^[A-Za-zÄÖÜäöü0-9()\/'’&+-]+$/.test(x)&&(x.replace(/[^A-Za-zÄÖÜäöü]/g,'').length>=2||/^w\/$/i.test(x)||/^\d+$/.test(x)||/^[()\/&+-]+$/.test(x))})&&n.replace(/[^A-Za-z]/g,'').length>=4&&n.length<=60}
 
 /* ---------- Satz-/Lastvorgabe aus Text ---------- */
 function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]\)(?=\s|$)/g,' ').replace(/(\d)\s*[xX×]{2}\s*(\d)/g,'$1 x $2').replace(/(\d)\s*[Xx×]\s*(?=\d)/g,'$1 x ');var o={sets:null,reps:null,amrap:false,rpe:null,rpeTxt:null,load:null,hype:null,kind:null};var m;
@@ -5206,7 +5206,7 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   if(l==='\f'){endEx();wasOv=mode==='ovw';if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;if(day&&!orphan){var st=scrollOv(i+1);if(st>=0)skipTo=st}continue}
   if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;continue}
   if(i===skipTo){skipTo=-1;endEx();if(!(wasOv&&mode==='ovw')){mode='ovw';newL(false)}if(RXSTART.test(stripJunk(l)))continue}else if(skipTo>i)continue;
-  if(mode!=='desc'&&(m=l.match(/^(?:week|woche)\s*(\d{1,2})\s*(?:[-–—:]+\s*(.*))?$/i))){endEx();day=null;wk=getW(+m[1]);if(m[2]&&!wk.name)wk.name=m[2].trim();mode=null;orphan=0;continue}
+  if(mode!=='desc'&&(m=l.match(/^(?:week|woche)\s*(\d{1,2})\s*(?:[-–—:]+\s*(.*))?$/i))){endEx();day=null;wk=getW(+m[1]);if(m[2]&&!wk.name)wk.name=m[2].replace(/\s*\d+\s*\/\s*\d+\s*$/,'').trim();mode=null;orphan=0;continue}
   if((m=l.match(/^(?:day|tag)\s*(\d{1,2})\s*(?:[-–—:]\s*([A-Za-zÄÖÜäöü]+))?\s*(?:\(([^)]*)\)?)?/i))&&(m[2]||m[3]!=null||/^(?:day|tag)\s*\d{1,2}\s*$/i.test(l))){endEx();var H=headInfo(m[3]);var wn=H.w!=null?H.w:(wk?wk.n:(fw||1));wk=getW(wn);day=getD(wk,+m[1]);if(m[2])day.wd=m[2];
    if(H.prog&&!hp)hp=H.prog;if(H.variant&&!hv)hv=H.variant;mode='afterDay';orphan=0;ev.push({t:'day',day:day});continue}
   if(!day){if(NOISE.test(l))continue;var f0=l.match(FOCUSL);if(f0)continue;prog.unparsed.push(l);continue}
@@ -5242,14 +5242,15 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  /* Vollständigkeit einer gekürzten Übersichtszeile: Sätze×Wdh. und RPE/Last stehen vollständig vor dem „…“ */
  var cutOk=function(rx,R){var t=String(rx||'').replace(/(\.\.\.|…)\s*$/,'');if(R.sets==null||R.reps==null)return false;if(R.amrap&&!R.fail)return true;if(R.rpe==null&&!R.rpeTxt&&!(R.load&&R.load.text))return false;
   var e=R.fail?(function(){var m=t.match(/failure/i);return m?m.index+7:-1})():R.rpeEnd!=null?R.rpeEnd:(function(){var m=t.match(/\d{2,3}(?:[.,]\d+)?\s*(?:[-–]\s*\d{2,3}(?:[.,]\d+)?)?\s*%[^.;]*?\b(?:set|single|squat|bench|deadlift|load)\b/i);return m?m.index+m[0].length:-1})();if(e<0)return false;
-  var rest=t.slice(e).trim();if(!/[A-Za-z]{2,}/.test(rest))return false;if(R.sets>1&&R.rpe!=null&&!R.kind&&/^on\b/i.test(rest))return false;return true};
+  var rest=t.slice(e).trim();if(!/[A-Za-z]{2,}/.test(rest))return false;if(R.sets>1&&(R.rpe!=null||R.rpeTxt)&&!R.kind&&/^on\b/i.test(rest)){var k=kindPrefix(rest);if(!k)return false;R.kind=k}return true};
+ var kindPrefix=function(r){var t=r.toLowerCase().replace(/\s+/g,' ').trim();var K=[['on average','im Schnitt'],['on each set','in jedem Satz'],['on every set','in jedem Satz'],['on the last set','im letzten Satz'],['on the first set','im ersten Satz']];var h=K.filter(function(k){return t.length>=5&&(k[0].indexOf(t)===0||t.indexOf(k[0])===0)});var u=h.map(function(k){return k[1]}).filter(function(v,i,a){return a.indexOf(v)===i});return u.length===1?u[0]:null};
  var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var O=ovItem&&ovItem.rx&&d0?parseRx(ovItem.rx):null;
   var nm0=d0?d0.name:ovItem.name;var CE=cleanEx(nm0),CO=ovItem?cleanEx(ovItem.name):null;
   var x={name:CE.name||nm0,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,rpeInf:R.rpeInf,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
    opt:/\(optional\)/i.test(rx||'')||(ovItem&&/\(optional\)/i.test(ovItem.rx)),cut:!d0&&/(\.\.\.|…)\s*$/.test(ovItem.rx||'')};
   var hint=CE.hint||(CO&&CO.hint)||'';if(hint)x.notes=(x.notes?x.notes+' ':'')+'('+hint+')';
   var cond=(d0&&d0.cond)||CE.cond||(CO&&CO.cond)||'';if(cond){x.cond=cond.replace(/\s+/g,' ').replace(/[=)©}\]]+$/,'').trim();x.opt=true}if(CE.home||(CO&&CO.home)){x.home=true;x.opt=true}
-  if(x.cut&&cutOk(ovItem.rx,R)){x.cut=false;x.notes=(x.notes?x.notes+' ':'')+'(Hinweistext in der Übersicht abgeschnitten – Vorgabe vollständig gelesen.)'}
+  if(x.cut&&cutOk(ovItem.rx,R)){x.cut=false;if(R.kind&&!x.kind)x.kind=R.kind;x.notes=(x.notes?x.notes+' ':'')+'(Hinweistext in der Übersicht abgeschnitten – Vorgabe vollständig gelesen.)'}
   /* zwei unabhängige Lesungen derselben Vorgabe (Übersicht + Detailseite) */
   if(O&&O.sets!=null&&O.reps!=null){var same=O.sets===R.sets&&String(O.reps)===String(R.reps);var rpeSame=O.rpe==null||R.rpe==null||O.rpe===R.rpe;
    if(R.rpeBad&&O.rpe!=null&&same){x.rpe=O.rpe;delete R.rpeBad;x.rpeBad=null;x.conf=true}
@@ -5273,10 +5274,11 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   pool.forEach(function(x){if(used.has(x)||!x.d)return;var dupe=pool.some(function(y){return y!==x&&used.has(y)&&tokSim(y.name,x.name)>=.8&&rxKey(y.rxLine).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(dupe)return;
    var D=x.d;if(!x.rxLine&&D.hasOv){prog.unparsed.push('Detailseite ohne lesbare Vorgabe: '+x.name);return}var same=D.ex.find(function(e){return tokSim(e.name,x.name)>=.8&&rxKey(e.raw).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(same){if(!same.notes&&x.notes)same.notes=x.notes;return}
    var else_=W.days.some(function(o){return o!==D&&(dayOv.get(o)||[]).some(function(it){return tokSim(it.name,x.name)>=.8})});var inOwn=(dayOv.get(D)||[]).some(function(it){return tokSim(it.name,x.name)>=.8});
-   used.add(x);D.ex.push(mk(x,null,D.hasOv&&!inOwn&&(D.ovDone||else_||D.ovN>=3)))})});
- B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone;delete D.ovN})});
+   used.add(x);var ne=mk(x,null,D.hasOv&&!inOwn&&(D.ovDone||else_||D.ovN>=3));ne._det=x;D.ex.push(ne)})});
+ B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d;delete e._det});delete D.ovDone;delete D.ovN})});
  B.weeks.forEach(function(W){W.days.forEach(function(D){delete D.hasOv})});
  B.weeks=B.weeks.filter(function(W){if(W.days.length)return true;prog.unparsed.push('Woche '+W.n+(W.name?' – '+W.name:'')+' (ohne erkannte Tage)');return false});
+ if(!prog.name&&!hp)prog.noName=true;
  if(!prog.name)prog.name=hp||(o.fallback?String(o.fallback).replace(/(?:^|[\s_-])(?:woche|week|wk)[\s_-]*\d{1,2}\b.*$/i,'').replace(/[\s_-]+$/,'').trim():'')||o.fallback||'Importiertes Programm';if(hv)prog.variants=[{id:'v1',name:hv}];
  if(!B.weeks.length)prog.flags=['Keine Wochen/Tage erkannt – Format nicht lesbar'];return finish(prog)}
 function finish(p){var n=0,f=0;(p.blocks||[]).forEach(function(b){(b.weeks||[]).forEach(function(w){(w.days||[]).forEach(function(d){if(!d.ex.length)d.flags=['Keine Übungen erkannt'];else if(d.flags&&d.flags[0]==='Keine Übungen erkannt')delete d.flags;(d.ex||[]).forEach(function(x){n++;if(x.flags&&x.flags.length)f++})})})});p.stats={ex:n,flagged:f};return p}
@@ -5349,10 +5351,12 @@ function unpredict(d,cols,colors,bpc){var bpp=Math.max(1,colors*bpc/8),rl=cols*b
 async function pdfImage(R,im){var u8=R.u8,dict=im.dict,raw=u8.subarray(im.start,im.end);
  if(/\/DCTDecode/.test(dict))return {kind:'jpeg',bytes:raw,w:im.w,h:im.h};
  if(!/\/FlateDecode/.test(dict)||/\/Filter\s*\[/.test(dict)&&!/\[\s*\/FlateDecode\s*\]/.test(dict))throw new Error('Bildformat nicht unterstützt');
- var bpc=+dictVal(u8,dict,'BitsPerComponent')||8;if(bpc!==8)throw new Error('Bildtiefe nicht unterstützt');
+ var bpc=+dictVal(u8,dict,'BitsPerComponent')||8;if(bpc!==8&&bpc!==16)throw new Error('Bildtiefe nicht unterstützt');
  var cs=dictVal(u8,dict,'ColorSpace');var colors=3;if(/DeviceGray|CalGray/.test(cs))colors=1;else if(/DeviceCMYK/.test(cs))colors=4;else if(/ICCBased/.test(cs)){var rr=cs.match(/(\d+)\s+0\s+R/);var nn=(rr?objText(u8,rr[1]):'').match(/\/N\s+(\d)/);if(nn)colors=+nn[1]}else if(/Indexed/.test(cs))throw new Error('Farbpalette nicht unterstützt');
  var d=await inflate(raw);var dp=dictVal(u8,dict,'DecodeParms');var pr=+((dp.match(/\/Predictor\s+(\d+)/)||[])[1]||1);
+ var Bp=bpc/8;if(pr<10&&d.length===im.h*(im.w*colors*Bp+1))pr=15;/* Parameter fehlen (z. B. abgeschnittene Datei): Länge verrät den PNG-Prädiktor */
  if(pr>=10)d=unpredict(d,+((dp.match(/\/Columns\s+(\d+)/)||[])[1]||im.w),+((dp.match(/\/Colors\s+(\d+)/)||[])[1]||colors),bpc);
+ if(Bp===2){var h8=new Uint8Array(d.length>>1);for(var z=0;z<h8.length;z++)h8[z]=d[z*2];d=h8}/* 16 Bit je Kanal → oberes Byte */
  var n=im.w*im.h,rgba=new Uint8ClampedArray(n*4);for(var p=0,q=0;p<n;p++,q+=colors){var o=p*4;if(colors===1){rgba[o]=rgba[o+1]=rgba[o+2]=d[q]}else if(colors===4){var k=255-d[q+3];rgba[o]=(255-d[q])*k/255;rgba[o+1]=(255-d[q+1])*k/255;rgba[o+2]=(255-d[q+2])*k/255}else{rgba[o]=d[q];rgba[o+1]=d[q+1];rgba[o+2]=d[q+2]}rgba[o+3]=255}
  return {kind:'rgba',w:im.w,h:im.h,data:rgba}}
 /* Erkannte Textblöcke (mit Rahmen) zu Zeilen in Lesereihenfolge ordnen */
@@ -5374,7 +5378,9 @@ var daySig=function(D){return JSON.stringify((D.ex||[]).map(function(x){return [
 function progKey(p){return norm(p.name).replace(/\s+/g,'')}
 function variantOf(p){return (p.variants&&p.variants[0]&&p.variants[0].name)||'Standard'}
 /* lib: {v:1,progs:[]}. inc: Liste geparster Programme (je Datei). Rückgabe: Bericht je Datei/Programm. Bestehende Tage bleiben unverändert. */
-function merge(lib,inc,file){var rep=[];inc.forEach(function(p){var key=progKey(p);var tgt=lib.progs.find(function(x){return x.src!=='builtin'&&(x.key||progKey(x))===key});var row={file:file||p.file||'',prog:p.name,variant:variantOf(p),weeks:[],added:0,same:0,conflict:[],status:''};
+function merge(lib,inc,file){var rep=[];inc.forEach(function(p){if(!(p.blocks||[]).some(function(b){return b.weeks&&b.weeks.length})){rep.push({file:file||p.file||'',prog:p.name,status:'Fehler',msg:'Keine Wochen/Tage erkannt – Text nicht lesbar',weeks:[]});return}var key=progKey(p);var tgt=lib.progs.find(function(x){return x.src!=='builtin'&&(x.key||progKey(x))===key});
+  /* Programm ohne Namen im Tageskopf (Name nur aus dem Dateinamen): über den Inhalt einem vorhandenen Programm zuordnen */
+  if(!tgt&&p.noName){var best=null,bs=0;lib.progs.forEach(function(x){if(x.src==='builtin'||x===p)return;var sim=progSim(x,p);if(sim>bs){bs=sim;best=x}});if(best&&bs>=.6){tgt=best;key=tgt.key||progKey(tgt)}}var row={file:file||p.file||'',prog:tgt?tgt.name:p.name,variant:variantOf(p),weeks:[],added:0,same:0,conflict:[],status:''};
   if(!tgt){p.key=key;lib.progs.push(p);p.files=(p.files||[]).slice();row.status='neu';row.target=p.id;(p.blocks||[]).forEach(function(b){b.weeks.forEach(function(w){row.weeks.push(w.n);row.added+=w.days.length})});rep.push(row);return}
   row.target=tgt.id;(p.variants||[]).forEach(function(v){if(!tgt.variants.some(function(t){return t.name===v.name})){tgt.variants.push({id:'v'+(tgt.variants.length+1),name:v.name})}});
   if(tgt.variants.length>1)tgt.blocks.forEach(function(b){if(!b.variant)b.variant=tgt.variants[0].name});
@@ -5391,6 +5397,9 @@ function merge(lib,inc,file){var rep=[];inc.forEach(function(p){var key=progKey(
   tgt.files=(tgt.files||[]).concat(p.files||[]);finish(tgt);
   row.status=row.added?'ergänzt':row.conflict.length?'Konflikt':'bereits vorhanden';rep.push(row)});return rep}
 
+function progSim(a,b){var tot=0,hit=0;(b.blocks||[]).forEach(function(bb){bb.weeks.forEach(function(W){var aw=null;(a.blocks||[]).forEach(function(ab){ab.weeks.forEach(function(x){if(x.n===W.n)aw=x})});
+  W.days.forEach(function(D){D.ex.forEach(function(x){tot++;if(!aw)return;var AD=aw.days.find(function(d){return d.n===D.n});if(AD&&AD.ex.some(function(y){return tokKey(cleanEx(y.name).name)===tokKey(cleanEx(x.name).name)&&y.sets===x.sets&&String(y.reps)===String(x.reps)}))hit++})})})});
+ if(!tot)return 0;var va=(a.variants||[]).map(function(v){return v.name}),vb=(b.variants||[]).map(function(v){return v.name});if(vb[0]!=='Standard'&&va.indexOf(vb[0])<0)return 0;return hit/tot}
 /* ---------- Lücken und Datenqualität ---------- */
 function blocksOf(p,vname){var multi=(p.variants||[]).length>1;return (p.blocks||[]).filter(function(b){return !multi||!b.variant||b.variant===vname})}
 function quality(p,vname){vname=vname||variantOf(p);var bl=blocksOf(p,vname);var q={weeks:[],missingWeeks:[],missingDays:[],days:0,ok:0,locked:0,ex:0,exOk:0,flagged:0,lockedList:[]};
@@ -5493,7 +5502,7 @@ function autoEx(lib){if(!lib.ex)lib.ex={};let n=0;C.setExtra(lib.ex);const cnt={
 /* Abgleich mit den eingebauten Candito-Programmen (Marcels geprüfte Umsetzung derselben Programme): Stimmt eine unsicher gelesene
    Vorgabe in Übung, Sätzen, Wiederholungen und RPE exakt mit demselben Tag des eingebauten Programms überein, gilt sie als bestätigt.
    Es wird nichts übernommen oder ergänzt – nur bestätigt, was beide Quellen gleich sagen. */
-const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
+const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10wk':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
 function autoVerify(lib){let n=0;lib.progs.forEach(p=>{const bi=BIMAP[p.key||C.progKey(p)];if(!bi||!PROGS[bi])return;const G=PROGS[bi];
  p.variants.forEach(v=>{if(v.name!=='Standard'&&!new RegExp('\\b'+v.name.replace('.','\\.')+'(?:\\.\\d)?\\b').test(G.sub||''))return;
   C.blocksOf(p,v.name).forEach(b=>b.weeks.forEach(W=>{const BW=G.P[W.n-1];if(!BW)return;W.days.forEach(D=>{const BD=BW[D.n-1];if(!BD)return;D.ex.slice().forEach(x=>{if(!x.eid||x.ok||!(x.flags||[]).length)return;

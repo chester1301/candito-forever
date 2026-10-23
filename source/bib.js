@@ -87,7 +87,7 @@ function autoEx(lib){if(!lib.ex)lib.ex={};let n=0;C.setExtra(lib.ex);const cnt={
 /* Abgleich mit den eingebauten Candito-Programmen (Marcels geprüfte Umsetzung derselben Programme): Stimmt eine unsicher gelesene
    Vorgabe in Übung, Sätzen, Wiederholungen und RPE exakt mit demselben Tag des eingebauten Programms überein, gilt sie als bestätigt.
    Es wird nichts übernommen oder ergänzt – nur bestätigt, was beide Quellen gleich sagen. */
-const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
+const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10wk':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
 function autoVerify(lib){let n=0;lib.progs.forEach(p=>{const bi=BIMAP[p.key||C.progKey(p)];if(!bi||!PROGS[bi])return;const G=PROGS[bi];
  p.variants.forEach(v=>{if(v.name!=='Standard'&&!new RegExp('\\b'+v.name.replace('.','\\.')+'(?:\\.\\d)?\\b').test(G.sub||''))return;
   C.blocksOf(p,v.name).forEach(b=>b.weeks.forEach(W=>{const BW=G.P[W.n-1];if(!BW)return;W.days.forEach(D=>{const BD=BW[D.n-1];if(!BD)return;D.ex.slice().forEach(x=>{if(!x.eid||x.ok||!(x.flags||[]).length)return;

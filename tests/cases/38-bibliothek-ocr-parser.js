@@ -33,5 +33,11 @@ module.exports={name:'Programmbibliothek – Erkennung aus Screenshots, Zuordnun
     const P=BIB.parseText(pg.join('\n\f\n'),{src:'ocr',fmt:'pdf-ocr'});const lib={v:1,progs:[P],ex:{}};BIB.autoEx(lib);const before=P.blocks[0].weeks[0].days[mv.d+1].ex.filter(x=>x.amb).length;const n=BIB.autoVerify(lib);
     const D=P.blocks[0].weeks[0].days;const x=D[mv.d].ex.find(e=>e.eid===mv.bl.e&&e.sets===mv.bl.s&&e.rpe===mv.bl.rpe&&e.moved);return {before,n,moved:!!x,ref:x&&x.ref,amb:D.flatMap(d=>d.ex).filter(e=>e.amb).length,trainable:D.every(d=>BIB.toGymDay(d).ok)}});
   t.ok(v.before===1&&v.moved&&v.amb===0&&v.trainable,`Abgleich mit eingebautem 3RM-Programm: unsicher einsortierte Übung bestätigt und in ihren Tag verschoben (${v.ref})`);
+  // Robuster PDF-Leser: 16-Bit-Seitenbilder (wie im 10-Wochen-PDF) und abgeschnittene Datei ohne Querverweistabelle
+  const fx=n=>require('fs').readFileSync(require('path').join(__dirname,'..','fixtures','bib',n)).toString('base64');
+  const pr=await p.evaluate(async([a,b])=>{const u=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));const px=(im,x,y)=>im.data[(y*im.w+x)*4];
+    const R1=await BIBCORE.pdfRead(u(a));const i1=await BIBCORE.pdfImage(R1,R1.images[0]);const R2=await BIBCORE.pdfRead(u(b));const i2=await BIBCORE.pdfImage(R2,R2.images[0]);
+    return {n1:R1.images.length,dark:px(i1,100,90),light:px(i1,10,10),n2:R2.images.length,d2:px(i2,100,110),l2:px(i2,10,10)}},[fx('bild-16bit.pdf'),fx('bild-abgeschnitten.pdf')]);
+  t.eq(pr,{n1:1,dark:0,light:255,n2:2,d2:0,l2:255},'PDF-Leser: 16-Bit-Bilder und beschädigte Datei (ohne Querverweise) werden korrekt gelesen');
   t.eq(p.errors,[],'Keine Skriptfehler');
 }};

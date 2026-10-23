@@ -56,7 +56,7 @@ function _ocrPdf(path,core,log){var doc=$.PDFDocument.alloc.initWithURL($.NSURL.
   var pool=null;try{pool=$.NSAutoreleasePool.alloc.init}catch(e){}
   var img=page.thumbnailOfSizeForBox({width:w*sc,height:h*sc},0);var data=img.TIFFRepresentation;
   var req=$.VNRecognizeTextRequest.alloc.init;req.setRecognitionLevel(0);req.setUsesLanguageCorrection(true);try{req.setRecognitionLanguages($(['en-US','de-DE']))}catch(e){}
-  var hd=$.VNImageRequestHandler.alloc.initWithDataOptions(data,$({}));hd.performRequestsError($([req]),null);
+  var hd=$.VNImageRequestHandler.alloc.initWithDataOptions(data,$({}));var er=Ref();var okv=hd.performRequestsError($([req]),er);if(!okv){var em='';try{em=ObjC.unwrap(er[0].localizedDescription)}catch(e){}throw new Error('Texterkennung (Vision) fehlgeschlagen auf Seite '+(i+1)+(em?': '+em:''))}
   var res=req.results,items=[],W=w*sc,H=h*sc;var cnt=res?res.count:0;
   for(var j=0;j<cnt;j++){var ob=res.objectAtIndex(j);var c=ob.topCandidates(1);if(!c||!c.count)continue;var t=ObjC.unwrap(c.objectAtIndex(0).string);var bb=ob.boundingBox;
    items.push({text:t,x:bb.origin.x*W,y:(1-bb.origin.y-bb.size.height)*H,h:bb.size.height*H})}
