@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1128-05c769b</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-1202-958053d</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
@@ -5097,18 +5097,46 @@ var uid=function(){return 'b'+Date.now().toString(36)+Math.random().toString(36)
 var CAT=function(){return typeof EX!=='undefined'?EX:null};
 
 /* ---------- Übungen dem Katalog zuordnen ---------- */
-var ALIAS={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench':'pbb','competition bench':'pbb','comp squat':'csq','competition squat':'csq','comp deadlift':'cdl','competition deadlift':'cdl','paused squat':'psq','paused deadlift':'pdl'};
-function matchEx(name){var n=norm(name);if(!n)return null;if(ALIAS[n])return ALIAS[n];var E=CAT();if(!E)return null;var best=null,bs=0;var tn=new Set(n.split(' '));
- Object.keys(E).forEach(function(k){if(bs>=2)return;var en=norm(E[k].n);if(en===n){best=k;bs=2;return}var te=en.split(' ');var hit=te.filter(function(t){return tn.has(t)}).length;var sc=hit/Math.max(te.length,tn.size);if(sc>bs&&sc>=.75){bs=sc;best=k}});return best}
+/* Gleichwertige Namen (Superset-Englisch ↔ Katalog der App). Nur echte Synonyme – Varianten (z. B. „Wide Stance“) bekommen eigene Einträge. */
+var ALIAS0={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench':'pbb','competition bench':'pbb','comp bench press':'pbb','comp squat':'csq','competition squat':'csq','comp deadlift':'cdl','competition deadlift':'cdl','paused squat':'psq','paused deadlift':'pdl',
+ 'barbell row underhand grip':'row','barbell row underhand':'row','lat pulldown w underhand grip':'lat','lat pulldown underhand grip':'lat','cable curl w straight bar':'ccurl','cable curl straight bar':'ccurl',
+ 'db preacher curl on inclined bench':'pcurl','db preacher curl on incline bench':'pcurl','3 second pause bench press':'pb3','3 sec pause bench press':'pb3','3 second pause bench':'pb3','3 second eccentric bench press':'ecc','3 sec eccentric bench press':'ecc',
+ 'rdl w aggressive tempo':'rdlt','rdl aggressive tempo':'rdlt','rdl w 3 second eccentric':'rdle','rdl w 3 sec eccentric':'rdle','db bulgarian split squat glute bias':'bss','single leg press glute bias':'slp',
+ 'neutral grip db bench press':'ndb','incline dumbbell bench press':'idb','close grip bench':'cgb','dumbbell lateral raise':'dlr','cable chest press around':'dbf','feet up bench':'fub','feet up bench press w comp grip width':'fub',
+ 'conventional stance snatch grip deadlift':'sgdl','super squat belt squat pendulum squat or hack squat':'mach','belt squat pendulum squat or hack squat':'mach','dumbbell lateral delt raise':'dlr','db lateral raise':'dlr','seated good morning':'sgm','neutral grip lat pulldown':'nlat','wide grip lat pulldown':'wlat','iliac lat pulldown':'ilat','incline db bench press':'idb'};
+var STOPW={w:1,with:1,the:1,a:1,an:1,of:1,on:1};
+var tokKey=function(t){return norm(t).replace(/[().,%]/g,' ').split(' ').filter(function(x){return x&&!STOPW[x]}).join(' ')};
+var ALIAS={};Object.keys(ALIAS0).forEach(function(k){ALIAS[tokKey(k)]=ALIAS0[k]});
+var EXTRA={};/* Übungen aus der Bibliothek (eigene Einträge, nie mit bestehenden zusammengeführt) */
+function setExtra(o){EXTRA=o||{}}
+function matchEx(name){var k=tokKey(cleanEx(name).name);if(!k)return null;if(ALIAS[k])return ALIAS[k];var E=CAT();var hit=null;
+ var sorted=function(x){return x.split(' ').sort().join(' ')};var ks=sorted(k);
+ [E||{},EXTRA].forEach(function(C){if(hit)return;Object.keys(C).some(function(id){var en=tokKey(C[id].n);if(en===k||sorted(en)===ks){hit=id;return true}return false})});return hit}
+/* Übungsnamen säubern: Bedien-Symbole, Lesereste, Bedingungen („Only do if …“) und Home-Gym-Hinweise abtrennen */
+function cleanEx(n){var s=String(n||'').replace(/[§|~©®«»“”\[\]{}]/g,' ').replace(/\bD8\b/g,'DB').replace(/\s+/g,' ').trim();var cond='',home=false;
+ var hs=s.match(/\s*\(home gym(?: option)?\)\s*$/i);if(hs){home=true;s=s.slice(0,hs.index)}
+ var hint='';var pm=s.match(/\s*\(((?:use|only|if|as|keep|do|wenn|nur)\b[^)]*)\)?\s*$/i);if(pm){hint=pm[1].trim();s=s.slice(0,pm.index)}
+ var hm=s.match(/^\(home gym option\)\s*/i);if(hm){home=true;s=s.slice(hm[0].length)}
+ var cm=s.match(/\s*(?:-{1,}|—|–)?\s*\b((?:only\s+)?do\s+if\b.*|nur\s+wenn\b.*)$/i);if(cm){cond=cm[1].replace(/(\.\.\.|…)\s*$/,'').trim();s=s.slice(0,cm.index).replace(/\s+-\s+\S.*$/,'')}
+ for(var i=0;i<3;i++)s=s.replace(/\s+(?:x{1,2}|×|-{1,}|—+|[|>»=.]+|\d)$/i,'').trim();
+ s=s.replace(/-{2,}.*$/,'').trim();var o=(s.match(/\(/g)||[]).length,c=(s.match(/\)/g)||[]).length;if(o>c)s+=')';
+ var ww=s.split(' ');if(ww.length%2===0&&ww.length>=4){var h=ww.length/2;if(norm(ww.slice(0,h).join(' '))===norm(ww.slice(h).join(' ')))s=ww.slice(0,h).join(' ')}
+ return {name:s,cond:cond,home:home,hint:hint}}
+function cleanName(n){var w=n.split(' ').filter(Boolean);return w.length>=1&&w.every(function(x){return /^[A-Za-zÄÖÜäöü0-9()\/'’&+-]+$/.test(x)&&(x.replace(/[^A-Za-zÄÖÜäöü]/g,'').length>=2||/^w\/$/i.test(x)||/^\d+$/.test(x)||/^[()\/&+-]+$/.test(x))})&&n.replace(/[^A-Za-z]/g,'').length>=4&&n.length<=60}
 
 /* ---------- Satz-/Lastvorgabe aus Text ---------- */
 function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]\)(?=\s|$)/g,' ').replace(/(\d)\s*[xX×]{2}\s*(\d)/g,'$1 x $2').replace(/(\d)\s*[Xx×]\s*(?=\d)/g,'$1 x ');var o={sets:null,reps:null,amrap:false,rpe:null,rpeTxt:null,load:null,hype:null,kind:null};var m;
  if((m=s.match(/(\d{1,2})\s*[x×]\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?|AMRAP|max)/i))){o.sets=+m[1];if(/amrap|max/i.test(m[2])){o.amrap=true;o.reps='AMRAP'}else o.reps=m[2].replace(/\s+/g,'').replace('-','–')}
  else if((m=s.match(/(\d{1,2})\s*(?:sets?|sätze|saetze)\s*(?:of|à|a|mit)?\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)\s*(?:reps?|wdh|wiederholungen)/i))){o.sets=+m[1];o.reps=m[2].replace(/\s+/g,'')}
  else if((m=s.match(/(?:^|[^\d])(\d{1,2})\s*singles?\b/i))){o.sets=+m[1];o.reps='1'}
+ else if((m=s.match(/(\d{1,2})\s*sets?[\s.]*(?:taken\s*)?(?:to|until)\s*(?:true\s*)?(?:muscular\s*)?failure/i))){o.sets=+m[1];o.reps='AMRAP';o.amrap=true;o.fail=true}
+ else if((m=s.match(/(\d{1,2})\s*sets?\s*(?:taken\s*)?to\s*RPE\s*(\d{1,2}(?:[.,]\d)?)/i))){o.sets=+m[1];o.reps='AMRAP';o.amrap=true}
  else if(/\bAMRAP\b/i.test(s)){o.amrap=true;o.reps='AMRAP';var k=s.match(/(\d)\s*(?:set|satz)/i);o.sets=k?+k[1]:1}
- if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)/i)))o.rpeTxt=String(num(m[1])).replace('.',',')+'–'+String(num(m[2])).replace('.',',');
- else if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)/i))||(m=s.match(/@\s*(\d{1,2}(?:[.,]\d)?)(?!\s*%)/))){var r=num(m[1]);if(r!=null&&r>=1&&r<=10)o.rpe=r;else o.rpeBad=m[1]}
+ if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)/i))){o.rpeTxt=String(num(m[1])).replace('.',',')+'–'+String(num(m[2])).replace('.',',');o.rpeEnd=m.index+m[0].length}
+ else if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)/i))||(m=s.match(/@\s*(\d{1,2}(?:[.,]\d)?)(?!\s*%)/))){var r=num(m[1]);if(r!=null&&r>=1&&r<=10){o.rpe=r;o.rpeEnd=m.index+m[0].length}else o.rpeBad=m[1]}
+ if(o.fail&&o.rpe==null&&!o.rpeTxt){o.rpe=10;o.kind='bis zum Muskelversagen'}
+ if(o.rpe==null&&!o.rpeTxt&&!o.rpeBad&&!o.fail&&!/\bRPE\b/i.test(s)&&(m=s.match(/\bat\s+(\d(?:[.,]\d)|10)\s+(?:w\/|on\b)/i))){o.rpe=num(m[1]);o.rpeInf=true}
+ if(o.rpe==null&&!o.rpeTxt&&!o.rpeBad&&/\bRPE\b/i.test(s)&&!o.fail)o.rpeBad='?';
  if(/\d\s*[x×]\s*\d[^.;]{0,40}\bOR\b\s*\d\s*[x×]\s*\d|\bODER\b\s*\d\s*[x×]|\d(?:[.,]\d+)?\s*%\s*(?:OR|ODER)\s*\d/i.test(s))o.alt=true;
  if(o.rpe!=null||o.rpeTxt){if(/on (?:the )?last set|last set|letzten satz/i.test(s))o.kind='im letzten Satz';else if(/on (?:each|every) set|each set|every set|jedem satz/i.test(s))o.kind='in jedem Satz';else if(/on average|im schnitt|average/i.test(s))o.kind='im Schnitt';else if(/on the first set|first set|ersten satz/i.test(s))o.kind='im ersten Satz';else if((m=s.match(/on the (\d)(?:st|nd|rd|th) set/i)))o.kind=m[1]+'. Satz'}
  if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*(?:[-–]\s*(\d{2,3}(?:[.,]\d+)?))?\s*%\s*(?:load\s*)?(?:of|des|der|vom|von)?\s*([^.;,\n)]{0,60})?/i)))o.load={pct:m[2]?null:num(m[1]),text:(m[0]||'').replace(/\s*(?:--|—|w\/?\s*(?:low|moderate|high)|\b(?:low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*\w+\s*)?hype|hype).*$/i,'').trim().slice(0,60)};
@@ -5116,17 +5144,20 @@ function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]
  else if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*kg/i)))o.load={kg:num(m[1]),text:m[0]};
  else if(/no\s*%\s*prescription|keine\s*%-?vorgabe|by\s*feel|nach\s*gef[uü]hl/i.test(s))o.load={text:'keine %-Vorgabe (nach RPE)'};
  else if((m=s.match(/\b((?:the\s+)?(?:same|heaviest|lighter|heavier)\s+load(?:ing)?\b[^.;\n]{0,50})/i)))o.load={text:m[1].replace(/\s*(?:--|—).*$/,'').trim()};
+ if(!o.load&&o.rpe==null&&!o.rpeTxt&&!o.fail&&(m=s.match(/\bw\/\s*([^\n]{4,70}?)(?:\s*(?:--|—|–\s)|\.\s|\.\.\.|…|$)/i))&&!/^(?:low|moderate|high|a?\s*(?:low|moderate|high))\b[^.]*hype/i.test(m[1]))o.load={text:m[1].replace(/\s+/g,' ').trim()};
  if((m=s.match(/\b(low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*(?:low|moderate|high)\s*)?hype|hype\s*[:\-]?\s*(low|moderate|high|niedrig|moderat|hoch)/i))){var h=(m[1]||m[2]).toLowerCase();o.hype={low:'Niedrig',niedrig:'Niedrig',moderate:'Moderat',moderat:'Moderat',high:'Hoch',hoch:'Hoch'}[h]}
  return o}
-var OCRBAD=/[|©®°“”«»~^]|\b[a-z]{1}[A-Z]/;
+var OCRBAD=/[|©®°“”«»~^]|\b[a-z]{1}[A-Z]|\d[A-WYZa-wyz]\d|[A-WYZa-wyz]\d[a-z]|\d-[A-Z]\d/;
 /* Symbole der App-Oberfläche im Screenshot (Info-Knopf „=)“, „©}“ …) sind kein Lesefehler im Text */
 var ocrClean=function(r){return String(r||'').replace(/\b[xX]{2}\b/g,'x').replace(/[©®]\s*[}\])]?|[=i]\s*[)}]|\s\|(?=\s|$)|[“”]\s*$/g,' ')};
 function flagEx(x,src){var f=[];if(x.sets==null)f.push('Satzanzahl fehlt');if(x.reps==null)f.push('Wiederholungen fehlen');
- if(x.rpe==null&&!x.rpeTxt&&!x.load&&!x.amrap)f.push('Keine Last- oder RPE-Vorgabe gefunden');if(!x.eid)f.push('Übung nicht im Übungskatalog – Name prüfen');
+ if(x.rpe==null&&!x.rpeTxt&&!x.load&&!x.amrap)f.push('Keine Last- oder RPE-Vorgabe gefunden');if(!x.eid)f.push(x.nameOk===false||!x.nameOk&&src==='ocr'?'Übungsname unsicher gelesen – Katalogübung wählen':'Übung nicht im Übungskatalog – Name prüfen');
  if(x.cut&&!x.ok)f.push('Nur aus der Tagesübersicht gelesen – Vorgabe evtl. gekürzt');
  if(x.amb&&!x.ok)f.push('Tag-Zuordnung unsicher – Detailseite ohne Eintrag in der Tagesübersicht');
  if(x.rpeBad&&!x.ok)f.push('RPE nicht lesbar („'+x.rpeBad+'“)');if(x.alt&&!x.ok)f.push('Mehrere Optionen („OR“) – bitte die gewählte eintragen');
- if(src==='ocr'&&!x.ok&&OCRBAD.test(ocrClean(x.raw)))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
+ if(x.rpeInf&&!x.ok&&!x.conf)f.push('RPE unsicher gelesen (Zahl ohne „RPE“) – bitte prüfen');
+ if(x.conflict&&!x.ok)f.push('Widerspruch zwischen Übersicht und Detailseite – '+x.conflict);
+ if(src==='ocr'&&!x.ok&&!x.conf&&OCRBAD.test(ocrClean(String(x.raw||'').slice(0,64))))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
 
 /* ---------- Kopfzeile „Day 1 - Monday (W4, 3 RM, V2)“ ---------- */
 var WD={monday:0,montag:0,mon:0,mo:0,tuesday:1,dienstag:1,tue:1,di:1,wednesday:2,mittwoch:2,wed:2,mi:2,thursday:3,donnerstag:3,thu:3,do:3,friday:4,freitag:4,fri:4,fr:4,saturday:5,samstag:5,sat:5,sa:5,sunday:6,sonntag:6,sun:6,so:6};
@@ -5145,20 +5176,26 @@ var FOCUSW='(?:legs?|chest|back|arms?|shoulders?|upper(?: body)?|lower(?: body)?
 var FOCUSL=new RegExp('^(?:focus:\\s*|[A-Za-z]{1,2}\\s+)?('+FOCUSW+'(?:\\s*[,;&/]\\s*'+FOCUSW+')*)\\s*\\S{0,2}$','i');
 var RXSTART=/^(?:\(optional\)\s*)?\d{1,2}\s*(?:[xX×]|sets?\b|singles?\b|sätze)|^\d{1,2}\s*[xX×]\s*AMRAP/i;
 /* Übungsname in der Tagesübersicht: kurz, überwiegend groß geschriebene Wörter, kein Satz */
-function isOvName(l){if(l.length>64||/[?!]|[a-z]\.\s*$/.test(l)||RXSTART.test(l))return false;var w=l.split(/\s+/).filter(function(x){return /^[A-Za-zÄÖÜäöü]{3,}/.test(x)});if(!w.length)return false;var up=w.filter(function(x){return /^[A-ZÄÖÜ]/.test(x)}).length;return up/w.length>=.6&&/^[A-Za-zÄÖÜäöü0-9(]/.test(l)}
+function isOvName(l){if(l.length>72||/[?!]|[a-z]\.\s*$/.test(l.replace(/(\.\.\.|…)\s*$/,''))||RXSTART.test(l))return false;var w=l.split(/\s+/).filter(function(x){return /^[A-Za-zÄÖÜäöü]{3,}/.test(x)});if(!w.length)return false;var up=w.filter(function(x){return /^[A-ZÄÖÜ]/.test(x)}).length;return up/w.length>=.6&&/^[A-Za-zÄÖÜäöü0-9(]/.test(l)}
 var stripJunk=function(l){var i=l.lastIndexOf(' | ');return i>=0&&i<l.length-4?l.slice(i+3).trim():l};
 var rxKey=function(r){var s=norm(String(r||'').replace(/(\.\.\.|…)\s*$/,'')).replace(/^[^\d(]*/,'').replace(/\(optional\)\s*/,'').replace(/\s+/g,'');return s};
 var tokSim=function(a,b){var A=norm(a).split(' ').filter(function(t){return t.length>1&&t!=='w'}),B=new Set(norm(b).split(' ').filter(function(t){return t.length>1&&t!=='w'}));if(!A.length||!B.size)return 0;var hit=A.filter(function(t){return B.has(t)}).length;return hit/Math.min(A.length,B.size)};
 var cpre=function(a,b){var n=Math.min(a.length,b.length),i=0;while(i<n&&a[i]===b[i])i++;return i};
 function rxMatch(ov,det){var a=rxKey(ov),b=rxKey(det);if(!a||!b)return 0;var c=cpre(a,b);var need=Math.min(14,Math.floor(a.length*.7));return c>=Math.max(6,need)?c:0}
 /* Zwei Bildschirm-Ausschnitte derselben Übersicht zusammensetzen (Überlappung beim Scrollen) */
-function mergeSeq(a,b){var k=function(o){return norm(o.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(o.rx).slice(0,10)};var ka=a.map(k),kb=b.map(k);
- for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(ka[a.length-n+i]!==kb[i]){ok=false;break}if(ok)return a.concat(b.slice(n))}
- var j=0;while(j<ka.length&&j<kb.length&&ka[j]===kb[j])j++;if(j>0)return a.concat(b.slice(j));
- return a.concat(b.filter(function(o,i){return ka.indexOf(kb[i])<0}))}
+function mergeSeq(a,b){var eq=function(x,y){var ts=tokSim(cleanEx(x.name).name,cleanEx(y.name).name);if(ts<.6){if(!(x.rx&&y.rx&&rxKey(x.rx).slice(0,14)===rxKey(y.rx).slice(0,14)&&(ts>=.3||!cleanName(cleanEx(x.name).name)||!cleanName(cleanEx(y.name).name))))return false}if(!x.rx||!y.rx)return true;var A=parseRx(x.rx),B=parseRx(y.rx);return A.sets===B.sets&&String(A.reps)===String(B.reps)};
+ var eqP=function(x,y){return eq(x,y)||!!(x.rx&&y.rx&&rxKey(x.rx).slice(0,14)===rxKey(y.rx).slice(0,14))||((!x.rx||!y.rx)&&tokSim(cleanEx(x.name).name,cleanEx(y.name).name)>=.4)};
+ for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(!(n>1?eqP:eq)(a[a.length-n+i],b[i])){ok=false;break}if(ok){for(var k=0;k<n;k++){var t=a[a.length-n+k];if(!t.rx&&b[k].rx)t.rx=b[k].rx}return a.concat(b.slice(n))}}
+ var j=0;while(j<a.length&&j<b.length&&(j===0?eq:eqP)(a[j],b[j])){if(!a[j].rx&&b[j].rx)a[j].rx=b[j].rx;j++}if(j>0)return a.concat(b.slice(j));
+ return a.concat(b.filter(function(o){return !a.some(function(x){return eq(x,o)&&x.rx&&o.rx&&rxKey(x.rx).slice(0,8)===rxKey(o.rx).slice(0,8)})}))}
+var EXNOUN=/\b(press|squat|deadlift|raise|curl|row|pulldown|pull-?down|extension|fly|flye|dip|crunch|lunge|good morning|rdl|sldl|pushdown|thrust|bridge|abduction|adduction|pull-?up|chin-?up|shrug)s?\b/i;
 function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||'').replace(/\r/g,'').replace(/\f/g,'\n\f\n').split('\n').map(function(l){return l==='\f'?l:l.replace(/\s+/g,' ').trim()});
  var prog={id:uid(),src:'import',name:o.name||'',sub:'',file:o.file||'',fmt:o.fmt||'text',ocr:src==='ocr',at:Date.now(),variants:[{id:'v1',name:'Standard'}],blocks:[{name:'Block 1',weeks:[]}],unparsed:[]};
- var B=prog.blocks[0],wk=null,day=null,ex=null,mode=null,hp=null,hv=null,orphan=0;var fw=weekFromName(o.file||o.fallback);var det=[],ovs=[],ev=[],curL=null;
+ var B=prog.blocks[0],wk=null,day=null,ex=null,mode=null,hp=null,hv=null,orphan=0;var fw=weekFromName(o.file||o.fallback);var det=[],ovs=[],ev=[],curL=null;var skipTo=-1,wasOv=false;
+ /* Gescrollte Tagesübersicht ohne „Exercises“-Kopf: auf der Seite folgen Name/Vorgabe-Paare (gemischte Schreibweise) */
+ var scrollOv=function(k){var c=[];for(var q=k;q<lines.length&&c.length<5;q++){var t=lines[q];if(t==='\f')break;if(!t)continue;c.push({q:q,t:stripJunk(t)})}
+  for(var a=0;a<c.length;a++){var t=c[a].t;if(/^(?:day|tag|week|woche)\s*\d|^(?:exercises|description|close description)$/i.test(t)||isExName(t))return -1;
+   if(RXSTART.test(t)){if(a>0&&isOvName(c[a-1].t))return c[a-1].q;if(a+1<c.length&&isOvName(c[a+1].t)&&a+2<c.length&&RXSTART.test(c[a+2].t))return c[a].q;return -1}}return -1};
  var newL=function(cont){curL={items:[],day:day,at:ev.length,cont:!!cont};ovs.push(curL);ev.push({t:'ov',L:curL})};
  var getW=function(n){var w=B.weeks.find(function(x){return x.n===n});if(!w){w={n:n,name:'',days:[]};B.weeks.push(w);B.weeks.sort(function(a,b){return a.n-b.n})}return w};
  var getD=function(w,n){var d=w.days.find(function(x){return x.n===n});if(!d){d={n:n,name:'Tag '+n,wd:'',focus:'',notes:'',hints:[],ex:[]};w.days.push(d);w.days.sort(function(a,b){return a.n-b.n})}return d};
@@ -5166,7 +5203,9 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  var addNote=function(l){if(day.notes.indexOf(l)>=0)return;day.notes=(day.notes?day.notes+' ':'')+l};
  for(var i=0;i<lines.length;i++){var l=lines[i];if(!l)continue;var m;
   /* Seitenwechsel (\f) bzw. Statuszeile eines Screenshots („16:06 …“): eine Detailseite endet hier, eine gescrollte Übersicht beginnt neu */
-  if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex')mode=null;continue}
+  if(l==='\f'){endEx();wasOv=mode==='ovw';if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;if(day&&!orphan){var st=scrollOv(i+1);if(st>=0)skipTo=st}continue}
+  if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;continue}
+  if(i===skipTo){skipTo=-1;endEx();if(!(wasOv&&mode==='ovw')){mode='ovw';newL(false)}if(RXSTART.test(stripJunk(l)))continue}else if(skipTo>i)continue;
   if(mode!=='desc'&&(m=l.match(/^(?:week|woche)\s*(\d{1,2})\s*(?:[-–—:]+\s*(.*))?$/i))){endEx();day=null;wk=getW(+m[1]);if(m[2]&&!wk.name)wk.name=m[2].trim();mode=null;orphan=0;continue}
   if((m=l.match(/^(?:day|tag)\s*(\d{1,2})\s*(?:[-–—:]\s*([A-Za-zÄÖÜäöü]+))?\s*(?:\(([^)]*)\)?)?/i))&&(m[2]||m[3]!=null||/^(?:day|tag)\s*\d{1,2}\s*$/i.test(l))){endEx();var H=headInfo(m[3]);var wn=H.w!=null?H.w:(wk?wk.n:(fw||1));wk=getW(wn);day=getD(wk,+m[1]);if(m[2])day.wd=m[2];
    if(H.prog&&!hp)hp=H.prog;if(H.variant&&!hv)hv=H.variant;mode='afterDay';orphan=0;ev.push({t:'day',day:day});continue}
@@ -5181,11 +5220,14 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   if(mode==='desc'){if(!orphan)addNote(l);continue}
   if(mode==='ovw'&&!isExName(l)){if(orphan||!curL)continue;var L=curL.items;var last=L[L.length-1];var ll=stripJunk(l);
    if(last&&!last.rx&&RXSTART.test(ll)){last.rx=ll;continue}
-   if(isOvName(ll)){if(last&&!last.rx){if(!/[A-Za-zÄÖÜäöü]{4}/.test(last.name))last.name=ll;else last.name=(last.name+' '+ll).replace(/\s+/g,' ')}else L.push({name:ll,rx:''});continue}
+   if(isOvName(ll)){if(last&&!last.rx&&!(EXNOUN.test(last.name)&&EXNOUN.test(ll)&&!/(w\/|-|with|on|,)\s*$/i.test(last.name)&&!/^[a-z]|,\s*or\b/i.test(ll))){if(!/[A-Za-zÄÖÜäöü]{4}/.test(last.name))last.name=ll;else last.name=(last.name+' '+ll).replace(/\s+/g,' ')}else L.push({name:ll,rx:''});continue}
    continue}
+  if(ex&&!ex.rxLine&&/^(?:only\s+)?do\s+if\b|^nur\s+wenn\b/i.test(l)){ex.cond=l.replace(/[=)©}\]]+\s*$/,'').trim();ex.condOpen=1;continue}
+  if(ex&&ex.condOpen&&!ex.rxLine&&isExName(l)){ex.cond+=' '+cleanNm(l);continue}
+  if(ex&&!ex.rxLine&&!ex.noteL.length&&!ex.cond&&/^[A-Z][A-Z0-9 ()\/'’&-]{1,20}$/.test(cleanNm(l))&&!/^(?:DAY|TAG|WEEK|WOCHE)\b/.test(l)){ex.name=(ex.name+' '+pretty(cleanNm(l))).replace(/\s+/g,' ');continue}
   if(isExName(l)&&ex&&!ex.rxLine&&!ex.noteL.length){ex.name=(ex.name+' '+pretty(cleanNm(l))).replace(/\s+/g,' ');continue}
   if(isExName(l)){endEx();mode='ex';orphan=0;var nm=cleanNm(l).replace(/\s+/g,' ').trim();ex={name:pretty(nm),raw:'',rxLine:'',noteL:[],w:wk,d:day};det.push(ex);ev.push({t:'det'});continue}
-  if(ex){if(!ex.rxLine&&/\d\s*[xX×]{1,2}\s*(\d|amrap)|\bAMRAP\b|\d\s*(?:sets?|sätze)|\d\s*singles?\b/i.test(l)){ex.rxLine=l;ex.raw=l;continue}
+  if(ex){if(!ex.rxLine&&/\d\s*[xX×]{1,2}\s*(\d|amrap)|\bAMRAP\b|\d\s*(?:sets?|sätze)|\d\s*singles?\b/i.test(l)){ex.rxLine=l;ex.raw=l;ex.condOpen=0;continue}
    if(ex.rxLine&&ex.noteL.length===0&&/^(--|—|w\/|at |@|mit |with |hype|moderate|low|high)/i.test(l)){ex.rxLine+=' '+l;ex.raw+=' '+l;continue}ex.noteL.push(l);continue}
   if(!orphan)addNote(l)}
  endEx();
@@ -5194,17 +5236,34 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
     von einer Seite, deren Kopf abgeschnitten war → sie gehört zum nächsten Tageskopf (unsicher, wenn dazwischen Detailseiten lagen) */
  var okey=function(x){return norm(x.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(x.rx).slice(0,10)};var dl=new Map(),prevD=null;
  ovs.forEach(function(L){var D=L.day;if(L.cont&&prevD)D=prevD;if(!L.items.some(function(x){return x.rx})){prevD=D;return}var have=dl.get(D)||[];var hk=new Set();have.forEach(function(h){h.items.forEach(function(x){hk.add(okey(x))})});
-  if(have.length&&!L.cont&&!L.items.some(function(x){return hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
-  if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D});
- var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var x={name:d0?d0.name:ovItem.name,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
+  var nk=function(x){return norm(cleanEx(x.name).name).replace(/\s+/g,'')};var top=have.length&&have[0].items[0];var rescan=top&&L.items[0]&&nk(top)===nk(L.items[0])&&(!top.rx||!L.items[0].rx||okey(top)===okey(L.items[0])||(function(a,b){var A=parseRx(a),Bx=parseRx(b);return A.sets!=null&&A.sets===Bx.sets&&String(A.reps)===String(Bx.reps)})(top.rx,L.items[0].rx));
+  if(have.length&&!L.cont&&!rescan&&!L.items.some(function(x){return x.rx&&hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
+  if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D;if(o.debug)(prog._dbg=prog._dbg||[]).push({from:L.day&&L.day.n,to:D&&D.n,cont:L.cont,items:L.items.map(function(x){return x.name+' | '+x.rx})})});
+ /* Vollständigkeit einer gekürzten Übersichtszeile: Sätze×Wdh. und RPE/Last stehen vollständig vor dem „…“ */
+ var cutOk=function(rx,R){var t=String(rx||'').replace(/(\.\.\.|…)\s*$/,'');if(R.sets==null||R.reps==null)return false;if(R.amrap&&!R.fail)return true;if(R.rpe==null&&!R.rpeTxt&&!(R.load&&R.load.text))return false;
+  var e=R.fail?(function(){var m=t.match(/failure/i);return m?m.index+7:-1})():R.rpeEnd!=null?R.rpeEnd:(function(){var m=t.match(/\d{2,3}(?:[.,]\d+)?\s*(?:[-–]\s*\d{2,3}(?:[.,]\d+)?)?\s*%[^.;]*?\b(?:set|single|squat|bench|deadlift|load)\b/i);return m?m.index+m[0].length:-1})();if(e<0)return false;
+  var rest=t.slice(e).trim();if(!/[A-Za-z]{2,}/.test(rest))return false;if(R.sets>1&&R.rpe!=null&&!R.kind&&/^on\b/i.test(rest))return false;return true};
+ var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var O=ovItem&&ovItem.rx&&d0?parseRx(ovItem.rx):null;
+  var nm0=d0?d0.name:ovItem.name;var CE=cleanEx(nm0),CO=ovItem?cleanEx(ovItem.name):null;
+  var x={name:CE.name||nm0,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,rpeInf:R.rpeInf,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
    opt:/\(optional\)/i.test(rx||'')||(ovItem&&/\(optional\)/i.test(ovItem.rx)),cut:!d0&&/(\.\.\.|…)\s*$/.test(ovItem.rx||'')};
-  if(amb||(ovItem&&ovItem.amb))x.amb=true;if(!x.rpeBad)delete x.rpeBad;if(!x.alt)delete x.alt;x.eid=matchEx(x.name)||(ovItem?matchEx(ovItem.name):null);if(!x.eid&&d0&&ovItem&&tokSim(ovItem.name,d0.name)<.99)x.eid=matchEx(ovItem.name);x.flags=flagEx(x,src);return x};
+  var hint=CE.hint||(CO&&CO.hint)||'';if(hint)x.notes=(x.notes?x.notes+' ':'')+'('+hint+')';
+  var cond=(d0&&d0.cond)||CE.cond||(CO&&CO.cond)||'';if(cond){x.cond=cond.replace(/\s+/g,' ').replace(/[=)©}\]]+$/,'').trim();x.opt=true}if(CE.home||(CO&&CO.home)){x.home=true;x.opt=true}
+  if(x.cut&&cutOk(ovItem.rx,R)){x.cut=false;x.notes=(x.notes?x.notes+' ':'')+'(Hinweistext in der Übersicht abgeschnitten – Vorgabe vollständig gelesen.)'}
+  /* zwei unabhängige Lesungen derselben Vorgabe (Übersicht + Detailseite) */
+  if(O&&O.sets!=null&&O.reps!=null){var same=O.sets===R.sets&&String(O.reps)===String(R.reps);var rpeSame=O.rpe==null||R.rpe==null||O.rpe===R.rpe;
+   if(R.rpeBad&&O.rpe!=null&&same){x.rpe=O.rpe;delete R.rpeBad;x.rpeBad=null;x.conf=true}
+   else if(R.sets==null&&same===false&&O.sets!=null&&!d0.rxLine){}
+   else if(same&&rpeSame){x.conf=true;if(x.rpe==null&&O.rpe!=null&&!R.rpeTxt){x.rpe=O.rpe;x.rpeBad=null}if(!x.kind&&O.kind)x.kind=O.kind;}else if(R.sets!=null&&R.reps!=null)x.conflict='Übersicht: '+O.sets+'×'+O.reps+(O.rpe!=null?' @ '+O.rpe:'')+' · Detailseite: '+R.sets+'×'+R.reps+(R.rpe!=null?' @ '+R.rpe:'')}
+  if(d0&&ovItem&&tokSim(cleanEx(ovItem.name).name,x.name)>=.8)x.nameOk=true;if(!d0&&ovItem&&/(\.\.\.|…)\s*$/.test(ovItem.name)&&!(CO&&CO.cond))x.nameCut=true;
+  if(amb||(ovItem&&ovItem.amb))x.amb=true;['rpeBad','rpeInf','alt','cond','home','conf','conflict','nameOk','nameCut'].forEach(function(k){if(!x[k])delete x[k]});
+  x.eid=matchEx(x.name)||(CO?matchEx(CO.name):null);if(x.eid)x.nameOk=true;x.flags=flagEx(x,src);return x};
  var sr=function(t){var R=parseRx(t);return R.sets!=null&&R.reps!=null?R.sets+'x'+R.reps:''};
  B.weeks.forEach(function(W){var pool=det.filter(function(x){return x.w===W});var used=new Set();var dayOv=new Map();
   W.days.forEach(function(D){var Ls=dl.get(D)||[];var ov=Ls.map(function(L){return L.items}).filter(function(x){return x.length}).reduce(function(a,b){return a.length?mergeSeq(a,b):b.slice()},[]);
-   D.hasOv=ov.some(function(x){return x.rx});D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
+   D.hasOv=ov.some(function(x){return x.rx});D.ovN=ov.filter(function(x){return x.rx}).length;D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
    ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6}))return;var best=null,bs=0;
-    pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
+    pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D&&x.rxLine?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
     if(best)used.add(best);var e=mk(best,best&&!it.rx?{name:it.name,rx:best.rxLine}:it,false);e._ov=it;e._d=!!best;D.ex.push(e)})});
   /* 2. Durchgang: nur aus der Übersicht gelesene Einträge mit einer übrigen Detailseite gleicher Übung und gleichem Satz×Wdh.-Schema ergänzen (auch tagübergreifend) */
   W.days.forEach(function(D){D.ex.forEach(function(e,k){if(e._d||!e._ov||!e._ov.rx)return;var key=sr(e._ov.rx);if(!key)return;
@@ -5214,8 +5273,8 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   pool.forEach(function(x){if(used.has(x)||!x.d)return;var dupe=pool.some(function(y){return y!==x&&used.has(y)&&tokSim(y.name,x.name)>=.8&&rxKey(y.rxLine).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(dupe)return;
    var D=x.d;if(!x.rxLine&&D.hasOv){prog.unparsed.push('Detailseite ohne lesbare Vorgabe: '+x.name);return}var same=D.ex.find(function(e){return tokSim(e.name,x.name)>=.8&&rxKey(e.raw).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(same){if(!same.notes&&x.notes)same.notes=x.notes;return}
    var else_=W.days.some(function(o){return o!==D&&(dayOv.get(o)||[]).some(function(it){return tokSim(it.name,x.name)>=.8})});var inOwn=(dayOv.get(D)||[]).some(function(it){return tokSim(it.name,x.name)>=.8});
-   used.add(x);D.ex.push(mk(x,null,D.hasOv&&(D.ovDone||(else_&&!inOwn))))})});
- B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone})});
+   used.add(x);D.ex.push(mk(x,null,D.hasOv&&!inOwn&&(D.ovDone||else_||D.ovN>=3)))})});
+ B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone;delete D.ovN})});
  B.weeks.forEach(function(W){W.days.forEach(function(D){delete D.hasOv})});
  B.weeks=B.weeks.filter(function(W){if(W.days.length)return true;prog.unparsed.push('Woche '+W.n+(W.name?' – '+W.name:'')+' (ohne erkannte Tage)');return false});
  if(!prog.name)prog.name=hp||(o.fallback?String(o.fallback).replace(/(?:^|[\s_-])(?:woche|week|wk)[\s_-]*\d{1,2}\b.*$/i,'').replace(/[\s_-]+$/,'').trim():'')||o.fallback||'Importiertes Programm';if(hv)prog.variants=[{id:'v1',name:hv}];
@@ -5254,7 +5313,7 @@ function parseJSON(text,o){var j;try{j=JSON.parse(text)}catch(e){return {error:'
   files:Array.isArray(p.files)?p.files.filter(function(f){return f&&f.sha}).map(function(f){return {name:String(f.name||''),sha:String(f.sha),pages:+f.pages||0}}):[],
   blocks:(p.blocks||[]).map(function(b){return {name:String(b.name||'Block'),variant:b.variant||null,weeks:(b.weeks||[]).map(function(w,wi){return {n:+w.n||wi+1,name:String(w.name||''),days:(w.days||[]).map(function(d,di){return {n:+d.n||di+1,name:String(d.name||('Tag '+(+d.n||di+1))),wd:String(d.wd||''),focus:String(d.focus||''),notes:String(d.notes||''),hints:Array.isArray(d.hints)?d.hints.map(String):[],
    ex:(d.ex||d.exercises||[]).map(function(x){var R=x.rx?parseRx(x.rx):{};var e={name:String(x.name||''),eid:x.eid||matchEx(x.name),sets:x.sets!=null?num(x.sets):(R.sets!=null?R.sets:null),reps:x.reps!=null?String(x.reps):(R.reps!=null?R.reps:null),amrap:!!(x.amrap||/amrap/i.test(String(x.reps||''))),rpe:x.rpe!=null?num(x.rpe):(R.rpe!=null?R.rpe:null),
-    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
+    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};['cond','home','conf','conflict','nameOk','nameCut','cutNote','rpeInf','ref','moved'].forEach(function(k){if(x[k])e[k]=x[k]});if(e.nameOk==null&&x.nameOk===false)e.nameOk=false;if(e.eid)e.nameOk=true;e.flags=flagEx(e,src);if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
 
 /* ---------- PDF lesen (Bytes, ohne Fremdbibliothek): Textinhalt + eingebettete Seitenbilder ---------- */
 function bfind(u8,pat,from){var f=pat.charCodeAt(0),n=pat.length;var i=u8.indexOf(f,from||0);while(i>=0&&i<=u8.length-n){var k=1;while(k<n&&u8[i+k]===pat.charCodeAt(k))k++;if(k===n)return i;i=u8.indexOf(f,i+1)}return -1}
@@ -5303,9 +5362,9 @@ function linesFromBoxes(items){var it=items.filter(function(x){return x&&x.text&
 
 /* ---------- Kontrollierte Gym-Schnittstelle: Ist ein Tag eindeutig und vollständig genug zum Trainieren? ---------- */
 function toGymDay(day){var issues=[];var b=[];(day.ex||[]).forEach(function(x,i){var need=[];if(!x.eid)need.push('Übung nicht im Katalog');if(x.sets==null||!(x.sets>0))need.push('Satzanzahl fehlt');if(x.reps==null||x.reps==='')need.push('Wiederholungen fehlen');
-  if(!x.ok&&(x.flags||[]).some(function(f){return /unsicher|gekürzt|nicht lesbar|Optionen/.test(f)}))need.push('unsicher gelesen – bitte prüfen');
+  if(!x.ok&&(x.flags||[]).some(function(f){return /unsicher|gekürzt|nicht lesbar|Optionen|Widerspruch/.test(f)}))need.push('unsicher gelesen – bitte prüfen');
   if(need.length){issues.push({i:i,name:x.name,need:need});return}
-  var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:''].join(' ').replace(/\s+/g,' ').trim()};
+  var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:'',x.cond?'· nur wenn: „'+x.cond+'“':'',x.home?'· Home-Gym-Option':''].join(' ').replace(/\s+/g,' ').trim()};
   if(x.rpe!=null)bl.rpe=x.rpe;if(x.hype){var hk={Niedrig:'l',Moderat:'m',Hoch:'h'}[x.hype];if(hk)bl.h=hk}if(x.opt)bl.opt=1;b.push(bl)});
  if(!(day.ex||[]).length)issues.push({i:-1,name:'Tag',need:['keine Übungen erkannt']});
  return {ok:!issues.length&&b.length>0,day:{f:day.focus||day.name,d:day.notes||'',b:b},issues:issues}}
@@ -5341,7 +5400,7 @@ function quality(p,vname){vname=vname||variantOf(p);var bl=blocksOf(p,vname);var
    w.days.forEach(function(d){q.days++;var g=toGymDay(d);if(g.ok)q.ok++;else{q.locked++;q.lockedList.push({w:w.n,d:d.n,issues:g.issues})}(d.ex||[]).forEach(function(x){q.ex++;if(x.flags&&x.flags.length)q.flagged++;else q.exOk++})})})});
  q.score=q.ex?Math.round(q.exOk/q.ex*100):0;return q}
 
-return {esc:esc,norm:norm,num:num,uid:uid,matchEx:matchEx,parseRx:parseRx,flagEx:flagEx,headInfo:headInfo,weekFromName:weekFromName,baseName:baseName,parseText:parseText,splitMulti:splitMulti,finish:finish,
+return {esc:esc,norm:norm,num:num,uid:uid,matchEx:matchEx,cleanEx:cleanEx,cleanName:cleanName,setExtra:setExtra,tokKey:tokKey,tokSim:tokSim,parseRx:parseRx,flagEx:flagEx,headInfo:headInfo,weekFromName:weekFromName,baseName:baseName,parseText:parseText,splitMulti:splitMulti,finish:finish,
  parseCSV:parseCSV,parseJSON:parseJSON,pdfRead:pdfRead,pdfImage:pdfImage,unpredict:unpredict,linesFromBoxes:linesFromBoxes,textOps:textOps,toGymDay:toGymDay,merge:merge,progKey:progKey,variantOf:variantOf,daySig:daySig,quality:quality,blocksOf:blocksOf,WD:WD}})();
 if(typeof module!=='undefined'&&module.exports)module.exports=BIBCORE;
 
@@ -5359,13 +5418,16 @@ const BIB=(function(){
 const C=BIBCORE,esc3=C.esc,norm=C.norm;
 
 /* ---------- Speicher (nur Gerät, getrennt von Trainingsdaten) ---------- */
-function load(){try{const o=JSON.parse(localStorage.getItem(BIB_KEY)||'null');return o&&o.v===1&&Array.isArray(o.progs)?o:{v:1,progs:[]}}catch(e){return {v:1,progs:[]}}}
-function save(o){o.u=Date.now();let ok=true;try{localStorage.setItem(BIB_KEY,JSON.stringify(o))}catch(e){ok=false}mirror(o);return ok}
+/* Gerätespeicher: localStorage (schnell, beim Start sofort da) + IndexedDB-Spiegel. Reicht localStorage nicht (Speichergrenze),
+   bleibt die Bibliothek im Arbeitsspeicher und in IndexedDB – nichts geht verloren. */
+let MEM=null;
+function load(){if(MEM)return JSON.parse(JSON.stringify(MEM));try{const o=JSON.parse(localStorage.getItem(BIB_KEY)||'null');return o&&o.v===1&&Array.isArray(o.progs)?o:{v:1,progs:[]}}catch(e){return {v:1,progs:[]}}}
+function save(o){o.u=Date.now();let ok=true;const js=JSON.stringify(o);try{localStorage.setItem(BIB_KEY,js);MEM=null}catch(e){ok=!!(typeof db!=='undefined'&&db);MEM=JSON.parse(js);try{localStorage.setItem(BIB_KEY+'-ort','idb')}catch(x){}}mirror(o);return ok}
 function mirror(o){try{if(typeof db!=='undefined'&&db)db.doc('bib/lib').set({at:new Date().toISOString(),u:o.u||Date.now(),data:JSON.parse(JSON.stringify(o))}).catch(()=>{})}catch(e){}}
 /* Zusammenführen zweier Bibliotheksstände ohne Verlust: fehlende Programme werden ergänzt, vorhandene nie überschrieben */
-function union(a,b){const out={v:1,progs:a.progs.slice()};let n=0;(b&&Array.isArray(b.progs)?b.progs:[]).forEach(p=>{if(p&&p.id&&!out.progs.some(x=>x.id===p.id)){out.progs.push(p);n++}});return {lib:out,added:n}}
+function union(a,b){const out={v:1,progs:a.progs.slice(),ex:Object.assign({},(b&&b.ex)||{},a.ex||{})};let n=0;(b&&Array.isArray(b.progs)?b.progs:[]).forEach(p=>{if(p&&p.id&&!out.progs.some(x=>x.id===p.id)){out.progs.push(p);n++}});return {lib:out,added:n}}
 function dbSync(d){try{d.doc('bib/lib').get().then(s=>{const loc=load();const rem=s&&s.exists?(s.data()||{}).data:null;
-  if(rem&&Array.isArray(rem.progs)){const u=union(loc,rem);if(u.added){try{localStorage.setItem(BIB_KEY,JSON.stringify(u.lib))}catch(e){}register();try{if(typeof render==='function')render()}catch(e){}}
+  if(rem&&Array.isArray(rem.progs)){const u=union(loc,rem);if(u.added){try{localStorage.setItem(BIB_KEY,JSON.stringify(u.lib));MEM=null}catch(e){MEM=u.lib}register();try{if(S.meta.prog&&PROGS[S.meta.prog]&&PROGS[S.meta.prog].lib&&PROG!==S.meta.prog){setProg(S.meta.prog)}}catch(e){}try{if(typeof render==='function')render()}catch(e){}}
    if(u.lib.progs.length>rem.progs.length)mirror(u.lib)}else if(loc.progs.length)mirror(loc)}).catch(()=>{})}catch(e){}}
 
 /* ---------- Eingebaute Programme (nur lesen) ---------- */
@@ -5383,8 +5445,8 @@ function builtin(){const out=[];BASE.forEach(([base,ids])=>{const have=ids.filte
    sofern sie verfügbar ist. Keine Cloud, keine Fremdbibliothek. Sonst: Mac-Importer oder iPhone-Kurzbefehl. */
 function ocrEngine(){if(window.__cfOcrEngine)return window.__cfOcrEngine;try{if('TextDetector' in window){const td=new window.TextDetector();return {name:'Safari-Texterkennung',detect:b=>td.detect(b)}}}catch(e){}return null}
 async function toBitmap(img){if(img.kind==='jpeg')return createImageBitmap(new Blob([img.bytes],{type:'image/jpeg'}));return createImageBitmap(new ImageData(img.data,img.w,img.h))}
-async function ocrPages(R,eng,onProg){const pages=[];for(let i=0;i<R.images.length;i++){if(onProg)onProg(`Texterkennung Seite ${i+1} von ${R.images.length} …`);
-  let img=await C.pdfImage(R,R.images[i]);const bm=await toBitmap(img);img=null;let res=[];try{res=await eng.detect(bm,i)}finally{try{bm.close&&bm.close()}catch(e){}}
+async function ocrPages(R,eng,onProg,file){const pages=[];for(let i=0;i<R.images.length;i++){if(onProg)onProg(`Texterkennung Seite ${i+1} von ${R.images.length} …`);
+  let img=await C.pdfImage(R,R.images[i]);const bm=await toBitmap(img);img=null;let res=[];try{res=await eng.detect(bm,i,{file})}finally{try{bm.close&&bm.close()}catch(e){}}
   pages.push(C.linesFromBoxes((res||[]).map(t=>{const b=t.boundingBox||t;return {text:t.rawValue!=null?t.rawValue:t.text,x:b.x||0,y:b.y||0,h:b.height||b.h||10}})))}return pages}
 
 /* ---------- Eine Datei lesen ---------- */
@@ -5401,7 +5463,7 @@ async function parseFile(file,onProg){const nm=file.name||'Datei';const base=C.b
   if(!R.images.length)return {error:'In der PDF wurde kein auslesbarer Text gefunden.'};
   const eng=ocrEngine();
   if(!eng)return {error:`Diese PDF enthält nur Bilder (${R.images.length} Bildseiten, z. B. Screenshots) und keinen auslesbaren Text. Die Texterkennung ist in diesem Browser nicht verfügbar – nutze den Mac-Importer (mehrere PDFs auf einmal) oder den iPhone-Kurzbefehl. Hilfe: „Bild-PDFs umwandeln“.`,imageOnly:true,pages:R.images.length};
-  let pages;try{pages=await ocrPages(R,eng,onProg)}catch(e){return {error:'Texterkennung fehlgeschlagen: '+(e&&e.message||e)+' – bitte den Mac-Importer nutzen.',imageOnly:true}}
+  let pages;try{pages=await ocrPages(R,eng,onProg,nm)}catch(e){return {error:'Texterkennung fehlgeschlagen: '+(e&&e.message||e)+' – bitte den Mac-Importer nutzen.',imageOnly:true}}
   const p=C.parseText(pages.join('\n\f\n'),{file:nm,fallback:base,fmt:'pdf-ocr',src:'ocr'});p.ocrBy=eng.name||'Texterkennung';p.pages=pages.length;return {progs:[p],pages:pages.length}}
  return {error:'Dateityp nicht unterstützt. Erlaubt: PDF, JSON, CSV, TXT.'}}
 /* Kompatibel zur ersten Version: eine Datei → {progs}|{error} */
@@ -5417,7 +5479,29 @@ async function importFiles(files,onProg){const lib=JSON.parse(JSON.stringify(loa
   R.progs.forEach(p=>{if(h&&!(p.files||[]).length)p.files=[{name:f.name,sha:h,pages:R.pages||p.pages||0}]});
   R.progs.forEach(p=>{const lbl=p.file&&p.file!==f.name?f.name+' › '+p.file:f.name;C.merge(lib,[p],lbl).forEach(r=>rows.push(r))});
   if(h)seen.set(h,true);R.progs.forEach(p=>(p.files||[]).forEach(x=>{if(x.sha&&!seen.has(x.sha))seen.set(x.sha,true)}))}
- const ids=[...new Set(rows.filter(r=>r.target).map(r=>r.target))];return {rows,lib,ids}}
+ const ids=[...new Set(rows.filter(r=>r.target).map(r=>r.target))];const nx=autoEx(lib);const nv=autoVerify(lib);return {rows,lib,ids,newEx:nx,verified:nv}}
+
+/* ---------- Eigene Katalog-Einträge für eindeutig gelesene, unbekannte Übungen ----------
+   Nur wenn der Name aus zwei Lesungen (Übersicht + Detailseite) übereinstimmt bzw. aus einer Textdatei stammt und sauber ist.
+   Nie mit bestehenden Übungen zusammengeführt (eigene ID „bx…“); Gruppe/Gerät nur zur Anzeige, ohne Einfluss auf Vorgaben. */
+function exGroup(n){const t=n.toLowerCase();if(/leg press|leg extension|leg curl|hamstring|calf|lunge|split squat|step/.test(t))return 'acc';if(/squat/.test(t))return 'sq';if(/deadlift|\brdl\b|sldl|good morning/.test(t))return 'dl';if(/bench|chest press|spoto|pin press|floor press/.test(t))return 'bp';return 'acc'}
+function exEq(n){const t=n.toLowerCase();if(/\bdb\b|dumbbell/.test(t))return 'db';if(/machine|pulldown|leg press|pendulum|hack|belt squat|leg extension|leg curl|hamstring curl|cable/.test(t))return 'mach';if(/barbell|squat|deadlift|bench|rdl|row/.test(t))return 'bb';return ''}
+function autoEx(lib){if(!lib.ex)lib.ex={};let n=0;C.setExtra(lib.ex);const cnt={};lib.progs.forEach(p=>(p.blocks||[]).forEach(b=>b.weeks.forEach(W=>W.days.forEach(D=>D.ex.forEach(x=>{if(!x.eid&&!x.nameCut){const k=C.tokKey(x.name);cnt[k]=(cnt[k]||0)+1}})))));
+ lib.progs.forEach(p=>{(p.blocks||[]).forEach(b=>b.weeks.forEach(W=>W.days.forEach(D=>D.ex.forEach(x=>{if(x.eid)return;const ok=x.nameOk||(!p.ocr&&x.nameOk!==false)||(!x.nameCut&&cnt[C.tokKey(x.name)]>=2);if(!ok||!C.cleanName(x.name))return;
+  const k=C.tokKey(x.name);let id=Object.keys(lib.ex).find(i=>C.tokKey(lib.ex[i].n)===k);if(!id){id='bx'+h8(k);lib.ex[id]={n:x.name,g:exGroup(x.name),m:0,eq:exEq(x.name),t:'',src:'Programmbibliothek'}}
+  x.eid=id;x.newEx=true;x.flags=C.flagEx(x,p.ocr?'ocr':'json');n++}))));C.finish(p)});return n}
+/* Abgleich mit den eingebauten Candito-Programmen (Marcels geprüfte Umsetzung derselben Programme): Stimmt eine unsicher gelesene
+   Vorgabe in Übung, Sätzen, Wiederholungen und RPE exakt mit demselben Tag des eingebauten Programms überein, gilt sie als bestätigt.
+   Es wird nichts übernommen oder ergänzt – nur bestätigt, was beide Quellen gleich sagen. */
+const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
+function autoVerify(lib){let n=0;lib.progs.forEach(p=>{const bi=BIMAP[p.key||C.progKey(p)];if(!bi||!PROGS[bi])return;const G=PROGS[bi];
+ p.variants.forEach(v=>{if(v.name!=='Standard'&&!new RegExp('\\b'+v.name.replace('.','\\.')+'(?:\\.\\d)?\\b').test(G.sub||''))return;
+  C.blocksOf(p,v.name).forEach(b=>b.weeks.forEach(W=>{const BW=G.P[W.n-1];if(!BW)return;W.days.forEach(D=>{const BD=BW[D.n-1];if(!BD)return;D.ex.slice().forEach(x=>{if(!x.eid||x.ok||!(x.flags||[]).length)return;
+   const eq=bl=>bl.e===x.eid&&bl.s===x.sets&&String(bl.r)===String(x.reps).replace('–','-')&&(bl.rpe??null)===(x.rpe??null);const hit=BD.b.some(eq);
+   if(!hit&&x.amb&&!x.rpeBad&&!x.alt&&!x.conflict){const oth=BW.map((dd,i)=>i).filter(i=>i!==D.n-1&&BW[i].b.some(eq));const T=oth.length===1&&W.days.find(d=>d.n===oth[0]+1);
+    if(T){D.ex.splice(D.ex.indexOf(x),1);x.conf=true;delete x.amb;x.moved='aus Tag '+D.n;x.ref=G.short+' W'+W.n+' '+(G.DAYS[oth[0]]?G.DAYS[oth[0]].tag:'Tag '+(oth[0]+1));x.flags=C.flagEx(x,p.ocr?'ocr':'json');T.ex.push(x);n++;return}}
+   if(hit&&(x.amb||x.cut||(x.flags||[]).some(f=>/unsicher|gekürzt/.test(f)))&&!x.rpeBad&&!x.alt&&!x.conflict){x.conf=true;x.ref=G.short+' W'+W.n+' '+(G.DAYS[D.n-1]?G.DAYS[D.n-1].tag:'Tag '+D.n);delete x.amb;x.cut=false;x.flags=C.flagEx(x,p.ocr?'ocr':'json');n++}})})}));C.finish(p)})});return n}
+function regEx(){const L=load();C.setExtra(L.ex||{});Object.keys(L.ex||{}).forEach(id=>{if(!EX[id])EX[id]=Object.assign({t:''},L.ex[id])})}
 
 /* ---------- Übersetzung in ein trainierbares Programm ---------- */
 const h8=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,'0')};
@@ -5450,7 +5534,7 @@ function compile(p,vi,cid){const v=p.variants[vi]||p.variants[0];const bl=C.bloc
   lib:{pid:p.id,vid:v.id,vname:v.name,wmap,locked,days:P.length*nd-locked}}}
 function variantsAll(){const L=load();const out=[];L.progs.forEach(p=>p.variants.forEach((v,vi)=>out.push({p,v,vi,cid:cidOf(p,v)})));return out}
 /* Registriert alle je gestarteten Bibliotheksprogramme in PROGS – vor dem ersten Anzeigen (boot) und nach jeder Änderung */
-function register(){const M=S.meta.lib;if(!M)return 0;const want=new Set(Object.keys(M.st||{}));if(M.act)want.add(M.act);if(!want.size)return 0;let n=0;
+function register(){try{regEx()}catch(e){}const M=S.meta.lib;if(!M)return 0;const want=new Set(Object.keys(M.st||{}));if(M.act)want.add(M.act);if(!want.size)return 0;let n=0;
  variantsAll().forEach(o=>{if(want.has(o.cid)){try{PROGS[o.cid]=compile(o.p,o.vi,o.cid);n++}catch(e){}}});
  try{if(PROGS[PROG]&&PROGS[PROG].lib)setProg(PROG)}catch(e){}try{SG.clear();rfAllLogs.gen=(rfAllLogs.gen||0)+1}catch(e){}return n}
 function active(){const M=S.meta.lib;return M&&M.act&&PROGS[M.act]?M.act:null}
@@ -5470,7 +5554,7 @@ function dump(){return load()}
 function restore(b){if(!b||!Array.isArray(b.progs))return 0;const u=union(load(),b);if(u.added)save(u.lib);return u.added}
 
 return {load,save,builtin,parseText:C.parseText,parseCSV:C.parseCSV,parseJSON:C.parseJSON,parseRx:C.parseRx,pdfRead:C.pdfRead,importFile,importFiles,parseFile,toGymDay:d=>Object.assign(C.toGymDay(d),{live:BIB_GYM_LIVE}),
- matchEx:C.matchEx,norm,esc:esc3,compile,register,active,startOf,rm,cidOf,variantsAll,hasLogsCid,begin,end,dump,restore,union,dbSync,ocrEngine,ensure,quality:C.quality,merge:C.merge,firstW,isoMon}})();
+ matchEx:C.matchEx,norm,esc:esc3,autoEx,autoVerify,regEx,compile,register,active,startOf,rm,cidOf,variantsAll,hasLogsCid,begin,end,dump,restore,union,dbSync,ocrEngine,ensure,quality:C.quality,merge:C.merge,firstW,isoMon}})();
 window.BIB=BIB;
 
 /* Anbindung an die bestehende Programmlogik (nur für Bibliotheksprogramme; eingebaute Programme bleiben unberührt) */
@@ -5488,10 +5572,10 @@ const ICO={back:'<path d="M15 6l-6 6 6 6"/>',up:'<path d="M12 16V4M7 9l5-5 5 5M4
 const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICO[k]}</svg>`;
 function flagsHTML(f){return f&&f.length?`<p class="bb-fl">${ic('warn')}<span>${f.map(E).join(' · ')}</span></p>`:''}
 function exHTML(x,i,canEdit){const load=x.load?(x.load.text||(x.load.pct!=null?x.load.pct+' %':x.load.kg!=null?x.load.kg+' kg':'')):'';
- return `<article class="bb-ex${x.flags&&x.flags.length?' warn':''}"><div class="bb-exh"><b>${E(x.name||'–')}</b>${x.eid?'':'<span class="bb-tag w">nicht im Katalog</span>'}${x.opt?'<span class="bb-tag">optional</span>':''}${x.ok?'<span class="bb-tag ok">geprüft</span>':''}</div>
+ return `<article class="bb-ex${x.flags&&x.flags.length?' warn':''}"><div class="bb-exh"><b>${E(x.name||'–')}</b>${x.eid?'':'<span class="bb-tag w">nicht im Katalog</span>'}${x.newEx?'<span class="bb-tag">neu im Katalog</span>':''}${x.cond?'<span class="bb-tag">nur wenn …</span>':''}${x.opt?'<span class="bb-tag">optional</span>':''}${x.ok?'<span class="bb-tag ok">geprüft</span>':''}${x.ref?`<span class="bb-tag ok" title="stimmt exakt mit dem eingebauten Programm überein">= ${E(x.ref)}${x.moved?' · '+E(x.moved)+' verschoben':''}</span>`:''}</div>
  ${x.eid&&EX[x.eid]&&norm(EX[x.eid].n)!==norm(x.name)?`<p class="bb-raw">Katalog: ${E(EX[x.eid].n)}</p>`:''}
  <dl class="bb-kv"><div><dt>Sätze</dt><dd>${x.sets!=null?E(x.sets):'<i>fehlt</i>'}</dd></div><div><dt>Wdh.</dt><dd>${x.reps!=null?E(x.reps):'<i>fehlt</i>'}</dd></div><div><dt>RPE</dt><dd>${x.rpe!=null?E(String(x.rpe).replace('.',','))+(x.rpeEst?' (Schätzung)':''):x.rpeTxt?E(x.rpeTxt):x.rpeBad?'<i>unlesbar</i>':'–'}${x.kind&&(x.rpe!=null||x.rpeTxt)?`<small class="bb-k">${E(x.kind)}</small>`:''}</dd></div><div><dt>Last</dt><dd>${load?E(load):'–'}</dd></div>${x.hype?`<div><dt>Hype</dt><dd>${E(x.hype)}</dd></div>`:''}</dl>
- ${x.notes?`<p class="bb-nt">${E(x.notes)}</p>`:''}${flagsHTML(x.flags)}${x.raw&&x.flags&&x.flags.length?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}
+ ${x.cond?`<p class="bb-nt"><b>Nur wenn:</b> „${E(x.cond)}“</p>`:''}${x.notes?`<p class="bb-nt">${E(x.notes)}</p>`:''}${flagsHTML(x.flags)}${x.raw&&x.flags&&x.flags.length?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}
  ${canEdit?`<button type="button" class="bb-btn s sm" data-bbedit="${i}">${ic('edit')}Angaben prüfen / korrigieren</button>`:''}</article>`}
 function crumbs(p){const c=[['Bibliothek','root']];if(p){c.push([p.name,'p']);if(ST.w!=null)c.push(['Woche '+ST.w,'w']);if(ST.d!=null)c.push(['Tag '+ST.d,'d'])}return `<nav class="bb-cr" aria-label="Pfad">${c.map(([t,k],i)=>i<c.length-1?`<button type="button" data-bbcr="${k}">${E(t)}</button><span>›</span>`:`<b>${E(t)}</b>`).join('')}</nav>`}
 const cur=()=>{const P=all();return ST.p?P.find(x=>x.id===ST.p):null};
@@ -5553,7 +5637,7 @@ function rowStat(r){const k={neu:'ok','ergänzt':'ok','bereits vorhanden':'','Du
 function importPreview(){const R=ST.imp;if(R.error)return `<header class="bb-ph"><h2>Import nicht möglich</h2></header><p class="bb-err">${ic('warn')}<span>${E(R.error)}</span></p><button type="button" class="bb-btn s" data-bbimpx>Zurück</button>${R.imageOnly?'<button type="button" class="bb-btn" data-bbhelp style="margin-top:8px">Bild-PDFs umwandeln</button><button type="button" class="bb-btn s" data-bbpaste style="margin-top:8px">Text einfügen</button>':''}`;
  const progs=R.ids.map(id=>R.lib.progs.find(p=>p.id===id)).filter(Boolean);const ok=progs.length>0;
  return `<header class="bb-ph"><h2>Import prüfen</h2><p>${R.rows.length} ${R.rows.length===1?'Eintrag':'Einträge'} aus ${R.files} ${R.files===1?'Datei':'Dateien'} · ${progs.length} ${progs.length===1?'Programm':'Programme'} betroffen – bitte vor dem Übernehmen kontrollieren.</p></header>
- <section class="bb-sum"><b>Importstatus je Datei</b><ul class="bb-fl2">${R.rows.map(rowStat).join('')}</ul></section>
+ ${R.verified?`<p class="bb-note">${R.verified} unsicher gelesene Vorgaben stimmen exakt mit deinem eingebauten Candito-Programm überein und gelten als bestätigt.</p>`:''}${R.newEx?`<p class="bb-note">${R.newEx} eindeutig gelesene Übungen sind noch nicht im Übungskatalog und werden als eigene Einträge angelegt (nicht mit ähnlichen Übungen zusammengeführt).</p>`:''}<section class="bb-sum"><b>Importstatus je Datei</b><ul class="bb-fl2">${R.rows.map(rowStat).join('')}</ul></section>
  ${progs.map(p=>{const c=cnt(p);return `<section class="bb-sum"><b>${E(p.name)}</b><small class="bb-note">${p.variants.map(v=>E(v.name)).join(' · ')}${p.ocr?' · aus Texterkennung':''}</small>
   <dl class="bb-kv"><div><dt>Wochen</dt><dd>${c.w}</dd></div><div><dt>Tage</dt><dd>${c.d}</dd></div><div><dt>Übungen</dt><dd>${c.x}</dd></div><div><dt>Unvollständig</dt><dd class="${c.f?'w':''}">${c.f}</dd></div></dl>
   ${p.variants.map(v=>{const q=BIB.quality(p,v.name);return `<p class="bb-note"><b>${E(v.name)}:</b> ${q.ok}/${q.days} Tage trainierbar · Qualität ${q.score} %${q.missingWeeks.length?' · fehlende Wochen: '+E(q.missingWeeks.join(', ')):''}${q.missingDays.length?' · fehlende Tage: '+E(q.missingDays.slice(0,12).join(', '))+(q.missingDays.length>12?' …':''):''}</p>`}).join('')}
@@ -5586,7 +5670,7 @@ function helpHTML(){const eng=BIB.ocrEngine();const pwa=typeof PWA!=='undefined'
  return `<header class="bb-ph"><h2>Bild-PDFs umwandeln</h2><p>Screenshots-PDFs (z. B. aus PDF24) enthalten keinen Text. Drei lokale Wege – keine Cloud:</p></header>
  <section class="bb-co"><b>1 · Direkt in der App</b><p>${eng?'Texterkennung ist in diesem Browser verfügbar ('+E(eng.name)+'): Bild-PDFs einfach über „Dateien importieren“ auswählen.':'In diesem Browser ist keine Texterkennung verfügbar. Safari hat sie nur als experimentelle Funktion („Shape Detection API“ unter Einstellungen › Apps › Safari › Erweitert › Feature Flags). Ob sie in der Home-Bildschirm-App greift, hängt von der iOS-Version ab – der Mac-Importer ist der zuverlässige Weg.'}</p></section>
  <section class="bb-co"><b>2 · Mac-Importer (empfohlen, viele PDFs auf einmal)</b><p>Nutzt die Texterkennung von macOS (Vision) direkt auf deinem Mac.</p>
-  <p>1. ${pwa?'<a href="./tools/Programmbibliothek-Mac-Importer.zip" download>Mac-Importer laden</a>':'Mac-Importer laden (Datei „Programmbibliothek-Mac-Importer.zip“ aus der App-Installation, Ordner tools)'} und entpacken.<br>2. Alle PDFs in einen Ordner legen.<br>3. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten und den Ordner wählen.<br>4. Die entstandene Datei „Programmbibliothek-Import-….json“ per AirDrop oder iCloud Drive aufs iPhone und hier über „Dateien importieren“ auswählen.</p>
+  <p>0. Einmalig „Selbsttest.command“ starten (Rechtsklick › Öffnen) – er prüft die Texterkennung deines Macs mit einer beiliegenden Test-PDF.<br>1. ${pwa?'<a href="./tools/Programmbibliothek-Mac-Importer.zip" download>Mac-Importer laden</a>':'Mac-Importer laden (Datei „Programmbibliothek-Mac-Importer.zip“ aus der App-Installation, Ordner tools)'} und entpacken.<br>2. Alle PDFs in einen Ordner legen.<br>3. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten und den Ordner wählen.<br>4. Die entstandene Datei „Programmbibliothek-Import-….json“ per AirDrop oder iCloud Drive aufs iPhone und hier über „Dateien importieren“ auswählen.</p>
   <p>Gleiche Dateien werden übersprungen, Programme, Varianten, Wochen und Tage zugeordnet, und ein Prüfbericht liegt daneben.</p></section>
  <section class="bb-co"><b>3 · iPhone-Kurzbefehl (ohne Mac)</b><p>Einmal in der App „Kurzbefehle“ anlegen: <br>1. „Im Share-Sheet anzeigen“ für PDFs aktivieren.<br>2. „Wiederholen mit jedem“ Objekt in der Kurzbefehl-Eingabe.<br>3. Darin: Text „=== Datei: [Name] ===“ (Variable „Name“ des Objekts), dann „Bild aus PDF-Seite erstellen“, dann „Wiederholen mit jedem“ Bild › „Text aus Bild extrahieren“.<br>4. Nach den Schleifen: „Text kombinieren“ (neue Zeilen) › „Datei sichern“ als „Programme.txt“ in iCloud Drive.<br>Dann PDFs in „Dateien“ markieren › Teilen › Kurzbefehl, und „Programme.txt“ hier importieren.</p></section>
  <button type="button" class="bb-btn s" data-bbhelpx>Zurück</button>`}
@@ -5626,7 +5710,7 @@ document.addEventListener('click',e=>{const el=document.getElementById('bibv');i
  else if(d.bbparse!=null){const tx=document.getElementById('bbtxt').value,nm=document.getElementById('bbname').value.trim();const parts=BIBCORE.splitMulti(tx);const multi=parts.length>1||parts.some(x=>x.file);
   const progs=parts.map((x,i)=>BIB.parseText(x.text,{name:nm?(multi&&parts.length>1?nm+' '+(i+1):nm):undefined,file:x.file||'',fallback:x.file?BIBCORE.baseName(x.file):undefined,fmt:'text',src:'ocr'}));
   const lib=JSON.parse(JSON.stringify(BIB.load()));const rows=[];progs.forEach((p,i)=>BIB.merge(lib,[p],parts[i].file||'Eingefügter Text').forEach(r=>rows.push(r)));
-  go(()=>{ST.paste=false;ST.imp={rows,lib,ids:[...new Set(rows.map(r=>r.target).filter(Boolean))],files:parts.length}})}
+  const nx=BIB.autoEx(lib);go(()=>{ST.paste=false;ST.imp={rows,lib,ids:[...new Set(rows.map(r=>r.target).filter(Boolean))],files:parts.length,newEx:nx}})}
  else if(d.bbimpx!=null)go(()=>{ST.imp=null;ST.paste=false});
  else if(d.bbok!=null)commitImport();
  else if(d.bbdel){const p=BIB.load().progs.find(x=>x.id===d.bbdel);if(p&&p.variants.some(v=>BIB.hasLogsCid(BIB.cidOf(p,v))||libActive()===BIB.cidOf(p,v))){toast('Löschen gesperrt – zu diesem Programm gibt es Trainingseinträge');return}

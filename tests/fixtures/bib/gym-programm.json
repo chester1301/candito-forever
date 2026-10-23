@@ -16,7 +16,7 @@
         ]},
         {"n": 2, "wd": "Thursday", "focus": "Rücken", "ex": [
           {"name": "Comp Deadlift", "sets": 2, "reps": "3", "rpe": 8},
-          {"name": "Unbekannte Testübung", "sets": 3, "reps": "10"}
+          {"name": "Unbekannte Testübung", "reps": "10"}
         ]}
       ]},
       {"n": 3, "name": "Testwoche", "days": [

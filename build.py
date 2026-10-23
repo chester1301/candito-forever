@@ -89,7 +89,7 @@ TD=os.path.join(ROOT,'tools','mac-importer')
 shutil.copy(os.path.join(S,'bib-core.js'),os.path.join(TD,'bib-core.js'))
 os.makedirs(os.path.join(site,'tools'),exist_ok=True)
 with zipfile.ZipFile(os.path.join(site,'tools','Programmbibliothek-Mac-Importer.zip'),'w',zipfile.ZIP_DEFLATED) as z:
-    for n in ['Programmbibliothek-Import.command','importer.js','bib-core.js','LIESMICH.txt']:
+    for n in ['Programmbibliothek-Import.command','Selbsttest.command','importer.js','bib-core.js','selbsttest.pdf','LIESMICH.txt']:
         zi=zipfile.ZipInfo('Programmbibliothek-Mac-Importer/'+n,date_time=(2026,1,1,0,0,0));zi.compress_type=zipfile.ZIP_DEFLATED
         zi.external_attr=((0o100755 if n.endswith('.command') else 0o100644)<<16);z.writestr(zi,open(os.path.join(TD,n),'rb').read())
 print('PWA gebaut:',VERSION,len(out)//1024,'KB Seite +',len(ASSETS),'Dateien',sum(os.path.getsize(os.path.join(site,a)) for a in ASSETS)//1024,'KB')

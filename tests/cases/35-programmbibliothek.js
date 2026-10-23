@@ -2,7 +2,7 @@
 // Parser, Markierung unvollständiger Angaben, kontrollierte Gym-Schnittstelle (nur Vorschau).
 // Prüft ausdrücklich: eingebaute Programme, Trainingsdaten (S.logs) und Einstellungen (S.meta) bleiben unverändert.
 // Testdaten in tests/fixtures/bib/ sind frei erfunden (kein Candito-Inhalt).
-const fs=require('fs'),path=require('path');const {seed}=require('../lib');
+const fs=require('fs'),path=require('path');const PROGS_HAS=id=>['csq','pbb','cdl','pdl','psq'].includes(id);const {seed}=require('../lib');
 module.exports={name:'Programmbibliothek – Hierarchie, Import, Parser, Markierungen, Gym-Schnittstelle',async run({page,t,root}){
   const FX=path.join(root,'tests','fixtures','bib');const fx=n=>fs.readFileSync(path.join(FX,n));
   for(const W of [390,320]){
@@ -26,7 +26,7 @@ module.exports={name:'Programmbibliothek – Hierarchie, Import, Parser, Markier
        cu:[cu.eid,cu.flags.length>=2],am:x.blocks[0].weeks[1].days[0].ex[0].amrap,warn:document.querySelectorAll('#bibv .bb-tag.w').length}});
     t.eq([pr.name,pr.weeks,pr.wn,pr.d1],['TESTPROGRAMM A',2,'Testblock',['Monday','Legs',true]],`${W}px: Parser erkennt Programm, Wochen, Tage, Fokus und Beschreibung`);
     t.eq([pr.sq,pr.dl],[['csq',3,'5',7,'Moderat','Testhinweis zur Technik.',0],['pdl',2,'4',80]],`${W}px: Parser liest Übung, Sätze, Wdh., RPE, Hype, %-Last und Hinweise`);
-    t.ok(pr.cu[0]===null&&pr.cu[1]&&pr.am&&pr.warn>0,`${W}px: Unbekannte Übung und fehlende Vorgaben werden markiert, AMRAP erkannt`);
+    t.ok(/^bx/.test(pr.cu[0])&&!PROGS_HAS(pr.cu[0])&&pr.cu[1]&&pr.am&&pr.warn>0,`${W}px: Unbekannte Übung als eigener Katalog-Eintrag (nicht zusammengeführt), fehlende Vorgaben markiert, AMRAP erkannt`);
     // Bild-PDF: ehrlicher Hinweis statt erfundener Daten
     await p.evaluate(()=>{document.querySelector('#bibv [data-bbcr="root"]')?.click()});
     const ip=await imp('bild-programm.pdf','application/pdf');t.ok(!ip.ok&&/nur Bilder/.test(ip.err),`${W}px: Bild-PDF ohne Text wird erkannt und nicht erfunden`);

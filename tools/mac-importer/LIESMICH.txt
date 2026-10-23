@@ -25,5 +25,11 @@ Was passiert automatisch
   - Unsichere Angaben (gekürzt, schlecht lesbar, Tag nicht eindeutig) werden markiert. In der App sind solche
     Tage gesperrt, bis du sie mit dem Original verglichen hast. Es wird nichts ergänzt oder geschätzt.
 
+Zuerst: Selbsttest
+  „Selbsttest.command“ per Rechtsklick › Öffnen starten. Er liest die beiliegende selbsttest.pdf (frei erfundenes
+  Testprogramm) mit der macOS-Texterkennung, prüft Programm, Tage, Sätze, Wiederholungen, RPE und die Dubletten-Erkennung
+  und misst Zeit je Seite und Speicher. Ergebnis: Selbsttest-Ergebnis.txt. Bei „FEHLER“ diese Datei an Claude schicken.
+  Hinweis: Der Importer wurde ohne Mac entwickelt; die Vision-Anbindung ist erst durch diesen Selbsttest geprüft.
+
 Voraussetzung
-  macOS 11 (Big Sur) oder neuer. Nur eigene oder zur Nutzung freigegebene Dateien verwenden.
+  macOS 10.15 (Catalina) oder neuer, empfohlen macOS 13+. Nur eigene oder zur Nutzung freigegebene Dateien verwenden.

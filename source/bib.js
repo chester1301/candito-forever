@@ -12,13 +12,16 @@ const BIB=(function(){
 const C=BIBCORE,esc3=C.esc,norm=C.norm;
 
 /* ---------- Speicher (nur Gerät, getrennt von Trainingsdaten) ---------- */
-function load(){try{const o=JSON.parse(localStorage.getItem(BIB_KEY)||'null');return o&&o.v===1&&Array.isArray(o.progs)?o:{v:1,progs:[]}}catch(e){return {v:1,progs:[]}}}
-function save(o){o.u=Date.now();let ok=true;try{localStorage.setItem(BIB_KEY,JSON.stringify(o))}catch(e){ok=false}mirror(o);return ok}
+/* Gerätespeicher: localStorage (schnell, beim Start sofort da) + IndexedDB-Spiegel. Reicht localStorage nicht (Speichergrenze),
+   bleibt die Bibliothek im Arbeitsspeicher und in IndexedDB – nichts geht verloren. */
+let MEM=null;
+function load(){if(MEM)return JSON.parse(JSON.stringify(MEM));try{const o=JSON.parse(localStorage.getItem(BIB_KEY)||'null');return o&&o.v===1&&Array.isArray(o.progs)?o:{v:1,progs:[]}}catch(e){return {v:1,progs:[]}}}
+function save(o){o.u=Date.now();let ok=true;const js=JSON.stringify(o);try{localStorage.setItem(BIB_KEY,js);MEM=null}catch(e){ok=!!(typeof db!=='undefined'&&db);MEM=JSON.parse(js);try{localStorage.setItem(BIB_KEY+'-ort','idb')}catch(x){}}mirror(o);return ok}
 function mirror(o){try{if(typeof db!=='undefined'&&db)db.doc('bib/lib').set({at:new Date().toISOString(),u:o.u||Date.now(),data:JSON.parse(JSON.stringify(o))}).catch(()=>{})}catch(e){}}
 /* Zusammenführen zweier Bibliotheksstände ohne Verlust: fehlende Programme werden ergänzt, vorhandene nie überschrieben */
-function union(a,b){const out={v:1,progs:a.progs.slice()};let n=0;(b&&Array.isArray(b.progs)?b.progs:[]).forEach(p=>{if(p&&p.id&&!out.progs.some(x=>x.id===p.id)){out.progs.push(p);n++}});return {lib:out,added:n}}
+function union(a,b){const out={v:1,progs:a.progs.slice(),ex:Object.assign({},(b&&b.ex)||{},a.ex||{})};let n=0;(b&&Array.isArray(b.progs)?b.progs:[]).forEach(p=>{if(p&&p.id&&!out.progs.some(x=>x.id===p.id)){out.progs.push(p);n++}});return {lib:out,added:n}}
 function dbSync(d){try{d.doc('bib/lib').get().then(s=>{const loc=load();const rem=s&&s.exists?(s.data()||{}).data:null;
-  if(rem&&Array.isArray(rem.progs)){const u=union(loc,rem);if(u.added){try{localStorage.setItem(BIB_KEY,JSON.stringify(u.lib))}catch(e){}register();try{if(typeof render==='function')render()}catch(e){}}
+  if(rem&&Array.isArray(rem.progs)){const u=union(loc,rem);if(u.added){try{localStorage.setItem(BIB_KEY,JSON.stringify(u.lib));MEM=null}catch(e){MEM=u.lib}register();try{if(S.meta.prog&&PROGS[S.meta.prog]&&PROGS[S.meta.prog].lib&&PROG!==S.meta.prog){setProg(S.meta.prog)}}catch(e){}try{if(typeof render==='function')render()}catch(e){}}
    if(u.lib.progs.length>rem.progs.length)mirror(u.lib)}else if(loc.progs.length)mirror(loc)}).catch(()=>{})}catch(e){}}
 
 /* ---------- Eingebaute Programme (nur lesen) ---------- */
@@ -36,8 +39,8 @@ function builtin(){const out=[];BASE.forEach(([base,ids])=>{const have=ids.filte
    sofern sie verfügbar ist. Keine Cloud, keine Fremdbibliothek. Sonst: Mac-Importer oder iPhone-Kurzbefehl. */
 function ocrEngine(){if(window.__cfOcrEngine)return window.__cfOcrEngine;try{if('TextDetector' in window){const td=new window.TextDetector();return {name:'Safari-Texterkennung',detect:b=>td.detect(b)}}}catch(e){}return null}
 async function toBitmap(img){if(img.kind==='jpeg')return createImageBitmap(new Blob([img.bytes],{type:'image/jpeg'}));return createImageBitmap(new ImageData(img.data,img.w,img.h))}
-async function ocrPages(R,eng,onProg){const pages=[];for(let i=0;i<R.images.length;i++){if(onProg)onProg(`Texterkennung Seite ${i+1} von ${R.images.length} …`);
-  let img=await C.pdfImage(R,R.images[i]);const bm=await toBitmap(img);img=null;let res=[];try{res=await eng.detect(bm,i)}finally{try{bm.close&&bm.close()}catch(e){}}
+async function ocrPages(R,eng,onProg,file){const pages=[];for(let i=0;i<R.images.length;i++){if(onProg)onProg(`Texterkennung Seite ${i+1} von ${R.images.length} …`);
+  let img=await C.pdfImage(R,R.images[i]);const bm=await toBitmap(img);img=null;let res=[];try{res=await eng.detect(bm,i,{file})}finally{try{bm.close&&bm.close()}catch(e){}}
   pages.push(C.linesFromBoxes((res||[]).map(t=>{const b=t.boundingBox||t;return {text:t.rawValue!=null?t.rawValue:t.text,x:b.x||0,y:b.y||0,h:b.height||b.h||10}})))}return pages}
 
 /* ---------- Eine Datei lesen ---------- */
@@ -54,7 +57,7 @@ async function parseFile(file,onProg){const nm=file.name||'Datei';const base=C.b
   if(!R.images.length)return {error:'In der PDF wurde kein auslesbarer Text gefunden.'};
   const eng=ocrEngine();
   if(!eng)return {error:`Diese PDF enthält nur Bilder (${R.images.length} Bildseiten, z. B. Screenshots) und keinen auslesbaren Text. Die Texterkennung ist in diesem Browser nicht verfügbar – nutze den Mac-Importer (mehrere PDFs auf einmal) oder den iPhone-Kurzbefehl. Hilfe: „Bild-PDFs umwandeln“.`,imageOnly:true,pages:R.images.length};
-  let pages;try{pages=await ocrPages(R,eng,onProg)}catch(e){return {error:'Texterkennung fehlgeschlagen: '+(e&&e.message||e)+' – bitte den Mac-Importer nutzen.',imageOnly:true}}
+  let pages;try{pages=await ocrPages(R,eng,onProg,nm)}catch(e){return {error:'Texterkennung fehlgeschlagen: '+(e&&e.message||e)+' – bitte den Mac-Importer nutzen.',imageOnly:true}}
   const p=C.parseText(pages.join('\n\f\n'),{file:nm,fallback:base,fmt:'pdf-ocr',src:'ocr'});p.ocrBy=eng.name||'Texterkennung';p.pages=pages.length;return {progs:[p],pages:pages.length}}
  return {error:'Dateityp nicht unterstützt. Erlaubt: PDF, JSON, CSV, TXT.'}}
 /* Kompatibel zur ersten Version: eine Datei → {progs}|{error} */
@@ -70,7 +73,29 @@ async function importFiles(files,onProg){const lib=JSON.parse(JSON.stringify(loa
   R.progs.forEach(p=>{if(h&&!(p.files||[]).length)p.files=[{name:f.name,sha:h,pages:R.pages||p.pages||0}]});
   R.progs.forEach(p=>{const lbl=p.file&&p.file!==f.name?f.name+' › '+p.file:f.name;C.merge(lib,[p],lbl).forEach(r=>rows.push(r))});
   if(h)seen.set(h,true);R.progs.forEach(p=>(p.files||[]).forEach(x=>{if(x.sha&&!seen.has(x.sha))seen.set(x.sha,true)}))}
- const ids=[...new Set(rows.filter(r=>r.target).map(r=>r.target))];return {rows,lib,ids}}
+ const ids=[...new Set(rows.filter(r=>r.target).map(r=>r.target))];const nx=autoEx(lib);const nv=autoVerify(lib);return {rows,lib,ids,newEx:nx,verified:nv}}
+
+/* ---------- Eigene Katalog-Einträge für eindeutig gelesene, unbekannte Übungen ----------
+   Nur wenn der Name aus zwei Lesungen (Übersicht + Detailseite) übereinstimmt bzw. aus einer Textdatei stammt und sauber ist.
+   Nie mit bestehenden Übungen zusammengeführt (eigene ID „bx…“); Gruppe/Gerät nur zur Anzeige, ohne Einfluss auf Vorgaben. */
+function exGroup(n){const t=n.toLowerCase();if(/leg press|leg extension|leg curl|hamstring|calf|lunge|split squat|step/.test(t))return 'acc';if(/squat/.test(t))return 'sq';if(/deadlift|\brdl\b|sldl|good morning/.test(t))return 'dl';if(/bench|chest press|spoto|pin press|floor press/.test(t))return 'bp';return 'acc'}
+function exEq(n){const t=n.toLowerCase();if(/\bdb\b|dumbbell/.test(t))return 'db';if(/machine|pulldown|leg press|pendulum|hack|belt squat|leg extension|leg curl|hamstring curl|cable/.test(t))return 'mach';if(/barbell|squat|deadlift|bench|rdl|row/.test(t))return 'bb';return ''}
+function autoEx(lib){if(!lib.ex)lib.ex={};let n=0;C.setExtra(lib.ex);const cnt={};lib.progs.forEach(p=>(p.blocks||[]).forEach(b=>b.weeks.forEach(W=>W.days.forEach(D=>D.ex.forEach(x=>{if(!x.eid&&!x.nameCut){const k=C.tokKey(x.name);cnt[k]=(cnt[k]||0)+1}})))));
+ lib.progs.forEach(p=>{(p.blocks||[]).forEach(b=>b.weeks.forEach(W=>W.days.forEach(D=>D.ex.forEach(x=>{if(x.eid)return;const ok=x.nameOk||(!p.ocr&&x.nameOk!==false)||(!x.nameCut&&cnt[C.tokKey(x.name)]>=2);if(!ok||!C.cleanName(x.name))return;
+  const k=C.tokKey(x.name);let id=Object.keys(lib.ex).find(i=>C.tokKey(lib.ex[i].n)===k);if(!id){id='bx'+h8(k);lib.ex[id]={n:x.name,g:exGroup(x.name),m:0,eq:exEq(x.name),t:'',src:'Programmbibliothek'}}
+  x.eid=id;x.newEx=true;x.flags=C.flagEx(x,p.ocr?'ocr':'json');n++}))));C.finish(p)});return n}
+/* Abgleich mit den eingebauten Candito-Programmen (Marcels geprüfte Umsetzung derselben Programme): Stimmt eine unsicher gelesene
+   Vorgabe in Übung, Sätzen, Wiederholungen und RPE exakt mit demselben Tag des eingebauten Programms überein, gilt sie als bestätigt.
+   Es wird nichts übernommen oder ergänzt – nur bestätigt, was beide Quellen gleich sagen. */
+const BIMAP={intro:'intro','3rm':'p3','10rm':'p10','8':'p8','8week':'p8','8weeks':'p8','10week':'p10w','10weeks':'p10w','10weekprogram':'p10w','10wochenprogramm':'p10w'};
+function autoVerify(lib){let n=0;lib.progs.forEach(p=>{const bi=BIMAP[p.key||C.progKey(p)];if(!bi||!PROGS[bi])return;const G=PROGS[bi];
+ p.variants.forEach(v=>{if(v.name!=='Standard'&&!new RegExp('\\b'+v.name.replace('.','\\.')+'(?:\\.\\d)?\\b').test(G.sub||''))return;
+  C.blocksOf(p,v.name).forEach(b=>b.weeks.forEach(W=>{const BW=G.P[W.n-1];if(!BW)return;W.days.forEach(D=>{const BD=BW[D.n-1];if(!BD)return;D.ex.slice().forEach(x=>{if(!x.eid||x.ok||!(x.flags||[]).length)return;
+   const eq=bl=>bl.e===x.eid&&bl.s===x.sets&&String(bl.r)===String(x.reps).replace('–','-')&&(bl.rpe??null)===(x.rpe??null);const hit=BD.b.some(eq);
+   if(!hit&&x.amb&&!x.rpeBad&&!x.alt&&!x.conflict){const oth=BW.map((dd,i)=>i).filter(i=>i!==D.n-1&&BW[i].b.some(eq));const T=oth.length===1&&W.days.find(d=>d.n===oth[0]+1);
+    if(T){D.ex.splice(D.ex.indexOf(x),1);x.conf=true;delete x.amb;x.moved='aus Tag '+D.n;x.ref=G.short+' W'+W.n+' '+(G.DAYS[oth[0]]?G.DAYS[oth[0]].tag:'Tag '+(oth[0]+1));x.flags=C.flagEx(x,p.ocr?'ocr':'json');T.ex.push(x);n++;return}}
+   if(hit&&(x.amb||x.cut||(x.flags||[]).some(f=>/unsicher|gekürzt/.test(f)))&&!x.rpeBad&&!x.alt&&!x.conflict){x.conf=true;x.ref=G.short+' W'+W.n+' '+(G.DAYS[D.n-1]?G.DAYS[D.n-1].tag:'Tag '+D.n);delete x.amb;x.cut=false;x.flags=C.flagEx(x,p.ocr?'ocr':'json');n++}})})}));C.finish(p)})});return n}
+function regEx(){const L=load();C.setExtra(L.ex||{});Object.keys(L.ex||{}).forEach(id=>{if(!EX[id])EX[id]=Object.assign({t:''},L.ex[id])})}
 
 /* ---------- Übersetzung in ein trainierbares Programm ---------- */
 const h8=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,'0')};
@@ -103,7 +128,7 @@ function compile(p,vi,cid){const v=p.variants[vi]||p.variants[0];const bl=C.bloc
   lib:{pid:p.id,vid:v.id,vname:v.name,wmap,locked,days:P.length*nd-locked}}}
 function variantsAll(){const L=load();const out=[];L.progs.forEach(p=>p.variants.forEach((v,vi)=>out.push({p,v,vi,cid:cidOf(p,v)})));return out}
 /* Registriert alle je gestarteten Bibliotheksprogramme in PROGS – vor dem ersten Anzeigen (boot) und nach jeder Änderung */
-function register(){const M=S.meta.lib;if(!M)return 0;const want=new Set(Object.keys(M.st||{}));if(M.act)want.add(M.act);if(!want.size)return 0;let n=0;
+function register(){try{regEx()}catch(e){}const M=S.meta.lib;if(!M)return 0;const want=new Set(Object.keys(M.st||{}));if(M.act)want.add(M.act);if(!want.size)return 0;let n=0;
  variantsAll().forEach(o=>{if(want.has(o.cid)){try{PROGS[o.cid]=compile(o.p,o.vi,o.cid);n++}catch(e){}}});
  try{if(PROGS[PROG]&&PROGS[PROG].lib)setProg(PROG)}catch(e){}try{SG.clear();rfAllLogs.gen=(rfAllLogs.gen||0)+1}catch(e){}return n}
 function active(){const M=S.meta.lib;return M&&M.act&&PROGS[M.act]?M.act:null}
@@ -123,7 +148,7 @@ function dump(){return load()}
 function restore(b){if(!b||!Array.isArray(b.progs))return 0;const u=union(load(),b);if(u.added)save(u.lib);return u.added}
 
 return {load,save,builtin,parseText:C.parseText,parseCSV:C.parseCSV,parseJSON:C.parseJSON,parseRx:C.parseRx,pdfRead:C.pdfRead,importFile,importFiles,parseFile,toGymDay:d=>Object.assign(C.toGymDay(d),{live:BIB_GYM_LIVE}),
- matchEx:C.matchEx,norm,esc:esc3,compile,register,active,startOf,rm,cidOf,variantsAll,hasLogsCid,begin,end,dump,restore,union,dbSync,ocrEngine,ensure,quality:C.quality,merge:C.merge,firstW,isoMon}})();
+ matchEx:C.matchEx,norm,esc:esc3,autoEx,autoVerify,regEx,compile,register,active,startOf,rm,cidOf,variantsAll,hasLogsCid,begin,end,dump,restore,union,dbSync,ocrEngine,ensure,quality:C.quality,merge:C.merge,firstW,isoMon}})();
 window.BIB=BIB;
 
 /* Anbindung an die bestehende Programmlogik (nur für Bibliotheksprogramme; eingebaute Programme bleiben unberührt) */
@@ -141,10 +166,10 @@ const ICO={back:'<path d="M15 6l-6 6 6 6"/>',up:'<path d="M12 16V4M7 9l5-5 5 5M4
 const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICO[k]}</svg>`;
 function flagsHTML(f){return f&&f.length?`<p class="bb-fl">${ic('warn')}<span>${f.map(E).join(' · ')}</span></p>`:''}
 function exHTML(x,i,canEdit){const load=x.load?(x.load.text||(x.load.pct!=null?x.load.pct+' %':x.load.kg!=null?x.load.kg+' kg':'')):'';
- return `<article class="bb-ex${x.flags&&x.flags.length?' warn':''}"><div class="bb-exh"><b>${E(x.name||'–')}</b>${x.eid?'':'<span class="bb-tag w">nicht im Katalog</span>'}${x.opt?'<span class="bb-tag">optional</span>':''}${x.ok?'<span class="bb-tag ok">geprüft</span>':''}</div>
+ return `<article class="bb-ex${x.flags&&x.flags.length?' warn':''}"><div class="bb-exh"><b>${E(x.name||'–')}</b>${x.eid?'':'<span class="bb-tag w">nicht im Katalog</span>'}${x.newEx?'<span class="bb-tag">neu im Katalog</span>':''}${x.cond?'<span class="bb-tag">nur wenn …</span>':''}${x.opt?'<span class="bb-tag">optional</span>':''}${x.ok?'<span class="bb-tag ok">geprüft</span>':''}${x.ref?`<span class="bb-tag ok" title="stimmt exakt mit dem eingebauten Programm überein">= ${E(x.ref)}${x.moved?' · '+E(x.moved)+' verschoben':''}</span>`:''}</div>
  ${x.eid&&EX[x.eid]&&norm(EX[x.eid].n)!==norm(x.name)?`<p class="bb-raw">Katalog: ${E(EX[x.eid].n)}</p>`:''}
  <dl class="bb-kv"><div><dt>Sätze</dt><dd>${x.sets!=null?E(x.sets):'<i>fehlt</i>'}</dd></div><div><dt>Wdh.</dt><dd>${x.reps!=null?E(x.reps):'<i>fehlt</i>'}</dd></div><div><dt>RPE</dt><dd>${x.rpe!=null?E(String(x.rpe).replace('.',','))+(x.rpeEst?' (Schätzung)':''):x.rpeTxt?E(x.rpeTxt):x.rpeBad?'<i>unlesbar</i>':'–'}${x.kind&&(x.rpe!=null||x.rpeTxt)?`<small class="bb-k">${E(x.kind)}</small>`:''}</dd></div><div><dt>Last</dt><dd>${load?E(load):'–'}</dd></div>${x.hype?`<div><dt>Hype</dt><dd>${E(x.hype)}</dd></div>`:''}</dl>
- ${x.notes?`<p class="bb-nt">${E(x.notes)}</p>`:''}${flagsHTML(x.flags)}${x.raw&&x.flags&&x.flags.length?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}
+ ${x.cond?`<p class="bb-nt"><b>Nur wenn:</b> „${E(x.cond)}“</p>`:''}${x.notes?`<p class="bb-nt">${E(x.notes)}</p>`:''}${flagsHTML(x.flags)}${x.raw&&x.flags&&x.flags.length?`<p class="bb-raw">Gelesen: „${E(x.raw)}“</p>`:''}
  ${canEdit?`<button type="button" class="bb-btn s sm" data-bbedit="${i}">${ic('edit')}Angaben prüfen / korrigieren</button>`:''}</article>`}
 function crumbs(p){const c=[['Bibliothek','root']];if(p){c.push([p.name,'p']);if(ST.w!=null)c.push(['Woche '+ST.w,'w']);if(ST.d!=null)c.push(['Tag '+ST.d,'d'])}return `<nav class="bb-cr" aria-label="Pfad">${c.map(([t,k],i)=>i<c.length-1?`<button type="button" data-bbcr="${k}">${E(t)}</button><span>›</span>`:`<b>${E(t)}</b>`).join('')}</nav>`}
 const cur=()=>{const P=all();return ST.p?P.find(x=>x.id===ST.p):null};
@@ -206,7 +231,7 @@ function rowStat(r){const k={neu:'ok','ergänzt':'ok','bereits vorhanden':'','Du
 function importPreview(){const R=ST.imp;if(R.error)return `<header class="bb-ph"><h2>Import nicht möglich</h2></header><p class="bb-err">${ic('warn')}<span>${E(R.error)}</span></p><button type="button" class="bb-btn s" data-bbimpx>Zurück</button>${R.imageOnly?'<button type="button" class="bb-btn" data-bbhelp style="margin-top:8px">Bild-PDFs umwandeln</button><button type="button" class="bb-btn s" data-bbpaste style="margin-top:8px">Text einfügen</button>':''}`;
  const progs=R.ids.map(id=>R.lib.progs.find(p=>p.id===id)).filter(Boolean);const ok=progs.length>0;
  return `<header class="bb-ph"><h2>Import prüfen</h2><p>${R.rows.length} ${R.rows.length===1?'Eintrag':'Einträge'} aus ${R.files} ${R.files===1?'Datei':'Dateien'} · ${progs.length} ${progs.length===1?'Programm':'Programme'} betroffen – bitte vor dem Übernehmen kontrollieren.</p></header>
- <section class="bb-sum"><b>Importstatus je Datei</b><ul class="bb-fl2">${R.rows.map(rowStat).join('')}</ul></section>
+ ${R.verified?`<p class="bb-note">${R.verified} unsicher gelesene Vorgaben stimmen exakt mit deinem eingebauten Candito-Programm überein und gelten als bestätigt.</p>`:''}${R.newEx?`<p class="bb-note">${R.newEx} eindeutig gelesene Übungen sind noch nicht im Übungskatalog und werden als eigene Einträge angelegt (nicht mit ähnlichen Übungen zusammengeführt).</p>`:''}<section class="bb-sum"><b>Importstatus je Datei</b><ul class="bb-fl2">${R.rows.map(rowStat).join('')}</ul></section>
  ${progs.map(p=>{const c=cnt(p);return `<section class="bb-sum"><b>${E(p.name)}</b><small class="bb-note">${p.variants.map(v=>E(v.name)).join(' · ')}${p.ocr?' · aus Texterkennung':''}</small>
   <dl class="bb-kv"><div><dt>Wochen</dt><dd>${c.w}</dd></div><div><dt>Tage</dt><dd>${c.d}</dd></div><div><dt>Übungen</dt><dd>${c.x}</dd></div><div><dt>Unvollständig</dt><dd class="${c.f?'w':''}">${c.f}</dd></div></dl>
   ${p.variants.map(v=>{const q=BIB.quality(p,v.name);return `<p class="bb-note"><b>${E(v.name)}:</b> ${q.ok}/${q.days} Tage trainierbar · Qualität ${q.score} %${q.missingWeeks.length?' · fehlende Wochen: '+E(q.missingWeeks.join(', ')):''}${q.missingDays.length?' · fehlende Tage: '+E(q.missingDays.slice(0,12).join(', '))+(q.missingDays.length>12?' …':''):''}</p>`}).join('')}
@@ -239,7 +264,7 @@ function helpHTML(){const eng=BIB.ocrEngine();const pwa=typeof PWA!=='undefined'
  return `<header class="bb-ph"><h2>Bild-PDFs umwandeln</h2><p>Screenshots-PDFs (z. B. aus PDF24) enthalten keinen Text. Drei lokale Wege – keine Cloud:</p></header>
  <section class="bb-co"><b>1 · Direkt in der App</b><p>${eng?'Texterkennung ist in diesem Browser verfügbar ('+E(eng.name)+'): Bild-PDFs einfach über „Dateien importieren“ auswählen.':'In diesem Browser ist keine Texterkennung verfügbar. Safari hat sie nur als experimentelle Funktion („Shape Detection API“ unter Einstellungen › Apps › Safari › Erweitert › Feature Flags). Ob sie in der Home-Bildschirm-App greift, hängt von der iOS-Version ab – der Mac-Importer ist der zuverlässige Weg.'}</p></section>
  <section class="bb-co"><b>2 · Mac-Importer (empfohlen, viele PDFs auf einmal)</b><p>Nutzt die Texterkennung von macOS (Vision) direkt auf deinem Mac.</p>
-  <p>1. ${pwa?'<a href="./tools/Programmbibliothek-Mac-Importer.zip" download>Mac-Importer laden</a>':'Mac-Importer laden (Datei „Programmbibliothek-Mac-Importer.zip“ aus der App-Installation, Ordner tools)'} und entpacken.<br>2. Alle PDFs in einen Ordner legen.<br>3. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten und den Ordner wählen.<br>4. Die entstandene Datei „Programmbibliothek-Import-….json“ per AirDrop oder iCloud Drive aufs iPhone und hier über „Dateien importieren“ auswählen.</p>
+  <p>0. Einmalig „Selbsttest.command“ starten (Rechtsklick › Öffnen) – er prüft die Texterkennung deines Macs mit einer beiliegenden Test-PDF.<br>1. ${pwa?'<a href="./tools/Programmbibliothek-Mac-Importer.zip" download>Mac-Importer laden</a>':'Mac-Importer laden (Datei „Programmbibliothek-Mac-Importer.zip“ aus der App-Installation, Ordner tools)'} und entpacken.<br>2. Alle PDFs in einen Ordner legen.<br>3. „Programmbibliothek-Import.command“ per Rechtsklick › Öffnen starten und den Ordner wählen.<br>4. Die entstandene Datei „Programmbibliothek-Import-….json“ per AirDrop oder iCloud Drive aufs iPhone und hier über „Dateien importieren“ auswählen.</p>
   <p>Gleiche Dateien werden übersprungen, Programme, Varianten, Wochen und Tage zugeordnet, und ein Prüfbericht liegt daneben.</p></section>
  <section class="bb-co"><b>3 · iPhone-Kurzbefehl (ohne Mac)</b><p>Einmal in der App „Kurzbefehle“ anlegen: <br>1. „Im Share-Sheet anzeigen“ für PDFs aktivieren.<br>2. „Wiederholen mit jedem“ Objekt in der Kurzbefehl-Eingabe.<br>3. Darin: Text „=== Datei: [Name] ===“ (Variable „Name“ des Objekts), dann „Bild aus PDF-Seite erstellen“, dann „Wiederholen mit jedem“ Bild › „Text aus Bild extrahieren“.<br>4. Nach den Schleifen: „Text kombinieren“ (neue Zeilen) › „Datei sichern“ als „Programme.txt“ in iCloud Drive.<br>Dann PDFs in „Dateien“ markieren › Teilen › Kurzbefehl, und „Programme.txt“ hier importieren.</p></section>
  <button type="button" class="bb-btn s" data-bbhelpx>Zurück</button>`}
@@ -279,7 +304,7 @@ document.addEventListener('click',e=>{const el=document.getElementById('bibv');i
  else if(d.bbparse!=null){const tx=document.getElementById('bbtxt').value,nm=document.getElementById('bbname').value.trim();const parts=BIBCORE.splitMulti(tx);const multi=parts.length>1||parts.some(x=>x.file);
   const progs=parts.map((x,i)=>BIB.parseText(x.text,{name:nm?(multi&&parts.length>1?nm+' '+(i+1):nm):undefined,file:x.file||'',fallback:x.file?BIBCORE.baseName(x.file):undefined,fmt:'text',src:'ocr'}));
   const lib=JSON.parse(JSON.stringify(BIB.load()));const rows=[];progs.forEach((p,i)=>BIB.merge(lib,[p],parts[i].file||'Eingefügter Text').forEach(r=>rows.push(r)));
-  go(()=>{ST.paste=false;ST.imp={rows,lib,ids:[...new Set(rows.map(r=>r.target).filter(Boolean))],files:parts.length}})}
+  const nx=BIB.autoEx(lib);go(()=>{ST.paste=false;ST.imp={rows,lib,ids:[...new Set(rows.map(r=>r.target).filter(Boolean))],files:parts.length,newEx:nx}})}
  else if(d.bbimpx!=null)go(()=>{ST.imp=null;ST.paste=false});
  else if(d.bbok!=null)commitImport();
  else if(d.bbdel){const p=BIB.load().progs.find(x=>x.id===d.bbdel);if(p&&p.variants.some(v=>BIB.hasLogsCid(BIB.cidOf(p,v))||libActive()===BIB.cidOf(p,v))){toast('Löschen gesperrt – zu diesem Programm gibt es Trainingseinträge');return}

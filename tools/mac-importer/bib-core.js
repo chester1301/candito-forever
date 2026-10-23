@@ -11,18 +11,46 @@ var uid=function(){return 'b'+Date.now().toString(36)+Math.random().toString(36)
 var CAT=function(){return typeof EX!=='undefined'?EX:null};
 
 /* ---------- Übungen dem Katalog zuordnen ---------- */
-var ALIAS={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench':'pbb','competition bench':'pbb','comp squat':'csq','competition squat':'csq','comp deadlift':'cdl','competition deadlift':'cdl','paused squat':'psq','paused deadlift':'pdl'};
-function matchEx(name){var n=norm(name);if(!n)return null;if(ALIAS[n])return ALIAS[n];var E=CAT();if(!E)return null;var best=null,bs=0;var tn=new Set(n.split(' '));
- Object.keys(E).forEach(function(k){if(bs>=2)return;var en=norm(E[k].n);if(en===n){best=k;bs=2;return}var te=en.split(' ');var hit=te.filter(function(t){return tn.has(t)}).length;var sc=hit/Math.max(te.length,tn.size);if(sc>bs&&sc>=.75){bs=sc;best=k}});return best}
+/* Gleichwertige Namen (Superset-Englisch ↔ Katalog der App). Nur echte Synonyme – Varianten (z. B. „Wide Stance“) bekommen eigene Einträge. */
+var ALIAS0={'paused barbell bench press':'pbb','paused bench':'pbb','comp bench':'pbb','competition bench':'pbb','comp bench press':'pbb','comp squat':'csq','competition squat':'csq','comp deadlift':'cdl','competition deadlift':'cdl','paused squat':'psq','paused deadlift':'pdl',
+ 'barbell row underhand grip':'row','barbell row underhand':'row','lat pulldown w underhand grip':'lat','lat pulldown underhand grip':'lat','cable curl w straight bar':'ccurl','cable curl straight bar':'ccurl',
+ 'db preacher curl on inclined bench':'pcurl','db preacher curl on incline bench':'pcurl','3 second pause bench press':'pb3','3 sec pause bench press':'pb3','3 second pause bench':'pb3','3 second eccentric bench press':'ecc','3 sec eccentric bench press':'ecc',
+ 'rdl w aggressive tempo':'rdlt','rdl aggressive tempo':'rdlt','rdl w 3 second eccentric':'rdle','rdl w 3 sec eccentric':'rdle','db bulgarian split squat glute bias':'bss','single leg press glute bias':'slp',
+ 'neutral grip db bench press':'ndb','incline dumbbell bench press':'idb','close grip bench':'cgb','dumbbell lateral raise':'dlr','cable chest press around':'dbf','feet up bench':'fub','feet up bench press w comp grip width':'fub',
+ 'conventional stance snatch grip deadlift':'sgdl','super squat belt squat pendulum squat or hack squat':'mach','belt squat pendulum squat or hack squat':'mach','dumbbell lateral delt raise':'dlr','db lateral raise':'dlr','seated good morning':'sgm','neutral grip lat pulldown':'nlat','wide grip lat pulldown':'wlat','iliac lat pulldown':'ilat','incline db bench press':'idb'};
+var STOPW={w:1,with:1,the:1,a:1,an:1,of:1,on:1};
+var tokKey=function(t){return norm(t).replace(/[().,%]/g,' ').split(' ').filter(function(x){return x&&!STOPW[x]}).join(' ')};
+var ALIAS={};Object.keys(ALIAS0).forEach(function(k){ALIAS[tokKey(k)]=ALIAS0[k]});
+var EXTRA={};/* Übungen aus der Bibliothek (eigene Einträge, nie mit bestehenden zusammengeführt) */
+function setExtra(o){EXTRA=o||{}}
+function matchEx(name){var k=tokKey(cleanEx(name).name);if(!k)return null;if(ALIAS[k])return ALIAS[k];var E=CAT();var hit=null;
+ var sorted=function(x){return x.split(' ').sort().join(' ')};var ks=sorted(k);
+ [E||{},EXTRA].forEach(function(C){if(hit)return;Object.keys(C).some(function(id){var en=tokKey(C[id].n);if(en===k||sorted(en)===ks){hit=id;return true}return false})});return hit}
+/* Übungsnamen säubern: Bedien-Symbole, Lesereste, Bedingungen („Only do if …“) und Home-Gym-Hinweise abtrennen */
+function cleanEx(n){var s=String(n||'').replace(/[§|~©®«»“”\[\]{}]/g,' ').replace(/\bD8\b/g,'DB').replace(/\s+/g,' ').trim();var cond='',home=false;
+ var hs=s.match(/\s*\(home gym(?: option)?\)\s*$/i);if(hs){home=true;s=s.slice(0,hs.index)}
+ var hint='';var pm=s.match(/\s*\(((?:use|only|if|as|keep|do|wenn|nur)\b[^)]*)\)?\s*$/i);if(pm){hint=pm[1].trim();s=s.slice(0,pm.index)}
+ var hm=s.match(/^\(home gym option\)\s*/i);if(hm){home=true;s=s.slice(hm[0].length)}
+ var cm=s.match(/\s*(?:-{1,}|—|–)?\s*\b((?:only\s+)?do\s+if\b.*|nur\s+wenn\b.*)$/i);if(cm){cond=cm[1].replace(/(\.\.\.|…)\s*$/,'').trim();s=s.slice(0,cm.index).replace(/\s+-\s+\S.*$/,'')}
+ for(var i=0;i<3;i++)s=s.replace(/\s+(?:x{1,2}|×|-{1,}|—+|[|>»=.]+|\d)$/i,'').trim();
+ s=s.replace(/-{2,}.*$/,'').trim();var o=(s.match(/\(/g)||[]).length,c=(s.match(/\)/g)||[]).length;if(o>c)s+=')';
+ var ww=s.split(' ');if(ww.length%2===0&&ww.length>=4){var h=ww.length/2;if(norm(ww.slice(0,h).join(' '))===norm(ww.slice(h).join(' ')))s=ww.slice(0,h).join(' ')}
+ return {name:s,cond:cond,home:home,hint:hint}}
+function cleanName(n){var w=n.split(' ').filter(Boolean);return w.length>=1&&w.every(function(x){return /^[A-Za-zÄÖÜäöü0-9()\/'’&+-]+$/.test(x)&&(x.replace(/[^A-Za-zÄÖÜäöü]/g,'').length>=2||/^w\/$/i.test(x)||/^\d+$/.test(x)||/^[()\/&+-]+$/.test(x))})&&n.replace(/[^A-Za-z]/g,'').length>=4&&n.length<=60}
 
 /* ---------- Satz-/Lastvorgabe aus Text ---------- */
 function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]\)(?=\s|$)/g,' ').replace(/(\d)\s*[xX×]{2}\s*(\d)/g,'$1 x $2').replace(/(\d)\s*[Xx×]\s*(?=\d)/g,'$1 x ');var o={sets:null,reps:null,amrap:false,rpe:null,rpeTxt:null,load:null,hype:null,kind:null};var m;
  if((m=s.match(/(\d{1,2})\s*[x×]\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?|AMRAP|max)/i))){o.sets=+m[1];if(/amrap|max/i.test(m[2])){o.amrap=true;o.reps='AMRAP'}else o.reps=m[2].replace(/\s+/g,'').replace('-','–')}
  else if((m=s.match(/(\d{1,2})\s*(?:sets?|sätze|saetze)\s*(?:of|à|a|mit)?\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)\s*(?:reps?|wdh|wiederholungen)/i))){o.sets=+m[1];o.reps=m[2].replace(/\s+/g,'')}
  else if((m=s.match(/(?:^|[^\d])(\d{1,2})\s*singles?\b/i))){o.sets=+m[1];o.reps='1'}
+ else if((m=s.match(/(\d{1,2})\s*sets?[\s.]*(?:taken\s*)?(?:to|until)\s*(?:true\s*)?(?:muscular\s*)?failure/i))){o.sets=+m[1];o.reps='AMRAP';o.amrap=true;o.fail=true}
+ else if((m=s.match(/(\d{1,2})\s*sets?\s*(?:taken\s*)?to\s*RPE\s*(\d{1,2}(?:[.,]\d)?)/i))){o.sets=+m[1];o.reps='AMRAP';o.amrap=true}
  else if(/\bAMRAP\b/i.test(s)){o.amrap=true;o.reps='AMRAP';var k=s.match(/(\d)\s*(?:set|satz)/i);o.sets=k?+k[1]:1}
- if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)/i)))o.rpeTxt=String(num(m[1])).replace('.',',')+'–'+String(num(m[2])).replace('.',',');
- else if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)/i))||(m=s.match(/@\s*(\d{1,2}(?:[.,]\d)?)(?!\s*%)/))){var r=num(m[1]);if(r!=null&&r>=1&&r<=10)o.rpe=r;else o.rpeBad=m[1]}
+ if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)\s*[-–]\s*(\d{1,2}(?:[.,]\d)?)/i))){o.rpeTxt=String(num(m[1])).replace('.',',')+'–'+String(num(m[2])).replace('.',',');o.rpeEnd=m.index+m[0].length}
+ else if((m=s.match(/RPE\s*(\d{1,2}(?:[.,]\d)?)/i))||(m=s.match(/@\s*(\d{1,2}(?:[.,]\d)?)(?!\s*%)/))){var r=num(m[1]);if(r!=null&&r>=1&&r<=10){o.rpe=r;o.rpeEnd=m.index+m[0].length}else o.rpeBad=m[1]}
+ if(o.fail&&o.rpe==null&&!o.rpeTxt){o.rpe=10;o.kind='bis zum Muskelversagen'}
+ if(o.rpe==null&&!o.rpeTxt&&!o.rpeBad&&!o.fail&&!/\bRPE\b/i.test(s)&&(m=s.match(/\bat\s+(\d(?:[.,]\d)|10)\s+(?:w\/|on\b)/i))){o.rpe=num(m[1]);o.rpeInf=true}
+ if(o.rpe==null&&!o.rpeTxt&&!o.rpeBad&&/\bRPE\b/i.test(s)&&!o.fail)o.rpeBad='?';
  if(/\d\s*[x×]\s*\d[^.;]{0,40}\bOR\b\s*\d\s*[x×]\s*\d|\bODER\b\s*\d\s*[x×]|\d(?:[.,]\d+)?\s*%\s*(?:OR|ODER)\s*\d/i.test(s))o.alt=true;
  if(o.rpe!=null||o.rpeTxt){if(/on (?:the )?last set|last set|letzten satz/i.test(s))o.kind='im letzten Satz';else if(/on (?:each|every) set|each set|every set|jedem satz/i.test(s))o.kind='in jedem Satz';else if(/on average|im schnitt|average/i.test(s))o.kind='im Schnitt';else if(/on the first set|first set|ersten satz/i.test(s))o.kind='im ersten Satz';else if((m=s.match(/on the (\d)(?:st|nd|rd|th) set/i)))o.kind=m[1]+'. Satz'}
  if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*(?:[-–]\s*(\d{2,3}(?:[.,]\d+)?))?\s*%\s*(?:load\s*)?(?:of|des|der|vom|von)?\s*([^.;,\n)]{0,60})?/i)))o.load={pct:m[2]?null:num(m[1]),text:(m[0]||'').replace(/\s*(?:--|—|w\/?\s*(?:low|moderate|high)|\b(?:low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*\w+\s*)?hype|hype).*$/i,'').trim().slice(0,60)};
@@ -30,17 +58,20 @@ function parseRx(t){var s=String(t||'').replace(/[©®]\s*[}\])]?|=\s*[)}]|\s[i]
  else if((m=s.match(/(\d{2,3}(?:[.,]\d+)?)\s*kg/i)))o.load={kg:num(m[1]),text:m[0]};
  else if(/no\s*%\s*prescription|keine\s*%-?vorgabe|by\s*feel|nach\s*gef[uü]hl/i.test(s))o.load={text:'keine %-Vorgabe (nach RPE)'};
  else if((m=s.match(/\b((?:the\s+)?(?:same|heaviest|lighter|heavier)\s+load(?:ing)?\b[^.;\n]{0,50})/i)))o.load={text:m[1].replace(/\s*(?:--|—).*$/,'').trim()};
+ if(!o.load&&o.rpe==null&&!o.rpeTxt&&!o.fail&&(m=s.match(/\bw\/\s*([^\n]{4,70}?)(?:\s*(?:--|—|–\s)|\.\s|\.\.\.|…|$)/i))&&!/^(?:low|moderate|high|a?\s*(?:low|moderate|high))\b[^.]*hype/i.test(m[1]))o.load={text:m[1].replace(/\s+/g,' ').trim()};
  if((m=s.match(/\b(low|moderate|high|niedrig|moderat|hoch)\b\s*(?:to\s*(?:low|moderate|high)\s*)?hype|hype\s*[:\-]?\s*(low|moderate|high|niedrig|moderat|hoch)/i))){var h=(m[1]||m[2]).toLowerCase();o.hype={low:'Niedrig',niedrig:'Niedrig',moderate:'Moderat',moderat:'Moderat',high:'Hoch',hoch:'Hoch'}[h]}
  return o}
-var OCRBAD=/[|©®°“”«»~^]|\b[a-z]{1}[A-Z]/;
+var OCRBAD=/[|©®°“”«»~^]|\b[a-z]{1}[A-Z]|\d[A-WYZa-wyz]\d|[A-WYZa-wyz]\d[a-z]|\d-[A-Z]\d/;
 /* Symbole der App-Oberfläche im Screenshot (Info-Knopf „=)“, „©}“ …) sind kein Lesefehler im Text */
 var ocrClean=function(r){return String(r||'').replace(/\b[xX]{2}\b/g,'x').replace(/[©®]\s*[}\])]?|[=i]\s*[)}]|\s\|(?=\s|$)|[“”]\s*$/g,' ')};
 function flagEx(x,src){var f=[];if(x.sets==null)f.push('Satzanzahl fehlt');if(x.reps==null)f.push('Wiederholungen fehlen');
- if(x.rpe==null&&!x.rpeTxt&&!x.load&&!x.amrap)f.push('Keine Last- oder RPE-Vorgabe gefunden');if(!x.eid)f.push('Übung nicht im Übungskatalog – Name prüfen');
+ if(x.rpe==null&&!x.rpeTxt&&!x.load&&!x.amrap)f.push('Keine Last- oder RPE-Vorgabe gefunden');if(!x.eid)f.push(x.nameOk===false||!x.nameOk&&src==='ocr'?'Übungsname unsicher gelesen – Katalogübung wählen':'Übung nicht im Übungskatalog – Name prüfen');
  if(x.cut&&!x.ok)f.push('Nur aus der Tagesübersicht gelesen – Vorgabe evtl. gekürzt');
  if(x.amb&&!x.ok)f.push('Tag-Zuordnung unsicher – Detailseite ohne Eintrag in der Tagesübersicht');
  if(x.rpeBad&&!x.ok)f.push('RPE nicht lesbar („'+x.rpeBad+'“)');if(x.alt&&!x.ok)f.push('Mehrere Optionen („OR“) – bitte die gewählte eintragen');
- if(src==='ocr'&&!x.ok&&OCRBAD.test(ocrClean(x.raw)))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
+ if(x.rpeInf&&!x.ok&&!x.conf)f.push('RPE unsicher gelesen (Zahl ohne „RPE“) – bitte prüfen');
+ if(x.conflict&&!x.ok)f.push('Widerspruch zwischen Übersicht und Detailseite – '+x.conflict);
+ if(src==='ocr'&&!x.ok&&!x.conf&&OCRBAD.test(ocrClean(String(x.raw||'').slice(0,64))))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
 
 /* ---------- Kopfzeile „Day 1 - Monday (W4, 3 RM, V2)“ ---------- */
 var WD={monday:0,montag:0,mon:0,mo:0,tuesday:1,dienstag:1,tue:1,di:1,wednesday:2,mittwoch:2,wed:2,mi:2,thursday:3,donnerstag:3,thu:3,do:3,friday:4,freitag:4,fri:4,fr:4,saturday:5,samstag:5,sat:5,sa:5,sunday:6,sonntag:6,sun:6,so:6};
@@ -59,20 +90,26 @@ var FOCUSW='(?:legs?|chest|back|arms?|shoulders?|upper(?: body)?|lower(?: body)?
 var FOCUSL=new RegExp('^(?:focus:\\s*|[A-Za-z]{1,2}\\s+)?('+FOCUSW+'(?:\\s*[,;&/]\\s*'+FOCUSW+')*)\\s*\\S{0,2}$','i');
 var RXSTART=/^(?:\(optional\)\s*)?\d{1,2}\s*(?:[xX×]|sets?\b|singles?\b|sätze)|^\d{1,2}\s*[xX×]\s*AMRAP/i;
 /* Übungsname in der Tagesübersicht: kurz, überwiegend groß geschriebene Wörter, kein Satz */
-function isOvName(l){if(l.length>64||/[?!]|[a-z]\.\s*$/.test(l)||RXSTART.test(l))return false;var w=l.split(/\s+/).filter(function(x){return /^[A-Za-zÄÖÜäöü]{3,}/.test(x)});if(!w.length)return false;var up=w.filter(function(x){return /^[A-ZÄÖÜ]/.test(x)}).length;return up/w.length>=.6&&/^[A-Za-zÄÖÜäöü0-9(]/.test(l)}
+function isOvName(l){if(l.length>72||/[?!]|[a-z]\.\s*$/.test(l.replace(/(\.\.\.|…)\s*$/,''))||RXSTART.test(l))return false;var w=l.split(/\s+/).filter(function(x){return /^[A-Za-zÄÖÜäöü]{3,}/.test(x)});if(!w.length)return false;var up=w.filter(function(x){return /^[A-ZÄÖÜ]/.test(x)}).length;return up/w.length>=.6&&/^[A-Za-zÄÖÜäöü0-9(]/.test(l)}
 var stripJunk=function(l){var i=l.lastIndexOf(' | ');return i>=0&&i<l.length-4?l.slice(i+3).trim():l};
 var rxKey=function(r){var s=norm(String(r||'').replace(/(\.\.\.|…)\s*$/,'')).replace(/^[^\d(]*/,'').replace(/\(optional\)\s*/,'').replace(/\s+/g,'');return s};
 var tokSim=function(a,b){var A=norm(a).split(' ').filter(function(t){return t.length>1&&t!=='w'}),B=new Set(norm(b).split(' ').filter(function(t){return t.length>1&&t!=='w'}));if(!A.length||!B.size)return 0;var hit=A.filter(function(t){return B.has(t)}).length;return hit/Math.min(A.length,B.size)};
 var cpre=function(a,b){var n=Math.min(a.length,b.length),i=0;while(i<n&&a[i]===b[i])i++;return i};
 function rxMatch(ov,det){var a=rxKey(ov),b=rxKey(det);if(!a||!b)return 0;var c=cpre(a,b);var need=Math.min(14,Math.floor(a.length*.7));return c>=Math.max(6,need)?c:0}
 /* Zwei Bildschirm-Ausschnitte derselben Übersicht zusammensetzen (Überlappung beim Scrollen) */
-function mergeSeq(a,b){var k=function(o){return norm(o.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(o.rx).slice(0,10)};var ka=a.map(k),kb=b.map(k);
- for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(ka[a.length-n+i]!==kb[i]){ok=false;break}if(ok)return a.concat(b.slice(n))}
- var j=0;while(j<ka.length&&j<kb.length&&ka[j]===kb[j])j++;if(j>0)return a.concat(b.slice(j));
- return a.concat(b.filter(function(o,i){return ka.indexOf(kb[i])<0}))}
+function mergeSeq(a,b){var eq=function(x,y){var ts=tokSim(cleanEx(x.name).name,cleanEx(y.name).name);if(ts<.6){if(!(x.rx&&y.rx&&rxKey(x.rx).slice(0,14)===rxKey(y.rx).slice(0,14)&&(ts>=.3||!cleanName(cleanEx(x.name).name)||!cleanName(cleanEx(y.name).name))))return false}if(!x.rx||!y.rx)return true;var A=parseRx(x.rx),B=parseRx(y.rx);return A.sets===B.sets&&String(A.reps)===String(B.reps)};
+ var eqP=function(x,y){return eq(x,y)||!!(x.rx&&y.rx&&rxKey(x.rx).slice(0,14)===rxKey(y.rx).slice(0,14))||((!x.rx||!y.rx)&&tokSim(cleanEx(x.name).name,cleanEx(y.name).name)>=.4)};
+ for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(!(n>1?eqP:eq)(a[a.length-n+i],b[i])){ok=false;break}if(ok){for(var k=0;k<n;k++){var t=a[a.length-n+k];if(!t.rx&&b[k].rx)t.rx=b[k].rx}return a.concat(b.slice(n))}}
+ var j=0;while(j<a.length&&j<b.length&&(j===0?eq:eqP)(a[j],b[j])){if(!a[j].rx&&b[j].rx)a[j].rx=b[j].rx;j++}if(j>0)return a.concat(b.slice(j));
+ return a.concat(b.filter(function(o){return !a.some(function(x){return eq(x,o)&&x.rx&&o.rx&&rxKey(x.rx).slice(0,8)===rxKey(o.rx).slice(0,8)})}))}
+var EXNOUN=/\b(press|squat|deadlift|raise|curl|row|pulldown|pull-?down|extension|fly|flye|dip|crunch|lunge|good morning|rdl|sldl|pushdown|thrust|bridge|abduction|adduction|pull-?up|chin-?up|shrug)s?\b/i;
 function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||'').replace(/\r/g,'').replace(/\f/g,'\n\f\n').split('\n').map(function(l){return l==='\f'?l:l.replace(/\s+/g,' ').trim()});
  var prog={id:uid(),src:'import',name:o.name||'',sub:'',file:o.file||'',fmt:o.fmt||'text',ocr:src==='ocr',at:Date.now(),variants:[{id:'v1',name:'Standard'}],blocks:[{name:'Block 1',weeks:[]}],unparsed:[]};
- var B=prog.blocks[0],wk=null,day=null,ex=null,mode=null,hp=null,hv=null,orphan=0;var fw=weekFromName(o.file||o.fallback);var det=[],ovs=[],ev=[],curL=null;
+ var B=prog.blocks[0],wk=null,day=null,ex=null,mode=null,hp=null,hv=null,orphan=0;var fw=weekFromName(o.file||o.fallback);var det=[],ovs=[],ev=[],curL=null;var skipTo=-1,wasOv=false;
+ /* Gescrollte Tagesübersicht ohne „Exercises“-Kopf: auf der Seite folgen Name/Vorgabe-Paare (gemischte Schreibweise) */
+ var scrollOv=function(k){var c=[];for(var q=k;q<lines.length&&c.length<5;q++){var t=lines[q];if(t==='\f')break;if(!t)continue;c.push({q:q,t:stripJunk(t)})}
+  for(var a=0;a<c.length;a++){var t=c[a].t;if(/^(?:day|tag|week|woche)\s*\d|^(?:exercises|description|close description)$/i.test(t)||isExName(t))return -1;
+   if(RXSTART.test(t)){if(a>0&&isOvName(c[a-1].t))return c[a-1].q;if(a+1<c.length&&isOvName(c[a+1].t)&&a+2<c.length&&RXSTART.test(c[a+2].t))return c[a].q;return -1}}return -1};
  var newL=function(cont){curL={items:[],day:day,at:ev.length,cont:!!cont};ovs.push(curL);ev.push({t:'ov',L:curL})};
  var getW=function(n){var w=B.weeks.find(function(x){return x.n===n});if(!w){w={n:n,name:'',days:[]};B.weeks.push(w);B.weeks.sort(function(a,b){return a.n-b.n})}return w};
  var getD=function(w,n){var d=w.days.find(function(x){return x.n===n});if(!d){d={n:n,name:'Tag '+n,wd:'',focus:'',notes:'',hints:[],ex:[]};w.days.push(d);w.days.sort(function(a,b){return a.n-b.n})}return d};
@@ -80,7 +117,9 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  var addNote=function(l){if(day.notes.indexOf(l)>=0)return;day.notes=(day.notes?day.notes+' ':'')+l};
  for(var i=0;i<lines.length;i++){var l=lines[i];if(!l)continue;var m;
   /* Seitenwechsel (\f) bzw. Statuszeile eines Screenshots („16:06 …“): eine Detailseite endet hier, eine gescrollte Übersicht beginnt neu */
-  if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex')mode=null;continue}
+  if(l==='\f'){endEx();wasOv=mode==='ovw';if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;if(day&&!orphan){var st=scrollOv(i+1);if(st>=0)skipTo=st}continue}
+  if(l==='\f'||/^\d{1,2}:\d{2}(?!\s*(?:min|sek|sec|s\b))/.test(l)){endEx();if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;continue}
+  if(i===skipTo){skipTo=-1;endEx();if(!(wasOv&&mode==='ovw')){mode='ovw';newL(false)}if(RXSTART.test(stripJunk(l)))continue}else if(skipTo>i)continue;
   if(mode!=='desc'&&(m=l.match(/^(?:week|woche)\s*(\d{1,2})\s*(?:[-–—:]+\s*(.*))?$/i))){endEx();day=null;wk=getW(+m[1]);if(m[2]&&!wk.name)wk.name=m[2].trim();mode=null;orphan=0;continue}
   if((m=l.match(/^(?:day|tag)\s*(\d{1,2})\s*(?:[-–—:]\s*([A-Za-zÄÖÜäöü]+))?\s*(?:\(([^)]*)\)?)?/i))&&(m[2]||m[3]!=null||/^(?:day|tag)\s*\d{1,2}\s*$/i.test(l))){endEx();var H=headInfo(m[3]);var wn=H.w!=null?H.w:(wk?wk.n:(fw||1));wk=getW(wn);day=getD(wk,+m[1]);if(m[2])day.wd=m[2];
    if(H.prog&&!hp)hp=H.prog;if(H.variant&&!hv)hv=H.variant;mode='afterDay';orphan=0;ev.push({t:'day',day:day});continue}
@@ -95,11 +134,14 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   if(mode==='desc'){if(!orphan)addNote(l);continue}
   if(mode==='ovw'&&!isExName(l)){if(orphan||!curL)continue;var L=curL.items;var last=L[L.length-1];var ll=stripJunk(l);
    if(last&&!last.rx&&RXSTART.test(ll)){last.rx=ll;continue}
-   if(isOvName(ll)){if(last&&!last.rx){if(!/[A-Za-zÄÖÜäöü]{4}/.test(last.name))last.name=ll;else last.name=(last.name+' '+ll).replace(/\s+/g,' ')}else L.push({name:ll,rx:''});continue}
+   if(isOvName(ll)){if(last&&!last.rx&&!(EXNOUN.test(last.name)&&EXNOUN.test(ll)&&!/(w\/|-|with|on|,)\s*$/i.test(last.name)&&!/^[a-z]|,\s*or\b/i.test(ll))){if(!/[A-Za-zÄÖÜäöü]{4}/.test(last.name))last.name=ll;else last.name=(last.name+' '+ll).replace(/\s+/g,' ')}else L.push({name:ll,rx:''});continue}
    continue}
+  if(ex&&!ex.rxLine&&/^(?:only\s+)?do\s+if\b|^nur\s+wenn\b/i.test(l)){ex.cond=l.replace(/[=)©}\]]+\s*$/,'').trim();ex.condOpen=1;continue}
+  if(ex&&ex.condOpen&&!ex.rxLine&&isExName(l)){ex.cond+=' '+cleanNm(l);continue}
+  if(ex&&!ex.rxLine&&!ex.noteL.length&&!ex.cond&&/^[A-Z][A-Z0-9 ()\/'’&-]{1,20}$/.test(cleanNm(l))&&!/^(?:DAY|TAG|WEEK|WOCHE)\b/.test(l)){ex.name=(ex.name+' '+pretty(cleanNm(l))).replace(/\s+/g,' ');continue}
   if(isExName(l)&&ex&&!ex.rxLine&&!ex.noteL.length){ex.name=(ex.name+' '+pretty(cleanNm(l))).replace(/\s+/g,' ');continue}
   if(isExName(l)){endEx();mode='ex';orphan=0;var nm=cleanNm(l).replace(/\s+/g,' ').trim();ex={name:pretty(nm),raw:'',rxLine:'',noteL:[],w:wk,d:day};det.push(ex);ev.push({t:'det'});continue}
-  if(ex){if(!ex.rxLine&&/\d\s*[xX×]{1,2}\s*(\d|amrap)|\bAMRAP\b|\d\s*(?:sets?|sätze)|\d\s*singles?\b/i.test(l)){ex.rxLine=l;ex.raw=l;continue}
+  if(ex){if(!ex.rxLine&&/\d\s*[xX×]{1,2}\s*(\d|amrap)|\bAMRAP\b|\d\s*(?:sets?|sätze)|\d\s*singles?\b/i.test(l)){ex.rxLine=l;ex.raw=l;ex.condOpen=0;continue}
    if(ex.rxLine&&ex.noteL.length===0&&/^(--|—|w\/|at |@|mit |with |hype|moderate|low|high)/i.test(l)){ex.rxLine+=' '+l;ex.raw+=' '+l;continue}ex.noteL.push(l);continue}
   if(!orphan)addNote(l)}
  endEx();
@@ -108,17 +150,34 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
     von einer Seite, deren Kopf abgeschnitten war → sie gehört zum nächsten Tageskopf (unsicher, wenn dazwischen Detailseiten lagen) */
  var okey=function(x){return norm(x.name).replace(/\s+/g,'').slice(0,18)+'|'+rxKey(x.rx).slice(0,10)};var dl=new Map(),prevD=null;
  ovs.forEach(function(L){var D=L.day;if(L.cont&&prevD)D=prevD;if(!L.items.some(function(x){return x.rx})){prevD=D;return}var have=dl.get(D)||[];var hk=new Set();have.forEach(function(h){h.items.forEach(function(x){hk.add(okey(x))})});
-  if(have.length&&!L.cont&&!L.items.some(function(x){return hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
-  if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D});
- var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var x={name:d0?d0.name:ovItem.name,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
+  var nk=function(x){return norm(cleanEx(x.name).name).replace(/\s+/g,'')};var top=have.length&&have[0].items[0];var rescan=top&&L.items[0]&&nk(top)===nk(L.items[0])&&(!top.rx||!L.items[0].rx||okey(top)===okey(L.items[0])||(function(a,b){var A=parseRx(a),Bx=parseRx(b);return A.sets!=null&&A.sets===Bx.sets&&String(A.reps)===String(Bx.reps)})(top.rx,L.items[0].rx));
+  if(have.length&&!L.cont&&!rescan&&!L.items.some(function(x){return x.rx&&hk.has(okey(x))})){var nx=null,dt=false;for(var j=L.at+1;j<ev.length;j++){if(ev[j].t==='det')dt=true;if(ev[j].t==='day'&&ev[j].day!==D){nx=ev[j].day;break}}if(nx){D=nx;if(dt)L.items.forEach(function(x){x.amb=1})}}
+  if(!dl.has(D))dl.set(D,[]);dl.get(D).push(L);prevD=D;if(o.debug)(prog._dbg=prog._dbg||[]).push({from:L.day&&L.day.n,to:D&&D.n,cont:L.cont,items:L.items.map(function(x){return x.name+' | '+x.rx})})});
+ /* Vollständigkeit einer gekürzten Übersichtszeile: Sätze×Wdh. und RPE/Last stehen vollständig vor dem „…“ */
+ var cutOk=function(rx,R){var t=String(rx||'').replace(/(\.\.\.|…)\s*$/,'');if(R.sets==null||R.reps==null)return false;if(R.amrap&&!R.fail)return true;if(R.rpe==null&&!R.rpeTxt&&!(R.load&&R.load.text))return false;
+  var e=R.fail?(function(){var m=t.match(/failure/i);return m?m.index+7:-1})():R.rpeEnd!=null?R.rpeEnd:(function(){var m=t.match(/\d{2,3}(?:[.,]\d+)?\s*(?:[-–]\s*\d{2,3}(?:[.,]\d+)?)?\s*%[^.;]*?\b(?:set|single|squat|bench|deadlift|load)\b/i);return m?m.index+m[0].length:-1})();if(e<0)return false;
+  var rest=t.slice(e).trim();if(!/[A-Za-z]{2,}/.test(rest))return false;if(R.sets>1&&R.rpe!=null&&!R.kind&&/^on\b/i.test(rest))return false;return true};
+ var mk=function(d0,ovItem,amb){var rx=d0?d0.rxLine:ovItem.rx;var R=parseRx(rx);var O=ovItem&&ovItem.rx&&d0?parseRx(ovItem.rx):null;
+  var nm0=d0?d0.name:ovItem.name;var CE=cleanEx(nm0),CO=ovItem?cleanEx(ovItem.name):null;
+  var x={name:CE.name||nm0,eid:null,sets:R.sets,reps:R.reps,amrap:R.amrap,rpe:R.rpe,rpeTxt:R.rpeTxt,kind:R.kind,load:R.load,hype:R.hype,rpeBad:R.rpeBad,rpeInf:R.rpeInf,alt:R.alt,notes:d0?d0.notes:'',raw:d0?d0.raw:ovItem.rx,
    opt:/\(optional\)/i.test(rx||'')||(ovItem&&/\(optional\)/i.test(ovItem.rx)),cut:!d0&&/(\.\.\.|…)\s*$/.test(ovItem.rx||'')};
-  if(amb||(ovItem&&ovItem.amb))x.amb=true;if(!x.rpeBad)delete x.rpeBad;if(!x.alt)delete x.alt;x.eid=matchEx(x.name)||(ovItem?matchEx(ovItem.name):null);if(!x.eid&&d0&&ovItem&&tokSim(ovItem.name,d0.name)<.99)x.eid=matchEx(ovItem.name);x.flags=flagEx(x,src);return x};
+  var hint=CE.hint||(CO&&CO.hint)||'';if(hint)x.notes=(x.notes?x.notes+' ':'')+'('+hint+')';
+  var cond=(d0&&d0.cond)||CE.cond||(CO&&CO.cond)||'';if(cond){x.cond=cond.replace(/\s+/g,' ').replace(/[=)©}\]]+$/,'').trim();x.opt=true}if(CE.home||(CO&&CO.home)){x.home=true;x.opt=true}
+  if(x.cut&&cutOk(ovItem.rx,R)){x.cut=false;x.notes=(x.notes?x.notes+' ':'')+'(Hinweistext in der Übersicht abgeschnitten – Vorgabe vollständig gelesen.)'}
+  /* zwei unabhängige Lesungen derselben Vorgabe (Übersicht + Detailseite) */
+  if(O&&O.sets!=null&&O.reps!=null){var same=O.sets===R.sets&&String(O.reps)===String(R.reps);var rpeSame=O.rpe==null||R.rpe==null||O.rpe===R.rpe;
+   if(R.rpeBad&&O.rpe!=null&&same){x.rpe=O.rpe;delete R.rpeBad;x.rpeBad=null;x.conf=true}
+   else if(R.sets==null&&same===false&&O.sets!=null&&!d0.rxLine){}
+   else if(same&&rpeSame){x.conf=true;if(x.rpe==null&&O.rpe!=null&&!R.rpeTxt){x.rpe=O.rpe;x.rpeBad=null}if(!x.kind&&O.kind)x.kind=O.kind;}else if(R.sets!=null&&R.reps!=null)x.conflict='Übersicht: '+O.sets+'×'+O.reps+(O.rpe!=null?' @ '+O.rpe:'')+' · Detailseite: '+R.sets+'×'+R.reps+(R.rpe!=null?' @ '+R.rpe:'')}
+  if(d0&&ovItem&&tokSim(cleanEx(ovItem.name).name,x.name)>=.8)x.nameOk=true;if(!d0&&ovItem&&/(\.\.\.|…)\s*$/.test(ovItem.name)&&!(CO&&CO.cond))x.nameCut=true;
+  if(amb||(ovItem&&ovItem.amb))x.amb=true;['rpeBad','rpeInf','alt','cond','home','conf','conflict','nameOk','nameCut'].forEach(function(k){if(!x[k])delete x[k]});
+  x.eid=matchEx(x.name)||(CO?matchEx(CO.name):null);if(x.eid)x.nameOk=true;x.flags=flagEx(x,src);return x};
  var sr=function(t){var R=parseRx(t);return R.sets!=null&&R.reps!=null?R.sets+'x'+R.reps:''};
  B.weeks.forEach(function(W){var pool=det.filter(function(x){return x.w===W});var used=new Set();var dayOv=new Map();
   W.days.forEach(function(D){var Ls=dl.get(D)||[];var ov=Ls.map(function(L){return L.items}).filter(function(x){return x.length}).reduce(function(a,b){return a.length?mergeSeq(a,b):b.slice()},[]);
-   D.hasOv=ov.some(function(x){return x.rx});D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
+   D.hasOv=ov.some(function(x){return x.rx});D.ovN=ov.filter(function(x){return x.rx}).length;D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
    ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6}))return;var best=null,bs=0;
-    pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
+    pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D&&x.rxLine?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
     if(best)used.add(best);var e=mk(best,best&&!it.rx?{name:it.name,rx:best.rxLine}:it,false);e._ov=it;e._d=!!best;D.ex.push(e)})});
   /* 2. Durchgang: nur aus der Übersicht gelesene Einträge mit einer übrigen Detailseite gleicher Übung und gleichem Satz×Wdh.-Schema ergänzen (auch tagübergreifend) */
   W.days.forEach(function(D){D.ex.forEach(function(e,k){if(e._d||!e._ov||!e._ov.rx)return;var key=sr(e._ov.rx);if(!key)return;
@@ -128,8 +187,8 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
   pool.forEach(function(x){if(used.has(x)||!x.d)return;var dupe=pool.some(function(y){return y!==x&&used.has(y)&&tokSim(y.name,x.name)>=.8&&rxKey(y.rxLine).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(dupe)return;
    var D=x.d;if(!x.rxLine&&D.hasOv){prog.unparsed.push('Detailseite ohne lesbare Vorgabe: '+x.name);return}var same=D.ex.find(function(e){return tokSim(e.name,x.name)>=.8&&rxKey(e.raw).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(same){if(!same.notes&&x.notes)same.notes=x.notes;return}
    var else_=W.days.some(function(o){return o!==D&&(dayOv.get(o)||[]).some(function(it){return tokSim(it.name,x.name)>=.8})});var inOwn=(dayOv.get(D)||[]).some(function(it){return tokSim(it.name,x.name)>=.8});
-   used.add(x);D.ex.push(mk(x,null,D.hasOv&&(D.ovDone||(else_&&!inOwn))))})});
- B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone})});
+   used.add(x);D.ex.push(mk(x,null,D.hasOv&&!inOwn&&(D.ovDone||else_||D.ovN>=3)))})});
+ B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d});delete D.ovDone;delete D.ovN})});
  B.weeks.forEach(function(W){W.days.forEach(function(D){delete D.hasOv})});
  B.weeks=B.weeks.filter(function(W){if(W.days.length)return true;prog.unparsed.push('Woche '+W.n+(W.name?' – '+W.name:'')+' (ohne erkannte Tage)');return false});
  if(!prog.name)prog.name=hp||(o.fallback?String(o.fallback).replace(/(?:^|[\s_-])(?:woche|week|wk)[\s_-]*\d{1,2}\b.*$/i,'').replace(/[\s_-]+$/,'').trim():'')||o.fallback||'Importiertes Programm';if(hv)prog.variants=[{id:'v1',name:hv}];
@@ -168,7 +227,7 @@ function parseJSON(text,o){var j;try{j=JSON.parse(text)}catch(e){return {error:'
   files:Array.isArray(p.files)?p.files.filter(function(f){return f&&f.sha}).map(function(f){return {name:String(f.name||''),sha:String(f.sha),pages:+f.pages||0}}):[],
   blocks:(p.blocks||[]).map(function(b){return {name:String(b.name||'Block'),variant:b.variant||null,weeks:(b.weeks||[]).map(function(w,wi){return {n:+w.n||wi+1,name:String(w.name||''),days:(w.days||[]).map(function(d,di){return {n:+d.n||di+1,name:String(d.name||('Tag '+(+d.n||di+1))),wd:String(d.wd||''),focus:String(d.focus||''),notes:String(d.notes||''),hints:Array.isArray(d.hints)?d.hints.map(String):[],
    ex:(d.ex||d.exercises||[]).map(function(x){var R=x.rx?parseRx(x.rx):{};var e={name:String(x.name||''),eid:x.eid||matchEx(x.name),sets:x.sets!=null?num(x.sets):(R.sets!=null?R.sets:null),reps:x.reps!=null?String(x.reps):(R.reps!=null?R.reps:null),amrap:!!(x.amrap||/amrap/i.test(String(x.reps||''))),rpe:x.rpe!=null?num(x.rpe):(R.rpe!=null?R.rpe:null),
-    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
+    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};['cond','home','conf','conflict','nameOk','nameCut','cutNote','rpeInf','ref','moved'].forEach(function(k){if(x[k])e[k]=x[k]});if(e.nameOk==null&&x.nameOk===false)e.nameOk=false;if(e.eid)e.nameOk=true;e.flags=flagEx(e,src);if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
 
 /* ---------- PDF lesen (Bytes, ohne Fremdbibliothek): Textinhalt + eingebettete Seitenbilder ---------- */
 function bfind(u8,pat,from){var f=pat.charCodeAt(0),n=pat.length;var i=u8.indexOf(f,from||0);while(i>=0&&i<=u8.length-n){var k=1;while(k<n&&u8[i+k]===pat.charCodeAt(k))k++;if(k===n)return i;i=u8.indexOf(f,i+1)}return -1}
@@ -217,9 +276,9 @@ function linesFromBoxes(items){var it=items.filter(function(x){return x&&x.text&
 
 /* ---------- Kontrollierte Gym-Schnittstelle: Ist ein Tag eindeutig und vollständig genug zum Trainieren? ---------- */
 function toGymDay(day){var issues=[];var b=[];(day.ex||[]).forEach(function(x,i){var need=[];if(!x.eid)need.push('Übung nicht im Katalog');if(x.sets==null||!(x.sets>0))need.push('Satzanzahl fehlt');if(x.reps==null||x.reps==='')need.push('Wiederholungen fehlen');
-  if(!x.ok&&(x.flags||[]).some(function(f){return /unsicher|gekürzt|nicht lesbar|Optionen/.test(f)}))need.push('unsicher gelesen – bitte prüfen');
+  if(!x.ok&&(x.flags||[]).some(function(f){return /unsicher|gekürzt|nicht lesbar|Optionen|Widerspruch/.test(f)}))need.push('unsicher gelesen – bitte prüfen');
   if(need.length){issues.push({i:i,name:x.name,need:need});return}
-  var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:''].join(' ').replace(/\s+/g,' ').trim()};
+  var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:'',x.cond?'· nur wenn: „'+x.cond+'“':'',x.home?'· Home-Gym-Option':''].join(' ').replace(/\s+/g,' ').trim()};
   if(x.rpe!=null)bl.rpe=x.rpe;if(x.hype){var hk={Niedrig:'l',Moderat:'m',Hoch:'h'}[x.hype];if(hk)bl.h=hk}if(x.opt)bl.opt=1;b.push(bl)});
  if(!(day.ex||[]).length)issues.push({i:-1,name:'Tag',need:['keine Übungen erkannt']});
  return {ok:!issues.length&&b.length>0,day:{f:day.focus||day.name,d:day.notes||'',b:b},issues:issues}}
@@ -255,6 +314,6 @@ function quality(p,vname){vname=vname||variantOf(p);var bl=blocksOf(p,vname);var
    w.days.forEach(function(d){q.days++;var g=toGymDay(d);if(g.ok)q.ok++;else{q.locked++;q.lockedList.push({w:w.n,d:d.n,issues:g.issues})}(d.ex||[]).forEach(function(x){q.ex++;if(x.flags&&x.flags.length)q.flagged++;else q.exOk++})})})});
  q.score=q.ex?Math.round(q.exOk/q.ex*100):0;return q}
 
-return {esc:esc,norm:norm,num:num,uid:uid,matchEx:matchEx,parseRx:parseRx,flagEx:flagEx,headInfo:headInfo,weekFromName:weekFromName,baseName:baseName,parseText:parseText,splitMulti:splitMulti,finish:finish,
+return {esc:esc,norm:norm,num:num,uid:uid,matchEx:matchEx,cleanEx:cleanEx,cleanName:cleanName,setExtra:setExtra,tokKey:tokKey,tokSim:tokSim,parseRx:parseRx,flagEx:flagEx,headInfo:headInfo,weekFromName:weekFromName,baseName:baseName,parseText:parseText,splitMulti:splitMulti,finish:finish,
  parseCSV:parseCSV,parseJSON:parseJSON,pdfRead:pdfRead,pdfImage:pdfImage,unpredict:unpredict,linesFromBoxes:linesFromBoxes,textOps:textOps,toGymDay:toGymDay,merge:merge,progKey:progKey,variantOf:variantOf,daySig:daySig,quality:quality,blocksOf:blocksOf,WD:WD}})();
 if(typeof module!=='undefined'&&module.exports)module.exports=BIBCORE;

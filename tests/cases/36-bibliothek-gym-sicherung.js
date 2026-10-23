@@ -55,7 +55,7 @@ module.exports={name:'Programmbibliothek – Gym-Übernahme, Programmwechsel, Me
   await p.evaluate(id=>{bibOpen();document.querySelector(`#bibv [data-bbp="${id}"]`).click();document.querySelector('#bibv [data-bbw="1"]').click();document.querySelector('#bibv [data-bbd="2"]').click()},q.id);
   const ed0=await p.evaluate(()=>({lock:!!document.querySelector('#bibv .bb-err'),btn:document.querySelectorAll('#bibv [data-bbedit]').length}));
   await p.evaluate(()=>document.querySelector('#bibv [data-bbedit="1"]').click());
-  await p.selectOption('#bbe-ex','cdl');await p.check('#bbe-ok');await p.evaluate(()=>document.querySelector('#bibv [data-bbesave]').click());await p.waitForTimeout(150);
+  await p.selectOption('#bbe-ex','cdl');await p.fill('#bbe-s','3');await p.check('#bbe-ok');await p.evaluate(()=>document.querySelector('#bibv [data-bbesave]').click());await p.waitForTimeout(150);
   const ed1=await p.evaluate(cid=>({ok:!!document.querySelector('#bibv .bb-okl'),b:PROGS[cid].P[0][1].b.length,lock:!!PROGS[cid].P[0][1].lock}),sw.cid);
   t.ok(ed0.lock&&ed0.btn===2&&ed1.ok&&ed1.b===2&&!ed1.lock,'Unvollständiger Tag: nach Zuordnung und Prüfung trainierbar');
   const ro=await p.evaluate(()=>{document.querySelector('#bibv [data-bbcr="w"]').click();document.querySelector('#bibv [data-bbd="1"]').click();return {edit:document.querySelectorAll('#bibv [data-bbedit]').length,note:/schreibgeschützt/.test(document.querySelector('#bibv').textContent)}});
