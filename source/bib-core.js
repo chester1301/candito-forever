@@ -70,7 +70,7 @@ function flagEx(x,src){var f=[];if(x.sets==null)f.push('Satzanzahl fehlt');if(x.
  if(x.amb&&!x.ok)f.push('Tag-Zuordnung unsicher – Detailseite ohne Eintrag in der Tagesübersicht');
  if(x.rpeBad&&!x.ok)f.push('RPE nicht lesbar („'+x.rpeBad+'“)');if(x.alt&&!x.ok)f.push('Mehrere Optionen („OR“) – bitte die gewählte eintragen');
  if(x.rpeInf&&!x.ok&&!x.conf)f.push('RPE unsicher gelesen (Zahl ohne „RPE“) – bitte prüfen');
- if(x.conflict&&!x.ok)f.push('Widerspruch zwischen Übersicht und Detailseite – '+x.conflict);
+ if(x.ovMix&&!x.ok)f.push('Übersichtszeile vermischt'+(x.ovLine?' („'+x.ovLine+'“)':'')+' – unsicher gelesen, evtl. fehlt hier eine Übung');if(x.conflict&&!x.ok)f.push('Widerspruch zwischen Übersicht und Detailseite – '+x.conflict);
  if(src==='ocr'&&!x.ok&&!x.conf&&OCRBAD.test(ocrClean(String(x.raw||'').slice(0,64))))f.push('Text aus Bilderkennung – Zeichen unsicher');return f}
 
 /* ---------- Kopfzeile „Day 1 - Monday (W4, 3 RM, V2)“ ---------- */
@@ -102,6 +102,10 @@ function mergeSeq(a,b){var eq=function(x,y){var ts=tokSim(cleanEx(x.name).name,c
  for(var n=Math.min(a.length,b.length);n>=1;n--){var ok=true;for(var i=0;i<n;i++)if(!(n>1?eqP:eq)(a[a.length-n+i],b[i])){ok=false;break}if(ok){for(var k=0;k<n;k++){var t=a[a.length-n+k];if(!t.rx&&b[k].rx)t.rx=b[k].rx}return a.concat(b.slice(n))}}
  var j=0;while(j<a.length&&j<b.length&&(j===0?eq:eqP)(a[j],b[j])){if(!a[j].rx&&b[j].rx)a[j].rx=b[j].rx;j++}if(j>0)return a.concat(b.slice(j));
  return a.concat(b.filter(function(o){return !a.some(function(x){return eq(x,o)&&x.rx&&o.rx&&rxKey(x.rx).slice(0,8)===rxKey(o.rx).slice(0,8)})}))}
+/* Name einer Übersichtszeile enthält Vorgabentext (Sätze×Wdh., RPE, „N RM“, „(Optional) -“) → Zeilen wurden vermischt */
+var RXNAME=/\b\d+\s*x\s*\d+|\bRPE\b|\b\d+\s*RM\b|\(optional\)\s*[-–]/i;
+/* zwei Übersichtszeilen zu einem Namen verschmolzen: Vorgabentext im Namen oder derselbe Name doppelt („Feet Up Bench Press Feet Up Bench Press“) */
+var mixName=function(n){n=String(n).replace(/\s+/g,' ').trim();return RXNAME.test(n)||/^(.{8,}?) \1\b/i.test(n)};
 var EXNOUN=/\b(press|squat|deadlift|raise|curl|row|pulldown|pull-?down|extension|fly|flye|dip|crunch|lunge|good morning|rdl|sldl|pushdown|thrust|bridge|abduction|adduction|pull-?up|chin-?up|shrug)s?\b/i;
 function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||'').replace(/\r/g,'').replace(/\f/g,'\n\f\n').split('\n').map(function(l){return l==='\f'?l:l.replace(/\s+/g,' ').trim()});
  var prog={id:uid(),src:'import',name:o.name||'',sub:'',file:o.file||'',fmt:o.fmt||'text',ocr:src==='ocr',at:Date.now(),variants:[{id:'v1',name:'Standard'}],blocks:[{name:'Block 1',weeks:[]}],unparsed:[]};
@@ -171,13 +175,13 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
    else if(R.sets==null&&same===false&&O.sets!=null&&!d0.rxLine){}
    else if(same&&rpeSame){x.conf=true;if(x.rpe==null&&O.rpe!=null&&!R.rpeTxt){x.rpe=O.rpe;x.rpeBad=null}if(!x.kind&&O.kind)x.kind=O.kind;}else if(R.sets!=null&&R.reps!=null)x.conflict='Übersicht: '+O.sets+'×'+O.reps+(O.rpe!=null?' @ '+O.rpe:'')+' · Detailseite: '+R.sets+'×'+R.reps+(R.rpe!=null?' @ '+R.rpe:'')}
   if(d0&&ovItem&&tokSim(cleanEx(ovItem.name).name,x.name)>=.8)x.nameOk=true;if(!d0&&ovItem&&/(\.\.\.|…)\s*$/.test(ovItem.name)&&!(CO&&CO.cond))x.nameCut=true;
-  if(amb||(ovItem&&ovItem.amb))x.amb=true;['rpeBad','rpeInf','alt','cond','home','conf','conflict','nameOk','nameCut'].forEach(function(k){if(!x[k])delete x[k]});
+  if(amb||(ovItem&&ovItem.amb))x.amb=true;if(ovItem&&mixName(ovItem.name||'')){x.ovMix=true;x.ovLine=String(ovItem.name).replace(/\s+/g,' ').trim().slice(0,140)}['rpeBad','rpeInf','alt','cond','home','conf','conflict','nameOk','nameCut','ovMix','ovLine'].forEach(function(k){if(!x[k])delete x[k]});
   x.eid=matchEx(x.name)||(CO?matchEx(CO.name):null);if(x.eid)x.nameOk=true;x.flags=flagEx(x,src);return x};
  var sr=function(t){var R=parseRx(t);return R.sets!=null&&R.reps!=null?R.sets+'x'+R.reps:''};
  B.weeks.forEach(function(W){var pool=det.filter(function(x){return x.w===W});var used=new Set();var dayOv=new Map();
   W.days.forEach(function(D){var Ls=dl.get(D)||[];var ov=Ls.map(function(L){return L.items}).filter(function(x){return x.length}).reduce(function(a,b){return a.length?mergeSeq(a,b):b.slice()},[]);
    D.hasOv=ov.some(function(x){return x.rx});D.ovN=ov.filter(function(x){return x.rx}).length;D.ovDone=Ls.some(function(L){return L.complete});dayOv.set(D,ov);
-   ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6}))return;var best=null,bs=0;
+   ov.forEach(function(it){if(!it.rx&&!pool.some(function(x){return !used.has(x)&&tokSim(it.name,x.name)>=.6})&&!RXNAME.test(it.name))return;var best=null,bs=0;
     pool.forEach(function(x){if(used.has(x))return;var ns=tokSim(it.name,x.name);if(ns<.5)return;var rs=it.rx?rxMatch(it.rx,x.rxLine):(x.d===D&&x.rxLine?1:0);if(!rs)return;var sc=rs+ns*10+(x.d===D?3:0);if(sc>bs){bs=sc;best=x}});
     if(best)used.add(best);var e=mk(best,best&&!it.rx?{name:it.name,rx:best.rxLine}:it,false);e._ov=it;e._d=!!best;D.ex.push(e)})});
   /* 2. Durchgang: nur aus der Übersicht gelesene Einträge mit einer übrigen Detailseite gleicher Übung und gleichem Satz×Wdh.-Schema ergänzen (auch tagübergreifend) */
@@ -189,6 +193,8 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
    var D=x.d;if(!x.rxLine&&D.hasOv){prog.unparsed.push('Detailseite ohne lesbare Vorgabe: '+x.name);return}var same=D.ex.find(function(e){return tokSim(e.name,x.name)>=.8&&rxKey(e.raw).slice(0,16)===rxKey(x.rxLine).slice(0,16)});if(same){if(!same.notes&&x.notes)same.notes=x.notes;return}
    var else_=W.days.some(function(o){return o!==D&&(dayOv.get(o)||[]).some(function(it){return tokSim(it.name,x.name)>=.8})});var inOwn=(dayOv.get(D)||[]).some(function(it){return tokSim(it.name,x.name)>=.8});
    used.add(x);var ne=mk(x,null,D.hasOv&&!inOwn&&(D.ovDone||else_||D.ovN>=3));ne._det=x;D.ex.push(ne)})});
+ /* Sicherheitsprüfung: Im Screenshot-Modus belegt die Tagesübersicht, welche Übungen zum Tag gehören. Fehlt sie, ist nicht prüfbar, ob alle erfasst sind → Tag gesperrt, bis der Nutzer ihn mit dem Original verglichen hat. */
+ if(B.weeks.some(function(W){return W.days.some(function(D){return D.hasOv})}))B.weeks.forEach(function(W){W.days.forEach(function(D){if(!D.ex.length||D.chk)return;if(!D.hasOv)D.chk='Tagesübersicht nicht gefunden – nicht prüfbar, ob alle Übungen erfasst sind'})});
  B.weeks.forEach(function(W){W.days.forEach(function(D){D.ex.forEach(function(e){delete e._ov;delete e._d;delete e._det});delete D.ovDone;delete D.ovN})});
  B.weeks.forEach(function(W){W.days.forEach(function(D){delete D.hasOv})});
  B.weeks=B.weeks.filter(function(W){if(W.days.length)return true;prog.unparsed.push('Woche '+W.n+(W.name?' – '+W.name:'')+' (ohne erkannte Tage)');return false});
@@ -227,9 +233,9 @@ function parseJSON(text,o){var j;try{j=JSON.parse(text)}catch(e){return {error:'
  var progs=list.map(function(p){var ocr=!!(p.ocr||(src0&&src0.ocr));var src=ocr?'ocr':'json';
   var P={id:uid(),src:'import',key:p.key?String(p.key):undefined,name:String(p.name||'JSON-Import'),sub:String(p.sub||''),file:(o&&o.file)||p.file||'',fmt:'json',ocr:ocr,at:Date.now(),variants:Array.isArray(p.variants)&&p.variants.length?p.variants.map(function(v,i){return {id:'v'+(i+1),name:String(v.name||v)}}):[{id:'v1',name:'Standard'}],unparsed:Array.isArray(p.unparsed)?p.unparsed.map(String):[],
   files:Array.isArray(p.files)?p.files.filter(function(f){return f&&f.sha}).map(function(f){return {name:String(f.name||''),sha:String(f.sha),pages:+f.pages||0}}):[],
-  blocks:(p.blocks||[]).map(function(b){return {name:String(b.name||'Block'),variant:b.variant||null,weeks:(b.weeks||[]).map(function(w,wi){return {n:+w.n||wi+1,name:String(w.name||''),days:(w.days||[]).map(function(d,di){return {n:+d.n||di+1,name:String(d.name||('Tag '+(+d.n||di+1))),wd:String(d.wd||''),focus:String(d.focus||''),notes:String(d.notes||''),hints:Array.isArray(d.hints)?d.hints.map(String):[],
+  blocks:(p.blocks||[]).map(function(b){return {name:String(b.name||'Block'),variant:b.variant||null,weeks:(b.weeks||[]).map(function(w,wi){return {n:+w.n||wi+1,name:String(w.name||''),days:(w.days||[]).map(function(d,di){return {n:+d.n||di+1,name:String(d.name||('Tag '+(+d.n||di+1))),wd:String(d.wd||''),focus:String(d.focus||''),notes:String(d.notes||''),hints:Array.isArray(d.hints)?d.hints.map(String):[],chk:d.chk?String(d.chk):undefined,chkOk:d.chkOk?true:undefined,
    ex:(d.ex||d.exercises||[]).map(function(x){var R=x.rx?parseRx(x.rx):{};var e={name:String(x.name||''),eid:x.eid||matchEx(x.name),sets:x.sets!=null?num(x.sets):(R.sets!=null?R.sets:null),reps:x.reps!=null?String(x.reps):(R.reps!=null?R.reps:null),amrap:!!(x.amrap||/amrap/i.test(String(x.reps||''))),rpe:x.rpe!=null?num(x.rpe):(R.rpe!=null?R.rpe:null),
-    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};['cond','home','conf','conflict','nameOk','nameCut','cutNote','rpeInf','ref','moved'].forEach(function(k){if(x[k])e[k]=x[k]});if(e.nameOk==null&&x.nameOk===false)e.nameOk=false;if(e.eid)e.nameOk=true;e.flags=flagEx(e,src);if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
+    load:x.load?(typeof x.load==='object'?x.load:{text:String(x.load)}):R.load||null,hype:x.hype||R.hype||null,notes:String(x.notes||''),raw:String(x.raw||x.rx||''),opt:!!x.opt,cut:!!x.cut,ok:!!x.ok,amb:!!x.amb,rpeBad:x.rpeBad?String(x.rpeBad):(R.rpeBad||null),alt:!!(x.alt||R.alt),rpeTxt:x.rpeTxt?String(x.rpeTxt):(R.rpeTxt||null),kind:x.kind?String(x.kind):(R.kind||null)};['cond','home','conf','conflict','nameOk','nameCut','cutNote','rpeInf','ref','moved','ovMix','ovLine'].forEach(function(k){if(x[k])e[k]=x[k]});if(e.nameOk==null&&x.nameOk===false)e.nameOk=false;if(e.eid)e.nameOk=true;e.flags=flagEx(e,src);if(!e.rpeTxt)delete e.rpeTxt;if(!e.kind)delete e.kind;if(!e.amb)delete e.amb;if(!e.rpeBad)delete e.rpeBad;if(!e.alt)delete e.alt;e.flags=flagEx(e,src);return e})}})}})}})};return finish(P)});return {progs:progs}}
 
 /* ---------- PDF lesen (Bytes, ohne Fremdbibliothek): Textinhalt + eingebettete Seitenbilder ---------- */
 function bfind(u8,pat,from){var f=pat.charCodeAt(0),n=pat.length;var i=u8.indexOf(f,from||0);while(i>=0&&i<=u8.length-n){var k=1;while(k<n&&u8[i+k]===pat.charCodeAt(k))k++;if(k===n)return i;i=u8.indexOf(f,i+1)}return -1}
@@ -284,7 +290,7 @@ function toGymDay(day){var issues=[];var b=[];(day.ex||[]).forEach(function(x,i)
   if(need.length){issues.push({i:i,name:x.name,need:need});return}
   var r=String(x.reps).replace(/–/g,'-');var bl={e:x.eid,s:Math.round(x.sets),r:x.amrap?'AMRAP':r,x:[x.sets+'×'+String(x.reps).replace('-','–'),x.rpe!=null?'@ RPE '+String(x.rpe).replace('.',','):x.rpeTxt?'@ RPE '+x.rpeTxt:'',(x.rpe!=null||x.rpeTxt)&&x.kind?x.kind:'',x.load&&x.load.text?'· '+x.load.text:'',x.cond?'· nur wenn: „'+x.cond+'“':'',x.home?'· Home-Gym-Option':''].join(' ').replace(/\s+/g,' ').trim()};
   if(x.rpe!=null)bl.rpe=x.rpe;if(x.hype){var hk={Niedrig:'l',Moderat:'m',Hoch:'h'}[x.hype];if(hk)bl.h=hk}if(x.opt)bl.opt=1;b.push(bl)});
- if(!(day.ex||[]).length)issues.push({i:-1,name:'Tag',need:['keine Übungen erkannt']});
+ if(!(day.ex||[]).length)issues.push({i:-1,name:'Tag',need:['keine Übungen erkannt']});if(day.chk&&!day.chkOk)issues.push({i:-1,name:'Tag',need:[day.chk]});
  return {ok:!issues.length&&b.length>0,day:{f:day.focus||day.name,d:day.notes||'',b:b},issues:issues}}
 
 /* ---------- Zusammenführen: mehrere Importe → Bibliothek (nie überschreiben) ---------- */

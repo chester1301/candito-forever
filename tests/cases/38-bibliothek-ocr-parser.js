@@ -31,8 +31,24 @@ module.exports={name:'Programmbibliothek – Erkennung aus Screenshots, Zuordnun
     const pg=[];W.forEach((day,d)=>{const L=day.b.filter(ok).filter(bl=>!(mv&&d===mv.d&&bl===mv.bl));pg.push(['10:00',`Day ${d+1} - Monday (W1, 3 RM, V2)`,'Exercises',...L.flatMap(bl=>[EX[bl.e].n,rx(bl)]),'Start workout'].join('\n'));
      L.forEach(bl=>pg.push(['10:01',EX[bl.e].n.toUpperCase(),rx(bl)].join('\n')));if(mv&&d===mv.d+1)pg.push(['10:02',EX[mv.bl.e].n.toUpperCase(),rx(mv.bl)].join('\n'))});
     const P=BIB.parseText(pg.join('\n\f\n'),{src:'ocr',fmt:'pdf-ocr'});const lib={v:1,progs:[P],ex:{}};BIB.autoEx(lib);const before=P.blocks[0].weeks[0].days[mv.d+1].ex.filter(x=>x.amb).length;const n=BIB.autoVerify(lib);
-    const D=P.blocks[0].weeks[0].days;const x=D[mv.d].ex.find(e=>e.eid===mv.bl.e&&e.sets===mv.bl.s&&e.rpe===mv.bl.rpe&&e.moved);return {before,n,moved:!!x,ref:x&&x.ref,amb:D.flatMap(d=>d.ex).filter(e=>e.amb).length,trainable:D.every(d=>BIB.toGymDay(d).ok)}});
-  t.ok(v.before===1&&v.moved&&v.amb===0&&v.trainable,`Abgleich mit eingebautem 3RM-Programm: unsicher einsortierte Übung bestätigt und in ihren Tag verschoben (${v.ref})`);
+    const D=P.blocks[0].weeks[0].days;const x=D[mv.d].ex.find(e=>e.eid===mv.bl.e&&e.sets===mv.bl.s&&e.rpe===mv.bl.rpe&&e.moved);
+    /* Tage, deren eingebaute Vorgaben vollständig im Testtext stehen, sind trainierbar; Tage mit ausgelassener Vorgabe (ohne RPE) widersprechen dem eingebauten Plan → gesperrt */
+    const full=W.map(day=>day.b.every(ok));const st=D.map((d,i)=>[BIB.toGymDay(d).ok,full[i],/Weicht vom eingebauten/.test(d.chk||'')]);
+    return {before,n,moved:!!x,ref:x&&x.ref,amb:D.flatMap(d=>d.ex).filter(e=>e.amb).length,trainable:st.every(([o,f,c])=>o===f&&c===!f),someLocked:full.includes(false)}});
+  t.ok(v.before===1&&v.moved&&v.amb===0&&v.trainable&&v.someLocked,`Abgleich mit eingebautem 3RM-Programm: unsicher einsortierte Übung bestätigt und verschoben (${v.ref}); Tage mit fehlender Vorgabe gesperrt`);
+  // Nichts darf stillschweigend verloren gehen: vermischte Übersichtszeilen („Find 10 RM …“, „(Optional) - 3 x …“, doppelter Name) und Tage ohne Tagesübersicht bleiben gesperrt
+  const lost=await p.evaluate(()=>{const pg=[['09:41','Day 1 - Monday (W1, TESTPROGRAMM L, V1)','Exercises','Paused Barbell Bench Press','Find 10 RM - Anywhere from RPE 8.5-...','Paused Barbell Bench Press','3 x 5 at RPE 5.0 on average w/ low...','Standing Cable Ab Crunch','(Optional) - 3 x 12-15 at RPE 7.0 on...','Feet Up Bench Press','Feet Up Bench Press','2 x 12 at RPE 7.0 on each set w/ low...','Start workout'],
+     ['09:42','PAUSED BARBELL BENCH PRESS x','3 x 5 at RPE 5.0 on average w/ low hype.'],['09:43','FEET UP BENCH PRESS x','2 x 12 at RPE 7.0 on each set w/ low hype.'],
+     ['09:44','Day 2 - Thursday (W1, TESTPROGRAMM L, V1)','W Legs'],['09:45','COMP SQUAT x','3 x 5 at RPE 7.0 on the last set w/ low hype.']].map(x=>x.join('\n')).join('\n\f\n');
+    const P=BIB.parseText(pg,{src:'ocr',fmt:'pdf-ocr'});BIB.save({v:1,progs:[P],ex:{}});window.__lid=P.id;const D=P.blocks[0].weeks[0].days;const g=D.map(d=>BIB.toGymDay(d));
+    return {n:D[0].ex.length,mix:D[0].ex.filter(x=>x.ovMix).length,crunch:D[0].ex.some(x=>/Ab Crunch/.test(x.ovLine||'')&&x.flags.some(f=>/Ab Crunch/.test(f))),ok1:g[0].ok,ok2:g[1].ok,chk2:D[1].chk||'',json:BIB.parseJSON(JSON.stringify({programs:[P]})).progs[0].blocks[0].weeks[0].days.map(d=>[BIB.toGymDay(d).ok,!!d.chk])}});
+  t.ok(lost.crunch&&lost.mix>=2&&!lost.ok1,'Vermischte Übersichtszeilen bleiben als markierte Einträge erhalten und sperren den Tag (nichts geht stillschweigend verloren)');
+  // Nutzer vergleicht mit dem Original und bestätigt die Vollständigkeit → erst dann trainierbar
+  const cf=await p.evaluate(async()=>{bibOpen();document.querySelector(`#bibv [data-bbp="${window.__lid}"]`).click();document.querySelector('#bibv [data-bbw="1"]').click();document.querySelector('#bibv [data-bbd="2"]').click();
+    const btn=document.querySelector('#bibv [data-bbchk]');const had=!!btn&&/Tagesübersicht nicht gefunden/.test(document.querySelector('#bibv').textContent);if(btn)btn.click();await new Promise(r=>setTimeout(r,100));
+    const D=BIB.load().progs[0].blocks[0].weeks[0].days[1];return {had,ok:D.chkOk===true&&BIB.toGymDay(D).ok,gone:!document.querySelector('#bibv [data-bbchk]')}});
+  t.ok(cf.had&&cf.ok&&cf.gone,'Tag ohne Übersicht: Grund angezeigt, nach „Mit dem Original verglichen“ trainierbar');
+  t.ok(!lost.ok2&&/Tagesübersicht nicht gefunden/.test(lost.chk2)&&JSON.stringify(lost.json)==='[[false,false],[false,true]]','Tag ohne Tagesübersicht gesperrt (auch nach JSON-Export/-Import)');
   // Robuster PDF-Leser: 16-Bit-Seitenbilder (wie im 10-Wochen-PDF) und abgeschnittene Datei ohne Querverweistabelle
   const fx=n=>require('fs').readFileSync(require('path').join(__dirname,'..','fixtures','bib',n)).toString('base64');
   const pr=await p.evaluate(async([a,b])=>{const u=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));const px=(im,x,y)=>im.data[(y*im.w+x)*4];
