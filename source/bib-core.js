@@ -114,7 +114,7 @@ function parseText(text,o){o=o||{};var src=o.src||'text';var lines=String(text||
  var getW=function(n){var w=B.weeks.find(function(x){return x.n===n});if(!w){w={n:n,name:'',days:[]};B.weeks.push(w);B.weeks.sort(function(a,b){return a.n-b.n})}return w};
  var getD=function(w,n){var d=w.days.find(function(x){return x.n===n});if(!d){d={n:n,name:'Tag '+n,wd:'',focus:'',notes:'',hints:[],ex:[]};w.days.push(d);w.days.sort(function(a,b){return a.n-b.n})}return d};
  var endEx=function(){if(ex){ex.notes=ex.noteL.join(' ').trim();delete ex.noteL;ex=null}};
- var addNote=function(l){if(day.notes.indexOf(l)>=0)return;day.notes=(day.notes?day.notes+' ':'')+l};
+ var addNote=function(l){var lt=l.replace(/[^A-Za-zÄÖÜäöüß]/g,'').length;if(src==='ocr'&&(lt<l.length*.55||!/[A-Za-zÄÖÜäöü]{3,}/.test(l)||/^(?:\S{1,3}\s+){2,}\S{0,3}$/.test(l)))return;if(day.notes.indexOf(l)>=0)return;day.notes=(day.notes?day.notes+' ':'')+l};
  for(var i=0;i<lines.length;i++){var l=lines[i];if(!l)continue;var m;
   /* Seitenwechsel (\f) bzw. Statuszeile eines Screenshots („16:06 …“): eine Detailseite endet hier, eine gescrollte Übersicht beginnt neu */
   if(l==='\f'){endEx();wasOv=mode==='ovw';if(mode==='ovw'&&day&&!orphan)newL(true);if(mode==='ex'||mode==='desc')mode=null;if(day&&!orphan){var st=scrollOv(i+1);if(st>=0)skipTo=st}continue}
