@@ -885,7 +885,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 6 – hoher Hype',{h:'h',rpe:6}),
    B('pbb',1,'6','1×6 @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',2,'6','2×6 @ RPE 6,5 im letzten Satz – moderater Hype',{h:'m',rpe:6.5}),
-   B('fub',3,'5','3×5 @ RPE 6 im Schnitt – niedriger Hype · '+FUBW,{h:'l',rpe:6}),
+   B('fub',3,'5','3×5 @ RPE 6 im Schnitt – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 6 im Schnitt – niedriger Hype.',{h:'l',rpe:6}),
    B('cte',3,'8','3×8 @ RPE 7 in jedem Satz – moderater Hype',{h:'m',rpe:7})]},
   {f:'Beine & Rücken',d:'Nahtlose Fortsetzung des letzten Blocks: im Kreuzheben 1 Wdh weniger pro Satz (3×6 → 3×5), die Back Extension wird zum 3×8. Am Ende dieser Progression soll ein großer 8er-Rekord stehen – mit starkem Übertrag.',b:[
    B('cdl',1,'1','1 Single @ RPE 5 – hoher Hype',{h:'h',rpe:5}),
@@ -916,7 +916,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',1,'6','1×6 @ RPE 8,5 – hoher Hype',{h:'h',rpe:8.5}),
    B('pbb',2,'6','2×6 @ RPE 7 im letzten Satz – moderater Hype',{h:'m',rpe:7}),
-   B('fub',3,'5','3×5 @ RPE 6,5 im Schnitt – niedriger Hype · '+FUBW,{h:'l',rpe:6.5}),
+   B('fub',3,'5','3×5 @ RPE 6,5 im Schnitt – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 6,5 im Schnitt – niedriger Hype.',{h:'l',rpe:6.5}),
    B('cte',3,'8','3×8 @ RPE 7,5 in jedem Satz – moderater Hype',{h:'m',rpe:7.5})]},
   {f:'Beine & Rücken',d:'Kreuzheben-Singles und 5er steigen weiter, Backoffs mit RPE-7-Deckel.',b:[
    B('cdl',1,'1','1 Single @ RPE 6 – hoher Hype',{h:'h',rpe:6}),
@@ -947,7 +947,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 8 – hoher Hype',{h:'h',rpe:8}),
    B('pbb',1,'4','1×4 @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',3,'4','3×4 @ RPE 6,5 im letzten Satz – moderater Hype',{h:'m',rpe:6.5}),
-   B('fub',3,'5','3×5 @ RPE 7 im ersten Satz – niedriger Hype · '+FUBW,{h:'l',rpe:7}),
+   B('fub',3,'5','3×5 @ RPE 7 im ersten Satz – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 7 im ersten Satz – niedriger Hype.',{h:'l',rpe:7}),
    B('cte',3,'8','3×8 @ RPE 8 in jedem Satz – hoher Hype – richtig pushen!',{h:'h',rpe:8})]},
   {f:'Beine & Rücken',d:'Kreuzheben-Single @ RPE 7 und schwere 5er – die Backoffs bleiben unter dem RPE-7-Deckel.',b:[
    B('cdl',1,'1','1 Single @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
@@ -978,7 +978,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 9 – hoher Hype',{h:'h',rpe:9}),
    B('pbb',1,'4','1×4 @ RPE 8,5 – hoher Hype',{h:'h',rpe:8.5}),
    B('pbb',3,'4','3×4 @ RPE 7 im letzten Satz – moderater Hype',{h:'m',rpe:7}),
-   B('fub',3,'3','3×3 @ RPE 6 im ersten Satz – niedriger Hype · '+FUBW,{h:'l',rpe:6}),
+   B('fub',3,'3','3×3 @ RPE 6 im ersten Satz – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×2 @ RPE 6 im ersten Satz – niedriger Hype.',{h:'l',rpe:6}),
    B('cte',2,'8','2×8 @ RPE 9 in jedem Satz – hoher Hype – richtig pushen!',{h:'h',rpe:9})]},
   {f:'Beine & Rücken',d:'Das Kreuzheben ist durch den schweren High-Bar-Satz vom Montag leicht beeinflusst – keine Sorge, wenn sich das Aufwärmen anders anfühlt. Bis zum Testtag sind es noch 1,5 Wochen, und das Kreuzheben hat das größte Tapering.',b:[
    B('cdl',1,'1','1 Single @ RPE 8,5–9 – hoher Hype',{h:'h',rpe:8.5}),

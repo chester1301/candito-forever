@@ -887,7 +887,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 6 – hoher Hype',{h:'h',rpe:6}),
    B('pbb',1,'6','1×6 @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',2,'6','2×6 @ RPE 6,5 im letzten Satz – moderater Hype',{h:'m',rpe:6.5}),
-   B('fub',3,'5','3×5 @ RPE 6 im Schnitt – niedriger Hype · '+FUBW,{h:'l',rpe:6}),
+   B('fub',3,'5','3×5 @ RPE 6 im Schnitt – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 6 im Schnitt – niedriger Hype.',{h:'l',rpe:6}),
    B('cte',3,'8','3×8 @ RPE 7 in jedem Satz – moderater Hype',{h:'m',rpe:7})]},
   {f:'Beine & Rücken',d:'Nahtlose Fortsetzung des letzten Blocks: im Kreuzheben 1 Wdh weniger pro Satz (3×6 → 3×5), die Back Extension wird zum 3×8. Am Ende dieser Progression soll ein großer 8er-Rekord stehen – mit starkem Übertrag.',b:[
    B('cdl',1,'1','1 Single @ RPE 5 – hoher Hype',{h:'h',rpe:5}),
@@ -918,7 +918,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',1,'6','1×6 @ RPE 8,5 – hoher Hype',{h:'h',rpe:8.5}),
    B('pbb',2,'6','2×6 @ RPE 7 im letzten Satz – moderater Hype',{h:'m',rpe:7}),
-   B('fub',3,'5','3×5 @ RPE 6,5 im Schnitt – niedriger Hype · '+FUBW,{h:'l',rpe:6.5}),
+   B('fub',3,'5','3×5 @ RPE 6,5 im Schnitt – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 6,5 im Schnitt – niedriger Hype.',{h:'l',rpe:6.5}),
    B('cte',3,'8','3×8 @ RPE 7,5 in jedem Satz – moderater Hype',{h:'m',rpe:7.5})]},
   {f:'Beine & Rücken',d:'Kreuzheben-Singles und 5er steigen weiter, Backoffs mit RPE-7-Deckel.',b:[
    B('cdl',1,'1','1 Single @ RPE 6 – hoher Hype',{h:'h',rpe:6}),
@@ -949,7 +949,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 8 – hoher Hype',{h:'h',rpe:8}),
    B('pbb',1,'4','1×4 @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
    B('pbb',3,'4','3×4 @ RPE 6,5 im letzten Satz – moderater Hype',{h:'m',rpe:6.5}),
-   B('fub',3,'5','3×5 @ RPE 7 im ersten Satz – niedriger Hype · '+FUBW,{h:'l',rpe:7}),
+   B('fub',3,'5','3×5 @ RPE 7 im ersten Satz – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×3 @ RPE 7 im ersten Satz – niedriger Hype.',{h:'l',rpe:7}),
    B('cte',3,'8','3×8 @ RPE 8 in jedem Satz – hoher Hype – richtig pushen!',{h:'h',rpe:8})]},
   {f:'Beine & Rücken',d:'Kreuzheben-Single @ RPE 7 und schwere 5er – die Backoffs bleiben unter dem RPE-7-Deckel.',b:[
    B('cdl',1,'1','1 Single @ RPE 7 – hoher Hype',{h:'h',rpe:7}),
@@ -980,7 +980,7 @@ const P10W=[
    B('pbb',1,'1','1 Single @ RPE 9 – hoher Hype',{h:'h',rpe:9}),
    B('pbb',1,'4','1×4 @ RPE 8,5 – hoher Hype',{h:'h',rpe:8.5}),
    B('pbb',3,'4','3×4 @ RPE 7 im letzten Satz – moderater Hype',{h:'m',rpe:7}),
-   B('fub',3,'3','3×3 @ RPE 6 im ersten Satz – niedriger Hype · '+FUBW,{h:'l',rpe:6}),
+   B('fub',3,'3','3×3 @ RPE 6 im ersten Satz – niedriger Hype · Feet Up Bench nur als Weitgriff-Drücker – mit moderatem Griff stattdessen Close Grip Bench Press 4×2 @ RPE 6 im ersten Satz – niedriger Hype.',{h:'l',rpe:6}),
    B('cte',2,'8','2×8 @ RPE 9 in jedem Satz – hoher Hype – richtig pushen!',{h:'h',rpe:9})]},
   {f:'Beine & Rücken',d:'Das Kreuzheben ist durch den schweren High-Bar-Satz vom Montag leicht beeinflusst – keine Sorge, wenn sich das Aufwärmen anders anfühlt. Bis zum Testtag sind es noch 1,5 Wochen, und das Kreuzheben hat das größte Tapering.',b:[
    B('cdl',1,'1','1 Single @ RPE 8,5–9 – hoher Hype',{h:'h',rpe:8.5}),
@@ -1179,7 +1179,7 @@ function backupHTML(){watchBackups();const L=BK.list;
  return `<section class="card"><div class="ct"><h2 class="h2">Datensicherung</h2><span class="chip ${dt?'ok':'plain'}">${dt?'lokal gesichert':'lokal aktiv'}</span></div>${st}
   <ul class="hinw" style="margin-top:4px"><li><span><b>Satz-genaues Speichern:</b> Jeder Satz trägt einen eigenen Zeitstempel. Treffen Stände von zwei Geräten aufeinander, werden sie Satz für Satz zusammengeführt – ein erledigter Satz kann nicht mehr durch einen alten Stand gelöscht werden.</span></li>
   <li><span><b>Automatische Sicherung:</b> Nach jeder Änderung wird ein Gesamtstand gesichert (ein Stand pro Stunde, ältere bleiben erhalten). ${BK.last?`Zuletzt: ${new Date(BK.last).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}.`:''}</span></li>
-  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.23-0651-ce9eb69</p>
+  <li><span><b>Auf dem iPhone:</b> Alles liegt doppelt im Gerätespeicher – auch offline. Die letzten 60 Stände bleiben erhalten.</span></li><li><span><b>iCloud-Sicherung:</b> „Sicherung herunterladen“ → „In Dateien sichern“ → iCloud Drive. Die App erinnert dich, wenn die letzte Sicherung älter als 7 Tage ist.</span></li></ul><p class="note2" style="margin-top:8px">App-Version 2026.10.24-0213-44b74ea</p>
   ${L&&L.length?`<p class="eyebrow" style="margin-top:14px">Gesicherte Stände</p><ul class="bkl">${rows}</ul><p class="note2">„Ergänzen“ füllt nur leere Sätze und fehlende Angaben aus diesem Stand auf – vorhandene Einträge werden nie überschrieben.</p>`:L?'<p class="note2">Die erste Sicherung entsteht mit deiner nächsten Eingabe.</p>':'<p class="note2">Sicherungen werden geladen …</p>'}
   <label class="swrow"><span><b>Nach jeder Einheit Sicherung anbieten</b><small>Direkt in der Zusammenfassung – ein Tipp, Teilen, fertig.</small></span><input type="checkbox" data-bkeach ${S.meta.bkEach!==false?'checked':''}><i></i></label>
   ${PWA?`<div class="aktionen" style="margin-top:12px"><button type="button" class="btn" data-cf-force>App neu laden · Update erzwingen</button></div><p class="note2">Lädt die App frisch vom Server (Service Worker und App-Cache werden erneuert). Deine Trainingsdaten bleiben erhalten.</p>`:''}
